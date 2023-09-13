@@ -180,10 +180,18 @@ function Sel_cmp_process()
       $tab_ger_campos = array();
       $tab_blk_campos = array();
 
-      $tab_ger_campos['idcostumer'] = "on";
-      $tab_blk_campos[] = "idcostumer";
+      $tab_ger_campos['name'] = "on";
+      $tab_blk_campos[] = "name";
       $tab_ger_campos['docnumber'] = "on";
       $tab_blk_campos[] = "docnumber";
+      $tab_ger_campos['phonenumber'] = "on";
+      $tab_blk_campos[] = "phonenumber";
+      $tab_ger_campos['email'] = "on";
+      $tab_blk_campos[] = "email";
+      $tab_ger_campos['holdertype'] = "on";
+      $tab_blk_campos[] = "holdertype";
+      $tab_ger_campos['frequencytype'] = "on";
+      $tab_blk_campos[] = "frequencytype";
 
 
       if (isset($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['field_display']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['field_display']))

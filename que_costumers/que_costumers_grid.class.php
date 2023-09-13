@@ -59,8 +59,15 @@ class que_costumers_grid
    var $progress_res;
    var $progress_graf;
    var $count_ger;
-   var $idcostumer;
+   var $name;
    var $docnumber;
+   var $phonenumber;
+   var $email;
+   var $holdertype;
+   var $frequencytype;
+   var $idcostumer;
+   var $look_holdertype;
+   var $look_frequencytype;
 
 function actionBar_isValidState($buttonName, $buttonState)
 {
@@ -333,8 +340,6 @@ function actionBar_getStateHide($buttonName)
    { 
        $this->NM_emb_tree_no = true; 
    }
-   $this->Ini->sc_Include($this->Ini->path_lib_php . "/nm_valida.php", "C", "NM_Valida") ; 
-   $this->Teste_validade = new NM_Valida;
    $this->aba_iframe = false;
    $this->Print_All = $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['print_all'];
    if ($this->Print_All)
@@ -390,8 +395,12 @@ function actionBar_getStateHide($buttonName)
    $this->nmgp_botoes['gridsave'] = "on";
    $this->nmgp_botoes['gridsavesession'] = "on";
    $this->nmgp_botoes['reload'] = "on";
-   $this->Cmps_ord_def['idCostumer'] = " desc";
+   $this->Cmps_ord_def['name'] = " asc";
    $this->Cmps_ord_def['docNumber'] = " asc";
+   $this->Cmps_ord_def['phoneNumber'] = " desc";
+   $this->Cmps_ord_def['email'] = " desc";
+   $this->Cmps_ord_def['holderType'] = " asc";
+   $this->Cmps_ord_def['frequencyType'] = " asc";
    if (isset($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['btn_display']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['btn_display']))
    {
        foreach ($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['btn_display'] as $NM_cada_btn => $NM_cada_opc)
@@ -804,15 +813,15 @@ function actionBar_getStateHide($buttonName)
 //----- 
    if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
    { 
-       $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
    } 
    elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
    { 
-       $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
    } 
    else 
    { 
-       $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
    } 
    $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq']; 
    $nmgp_order_by = ""; 
@@ -889,9 +898,20 @@ function actionBar_getStateHide($buttonName)
    }  
    else 
    { 
-       $this->idcostumer = $this->rs_grid->fields[0] ;  
-       $this->idcostumer = (string)$this->idcostumer;
+       $this->name = $this->rs_grid->fields[0] ;  
        $this->docnumber = $this->rs_grid->fields[1] ;  
+       $this->phonenumber = $this->rs_grid->fields[2] ;  
+       $this->phonenumber = (string)$this->phonenumber;
+       $this->email = $this->rs_grid->fields[3] ;  
+       $this->email = (string)$this->email;
+       $this->holdertype = $this->rs_grid->fields[4] ;  
+       $this->frequencytype = $this->rs_grid->fields[5] ;  
+       $this->idcostumer = $this->rs_grid->fields[6] ;  
+       $this->idcostumer = (string)$this->idcostumer;
+       $this->look_holdertype = $this->holdertype; 
+       $this->Lookup->lookup_holdertype($this->look_holdertype); 
+       $this->look_frequencytype = $this->frequencytype; 
+       $this->Lookup->lookup_frequencytype($this->look_frequencytype); 
        $this->SC_seq_register = $this->nmgp_reg_start ; 
        $this->SC_seq_page = 0;
        $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['final'] = $this->nmgp_reg_start ; 
@@ -900,8 +920,13 @@ function actionBar_getStateHide($buttonName)
            $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['final']++ ; 
            $this->SC_seq_register = $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['final']; 
            $this->rs_grid->MoveNext(); 
-           $this->idcostumer = $this->rs_grid->fields[0] ;  
+           $this->name = $this->rs_grid->fields[0] ;  
            $this->docnumber = $this->rs_grid->fields[1] ;  
+           $this->phonenumber = $this->rs_grid->fields[2] ;  
+           $this->email = $this->rs_grid->fields[3] ;  
+           $this->holdertype = $this->rs_grid->fields[4] ;  
+           $this->frequencytype = $this->rs_grid->fields[5] ;  
+           $this->idcostumer = $this->rs_grid->fields[6] ;  
        } 
    } 
    $this->NM_hidden_filters = ($this->Ini->Embutida_iframe && !empty($this->nm_grid_sem_reg) && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['initialize']) ? true : false;
@@ -1140,7 +1165,7 @@ $nm_saida->saida("                        <link rel=\"shortcut icon\" href=\"\">
            $nm_saida->saida("     var scSweetAlertConfirmButtonFAPos = \"" . $confirmButtonFAPos . "\";\r\n");
            $nm_saida->saida("     var scSweetAlertCancelButtonFAPos = \"" . $cancelButtonFAPos . "\";\r\n");
            $nm_saida->saida("   </script>\r\n");
-           $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_costumers_jquery_6493.js\"></script>\r\n");
+           $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_costumers_jquery_2050.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_costumers_ajax.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_costumers_message.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\">\r\n");
@@ -2612,10 +2637,18 @@ $nm_saida->saida("}\r\n");
 
    $compl_css_emb = ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida']) ? "que_costumers_" : "";
    $this->css_sep = " ";
-   $this->css_idcostumer_label = $compl_css_emb . "css_idcostumer_label";
-   $this->css_idcostumer_grid_line = $compl_css_emb . "css_idcostumer_grid_line";
+   $this->css_name_label = $compl_css_emb . "css_name_label";
+   $this->css_name_grid_line = $compl_css_emb . "css_name_grid_line";
    $this->css_docnumber_label = $compl_css_emb . "css_docnumber_label";
    $this->css_docnumber_grid_line = $compl_css_emb . "css_docnumber_grid_line";
+   $this->css_phonenumber_label = $compl_css_emb . "css_phonenumber_label";
+   $this->css_phonenumber_grid_line = $compl_css_emb . "css_phonenumber_grid_line";
+   $this->css_email_label = $compl_css_emb . "css_email_label";
+   $this->css_email_grid_line = $compl_css_emb . "css_email_grid_line";
+   $this->css_holdertype_label = $compl_css_emb . "css_holdertype_label";
+   $this->css_holdertype_grid_line = $compl_css_emb . "css_holdertype_grid_line";
+   $this->css_frequencytype_label = $compl_css_emb . "css_frequencytype_label";
+   $this->css_frequencytype_grid_line = $compl_css_emb . "css_frequencytype_grid_line";
  }  
  function cabecalho()
  {
@@ -3014,10 +3047,10 @@ $nm_saida->saida("}\r\n");
       } 
    $nm_saida->saida("    <TR id=\"tit_que_costumers__SCCS__" . $nm_seq_titulos . "\" align=\"center\" class=\"" . $this->css_scGridLabel . " sc-ui-grid-header-row sc-ui-grid-header-row-que_costumers-" . $tmp_header_row . "\">\r\n");
    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida_label']) { 
-   $nm_saida->saida("     <TD class=\"" . $this->css_scGridBlockBg . "\" style=\"width: " . $this->width_tabula_quebra . "; display:" . $this->width_tabula_display . ";\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_docnumber_label'] . "\" >&nbsp;</TD>\r\n");
+   $nm_saida->saida("     <TD class=\"" . $this->css_scGridBlockBg . "\" style=\"width: " . $this->width_tabula_quebra . "; display:" . $this->width_tabula_display . ";\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_frequencytype_label'] . "\" >&nbsp;</TD>\r\n");
    } 
    if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opc_psq']) { 
-   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_docnumber_label'] . "\" >&nbsp;</TD>\r\n");
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_frequencytype_label'] . "\" >&nbsp;</TD>\r\n");
    } 
    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != "print" && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != "pdf") {
        $classColFld = "";
@@ -3028,7 +3061,7 @@ $nm_saida->saida("}\r\n");
            $classColTitle = " sc-col-title";
            $classColActions = " sc-col-actions";
        }
-   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . " sc-col-actionbar-left  " . $classColFld . $classColTitle . $classColActions . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_docnumber_label'] . "\" >\r\n");
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . " sc-col-actionbar-left  " . $classColFld . $classColTitle . $classColActions . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_frequencytype_label'] . "\" >\r\n");
    $nm_saida->saida("<style>\r\n");
    $nm_saida->saida("    .sc-col-actionbar-left {  }\r\n");
    $nm_saida->saida("    .sc-col-actionbar-left:hover {  }\r\n");
@@ -3120,41 +3153,41 @@ $nm_saida->saida("}\r\n");
      } 
    } 
  }
- function NM_label_idcostumer()
+ function NM_label_name()
  {
    global $nm_saida;
-   $SC_Label = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : "Id Costumer";
+   $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Nome";
    $classColFld = "";
    $classColTitle = "";
    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
      $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
      $classColTitle = " sc-col-title";
    }
-   if (!isset($this->NM_cmp_hidden['idcostumer']) || $this->NM_cmp_hidden['idcostumer'] != "off") { 
-   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_idcostumer_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_idcostumer_label'] . "\" >\r\n");
+   if (!isset($this->NM_cmp_hidden['name']) || $this->NM_cmp_hidden['name'] != "off") { 
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_name_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_name_label'] . "\" >\r\n");
     $label_fieldName = nl2br($SC_Label);
     if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
         // label & order
-        $divLabelStyle = '; justify-content: right';
-        $fieldSortRule = $this->scGetColumnOrderRule('idCostumer');
-        $fieldSortIcon = $this->scGetColumnOrderIcon('idCostumer', $fieldSortRule);
+        $divLabelStyle = '';
+        $fieldSortRule = $this->scGetColumnOrderRule('name');
+        $fieldSortIcon = $this->scGetColumnOrderIcon('name', $fieldSortRule);
         if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
             $this->Ini->Label_sort_pos = 'right_field';
         }
         if (empty($fieldSortIcon)) {
             $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
         } elseif ($this->Ini->Label_sort_pos == 'right_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_idcostumer_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_name_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
         } elseif ($this->Ini->Label_sort_pos == 'left_field') {
             $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
         } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_idcostumer_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_name_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
         } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
             $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
         } else {
             $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
         }
-        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('idCostumer')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
+        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('name')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
         $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
         // controls
         $label_chart = '';
@@ -3172,7 +3205,7 @@ $nm_saida->saida("}\r\n");
  function NM_label_docnumber()
  {
    global $nm_saida;
-   $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "Doc Number";
+   $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "CPF";
    $classColFld = "";
    $classColTitle = "";
    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
@@ -3204,6 +3237,202 @@ $nm_saida->saida("}\r\n");
             $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
         }
         $label_labelContent = "<a href=\"javascript:nm_gp_submit2('docNumber')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+        // controls
+        $label_chart = '';
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+    } else {
+        $label_final = $label_fieldName;
+    }
+   $nm_saida->saida("" . $label_final . "\r\n");
+   $nm_saida->saida("</TD>\r\n");
+   } 
+ }
+ function NM_label_phonenumber()
+ {
+   global $nm_saida;
+   $SC_Label = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : "Telefone";
+   $classColFld = "";
+   $classColTitle = "";
+   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+     $classColTitle = " sc-col-title";
+   }
+   if (!isset($this->NM_cmp_hidden['phonenumber']) || $this->NM_cmp_hidden['phonenumber'] != "off") { 
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_phonenumber_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_phonenumber_label'] . "\" >\r\n");
+    $label_fieldName = nl2br($SC_Label);
+    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+        // label & order
+        $divLabelStyle = '; justify-content: right';
+        $fieldSortRule = $this->scGetColumnOrderRule('phoneNumber');
+        $fieldSortIcon = $this->scGetColumnOrderIcon('phoneNumber', $fieldSortRule);
+        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
+            $this->Ini->Label_sort_pos = 'right_field';
+        }
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_phonenumber_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_phonenumber_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('phoneNumber')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+        // controls
+        $label_chart = '';
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+    } else {
+        $label_final = $label_fieldName;
+    }
+   $nm_saida->saida("" . $label_final . "\r\n");
+   $nm_saida->saida("</TD>\r\n");
+   } 
+ }
+ function NM_label_email()
+ {
+   global $nm_saida;
+   $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email";
+   $classColFld = "";
+   $classColTitle = "";
+   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+     $classColTitle = " sc-col-title";
+   }
+   if (!isset($this->NM_cmp_hidden['email']) || $this->NM_cmp_hidden['email'] != "off") { 
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_email_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_email_label'] . "\" >\r\n");
+    $label_fieldName = nl2br($SC_Label);
+    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+        // label & order
+        $divLabelStyle = '; justify-content: right';
+        $fieldSortRule = $this->scGetColumnOrderRule('email');
+        $fieldSortIcon = $this->scGetColumnOrderIcon('email', $fieldSortRule);
+        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
+            $this->Ini->Label_sort_pos = 'right_field';
+        }
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_email_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_email_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('email')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+        // controls
+        $label_chart = '';
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+    } else {
+        $label_final = $label_fieldName;
+    }
+   $nm_saida->saida("" . $label_final . "\r\n");
+   $nm_saida->saida("</TD>\r\n");
+   } 
+ }
+ function NM_label_holdertype()
+ {
+   global $nm_saida;
+   $SC_Label = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : "Titular";
+   $classColFld = "";
+   $classColTitle = "";
+   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+     $classColTitle = " sc-col-title";
+   }
+   if (!isset($this->NM_cmp_hidden['holdertype']) || $this->NM_cmp_hidden['holdertype'] != "off") { 
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_holdertype_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_holdertype_label'] . "\" >\r\n");
+    $label_fieldName = nl2br($SC_Label);
+    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+        // label & order
+        $divLabelStyle = '';
+        $fieldSortRule = $this->scGetColumnOrderRule('holderType');
+        $fieldSortIcon = $this->scGetColumnOrderIcon('holderType', $fieldSortRule);
+        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
+            $this->Ini->Label_sort_pos = 'right_field';
+        }
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_holdertype_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_holdertype_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('holderType')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+        // controls
+        $label_chart = '';
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+    } else {
+        $label_final = $label_fieldName;
+    }
+   $nm_saida->saida("" . $label_final . "\r\n");
+   $nm_saida->saida("</TD>\r\n");
+   } 
+ }
+ function NM_label_frequencytype()
+ {
+   global $nm_saida;
+   $SC_Label = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : "Mensalista";
+   $classColFld = "";
+   $classColTitle = "";
+   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+     $classColTitle = " sc-col-title";
+   }
+   if (!isset($this->NM_cmp_hidden['frequencytype']) || $this->NM_cmp_hidden['frequencytype'] != "off") { 
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_frequencytype_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_frequencytype_label'] . "\" >\r\n");
+    $label_fieldName = nl2br($SC_Label);
+    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+        // label & order
+        $divLabelStyle = '';
+        $fieldSortRule = $this->scGetColumnOrderRule('frequencyType');
+        $fieldSortIcon = $this->scGetColumnOrderIcon('frequencyType', $fieldSortRule);
+        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
+            $this->Ini->Label_sort_pos = 'right_field';
+        }
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_frequencytype_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_frequencytype_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('frequencyType')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
         $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
         // controls
         $label_chart = '';
@@ -3251,7 +3480,13 @@ function SC_label_rightActionBar()
     function scIsFieldNumeric($fieldName)
     {
         switch ($fieldName) {
+            case "phonenumber":
+                return true;
             case "idcostumer":
+                return true;
+            case "zipcode":
+                return true;
+            case "idholder":
                 return true;
         }
         return false;
@@ -3260,7 +3495,15 @@ function SC_label_rightActionBar()
     function scGetDefaultFieldOrder($fieldName)
     {
         switch ($fieldName) {
+            case "phonenumber":
+                return 'desc';
+            case "email":
+                return 'desc';
             case "idcostumer":
+                return 'desc';
+            case "zipcode":
+                return 'desc';
+            case "idholder":
                 return 'desc';
         }
         return 'asc';
@@ -3296,10 +3539,18 @@ function SC_label_rightActionBar()
    $this->sc_where_atual   = $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
    $this->sc_where_filtro  = $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq_filtro'];
 // 
-   $SC_Label = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : "Id Costumer";
-   $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['idcostumer'] = $SC_Label; 
-   $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "Doc Number";
+   $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Nome";
+   $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['name'] = $SC_Label; 
+   $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "CPF";
    $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['docnumber'] = $SC_Label; 
+   $SC_Label = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : "Telefone";
+   $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['phonenumber'] = $SC_Label; 
+   $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email";
+   $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['email'] = $SC_Label; 
+   $SC_Label = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : "Titular";
+   $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['holdertype'] = $SC_Label; 
+   $SC_Label = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : "Mensalista";
+   $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['frequencytype'] = $SC_Label; 
    if (!$this->grid_emb_form && isset($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['lig_edit']) && $_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['lig_edit'] != '')
    {
        $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['mostra_edit'] = $_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['lig_edit'];
@@ -3571,9 +3822,20 @@ if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf']) {
               }
           }
           $this->Lin_impressas++;
-          $this->idcostumer = $this->rs_grid->fields[0] ;  
-          $this->idcostumer = (string)$this->idcostumer;
+          $this->name = $this->rs_grid->fields[0] ;  
           $this->docnumber = $this->rs_grid->fields[1] ;  
+          $this->phonenumber = $this->rs_grid->fields[2] ;  
+          $this->phonenumber = (string)$this->phonenumber;
+          $this->email = $this->rs_grid->fields[3] ;  
+          $this->email = (string)$this->email;
+          $this->holdertype = $this->rs_grid->fields[4] ;  
+          $this->frequencytype = $this->rs_grid->fields[5] ;  
+          $this->idcostumer = $this->rs_grid->fields[6] ;  
+          $this->idcostumer = (string)$this->idcostumer;
+          $this->look_holdertype = $this->holdertype; 
+          $this->Lookup->lookup_holdertype($this->look_holdertype); 
+          $this->look_frequencytype = $this->frequencytype; 
+          $this->Lookup->lookup_frequencytype($this->look_frequencytype); 
           $this->SC_seq_page++; 
           $this->SC_seq_register = $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['final'] + 1; 
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['rows_emb']++;
@@ -3621,10 +3883,10 @@ if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf']) {
           $this->SC_ancora = $this->SC_seq_page;
           $nm_saida->saida("    <TR  class=\"" . $this->css_line_back . "\"  style=\"page-break-inside: avoid;\"" . $NM_destaque . " id=\"SC_ancor" . $this->SC_ancora . "\">\r\n");
  if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida_grid']){ 
-          $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_scGridBlockBg . "\" style=\"width: " . $this->width_tabula_quebra . "; display:" . $this->width_tabula_display . ";\"  style=\"" . $this->Css_Cmp['css_docnumber_grid_line'] . "\" NOWRAP align=\"\" valign=\"\"   HEIGHT=\"0px\">&nbsp;</TD>\r\n");
+          $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_scGridBlockBg . "\" style=\"width: " . $this->width_tabula_quebra . "; display:" . $this->width_tabula_display . ";\"  style=\"" . $this->Css_Cmp['css_frequencytype_grid_line'] . "\" NOWRAP align=\"\" valign=\"\"   HEIGHT=\"0px\">&nbsp;</TD>\r\n");
  }
  if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opc_psq']){ 
-          $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_line_fonf . "\"  style=\"" . $this->Css_Cmp['css_docnumber_grid_line'] . "\" NOWRAP align=\"left\" valign=\"top\" WIDTH=\"1px\"  HEIGHT=\"0px\">\r\n");
+          $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_line_fonf . "\"  style=\"" . $this->Css_Cmp['css_frequencytype_grid_line'] . "\" NOWRAP align=\"left\" valign=\"top\" WIDTH=\"1px\"  HEIGHT=\"0px\">\r\n");
  $Cod_Btn = nmButtonOutput($this->arr_buttons, "bcapture", "document.Fpesq.nm_ret_psq.value='" . str_replace(array("'", '"'), array("\'", '\"'), $teste) . "'; nm_escreve_window();", "document.Fpesq.nm_ret_psq.value='" . str_replace(array("'", '"'), array("\'", '\"'), $teste) . "'; nm_escreve_window();", "", "Rad_psq", "", "", "absmiddle", "", "0px", $this->Ini->path_botoes, "", "", "", "", "", "only_text", "text_right", "", "", "", "", "", "", "");
           $nm_saida->saida(" $Cod_Btn</TD>\r\n");
  } 
@@ -3797,25 +4059,27 @@ function SC_grid_rightActionBar()
 	global $nm_saida;
     $dataActionbarPos = 'right';
 }
- function NM_grid_idcostumer()
+ function NM_grid_name()
  {
       global $nm_saida;
-      if (!isset($this->NM_cmp_hidden['idcostumer']) || $this->NM_cmp_hidden['idcostumer'] != "off") { 
-          $conteudo = NM_encode_input(sc_strip_script($this->idcostumer)); 
-          $conteudo_original = NM_encode_input(sc_strip_script($this->idcostumer)); 
+      if (!isset($this->NM_cmp_hidden['name']) || $this->NM_cmp_hidden['name'] != "off") { 
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] == "pdf" && isset($_SESSION['nm_session']['sys_wkhtmltopdf_show_html_content']) && $_SESSION['nm_session']['sys_wkhtmltopdf_show_html_content'] == 'Y') {
+              $conteudo = NM_encode_input(sc_strip_script($this->name));
+              $conteudo_original = NM_encode_input(sc_strip_script($this->name));
+          }
+          else {
+              $conteudo = sc_strip_script($this->name); 
+              $conteudo_original = sc_strip_script($this->name); 
+          }
           if ($conteudo === "") 
           { 
               $conteudo = "&nbsp;" ;  
               $graf = "" ;  
           } 
-          else    
-          { 
-              nmgp_Form_Num_Val($conteudo, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
-          } 
           $str_tem_display = $conteudo;
           if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && !empty($conteudo)) 
           { 
-              $str_tem_display = $this->getFieldHighlight('quicksearch', 'idcostumer', $str_tem_display, $conteudo_original); 
+              $str_tem_display = $this->getFieldHighlight('quicksearch', 'name', $str_tem_display, $conteudo_original); 
           } 
               $conteudo = $str_tem_display; 
           $classColFld = "";
@@ -3824,13 +4088,13 @@ function SC_grid_rightActionBar()
           }
           if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'])
           {
-              $this->SC_nowrap = "NOWRAP";
+              $this->SC_nowrap = "";
           }
           else
           {
-              $this->SC_nowrap = "NOWRAP";
+              $this->SC_nowrap = "";
           }
-   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_idcostumer_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_idcostumer_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_idcostumer_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
+   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_name_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_name_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_name_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
       }
  }
  function NM_grid_docnumber()
@@ -3846,11 +4110,11 @@ function SC_grid_rightActionBar()
           } 
           else    
           { 
-               if (strlen($conteudo) < 14 && strlen($conteudo) != 11) 
+               if (strlen($conteudo) < 11) 
                { 
-                   $conteudo = str_repeat(0, 14 - strlen($conteudo)) . $conteudo; 
+                   $conteudo = str_repeat(0, 11 - strlen($conteudo)) . $conteudo; 
                } 
-               if (strlen($conteudo) > 11 && substr($conteudo, 0, 3) == "000" && $this->Teste_validade->CNPJ($conteudo) == false) 
+               elseif (strlen($conteudo) > 11) 
                { 
                    $conteudo = substr($conteudo, strlen($conteudo) - 11); 
                } 
@@ -3877,9 +4141,162 @@ function SC_grid_rightActionBar()
    $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_docnumber_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_docnumber_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_docnumber_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
       }
  }
+ function NM_grid_phonenumber()
+ {
+      global $nm_saida;
+      if (!isset($this->NM_cmp_hidden['phonenumber']) || $this->NM_cmp_hidden['phonenumber'] != "off") { 
+          $conteudo = NM_encode_input(sc_strip_script($this->phonenumber)); 
+          $conteudo_original = NM_encode_input(sc_strip_script($this->phonenumber)); 
+          if ($conteudo === "") 
+          { 
+              $conteudo = "&nbsp;" ;  
+              $graf = "" ;  
+          } 
+          else    
+          { 
+              $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+              $this->nm_gera_mask($conteudo, "(xx) xxxxx-xxxx"); 
+          } 
+          $str_tem_display = $conteudo;
+          if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && !empty($conteudo)) 
+          { 
+              $str_tem_display = $this->getFieldHighlight('quicksearch', 'phonenumber', $str_tem_display, $conteudo_original); 
+          } 
+              $conteudo = $str_tem_display; 
+          $classColFld = "";
+          if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+              $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+          }
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'])
+          {
+              $this->SC_nowrap = "NOWRAP";
+          }
+          else
+          {
+              $this->SC_nowrap = "NOWRAP";
+          }
+   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_phonenumber_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_phonenumber_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_phonenumber_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
+      }
+ }
+ function NM_grid_email()
+ {
+      global $nm_saida;
+      if (!isset($this->NM_cmp_hidden['email']) || $this->NM_cmp_hidden['email'] != "off") { 
+          $conteudo = NM_encode_input(sc_strip_script($this->email)); 
+          $conteudo_original = NM_encode_input(sc_strip_script($this->email)); 
+          if ($conteudo === "") 
+          { 
+              $conteudo = "&nbsp;" ;  
+              $graf = "" ;  
+          } 
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != "pdf" && $_SESSION['scriptcase']['contr_link_emb'] != "pdf" && $conteudo != "&nbsp;")
+          { 
+          $str_tem_display = $conteudo;
+          if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && !empty($conteudo)) 
+          { 
+              $str_tem_display = $this->getFieldHighlight('quicksearch', 'email', $str_tem_display, $conteudo_original); 
+          } 
+              $conteudo = "<a href=\"mailto:$conteudo\" class=\"" . $this->Ini->cor_link_dados . $this->css_sep . $this->css_email_grid_line . "\">$str_tem_display</a>";  
+          } 
+          $str_tem_display = $conteudo;
+          if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && !empty($conteudo)) 
+          { 
+              $str_tem_display = $this->getFieldHighlight('quicksearch', 'email', $str_tem_display, $conteudo_original); 
+          } 
+          $classColFld = "";
+          if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+              $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+          }
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'])
+          {
+              $this->SC_nowrap = "NOWRAP";
+          }
+          else
+          {
+              $this->SC_nowrap = "NOWRAP";
+          }
+   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_email_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_email_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_email_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
+      }
+ }
+ function NM_grid_holdertype()
+ {
+      global $nm_saida;
+      if (!isset($this->NM_cmp_hidden['holdertype']) || $this->NM_cmp_hidden['holdertype'] != "off") { 
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] == "pdf" && isset($_SESSION['nm_session']['sys_wkhtmltopdf_show_html_content']) && $_SESSION['nm_session']['sys_wkhtmltopdf_show_html_content'] == 'Y') {
+              $conteudo = NM_encode_input(sc_strip_script($this->look_holdertype));
+              $conteudo_original = NM_encode_input(sc_strip_script($this->look_holdertype));
+          }
+          else {
+              $conteudo = trim(sc_strip_script($this->look_holdertype)); 
+              $conteudo_original = trim(sc_strip_script($this->look_holdertype)); 
+          }
+          if ($conteudo === "") 
+          { 
+              $conteudo = "&nbsp;" ;  
+              $graf = "" ;  
+          } 
+          $str_tem_display = $conteudo;
+          if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && !empty($conteudo)) 
+          { 
+              $str_tem_display = $this->getFieldHighlight('quicksearch', 'holdertype', $str_tem_display, $conteudo_original); 
+          } 
+              $conteudo = $str_tem_display; 
+          $classColFld = "";
+          if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+              $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+          }
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'])
+          {
+              $this->SC_nowrap = "";
+          }
+          else
+          {
+              $this->SC_nowrap = "";
+          }
+   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_holdertype_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_holdertype_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_holdertype_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
+      }
+ }
+ function NM_grid_frequencytype()
+ {
+      global $nm_saida;
+      if (!isset($this->NM_cmp_hidden['frequencytype']) || $this->NM_cmp_hidden['frequencytype'] != "off") { 
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] == "pdf" && isset($_SESSION['nm_session']['sys_wkhtmltopdf_show_html_content']) && $_SESSION['nm_session']['sys_wkhtmltopdf_show_html_content'] == 'Y') {
+              $conteudo = NM_encode_input(sc_strip_script($this->look_frequencytype));
+              $conteudo_original = NM_encode_input(sc_strip_script($this->look_frequencytype));
+          }
+          else {
+              $conteudo = trim(sc_strip_script($this->look_frequencytype)); 
+              $conteudo_original = trim(sc_strip_script($this->look_frequencytype)); 
+          }
+          if ($conteudo === "") 
+          { 
+              $conteudo = "&nbsp;" ;  
+              $graf = "" ;  
+          } 
+          $str_tem_display = $conteudo;
+          if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && !empty($conteudo)) 
+          { 
+              $str_tem_display = $this->getFieldHighlight('quicksearch', 'frequencytype', $str_tem_display, $conteudo_original); 
+          } 
+              $conteudo = $str_tem_display; 
+          $classColFld = "";
+          if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+              $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+          }
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'])
+          {
+              $this->SC_nowrap = "";
+          }
+          else
+          {
+              $this->SC_nowrap = "";
+          }
+   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_frequencytype_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_frequencytype_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_frequencytype_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
+      }
+ }
  function NM_calc_span()
  {
-   $this->NM_colspan  = 5;
+   $this->NM_colspan  = 9;
    if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opc_psq'])
    {
        $this->NM_colspan++;
@@ -4104,8 +4521,12 @@ $nm_saida->saida("    </style>\r\n");
           $OPC_cmp_sel = explode("_VLS_", $OPC_cmp);
           $nm_saida->saida("          <select multiple=multiple  id=\"fast_search_f0_top\" class=\"\" style=\"vertical-align: middle;\" name=\"nmgp_fast_search\" onChange=\"change_fast_top = 'CH';\">\r\n");
           $SC_Label_atu['SC_all_Cmp'] = $this->Ini->Nm_lang['lang_srch_all_fields']; 
-          $SC_Label_atu['idcostumer'] = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : 'Id Costumer'; 
-          $SC_Label_atu['docnumber'] = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : 'Doc Number'; 
+          $SC_Label_atu['name'] = (isset($this->New_label['name'])) ? $this->New_label['name'] : 'Nome'; 
+          $SC_Label_atu['docnumber'] = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : 'CPF'; 
+          $SC_Label_atu['phonenumber'] = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : 'Telefone'; 
+          $SC_Label_atu['email'] = (isset($this->New_label['email'])) ? $this->New_label['email'] : 'Email'; 
+          $SC_Label_atu['holdertype'] = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : 'Titular'; 
+          $SC_Label_atu['frequencytype'] = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : 'Mensalista'; 
           foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $cada_field)
           { 
                   if($cada_field == 'SC_all_Cmp')
@@ -4774,8 +5195,12 @@ $nm_saida->saida("    </style>\r\n");
           $OPC_cmp_sel = explode("_VLS_", $OPC_cmp);
           $nm_saida->saida("          <select multiple=multiple  id=\"fast_search_f0_top\" class=\"\" style=\"vertical-align: middle;\" name=\"nmgp_fast_search\" onChange=\"change_fast_top = 'CH';\">\r\n");
           $SC_Label_atu['SC_all_Cmp'] = $this->Ini->Nm_lang['lang_srch_all_fields']; 
-          $SC_Label_atu['idcostumer'] = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : 'Id Costumer'; 
-          $SC_Label_atu['docnumber'] = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : 'Doc Number'; 
+          $SC_Label_atu['name'] = (isset($this->New_label['name'])) ? $this->New_label['name'] : 'Nome'; 
+          $SC_Label_atu['docnumber'] = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : 'CPF'; 
+          $SC_Label_atu['phonenumber'] = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : 'Telefone'; 
+          $SC_Label_atu['email'] = (isset($this->New_label['email'])) ? $this->New_label['email'] : 'Email'; 
+          $SC_Label_atu['holdertype'] = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : 'Titular'; 
+          $SC_Label_atu['frequencytype'] = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : 'Mensalista'; 
           foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $cada_field)
           { 
                   if($cada_field == 'SC_all_Cmp')
@@ -5463,7 +5888,7 @@ $nm_saida->saida("    </style>\r\n");
                 (
                     (
                     $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['fast_search'][0] == 'SC_all_Cmp' &&
-                    in_array($field, array('idcostumer', 'docnumber'))
+                    in_array($field, array('name', 'docnumber', 'phonenumber', 'email', 'holdertype', 'frequencytype'))
                     ) ||
                     $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['fast_search'][0] == $field ||
                     strpos($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['fast_search'][0], $field . '_VLS_') !== false ||

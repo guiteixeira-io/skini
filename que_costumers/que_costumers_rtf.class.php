@@ -153,8 +153,6 @@ function actionBar_getStateHide($buttonName)
           $this->pb->setReturnOption('volta_grid');
           $this->pb->setTotalSteps($this->count_ger);
       }
-      $this->Ini->sc_Include($this->Ini->path_lib_php . "/nm_valida.php", "C", "NM_Valida") ; 
-      $this->Teste_validade = new NM_Valida;
       $this->Arquivo    = "sc_rtf";
       $this->Arquivo   .= "_" . date("YmdHis") . "_" . rand(0, 1000);
       $this->Arquivo   .= "_que_costumers";
@@ -229,16 +227,48 @@ function actionBar_getStateHide($buttonName)
       $this->Texto_tag .= "<tr>\r\n";
       foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $Cada_col)
       { 
-          $SC_Label = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : "Id Costumer"; 
-          if ($Cada_col == "idcostumer" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Nome"; 
+          if ($Cada_col == "name" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
               $SC_Label = NM_charset_to_utf8($SC_Label);
               $SC_Label = str_replace('<', '&lt;', $SC_Label);
               $SC_Label = str_replace('>', '&gt;', $SC_Label);
               $this->Texto_tag .= "<td>" . $SC_Label . "</td>\r\n";
           }
-          $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "Doc Number"; 
+          $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "CPF"; 
           if ($Cada_col == "docnumber" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              $SC_Label = str_replace('<', '&lt;', $SC_Label);
+              $SC_Label = str_replace('>', '&gt;', $SC_Label);
+              $this->Texto_tag .= "<td>" . $SC_Label . "</td>\r\n";
+          }
+          $SC_Label = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : "Telefone"; 
+          if ($Cada_col == "phonenumber" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              $SC_Label = str_replace('<', '&lt;', $SC_Label);
+              $SC_Label = str_replace('>', '&gt;', $SC_Label);
+              $this->Texto_tag .= "<td>" . $SC_Label . "</td>\r\n";
+          }
+          $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email"; 
+          if ($Cada_col == "email" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              $SC_Label = str_replace('<', '&lt;', $SC_Label);
+              $SC_Label = str_replace('>', '&gt;', $SC_Label);
+              $this->Texto_tag .= "<td>" . $SC_Label . "</td>\r\n";
+          }
+          $SC_Label = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : "Titular"; 
+          if ($Cada_col == "holdertype" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              $SC_Label = str_replace('<', '&lt;', $SC_Label);
+              $SC_Label = str_replace('>', '&gt;', $SC_Label);
+              $this->Texto_tag .= "<td>" . $SC_Label . "</td>\r\n";
+          }
+          $SC_Label = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : "Mensalista"; 
+          if ($Cada_col == "frequencytype" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
               $SC_Label = NM_charset_to_utf8($SC_Label);
               $SC_Label = str_replace('<', '&lt;', $SC_Label);
@@ -252,15 +282,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
@@ -293,9 +323,24 @@ function actionBar_getStateHide($buttonName)
              $this->pb->addSteps(1);
          }
          $this->Texto_tag .= "<tr>\r\n";
-         $this->idcostumer = $rs->fields[0] ;  
-         $this->idcostumer = (string)$this->idcostumer;
+         $this->name = $rs->fields[0] ;  
          $this->docnumber = $rs->fields[1] ;  
+         $this->phonenumber = $rs->fields[2] ;  
+         $this->phonenumber = (string)$this->phonenumber;
+         $this->email = $rs->fields[3] ;  
+         $this->email = (string)$this->email;
+         $this->holdertype = $rs->fields[4] ;  
+         $this->frequencytype = $rs->fields[5] ;  
+         $this->idcostumer = $rs->fields[6] ;  
+         $this->idcostumer = (string)$this->idcostumer;
+         //----- lookup - holdertype
+         $this->look_holdertype = $this->holdertype; 
+         $this->Lookup->lookup_holdertype($this->look_holdertype); 
+         $this->look_holdertype = ($this->look_holdertype == "&nbsp;") ? "" : $this->look_holdertype; 
+         //----- lookup - frequencytype
+         $this->look_frequencytype = $this->frequencytype; 
+         $this->Lookup->lookup_frequencytype($this->look_frequencytype); 
+         $this->look_frequencytype = ($this->look_frequencytype == "&nbsp;") ? "" : $this->look_frequencytype; 
          $this->sc_proc_grid = true; 
          foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $Cada_col)
          { 
@@ -321,31 +366,70 @@ function actionBar_getStateHide($buttonName)
       }
       $rs->Close();
    }
-   //----- idcostumer
-   function NM_export_idcostumer()
+   //----- name
+   function NM_export_name()
    {
-             nmgp_Form_Num_Val($this->idcostumer, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
-         $this->idcostumer = NM_charset_to_utf8($this->idcostumer);
-         $this->idcostumer = str_replace('<', '&lt;', $this->idcostumer);
-         $this->idcostumer = str_replace('>', '&gt;', $this->idcostumer);
-         $this->Texto_tag .= "<td>" . $this->idcostumer . "</td>\r\n";
+         $this->name = html_entity_decode($this->name, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->name = strip_tags($this->name);
+         $this->name = NM_charset_to_utf8($this->name);
+         $this->name = str_replace('<', '&lt;', $this->name);
+         $this->name = str_replace('>', '&gt;', $this->name);
+         $this->Texto_tag .= "<td>" . $this->name . "</td>\r\n";
    }
    //----- docnumber
    function NM_export_docnumber()
    {
-             if (strlen($this->docnumber) < 14 && strlen($this->docnumber) != 11) 
+             if (strlen($conteudo) < 11) 
              { 
-                 $this->docnumber = str_repeat(0, 14 - strlen($this->docnumber)) . $this->docnumber; 
+                 $conteudo = str_repeat(0, 11 - strlen($conteudo)) . $conteudo; 
              } 
-             if (strlen($this->docnumber) > 11 && substr($this->docnumber, 0, 3) == "000" && $this->Teste_validade->CNPJ($this->docnumber) == false) 
+             elseif (strlen($this->docnumber) > 11) 
              { 
-                 $this->docnumber = substr($this->docnumber, strlen($this->docnumber) - 11); 
+                 $conteudo = substr($this->docnumber, strlen($this->docnumber) - 11); 
              } 
              nmgp_Form_CicCnpj($this->docnumber) ; 
          $this->docnumber = NM_charset_to_utf8($this->docnumber);
          $this->docnumber = str_replace('<', '&lt;', $this->docnumber);
          $this->docnumber = str_replace('>', '&gt;', $this->docnumber);
          $this->Texto_tag .= "<td>" . $this->docnumber . "</td>\r\n";
+   }
+   //----- phonenumber
+   function NM_export_phonenumber()
+   {
+             $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+             $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+         $this->phonenumber = NM_charset_to_utf8($this->phonenumber);
+         $this->phonenumber = str_replace('<', '&lt;', $this->phonenumber);
+         $this->phonenumber = str_replace('>', '&gt;', $this->phonenumber);
+         $this->Texto_tag .= "<td>" . $this->phonenumber . "</td>\r\n";
+   }
+   //----- email
+   function NM_export_email()
+   {
+         $this->email = NM_charset_to_utf8($this->email);
+         $this->email = str_replace('<', '&lt;', $this->email);
+         $this->email = str_replace('>', '&gt;', $this->email);
+         $this->Texto_tag .= "<td>" . $this->email . "</td>\r\n";
+   }
+   //----- holdertype
+   function NM_export_holdertype()
+   {
+         $this->look_holdertype = html_entity_decode($this->look_holdertype, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->look_holdertype = strip_tags($this->look_holdertype);
+         $this->look_holdertype = NM_charset_to_utf8($this->look_holdertype);
+         $this->look_holdertype = str_replace('<', '&lt;', $this->look_holdertype);
+         $this->look_holdertype = str_replace('>', '&gt;', $this->look_holdertype);
+         $this->Texto_tag .= "<td>" . $this->look_holdertype . "</td>\r\n";
+   }
+   //----- frequencytype
+   function NM_export_frequencytype()
+   {
+         $this->look_frequencytype = html_entity_decode($this->look_frequencytype, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->look_frequencytype = strip_tags($this->look_frequencytype);
+         $this->look_frequencytype = NM_charset_to_utf8($this->look_frequencytype);
+         $this->look_frequencytype = str_replace('<', '&lt;', $this->look_frequencytype);
+         $this->look_frequencytype = str_replace('>', '&gt;', $this->look_frequencytype);
+         $this->Texto_tag .= "<td>" . $this->look_frequencytype . "</td>\r\n";
    }
 
    //----- 

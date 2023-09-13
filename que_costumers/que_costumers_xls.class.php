@@ -253,8 +253,6 @@ function actionBar_getStateHide($buttonName)
           $this->PB_dif = $PB_tot - $this->count_ger;
           $this->pb->setTotalSteps($PB_tot );
       }
-      $this->Ini->sc_Include($this->Ini->path_lib_php . "/nm_valida.php", "C", "NM_Valida") ; 
-      $this->Teste_validade = new NM_Valida;
    }
    //---- 
    function prep_modulos($modulo)
@@ -348,15 +346,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
@@ -385,9 +383,16 @@ function actionBar_getStateHide($buttonName)
          }
          $this->Xls_col = 0;
          $this->Xls_row++;
-         $this->idcostumer = $rs->fields[0] ;  
-         $this->idcostumer = (string)$this->idcostumer;
+         $this->name = $rs->fields[0] ;  
          $this->docnumber = $rs->fields[1] ;  
+         $this->phonenumber = $rs->fields[2] ;  
+         $this->phonenumber = (string)$this->phonenumber;
+         $this->email = $rs->fields[3] ;  
+         $this->email = (string)$this->email;
+         $this->holdertype = $rs->fields[4] ;  
+         $this->frequencytype = $rs->fields[5] ;  
+         $this->idcostumer = $rs->fields[6] ;  
+         $this->idcostumer = (string)$this->idcostumer;
      if ($this->groupby_show == "S") {
          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'])
          { 
@@ -425,6 +430,14 @@ function actionBar_getStateHide($buttonName)
      }
      $prim_gb = false;
      $nm_houve_quebra = "N";
+         //----- lookup - holdertype
+         $this->look_holdertype = $this->holdertype; 
+         $this->Lookup->lookup_holdertype($this->look_holdertype); 
+         $this->look_holdertype = ($this->look_holdertype == "&nbsp;") ? "" : $this->look_holdertype; 
+         //----- lookup - frequencytype
+         $this->look_frequencytype = $this->frequencytype; 
+         $this->Lookup->lookup_frequencytype($this->look_frequencytype); 
+         $this->look_frequencytype = ($this->look_frequencytype == "&nbsp;") ? "" : $this->look_frequencytype; 
          $this->sc_proc_grid = true; 
          foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $Cada_col)
          { 
@@ -587,8 +600,64 @@ function actionBar_getStateHide($buttonName)
    { 
       foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $Cada_col)
       { 
-          $SC_Label = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : "Id Costumer"; 
-          if ($Cada_col == "idcostumer" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Nome"; 
+          if ($Cada_col == "name" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $this->count_span++;
+              $current_cell_ref = $this->calc_cell($this->Xls_col);
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'])
+              { 
+                  $this->arr_export['label'][$this->Xls_col]['data']     = $SC_Label;
+                  $this->arr_export['label'][$this->Xls_col]['align']    = "left";
+                  $this->arr_export['label'][$this->Xls_col]['autosize'] = "s";
+                  $this->arr_export['label'][$this->Xls_col]['bold']     = "s";
+              }
+              else
+              { 
+                  if ($this->Use_phpspreadsheet) {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                  }
+                  else {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, PHPExcel_Cell_DataType::TYPE_STRING);
+                  }
+                  $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getFont()->setBold(true);
+                  $this->Nm_ActiveSheet->getColumnDimension($current_cell_ref)->setAutoSize(true);
+              }
+              $this->Xls_col++;
+          }
+          $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "CPF"; 
+          if ($Cada_col == "docnumber" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $this->count_span++;
+              $current_cell_ref = $this->calc_cell($this->Xls_col);
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'])
+              { 
+                  $this->arr_export['label'][$this->Xls_col]['data']     = $SC_Label;
+                  $this->arr_export['label'][$this->Xls_col]['align']    = "left";
+                  $this->arr_export['label'][$this->Xls_col]['autosize'] = "s";
+                  $this->arr_export['label'][$this->Xls_col]['bold']     = "s";
+              }
+              else
+              { 
+                  if ($this->Use_phpspreadsheet) {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                  }
+                  else {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, PHPExcel_Cell_DataType::TYPE_STRING);
+                  }
+                  $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getFont()->setBold(true);
+                  $this->Nm_ActiveSheet->getColumnDimension($current_cell_ref)->setAutoSize(true);
+              }
+              $this->Xls_col++;
+          }
+          $SC_Label = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : "Telefone"; 
+          if ($Cada_col == "phonenumber" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
               $this->count_span++;
               $current_cell_ref = $this->calc_cell($this->Xls_col);
@@ -615,8 +684,64 @@ function actionBar_getStateHide($buttonName)
               }
               $this->Xls_col++;
           }
-          $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "Doc Number"; 
-          if ($Cada_col == "docnumber" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email"; 
+          if ($Cada_col == "email" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $this->count_span++;
+              $current_cell_ref = $this->calc_cell($this->Xls_col);
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'])
+              { 
+                  $this->arr_export['label'][$this->Xls_col]['data']     = $SC_Label;
+                  $this->arr_export['label'][$this->Xls_col]['align']    = "right";
+                  $this->arr_export['label'][$this->Xls_col]['autosize'] = "s";
+                  $this->arr_export['label'][$this->Xls_col]['bold']     = "s";
+              }
+              else
+              { 
+                  if ($this->Use_phpspreadsheet) {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                  }
+                  else {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, PHPExcel_Cell_DataType::TYPE_STRING);
+                  }
+                  $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getFont()->setBold(true);
+                  $this->Nm_ActiveSheet->getColumnDimension($current_cell_ref)->setAutoSize(true);
+              }
+              $this->Xls_col++;
+          }
+          $SC_Label = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : "Titular"; 
+          if ($Cada_col == "holdertype" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $this->count_span++;
+              $current_cell_ref = $this->calc_cell($this->Xls_col);
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'])
+              { 
+                  $this->arr_export['label'][$this->Xls_col]['data']     = $SC_Label;
+                  $this->arr_export['label'][$this->Xls_col]['align']    = "left";
+                  $this->arr_export['label'][$this->Xls_col]['autosize'] = "s";
+                  $this->arr_export['label'][$this->Xls_col]['bold']     = "s";
+              }
+              else
+              { 
+                  if ($this->Use_phpspreadsheet) {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                  }
+                  else {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, PHPExcel_Cell_DataType::TYPE_STRING);
+                  }
+                  $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getFont()->setBold(true);
+                  $this->Nm_ActiveSheet->getColumnDimension($current_cell_ref)->setAutoSize(true);
+              }
+              $this->Xls_col++;
+          }
+          $SC_Label = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : "Mensalista"; 
+          if ($Cada_col == "frequencytype" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
               $this->count_span++;
               $current_cell_ref = $this->calc_cell($this->Xls_col);
@@ -647,21 +772,24 @@ function actionBar_getStateHide($buttonName)
       $this->Xls_col = 0;
       $this->Xls_row++;
    } 
-   //----- idcostumer
-   function NM_export_idcostumer()
+   //----- name
+   function NM_export_name()
    {
          $current_cell_ref = $this->calc_cell($this->Xls_col);
          if (!isset($this->NM_ctrl_style[$current_cell_ref])) {
              $this->NM_ctrl_style[$current_cell_ref]['ini'] = $this->Xls_row;
-             $this->NM_ctrl_style[$current_cell_ref]['align'] = "RIGHT"; 
+             $this->NM_ctrl_style[$current_cell_ref]['align'] = "LEFT"; 
          }
          $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
-         $this->idcostumer = NM_charset_to_utf8($this->idcostumer);
-         if (is_numeric($this->idcostumer))
-         {
-             $this->NM_ctrl_style[$current_cell_ref]['format'] = '#,##0';
+         $this->name = html_entity_decode($this->name, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->name = strip_tags($this->name);
+         $this->name = NM_charset_to_utf8($this->name);
+         if ($this->Use_phpspreadsheet) {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->name, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
          }
-         $this->Nm_ActiveSheet->setCellValue($current_cell_ref . $this->Xls_row, $this->idcostumer);
+         else {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->name, PHPExcel_Cell_DataType::TYPE_STRING);
+         }
          $this->Xls_col++;
    }
    //----- docnumber
@@ -675,13 +803,13 @@ function actionBar_getStateHide($buttonName)
          $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
       if (!empty($this->docnumber))
       {
-             if (strlen($this->docnumber) < 14 && strlen($this->docnumber) != 11) 
+             if (strlen($conteudo) < 11) 
              { 
-                 $this->docnumber = str_repeat(0, 14 - strlen($this->docnumber)) . $this->docnumber; 
+                 $conteudo = str_repeat(0, 11 - strlen($conteudo)) . $conteudo; 
              } 
-             if (strlen($this->docnumber) > 11 && substr($this->docnumber, 0, 3) == "000" && $this->Teste_validade->CNPJ($this->docnumber) == false) 
+             elseif (strlen($this->docnumber) > 11) 
              { 
-                 $this->docnumber = substr($this->docnumber, strlen($this->docnumber) - 11); 
+                 $conteudo = substr($this->docnumber, strlen($this->docnumber) - 11); 
              } 
              nmgp_Form_CicCnpj($this->docnumber) ; 
       }
@@ -694,14 +822,97 @@ function actionBar_getStateHide($buttonName)
          }
          $this->Xls_col++;
    }
-   //----- idcostumer
-   function NM_sub_cons_idcostumer()
+   //----- phonenumber
+   function NM_export_phonenumber()
    {
-         $this->idcostumer = NM_charset_to_utf8($this->idcostumer);
-         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->idcostumer;
-         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "right";
-         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "num";
-         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "#,##0";
+         $current_cell_ref = $this->calc_cell($this->Xls_col);
+         if (!isset($this->NM_ctrl_style[$current_cell_ref])) {
+             $this->NM_ctrl_style[$current_cell_ref]['ini'] = $this->Xls_row;
+             $this->NM_ctrl_style[$current_cell_ref]['align'] = "RIGHT"; 
+         }
+         $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
+      if (!empty($this->phonenumber))
+      {
+             $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+             $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+      }
+         $this->phonenumber = NM_charset_to_utf8($this->phonenumber);
+         if ($this->Use_phpspreadsheet) {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->phonenumber, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+         }
+         else {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->phonenumber, PHPExcel_Cell_DataType::TYPE_STRING);
+         }
+         $this->Xls_col++;
+   }
+   //----- email
+   function NM_export_email()
+   {
+         $current_cell_ref = $this->calc_cell($this->Xls_col);
+         if (!isset($this->NM_ctrl_style[$current_cell_ref])) {
+             $this->NM_ctrl_style[$current_cell_ref]['ini'] = $this->Xls_row;
+             $this->NM_ctrl_style[$current_cell_ref]['align'] = "RIGHT"; 
+         }
+         $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
+         $this->email = NM_charset_to_utf8($this->email);
+         if ($this->Use_phpspreadsheet) {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->email, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+         }
+         else {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->email, PHPExcel_Cell_DataType::TYPE_STRING);
+         }
+         $this->Xls_col++;
+   }
+   //----- holdertype
+   function NM_export_holdertype()
+   {
+         $current_cell_ref = $this->calc_cell($this->Xls_col);
+         if (!isset($this->NM_ctrl_style[$current_cell_ref])) {
+             $this->NM_ctrl_style[$current_cell_ref]['ini'] = $this->Xls_row;
+             $this->NM_ctrl_style[$current_cell_ref]['align'] = "LEFT"; 
+         }
+         $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
+         $this->look_holdertype = html_entity_decode($this->look_holdertype, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->look_holdertype = strip_tags($this->look_holdertype);
+         $this->look_holdertype = NM_charset_to_utf8($this->look_holdertype);
+         if ($this->Use_phpspreadsheet) {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->look_holdertype, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+         }
+         else {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->look_holdertype, PHPExcel_Cell_DataType::TYPE_STRING);
+         }
+         $this->Xls_col++;
+   }
+   //----- frequencytype
+   function NM_export_frequencytype()
+   {
+         $current_cell_ref = $this->calc_cell($this->Xls_col);
+         if (!isset($this->NM_ctrl_style[$current_cell_ref])) {
+             $this->NM_ctrl_style[$current_cell_ref]['ini'] = $this->Xls_row;
+             $this->NM_ctrl_style[$current_cell_ref]['align'] = "LEFT"; 
+         }
+         $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
+         $this->look_frequencytype = html_entity_decode($this->look_frequencytype, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->look_frequencytype = strip_tags($this->look_frequencytype);
+         $this->look_frequencytype = NM_charset_to_utf8($this->look_frequencytype);
+         if ($this->Use_phpspreadsheet) {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->look_frequencytype, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+         }
+         else {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->look_frequencytype, PHPExcel_Cell_DataType::TYPE_STRING);
+         }
+         $this->Xls_col++;
+   }
+   //----- name
+   function NM_sub_cons_name()
+   {
+         $this->name = html_entity_decode($this->name, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->name = strip_tags($this->name);
+         $this->name = NM_charset_to_utf8($this->name);
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->name;
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "left";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "char";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "";
          $this->Xls_col++;
    }
    //----- docnumber
@@ -709,18 +920,67 @@ function actionBar_getStateHide($buttonName)
    {
       if (!empty($this->docnumber))
       {
-         if (strlen($this->docnumber) < 14 && strlen($this->docnumber) != 11) 
+         if (strlen($conteudo) < 11) 
          { 
-             $this->docnumber = str_repeat(0, 14 - strlen($this->docnumber)) . $this->docnumber; 
+             $conteudo = str_repeat(0, 11 - strlen($conteudo)) . $conteudo; 
          } 
-         if (strlen($this->docnumber) > 11 && substr($this->docnumber, 0, 3) == "000" && $this->Teste_validade->CNPJ($this->docnumber) == false) 
+         elseif (strlen($this->docnumber) > 11) 
          { 
-             $this->docnumber = substr($this->docnumber, strlen($this->docnumber) - 11); 
+             $conteudo = substr($this->docnumber, strlen($this->docnumber) - 11); 
          } 
          nmgp_Form_CicCnpj($this->docnumber) ; 
       }
          $this->docnumber = NM_charset_to_utf8($this->docnumber);
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->docnumber;
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "left";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "char";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "";
+         $this->Xls_col++;
+   }
+   //----- phonenumber
+   function NM_sub_cons_phonenumber()
+   {
+      if (!empty($this->phonenumber))
+      {
+         $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+         $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+      }
+         $this->phonenumber = NM_charset_to_utf8($this->phonenumber);
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->phonenumber;
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "right";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "char";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "";
+         $this->Xls_col++;
+   }
+   //----- email
+   function NM_sub_cons_email()
+   {
+         $this->email = NM_charset_to_utf8($this->email);
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->email;
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "right";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "char";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "";
+         $this->Xls_col++;
+   }
+   //----- holdertype
+   function NM_sub_cons_holdertype()
+   {
+         $this->look_holdertype = html_entity_decode($this->look_holdertype, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->look_holdertype = strip_tags($this->look_holdertype);
+         $this->look_holdertype = NM_charset_to_utf8($this->look_holdertype);
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->look_holdertype;
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "left";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "char";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "";
+         $this->Xls_col++;
+   }
+   //----- frequencytype
+   function NM_sub_cons_frequencytype()
+   {
+         $this->look_frequencytype = html_entity_decode($this->look_frequencytype, ENT_COMPAT, $_SESSION['scriptcase']['charset']);
+         $this->look_frequencytype = strip_tags($this->look_frequencytype);
+         $this->look_frequencytype = NM_charset_to_utf8($this->look_frequencytype);
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->look_frequencytype;
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "left";
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "char";
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "";

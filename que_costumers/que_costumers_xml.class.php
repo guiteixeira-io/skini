@@ -205,8 +205,6 @@ function actionBar_getStateHide($buttonName)
           $this->pb->setTotalSteps($PB_tot);
       }
       $this->nm_data    = new nm_data("pt_br");
-      $this->Ini->sc_Include($this->Ini->path_lib_php . "/nm_valida.php", "C", "NM_Valida") ; 
-      $this->Teste_validade = new NM_Valida;
       $this->Arquivo      = "sc_xml";
       $this->Arquivo     .= "_" . date("YmdHis") . "_" . rand(0, 1000);
       $this->Arq_zip      = $this->Arquivo . "_que_costumers.zip";
@@ -317,15 +315,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
@@ -370,9 +368,24 @@ function actionBar_getStateHide($buttonName)
          {
              $this->xml_registro = "<que_costumers";
          }
-         $this->idcostumer = $rs->fields[0] ;  
-         $this->idcostumer = (string)$this->idcostumer;
+         $this->name = $rs->fields[0] ;  
          $this->docnumber = $rs->fields[1] ;  
+         $this->phonenumber = $rs->fields[2] ;  
+         $this->phonenumber = (string)$this->phonenumber;
+         $this->email = $rs->fields[3] ;  
+         $this->email = (string)$this->email;
+         $this->holdertype = $rs->fields[4] ;  
+         $this->frequencytype = $rs->fields[5] ;  
+         $this->idcostumer = $rs->fields[6] ;  
+         $this->idcostumer = (string)$this->idcostumer;
+         //----- lookup - holdertype
+         $this->look_holdertype = $this->holdertype; 
+         $this->Lookup->lookup_holdertype($this->look_holdertype); 
+         $this->look_holdertype = ($this->look_holdertype == "&nbsp;") ? "" : $this->look_holdertype; 
+         //----- lookup - frequencytype
+         $this->look_frequencytype = $this->frequencytype; 
+         $this->Lookup->lookup_frequencytype($this->look_frequencytype); 
+         $this->look_frequencytype = ($this->look_frequencytype == "&nbsp;") ? "" : $this->look_frequencytype; 
          $this->sc_proc_grid = true; 
          foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $Cada_col)
          { 
@@ -609,38 +622,41 @@ function actionBar_getStateHide($buttonName)
       }
       $rs->Close();
    }
-   //----- idcostumer
-   function NM_export_idcostumer()
+   //----- name
+   function NM_export_name()
    {
-             nmgp_Form_Num_Val($this->idcostumer, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
+         if ($_SESSION['scriptcase']['charset'] == "UTF-8" && !NM_is_utf8($this->name))
+         {
+             $this->name = sc_convert_encoding($this->name, "UTF-8", $_SESSION['scriptcase']['charset']);
+         }
          if ($this->Xml_tag_label)
          {
-             $SC_Label = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : "Id Costumer"; 
+             $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Nome"; 
          }
          else
          {
-             $SC_Label = "idcostumer"; 
+             $SC_Label = "name"; 
          }
          $this->clear_tag($SC_Label); 
          if ($this->New_Format)
          {
-             $this->xml_registro .= " <" . $SC_Label . ">" . $this->trata_dados($this->idcostumer) . "</" . $SC_Label . ">\r\n";
+             $this->xml_registro .= " <" . $SC_Label . ">" . $this->trata_dados($this->name) . "</" . $SC_Label . ">\r\n";
          }
          else
          {
-             $this->xml_registro .= " " . $SC_Label . " =\"" . $this->trata_dados($this->idcostumer) . "\"";
+             $this->xml_registro .= " " . $SC_Label . " =\"" . $this->trata_dados($this->name) . "\"";
          }
    }
    //----- docnumber
    function NM_export_docnumber()
    {
-             if (strlen($this->docnumber) < 14 && strlen($this->docnumber) != 11) 
+             if (strlen($conteudo) < 11) 
              { 
-                 $this->docnumber = str_repeat(0, 14 - strlen($this->docnumber)) . $this->docnumber; 
+                 $conteudo = str_repeat(0, 11 - strlen($conteudo)) . $conteudo; 
              } 
-             if (strlen($this->docnumber) > 11 && substr($this->docnumber, 0, 3) == "000" && $this->Teste_validade->CNPJ($this->docnumber) == false) 
+             elseif (strlen($this->docnumber) > 11) 
              { 
-                 $this->docnumber = substr($this->docnumber, strlen($this->docnumber) - 11); 
+                 $conteudo = substr($this->docnumber, strlen($this->docnumber) - 11); 
              } 
              nmgp_Form_CicCnpj($this->docnumber) ; 
          if ($_SESSION['scriptcase']['charset'] == "UTF-8" && !NM_is_utf8($this->docnumber))
@@ -649,7 +665,7 @@ function actionBar_getStateHide($buttonName)
          }
          if ($this->Xml_tag_label)
          {
-             $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "Doc Number"; 
+             $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "CPF"; 
          }
          else
          {
@@ -663,6 +679,100 @@ function actionBar_getStateHide($buttonName)
          else
          {
              $this->xml_registro .= " " . $SC_Label . " =\"" . $this->trata_dados($this->docnumber) . "\"";
+         }
+   }
+   //----- phonenumber
+   function NM_export_phonenumber()
+   {
+             $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+             $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+         if ($this->Xml_tag_label)
+         {
+             $SC_Label = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : "Telefone"; 
+         }
+         else
+         {
+             $SC_Label = "phonenumber"; 
+         }
+         $this->clear_tag($SC_Label); 
+         if ($this->New_Format)
+         {
+             $this->xml_registro .= " <" . $SC_Label . ">" . $this->trata_dados($this->phonenumber) . "</" . $SC_Label . ">\r\n";
+         }
+         else
+         {
+             $this->xml_registro .= " " . $SC_Label . " =\"" . $this->trata_dados($this->phonenumber) . "\"";
+         }
+   }
+   //----- email
+   function NM_export_email()
+   {
+         if ($this->Xml_tag_label)
+         {
+             $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email"; 
+         }
+         else
+         {
+             $SC_Label = "email"; 
+         }
+         $this->clear_tag($SC_Label); 
+         if ($this->New_Format)
+         {
+             $this->xml_registro .= " <" . $SC_Label . ">" . $this->trata_dados($this->email) . "</" . $SC_Label . ">\r\n";
+         }
+         else
+         {
+             $this->xml_registro .= " " . $SC_Label . " =\"" . $this->trata_dados($this->email) . "\"";
+         }
+   }
+   //----- holdertype
+   function NM_export_holdertype()
+   {
+         if ($_SESSION['scriptcase']['charset'] == "UTF-8" && !NM_is_utf8($this->look_holdertype))
+         {
+             $this->look_holdertype = sc_convert_encoding($this->look_holdertype, "UTF-8", $_SESSION['scriptcase']['charset']);
+         }
+         if ($this->Xml_tag_label)
+         {
+             $SC_Label = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : "Titular"; 
+         }
+         else
+         {
+             $SC_Label = "holdertype"; 
+         }
+         $this->clear_tag($SC_Label); 
+         if ($this->New_Format)
+         {
+             $this->xml_registro .= " <" . $SC_Label . ">" . $this->trata_dados($this->look_holdertype) . "</" . $SC_Label . ">\r\n";
+         }
+         else
+         {
+             $this->xml_registro .= " " . $SC_Label . " =\"" . $this->trata_dados($this->look_holdertype) . "\"";
+         }
+   }
+   //----- frequencytype
+   function NM_export_frequencytype()
+   {
+         if ($_SESSION['scriptcase']['charset'] == "UTF-8" && !NM_is_utf8($this->look_frequencytype))
+         {
+             $this->look_frequencytype = sc_convert_encoding($this->look_frequencytype, "UTF-8", $_SESSION['scriptcase']['charset']);
+         }
+         if ($this->Xml_tag_label)
+         {
+             $SC_Label = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : "Mensalista"; 
+         }
+         else
+         {
+             $SC_Label = "frequencytype"; 
+         }
+         $this->clear_tag($SC_Label); 
+         if ($this->New_Format)
+         {
+             $this->xml_registro .= " <" . $SC_Label . ">" . $this->trata_dados($this->look_frequencytype) . "</" . $SC_Label . ">\r\n";
+         }
+         else
+         {
+             $this->xml_registro .= " " . $SC_Label . " =\"" . $this->trata_dados($this->look_frequencytype) . "\"";
          }
    }
 

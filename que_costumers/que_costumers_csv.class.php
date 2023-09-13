@@ -145,8 +145,6 @@ function actionBar_getStateHide($buttonName)
           $this->Tot->$Gb_geral();
           $this->count_ger = $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['tot_geral'][1];
       }
-      $this->Ini->sc_Include($this->Ini->path_lib_php . "/nm_valida.php", "C", "NM_Valida") ; 
-      $this->Teste_validade = new NM_Valida;
       $this->Csv_password = "";
       $this->Arquivo   = "sc_csv";
       $this->Arquivo  .= "_" . date("YmdHis") . "_" . rand(0, 1000);
@@ -291,16 +289,48 @@ function actionBar_getStateHide($buttonName)
           $this->csv_registro = "";
           foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $Cada_col)
           { 
-              $SC_Label = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : "Id Costumer"; 
-              if ($Cada_col == "idcostumer" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+              $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Nome"; 
+              if ($Cada_col == "name" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
               {
                   $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
                   $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $SC_Label);
                   $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
                   $this->NM_prim_col++;
               }
-              $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "Doc Number"; 
+              $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "CPF"; 
               if ($Cada_col == "docnumber" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+              {
+                  $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+                  $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $SC_Label);
+                  $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+                  $this->NM_prim_col++;
+              }
+              $SC_Label = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : "Telefone"; 
+              if ($Cada_col == "phonenumber" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+              {
+                  $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+                  $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $SC_Label);
+                  $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+                  $this->NM_prim_col++;
+              }
+              $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email"; 
+              if ($Cada_col == "email" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+              {
+                  $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+                  $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $SC_Label);
+                  $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+                  $this->NM_prim_col++;
+              }
+              $SC_Label = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : "Titular"; 
+              if ($Cada_col == "holdertype" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+              {
+                  $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+                  $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $SC_Label);
+                  $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+                  $this->NM_prim_col++;
+              }
+              $SC_Label = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : "Mensalista"; 
+              if ($Cada_col == "frequencytype" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
               {
                   $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
                   $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $SC_Label);
@@ -316,15 +346,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
@@ -358,9 +388,24 @@ function actionBar_getStateHide($buttonName)
          }
          $this->csv_registro = "";
          $this->NM_prim_col  = 0;
-         $this->idcostumer = $rs->fields[0] ;  
-         $this->idcostumer = (string)$this->idcostumer;
+         $this->name = $rs->fields[0] ;  
          $this->docnumber = $rs->fields[1] ;  
+         $this->phonenumber = $rs->fields[2] ;  
+         $this->phonenumber = (string)$this->phonenumber;
+         $this->email = $rs->fields[3] ;  
+         $this->email = (string)$this->email;
+         $this->holdertype = $rs->fields[4] ;  
+         $this->frequencytype = $rs->fields[5] ;  
+         $this->idcostumer = $rs->fields[6] ;  
+         $this->idcostumer = (string)$this->idcostumer;
+         //----- lookup - holdertype
+         $this->look_holdertype = $this->holdertype; 
+         $this->Lookup->lookup_holdertype($this->look_holdertype); 
+         $this->look_holdertype = ($this->look_holdertype == "&nbsp;") ? "" : $this->look_holdertype; 
+         //----- lookup - frequencytype
+         $this->look_frequencytype = $this->frequencytype; 
+         $this->Lookup->lookup_frequencytype($this->look_frequencytype); 
+         $this->look_frequencytype = ($this->look_frequencytype == "&nbsp;") ? "" : $this->look_frequencytype; 
          $this->sc_proc_grid = true; 
          foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $Cada_col)
          { 
@@ -483,29 +528,62 @@ function actionBar_getStateHide($buttonName)
       }
       $rs->Close();
    }
-   //----- idcostumer
-   function NM_export_idcostumer()
+   //----- name
+   function NM_export_name()
    {
-             nmgp_Form_Num_Val($this->idcostumer, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
       $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
-      $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->idcostumer);
+      $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->name);
       $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
       $this->NM_prim_col++;
    }
    //----- docnumber
    function NM_export_docnumber()
    {
-             if (strlen($this->docnumber) < 14 && strlen($this->docnumber) != 11) 
+             if (strlen($conteudo) < 11) 
              { 
-                 $this->docnumber = str_repeat(0, 14 - strlen($this->docnumber)) . $this->docnumber; 
+                 $conteudo = str_repeat(0, 11 - strlen($conteudo)) . $conteudo; 
              } 
-             if (strlen($this->docnumber) > 11 && substr($this->docnumber, 0, 3) == "000" && $this->Teste_validade->CNPJ($this->docnumber) == false) 
+             elseif (strlen($this->docnumber) > 11) 
              { 
-                 $this->docnumber = substr($this->docnumber, strlen($this->docnumber) - 11); 
+                 $conteudo = substr($this->docnumber, strlen($this->docnumber) - 11); 
              } 
              nmgp_Form_CicCnpj($this->docnumber) ; 
       $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
       $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->docnumber);
+      $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+      $this->NM_prim_col++;
+   }
+   //----- phonenumber
+   function NM_export_phonenumber()
+   {
+             $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+             $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+      $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+      $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->phonenumber);
+      $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+      $this->NM_prim_col++;
+   }
+   //----- email
+   function NM_export_email()
+   {
+      $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+      $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->email);
+      $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+      $this->NM_prim_col++;
+   }
+   //----- holdertype
+   function NM_export_holdertype()
+   {
+      $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+      $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->look_holdertype);
+      $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+      $this->NM_prim_col++;
+   }
+   //----- frequencytype
+   function NM_export_frequencytype()
+   {
+      $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+      $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->look_frequencytype);
       $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
       $this->NM_prim_col++;
    }

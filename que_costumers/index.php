@@ -231,7 +231,7 @@ class que_costumers_ini
       $this->nm_hr_criacao   = "205600"; 
       $this->nm_autor_alt    = "admin"; 
       $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "090240"; 
+      $this->nm_hr_ult_alt   = "123152"; 
       $this->Apl_paginacao   = "PARCIAL"; 
       $temp_bug_list         = explode(" ", microtime()); 
       list($NM_usec, $NM_sec) = $temp_bug_list; 
@@ -1115,7 +1115,7 @@ class que_costumers_ini
       $this->nm_ttf_chi  = array("zh_cn", "zh_hk", "ko");
       $_SESSION['sc_session'][$this->sc_page]['que_costumers']['seq_dir'] = 0; 
       $_SESSION['sc_session'][$this->sc_page]['que_costumers']['sub_dir'] = array(); 
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1HQXsDQBqHAveHQNUDMrYVcXKV5X7HMrqDcNmZ1FGDSNOHuB/DEBeDkXKDWXCHIBOD9FYDQFGHArYVWBODMvmVcFKV5BmVoBqD9BsZkFGHAvsD5XGHgBeHEFiV5B3DoF7D9XsDuFaHANKVWJsDMvOVcrsDWFYHMF7HQNmH9BOHArYD5BiHgveDkXKDWr/VoFaHQBiDuFaZ1rwHuraDMvmVcB/DWFaHMBiD9BsVIraD1rwV5X7HgBeHEBUDWF/VoB/DcXOZSX7HANOV5BOHuNODkBOV5F/VEBiDcJUZkFGHArKV5FUDMrYZSXeV5FqHIJsHQXGZSFGHArYVWJwHgrKVcB/V5X7VoBqD9BsH9FaD1rwZMB/DEvsHEXeV5FqVoB/D9NwH9FGD1BOD5NUHuzGVcFKDur/VorqHQJmZ1F7Z1vmD5rqDEBOHArCDWF/DoraHQBiDuFaZ1rwV5JeHuzGVIFCHEFYHIX7DcNmVINUD1rKHuX7HgBeHEFiV5B3DoF7D9XsDuFaHAveHQXGDMvsVIBsV5FYHMBODcNmZSBqZ1rYHQFaHgvCHArCH5F/DoJsHQXsDuFaZ1vCVWBODMrwV9FeDuFqHMX7HQBqZ1X7DSNOHQBOHgvCHArCH5FGZuBODcBiDuBqHABYV5FaHgNKDkBODuFqDoFGDcBqVIJwD1rwHQF7HgBYVkJqHEXCHIraHQJKH9FUD1BeHuraDMrwV9BUH5FqHMBOHQJmZSBqZ1NOD5JwHgvCHEJqHEFqHMFGHQBiH9FUD1veHQXGDMrwV9FeV5FYHIJeHQBiZSBqHIrwHQNUDMrYZSXeDuFYVoXGDcJeZ9rqD1BeHuFGDMvsVIB/Dur/HMrqHQBiZkFGHIBeHuBqHgvCHEJqDWF/HMJwHQFYZSFUHIrKHuX7DMrwVcB/H5B7VEFGHQNmH9BODSrYHQFGHgvCHArsH5F/HMBqHQFYDQFaZ1BYHuBqHgNKDkBODuFqDoFGDcBqVIJwD1rwD5JeDMBYZSJqV5FaDoBODcJeDQFGD1veD5BOHgrYDkBsH5B7VEBiHQFYH9BOHArKD5XGDEBOZSXeDuFaDoJeDcJeDQX7Z1zGV5BiDMNOVIBOHEFYDoJeDcJUZ1FaD1NaD5FaHgvsVkXeDWFqZuFaHQNmDQX7HArYD5B/HgrKV9FiV5X7VErqHQBqZkFUZ1rYD5BqDEBeHEBUDWBmZuJeHQBiDuBOZ1rwVWXGHuBYDkFCDuX7VoX7D9BsH9B/Z1BeZMB/HgvCZSJGH5FYDoF7D9NwH9X7DSBYV5JeHuBYVcFKH5FqVoB/D9XOH9B/D1zGD5FaDMrYZSXeDuFYVoXGDcJeZ9rqD1BeV5BqHgvsDkB/V5X7DoX7D9BsH9FaD1rwZMB/DMNKZSJ3DuFYHIJwHQFYDQB/D1veHQBqDMBOVcFiV5FYHMB/DcFYZkFGDSrYHQJwDEBODkFeH5FYVoFGHQJKDQBqHAvmV5JeDMvOZSNiH5B7VorqHQBqZkBiHAzGD5JeHgBeHEFiV5B3DoF7D9XsDuFaHAveVWXGHuzGVcB/H5FqHMFaDcNmZ1F7DSBeV5BqDEvsZSXeDuFaZuBqHQXOH9FGHANOD5F7DMrYVcFKDWF/HMBiD9BsVIraD1rwV5X7HgBeHErCDWXCHIJwHQNmH9BiD1BeHuX7DMzGV9FeV5F/HMBqDcBwZ1X7D1rKHQrqHgBeHEFiV5B3DoF7D9XsDuFaHANKVWBqDMrwZSNiDWB3VEB/";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1HQXODQX7D1BeHQrqHuvmZSNiDWFYVENUD9XOZ1BOHAvCZMBODMvCHErsH5F/ZuFaHQJKDQJsZ1vCV5FGHuNOV9FeDWB3VoX7HQJmZ1F7Z1vmD5rqDEBOHArCDWBmZuBOD9NmDuFaHAvOVWJwHgrKVIBsHEX7HIFGHQXGZSBqDSNOHQBqHgBOHEXeDuJeHIFGHQBiDQJwDSBYHuFaHuNOZSrCH5FqDoXGHQJmZ1rqHArKV5FaDMNKZSXeDWr/DoJeD9XsZSX7Z1N7VWFaHgrKV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgvCZSJGDWX7ZuB/DcBwDQFUZ1rwV5FGHuNODkFCH5FqVENUD9BiZ1B/Z1rYV5FaDErKVkJGH5X/VoBiD9NwDQJsHIrKV5JeDMvmVcFKV5BmVoBqD9BsZkFGHArKD5F7HgvsHEJqDWF/ZuBOHQXODuBqHIrKD5JwDMvOVcFCHEX/VEraD9JmH9B/HArYHuX7HgBYHEFiV5XCHIJsD9XsZ9JeD1BeD5F7DMvmVcFeV5X/VEBiHQBiZkFGHIveD5JwHgvsHEJqH5FGVoFGHQXsDQB/DSN7HuraDMBYZSNiDurGDoXGHQBiZ1X7HINKZMXGDMveVkJqDuXKVoFGHQXsDuBqHAN7HuBqDMrYVcB/HEBmVoBqD9BsZ1F7DSrYD5rqDMrYZSJ3DurmZuJsDcBiH9BiHIrwHurqDMBODkBsH5XKDoXGHQNmH9BqHIveHQFGHgvsVkJqHEB3VoFGDcBiDQFUD1BOV5BOHgrwVcFeV5X/DoXGHQBiZ1BOHAN7HuXGHgvsHErCDuXKDoF7D9XsDQJsDSBYV5FGHgNKDkBsHEX/VEBiDcNmZ1X7HANOHuBOHgBOZSJ3DuX/VoFGHQFYDQB/HArYHQF7HgvOVcFeDurGDoXGHQXGVIJsDSvOD5JeDMveHArCDWrGVoFGHQXODQFaZ1BYHQFaDMBYVcB/HEX/VoBqD9BsZ1F7DSrYD5rqDMrYZSJGH5FYDoF7DcXOZSFGHAveV5FUHuBYVcFKDur/VoJwHQJmVIJsDSvmD5FaHgNOHEBUDWr/DoB/DcBwZSFGHANOV5FUHuNOV9FiDWXCHMFaD9JmZ1B/HIrwV5FaDErKDkBsV5FaHMJeDcBwDQFGD1veHQXGHgvsVcBOHEX7DoraHQFYH9FaHAvmZMJeHgvCHEJGDWF/VoJeD9NwDQBqHIvsV5XGDMrwDkFCDuX7VEF7D9BiH9FaHAN7D5FaDEBOZSJGH5BmDoB/D9NwZSX7D1BeV5BOHuvmVcFCDWXCVENUDcBqH9B/HABYD5JeDMzGHAFKV5XKDoF7D9XsDQJsDSBYV5FGHgNKDkFCH5FqVoBqDcNwH9B/HIveD5FaDErKZSJGH5F/DoFUHQNmDQFaHArYHQFaHgrwVcFeV5X7HIBiHQFYZkFGHIBeHQFaHgrKHArCDWF/VoBiDcJUZSX7Z1BYHuFaDMvOZSNiDWB3VoX7HQNmVIJsHAvsZMJeHgveHArsH5FYHIJsD9XsZ9JeD1BeD5F7DMvmVcrsH5FqVEraHQXGVIraZ1rYV5BOHgrKHErsH5FYVoJwD9XsDQJsHIrKHuJwDMvsVcFeDWXCDoJsDcBwH9B/Z1rYHQJwHgBOVkJ3DWX7HMJeHQJKZSBiHIrKHuFGDMBYVIBsHEX/VoFaDcFYZ1FGDSrYHQJwDEBODkFeH5FYVoFGHQJKDQBqDSzGD5NUDMvOVcXeV5r/VEB/";
       $this->prep_conect();
       $this->conectDB();
       if (!in_array(strtolower($this->nm_tpbanco), $this->nm_bases_all))
@@ -2753,8 +2753,12 @@ class que_costumers_apl
       } 
       if (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order']))
       { 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "idcostumer";
+          $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "name";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "docnumber";
+          $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "phonenumber";
+          $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "email";
+          $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "holdertype";
+          $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "frequencytype";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order_orig'] = $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'];
           if (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['usr_cmp_sel']))
           { 
@@ -3824,13 +3828,37 @@ if (window.parent && typeof window.parent.updateGeneratedPdfFile === "function")
       }
       $sv_data = $data_search;
       foreach ($fields as $field) {
-          if ($field == "SC_all_Cmp" || $field == "idcostumer") 
+          if ($field == "SC_all_Cmp" || $field == "name") 
           {
-              $this->SC_monta_condicao($comando, "idCostumer", $arg_search, str_replace(",", ".", $data_search));
+              $this->SC_monta_condicao($comando, "name", $arg_search, $data_search, "VARCHAR", false);
           }
           if ($field == "SC_all_Cmp" || $field == "docnumber") 
           {
               $this->SC_monta_condicao($comando, "docNumber", $arg_search, $data_search, "VARCHAR", false);
+          }
+          if ($field == "SC_all_Cmp" || $field == "phonenumber") 
+          {
+              $this->SC_monta_condicao($comando, "phoneNumber", $arg_search, str_replace(",", ".", $data_search));
+          }
+          if ($field == "SC_all_Cmp" || $field == "email") 
+          {
+              $this->SC_monta_condicao($comando, "email", $arg_search, str_replace(",", ".", $data_search));
+          }
+          if ($field == "SC_all_Cmp" || $field == "holdertype") 
+          {
+              $data_lookup = $this->SC_lookup_holdertype($arg_search, $data_search);
+              if (is_array($data_lookup) && !empty($data_lookup)) 
+              {
+                  $this->SC_monta_condicao($comando, "holderType", $arg_search, $data_lookup, "VARCHAR", false);
+              }
+          }
+          if ($field == "SC_all_Cmp" || $field == "frequencytype") 
+          {
+              $data_lookup = $this->SC_lookup_frequencytype($arg_search, $data_search);
+              if (is_array($data_lookup) && !empty($data_lookup)) 
+              {
+                  $this->SC_monta_condicao($comando, "frequencyType", $arg_search, $data_lookup, "VARCHAR", false);
+              }
           }
       }
       if (empty($comando)) 
@@ -3881,7 +3909,7 @@ if (window.parent && typeof window.parent.updateGeneratedPdfFile === "function")
       if ($tp_unaccent) {
           $Nm_accent = $this->Ini->Nm_accent_yes;
       }
-      $nm_numeric[] = "idcostumer";
+      $nm_numeric[] = "idcostumer";$nm_numeric[] = "phonenumber";$nm_numeric[] = "email";$nm_numeric[] = "zipcode";$nm_numeric[] = "idholder";
       if (in_array($campo_join, $nm_numeric))
       {
          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'] == ".")
@@ -3998,6 +4026,102 @@ if (window.parent && typeof window.parent.updateGeneratedPdfFile === "function")
                $comando        .= $nm_ini_lower . $nome . $nm_fim_lower . " <= " . $nm_ini_lower . $nm_aspas . $campo . $nm_aspas1 . $nm_fim_lower;
             break;
          }
+   }
+   function SC_lookup_holdertype($condicao, $campo)
+   {
+       $data_look = array();
+       $data_look['H'] = "Sim";
+       $data_look['A'] = "Não";
+       $result = array();
+       foreach ($data_look as $chave => $label) 
+       {
+           if ($condicao == "eq" && $campo == $label)
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "ii" && $campo == substr($label, 0, strlen($campo)))
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "qp" && strstr($label, $campo))
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "np" && !strstr($label, $campo))
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "df" && $campo != $label)
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "gt" && $label > $campo )
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "ge" && $label >= $campo)
+            {
+               $result[] = $chave;
+           }
+           if ($condicao == "lt" && $label < $campo)
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "le" && $label <= $campo)
+           {
+               $result[] = $chave;
+           }
+          
+       }
+       return $result;
+   }
+   function SC_lookup_frequencytype($condicao, $campo)
+   {
+       $data_look = array();
+       $data_look['M'] = "Sim";
+       $data_look['D'] = "Não";
+       $result = array();
+       foreach ($data_look as $chave => $label) 
+       {
+           if ($condicao == "eq" && $campo == $label)
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "ii" && $campo == substr($label, 0, strlen($campo)))
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "qp" && strstr($label, $campo))
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "np" && !strstr($label, $campo))
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "df" && $campo != $label)
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "gt" && $label > $campo )
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "ge" && $label >= $campo)
+            {
+               $result[] = $chave;
+           }
+           if ($condicao == "lt" && $label < $campo)
+           {
+               $result[] = $chave;
+           }
+           if ($condicao == "le" && $label <= $campo)
+           {
+               $result[] = $chave;
+           }
+          
+       }
+       return $result;
    }
   function html_doc_word($nm_arquivo_doc_word, $nmgp_password)
   {
@@ -5028,6 +5152,10 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers'][$path_doc_md5][1] 
        }
        $Nm_numeric = array();
        $Nm_numeric[] = "idcostumer";
+       $Nm_numeric[] = "phonenumber";
+       $Nm_numeric[] = "email";
+       $Nm_numeric[] = "zipcode";
+       $Nm_numeric[] = "idholder";
        $simb_grp = (isset($_SESSION['scriptcase']['reg_conf']['grup_num'])) ? $_SESSION['scriptcase']['reg_conf']['grup_num'] : ".";
        $simb_dec = (isset($_SESSION['scriptcase']['reg_conf']['dec_num']))  ? $_SESSION['scriptcase']['reg_conf']['dec_num']  : ",";
        $simb_neg = (isset($_SESSION['scriptcase']['reg_conf']['simb_neg'])) ? $_SESSION['scriptcase']['reg_conf']['simb_neg'] : "-";

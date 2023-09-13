@@ -1505,7 +1505,7 @@ unset($NM_ult_sep);
     <TD class="scFormDataOdd css_frequencytype_line" id="hidden_field_data_frequencytype" style="<?php echo $sStyleHidden_frequencytype; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_frequencytype_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_frequencytype_label" style=""><span id="id_label_frequencytype"><?php echo $this->nm_new_label['frequencytype']; ?></span></span><br>
 <?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["frequencytype"]) &&  $this->nmgp_cmp_readonly["frequencytype"] == "on") { 
 
- if ("M" == $this->frequencytype) { $frequencytype_look = "S";} 
+ if ("M" == $this->frequencytype) { $frequencytype_look = "Sim";} 
  if ("D" == $this->frequencytype) { $frequencytype_look = "Não";} 
 ?>
 <input type="hidden" name="frequencytype" value="<?php echo $this->form_encode_input($frequencytype) . "\">" . $frequencytype_look . ""; ?>
@@ -1513,7 +1513,7 @@ unset($NM_ult_sep);
 
 <?php
 
- if ("M" == $this->frequencytype) { $frequencytype_look = "S";} 
+ if ("M" == $this->frequencytype) { $frequencytype_look = "Sim";} 
  if ("D" == $this->frequencytype) { $frequencytype_look = "Não";} 
 ?>
 <span id="id_read_on_frequencytype"  class="css_frequencytype_line" style="<?php echo $sStyleReadLab_frequencytype; ?>"><?php echo $this->form_format_readonly("frequencytype", $this->form_encode_input($frequencytype_look)); ?></span><span id="id_read_off_frequencytype" class="css_read_off_frequencytype css_frequencytype_line" style="<?php echo $sStyleReadInp_frequencytype; ?>"><div id="idAjaxRadio_frequencytype" style="display: inline-block"  class="css_frequencytype_line">
@@ -1521,7 +1521,7 @@ unset($NM_ult_sep);
   <TD class="scFormDataFontOdd css_frequencytype_line"><?php $tempOptionId = "id-opt-frequencytype" . $sc_seq_vert . "-1"; ?>
     <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-frequencytype sc-ui-radio-frequencytype" type=radio name="frequencytype" value="M"
 <?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencytype'][] = 'M'; ?>
-<?php  if ("M" == $this->frequencytype)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">S</label></TD>
+<?php  if ("M" == $this->frequencytype)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Sim</label></TD>
   <TD class="scFormDataFontOdd css_frequencytype_line"><?php $tempOptionId = "id-opt-frequencytype" . $sc_seq_vert . "-2"; ?>
     <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-frequencytype sc-ui-radio-frequencytype" type=radio name="frequencytype" value="D"
 <?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencytype'][] = 'D'; ?>
@@ -1566,7 +1566,7 @@ unset($NM_ult_sep);
     <TD class="scFormDataOdd css_holdertype_line" id="hidden_field_data_holdertype" style="<?php echo $sStyleHidden_holdertype; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_holdertype_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_holdertype_label" style=""><span id="id_label_holdertype"><?php echo $this->nm_new_label['holdertype']; ?></span></span><br>
 <?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["holdertype"]) &&  $this->nmgp_cmp_readonly["holdertype"] == "on") { 
 
- if ("T" == $this->holdertype) { $holdertype_look = "Sim";} 
+ if ("H" == $this->holdertype) { $holdertype_look = "Sim";} 
  if ("A" == $this->holdertype) { $holdertype_look = "Não";} 
 ?>
 <input type="hidden" name="holdertype" value="<?php echo $this->form_encode_input($holdertype) . "\">" . $holdertype_look . ""; ?>
@@ -1574,15 +1574,15 @@ unset($NM_ult_sep);
 
 <?php
 
- if ("T" == $this->holdertype) { $holdertype_look = "Sim";} 
+ if ("H" == $this->holdertype) { $holdertype_look = "Sim";} 
  if ("A" == $this->holdertype) { $holdertype_look = "Não";} 
 ?>
 <span id="id_read_on_holdertype"  class="css_holdertype_line" style="<?php echo $sStyleReadLab_holdertype; ?>"><?php echo $this->form_format_readonly("holdertype", $this->form_encode_input($holdertype_look)); ?></span><span id="id_read_off_holdertype" class="css_read_off_holdertype css_holdertype_line" style="<?php echo $sStyleReadInp_holdertype; ?>"><div id="idAjaxRadio_holdertype" style="display: inline-block"  class="css_holdertype_line">
 <TABLE cellspacing=0 cellpadding=0 border=0><TR>
   <TD class="scFormDataFontOdd css_holdertype_line"><?php $tempOptionId = "id-opt-holdertype" . $sc_seq_vert . "-1"; ?>
-    <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-holdertype sc-ui-radio-holdertype" type=radio name="holdertype" value="T"
-<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype'][] = 'T'; ?>
-<?php  if ("T" == $this->holdertype)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Sim</label></TD>
+    <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-holdertype sc-ui-radio-holdertype" type=radio name="holdertype" value="H"
+<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype'][] = 'H'; ?>
+<?php  if ("H" == $this->holdertype)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Sim</label></TD>
 </TR>
 <TR>
   <TD class="scFormDataFontOdd css_holdertype_line"><?php $tempOptionId = "id-opt-holdertype" . $sc_seq_vert . "-2"; ?>

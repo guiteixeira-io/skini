@@ -94,12 +94,24 @@ function Ord_cmp_init()
    $tab_ger_campos = array();
    $tab_def_campos = array();
    $tab_labels     = array();
-   $tab_ger_campos['idcostumer'] = "on";
-   $tab_def_campos['idcostumer'] = "idCostumer";
-   $tab_labels["idcostumer"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["idcostumer"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["idcostumer"] : "Id Costumer";
+   $tab_ger_campos['name'] = "on";
+   $tab_def_campos['name'] = "name";
+   $tab_labels["name"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["name"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["name"] : "Nome";
    $tab_ger_campos['docnumber'] = "on";
    $tab_def_campos['docnumber'] = "docNumber";
-   $tab_labels["docnumber"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["docnumber"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["docnumber"] : "Doc Number";
+   $tab_labels["docnumber"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["docnumber"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["docnumber"] : "CPF";
+   $tab_ger_campos['phonenumber'] = "on";
+   $tab_def_campos['phonenumber'] = "phoneNumber";
+   $tab_labels["phonenumber"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["phonenumber"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["phonenumber"] : "Telefone";
+   $tab_ger_campos['email'] = "on";
+   $tab_def_campos['email'] = "email";
+   $tab_labels["email"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["email"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["email"] : "Email";
+   $tab_ger_campos['holdertype'] = "on";
+   $tab_def_campos['holdertype'] = "holderType";
+   $tab_labels["holdertype"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["holdertype"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["holdertype"] : "Titular";
+   $tab_ger_campos['frequencytype'] = "on";
+   $tab_def_campos['frequencytype'] = "frequencyType";
+   $tab_labels["frequencytype"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["frequencytype"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["frequencytype"] : "Mensalista";
    if (isset($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['field_display']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['field_display']))
    {
        foreach ($_SESSION['scriptcase']['sc_apl_conf']['que_costumers']['field_display'] as $NM_cada_field => $NM_cada_opc)

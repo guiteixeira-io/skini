@@ -202,8 +202,6 @@ function actionBar_getStateHide($buttonName)
           $this->pb->setTotalSteps($PB_tot);
       }
       $this->nm_data = new nm_data("pt_br");
-      $this->Ini->sc_Include($this->Ini->path_lib_php . "/nm_valida.php", "C", "NM_Valida") ; 
-      $this->Teste_validade = new NM_Valida;
       $this->Arquivo      = "sc_json";
       $this->Arquivo     .= "_" . date("YmdHis") . "_" . rand(0, 1000);
       $this->Arq_zip      = $this->Arquivo . "_que_costumers.zip";
@@ -292,15 +290,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT idCostumer, docNumber from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
@@ -334,9 +332,24 @@ function actionBar_getStateHide($buttonName)
              $this->pb->setProgressbarMessage($Mens_bar . ": " . $this->SC_seq_register . $PB_tot);
              $this->pb->addSteps(1);
          }
-         $this->idcostumer = $rs->fields[0] ;  
-         $this->idcostumer = (string)$this->idcostumer;
+         $this->name = $rs->fields[0] ;  
          $this->docnumber = $rs->fields[1] ;  
+         $this->phonenumber = $rs->fields[2] ;  
+         $this->phonenumber = (string)$this->phonenumber;
+         $this->email = $rs->fields[3] ;  
+         $this->email = (string)$this->email;
+         $this->holdertype = $rs->fields[4] ;  
+         $this->frequencytype = $rs->fields[5] ;  
+         $this->idcostumer = $rs->fields[6] ;  
+         $this->idcostumer = (string)$this->idcostumer;
+         //----- lookup - holdertype
+         $this->look_holdertype = $this->holdertype; 
+         $this->Lookup->lookup_holdertype($this->look_holdertype); 
+         $this->look_holdertype = ($this->look_holdertype == "&nbsp;") ? "" : $this->look_holdertype; 
+         //----- lookup - frequencytype
+         $this->look_frequencytype = $this->frequencytype; 
+         $this->Lookup->lookup_frequencytype($this->look_frequencytype); 
+         $this->look_frequencytype = ($this->look_frequencytype == "&nbsp;") ? "" : $this->look_frequencytype; 
          $this->sc_proc_grid = true; 
          foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'] as $Cada_col)
          { 
@@ -472,43 +485,40 @@ function actionBar_getStateHide($buttonName)
       }
       $rs->Close();
    }
-   //----- idcostumer
-   function NM_export_idcostumer()
+   //----- name
+   function NM_export_name()
    {
-         if ($this->Json_format)
-         {
-             nmgp_Form_Num_Val($this->idcostumer, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
-         }
+         $this->name = NM_charset_to_utf8($this->name);
          if ($this->Json_use_label)
          {
-             $SC_Label = (isset($this->New_label['idcostumer'])) ? $this->New_label['idcostumer'] : "Id Costumer"; 
+             $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Nome"; 
          }
          else
          {
-             $SC_Label = "idcostumer"; 
+             $SC_Label = "name"; 
          }
          $SC_Label = NM_charset_to_utf8($SC_Label); 
-         $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->idcostumer;
+         $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->name;
    }
    //----- docnumber
    function NM_export_docnumber()
    {
          if ($this->Json_format)
          {
-             if (strlen($this->docnumber) < 14 && strlen($this->docnumber) != 11) 
+             if (strlen($conteudo) < 11) 
              { 
-                 $this->docnumber = str_repeat(0, 14 - strlen($this->docnumber)) . $this->docnumber; 
+                 $conteudo = str_repeat(0, 11 - strlen($conteudo)) . $conteudo; 
              } 
-             if (strlen($this->docnumber) > 11 && substr($this->docnumber, 0, 3) == "000" && $this->Teste_validade->CNPJ($this->docnumber) == false) 
+             elseif (strlen($this->docnumber) > 11) 
              { 
-                 $this->docnumber = substr($this->docnumber, strlen($this->docnumber) - 11); 
+                 $conteudo = substr($this->docnumber, strlen($this->docnumber) - 11); 
              } 
              nmgp_Form_CicCnpj($this->docnumber) ; 
          }
          $this->docnumber = NM_charset_to_utf8($this->docnumber);
          if ($this->Json_use_label)
          {
-             $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "Doc Number"; 
+             $SC_Label = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : "CPF"; 
          }
          else
          {
@@ -516,6 +526,69 @@ function actionBar_getStateHide($buttonName)
          }
          $SC_Label = NM_charset_to_utf8($SC_Label); 
          $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->docnumber;
+   }
+   //----- phonenumber
+   function NM_export_phonenumber()
+   {
+         if ($this->Json_format)
+         {
+             $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+             $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+         }
+         if ($this->Json_use_label)
+         {
+             $SC_Label = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : "Telefone"; 
+         }
+         else
+         {
+             $SC_Label = "phonenumber"; 
+         }
+         $SC_Label = NM_charset_to_utf8($SC_Label); 
+         $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->phonenumber;
+   }
+   //----- email
+   function NM_export_email()
+   {
+         if ($this->Json_use_label)
+         {
+             $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email"; 
+         }
+         else
+         {
+             $SC_Label = "email"; 
+         }
+         $SC_Label = NM_charset_to_utf8($SC_Label); 
+         $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->email;
+   }
+   //----- holdertype
+   function NM_export_holdertype()
+   {
+         $this->look_holdertype = NM_charset_to_utf8($this->look_holdertype);
+         if ($this->Json_use_label)
+         {
+             $SC_Label = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : "Titular"; 
+         }
+         else
+         {
+             $SC_Label = "holdertype"; 
+         }
+         $SC_Label = NM_charset_to_utf8($SC_Label); 
+         $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->look_holdertype;
+   }
+   //----- frequencytype
+   function NM_export_frequencytype()
+   {
+         $this->look_frequencytype = NM_charset_to_utf8($this->look_frequencytype);
+         if ($this->Json_use_label)
+         {
+             $SC_Label = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : "Mensalista"; 
+         }
+         else
+         {
+             $SC_Label = "frequencytype"; 
+         }
+         $SC_Label = NM_charset_to_utf8($SC_Label); 
+         $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->look_frequencytype;
    }
 
    function nm_conv_data_db($dt_in, $form_in, $form_out)

@@ -3265,7 +3265,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $aLookup = array();
               $this->_tmp_lookup_frequencytype = $this->frequencytype;
 
-$aLookup[] = array(cad_costumers_pack_protect_string('M') => str_replace('<', '&lt;',cad_costumers_pack_protect_string("S")));
+$aLookup[] = array(cad_costumers_pack_protect_string('M') => str_replace('<', '&lt;',cad_costumers_pack_protect_string("Sim")));
 $aLookup[] = array(cad_costumers_pack_protect_string('D') => str_replace('<', '&lt;',cad_costumers_pack_protect_string("Não")));
 $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencytype'][] = 'M';
 $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencytype'][] = 'D';
@@ -3313,9 +3313,9 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencyt
               $aLookup = array();
               $this->_tmp_lookup_holdertype = $this->holdertype;
 
-$aLookup[] = array(cad_costumers_pack_protect_string('T') => str_replace('<', '&lt;',cad_costumers_pack_protect_string("Sim")));
+$aLookup[] = array(cad_costumers_pack_protect_string('H') => str_replace('<', '&lt;',cad_costumers_pack_protect_string("Sim")));
 $aLookup[] = array(cad_costumers_pack_protect_string('A') => str_replace('<', '&lt;',cad_costumers_pack_protect_string("Não")));
-$_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype'][] = 'T';
+$_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype'][] = 'H';
 $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype'][] = 'A';
           $aLookupOrig = $aLookup;
           $sOptComp = "";
@@ -5540,7 +5540,7 @@ function sc_file_size($file, $format = false)
    function Form_lookup_frequencytype()
    {
        $nmgp_def_dados  = "";
-       $nmgp_def_dados .= "S?#?M?#?N?@?";
+       $nmgp_def_dados .= "Sim?#?M?#?N?@?";
        $nmgp_def_dados .= "Não?#?D?#?N?@?";
        $todo = explode("?@?", $nmgp_def_dados);
        return $todo;
@@ -5549,7 +5549,7 @@ function sc_file_size($file, $format = false)
    function Form_lookup_holdertype()
    {
        $nmgp_def_dados  = "";
-       $nmgp_def_dados .= "Sim?#?T?#?N?@?";
+       $nmgp_def_dados .= "Sim?#?H?#?N?@?";
        $nmgp_def_dados .= "Não?#?A?#?N?@?";
        $todo = explode("?@?", $nmgp_def_dados);
        return $todo;
@@ -5835,7 +5835,7 @@ function sc_file_size($file, $format = false)
    {
        $data_look = array();
        $campo  = substr($this->Db->qstr($campo), 1, -1);
-       $data_look['M'] = "S";
+       $data_look['M'] = "Sim";
        $data_look['D'] = "Não";
        $result = array();
        foreach ($data_look as $chave => $label) 
@@ -5884,7 +5884,7 @@ function sc_file_size($file, $format = false)
    {
        $data_look = array();
        $campo  = substr($this->Db->qstr($campo), 1, -1);
-       $data_look['T'] = "Sim";
+       $data_look['H'] = "Sim";
        $data_look['A'] = "Não";
        $result = array();
        foreach ($data_look as $chave => $label) 

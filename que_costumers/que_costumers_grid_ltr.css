@@ -1,4 +1,12 @@
-.css_idcostumer_label, .css_idcostumer_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
-.css_idcostumer_grid_line, .css_idcostumer_grid_line:hover {vertical-align: top;text-align: right;}
+.css_name_label, .css_name_label:hover {text-align:left;vertical-align:middle;justify-content:left;font-weight:bold;}
+.css_name_grid_line, .css_name_grid_line:hover {vertical-align: top;text-align: left;}
 .css_docnumber_label, .css_docnumber_label:hover {text-align:left;vertical-align:middle;justify-content:left;font-weight:bold;}
 .css_docnumber_grid_line, .css_docnumber_grid_line:hover {vertical-align: top;text-align: left;}
+.css_phonenumber_label, .css_phonenumber_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
+.css_phonenumber_grid_line, .css_phonenumber_grid_line:hover {vertical-align: top;text-align: right;}
+.css_email_label, .css_email_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
+.css_email_grid_line, .css_email_grid_line:hover {vertical-align: top;text-align: right;}
+.css_holdertype_label, .css_holdertype_label:hover {text-align:left;vertical-align:middle;justify-content:left;font-weight:bold;}
+.css_holdertype_grid_line, .css_holdertype_grid_line:hover {vertical-align: top;text-align: left;}
+.css_frequencytype_label, .css_frequencytype_label:hover {text-align:left;vertical-align:middle;justify-content:left;font-weight:bold;}
+.css_frequencytype_grid_line, .css_frequencytype_grid_line:hover {vertical-align: top;text-align: left;}
