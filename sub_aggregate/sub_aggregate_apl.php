@@ -51,10 +51,9 @@ class sub_aggregate_apl
    var $Erro;
    var $Db;
    var $idaggregate_;
-   var $docnumber_;
-   var $doctype_;
-   var $firstname_;
-   var $lastname_;
+   var $idcostumer_;
+   var $idcostumer__1;
+   var $kinship_;
    var $idholder_;
    var $nm_data;
    var $nmgp_opcao;
@@ -115,25 +114,17 @@ class sub_aggregate_apl
           {
               $this->csrf_token = $this->NM_ajax_info['param']['csrf_token'];
           }
-          if (isset($this->NM_ajax_info['param']['docnumber_']))
-          {
-              $this->docnumber_ = $this->NM_ajax_info['param']['docnumber_'];
-          }
-          if (isset($this->NM_ajax_info['param']['doctype_']))
-          {
-              $this->doctype_ = $this->NM_ajax_info['param']['doctype_'];
-          }
-          if (isset($this->NM_ajax_info['param']['firstname_']))
-          {
-              $this->firstname_ = $this->NM_ajax_info['param']['firstname_'];
-          }
           if (isset($this->NM_ajax_info['param']['idaggregate_']))
           {
               $this->idaggregate_ = $this->NM_ajax_info['param']['idaggregate_'];
           }
-          if (isset($this->NM_ajax_info['param']['lastname_']))
+          if (isset($this->NM_ajax_info['param']['idcostumer_']))
           {
-              $this->lastname_ = $this->NM_ajax_info['param']['lastname_'];
+              $this->idcostumer_ = $this->NM_ajax_info['param']['idcostumer_'];
+          }
+          if (isset($this->NM_ajax_info['param']['kinship_']))
+          {
+              $this->kinship_ = $this->NM_ajax_info['param']['kinship_'];
           }
           if (isset($this->NM_ajax_info['param']['nm_form_submit']))
           {
@@ -201,10 +192,8 @@ class sub_aggregate_apl
       $this->scSajaxReservedWords = array('rs', 'rst', 'rsrnd', 'rsargs');
       $this->sc_conv_var = array();
       $this->sc_conv_var['idaggregate'] = "idaggregate_";
-      $this->sc_conv_var['docnumber'] = "docnumber_";
-      $this->sc_conv_var['doctype'] = "doctype_";
-      $this->sc_conv_var['firstname'] = "firstname_";
-      $this->sc_conv_var['lastname'] = "lastname_";
+      $this->sc_conv_var['idcostumer'] = "idcostumer_";
+      $this->sc_conv_var['kinship'] = "kinship_";
       $this->sc_conv_var['idholder'] = "idholder_";
       if (!empty($_FILES))
       {
@@ -1184,10 +1173,8 @@ class sub_aggregate_apl
       if ($this->NM_ajax_flag && 'submit_form' == $this->NM_ajax_opcao)
       {
          if (isset($this->idaggregate_)) { $this->nm_limpa_alfa($this->idaggregate_); }
-         if (isset($this->docnumber_)) { $this->nm_limpa_alfa($this->docnumber_); }
-         if (isset($this->doctype_)) { $this->nm_limpa_alfa($this->doctype_); }
-         if (isset($this->firstname_)) { $this->nm_limpa_alfa($this->firstname_); }
-         if (isset($this->lastname_)) { $this->nm_limpa_alfa($this->lastname_); }
+         if (isset($this->idcostumer_)) { $this->nm_limpa_alfa($this->idcostumer_); }
+         if (isset($this->kinship_)) { $this->nm_limpa_alfa($this->kinship_); }
          if (isset($this->Sc_num_lin_alt) && $this->Sc_num_lin_alt > 0) 
          {
              $sc_seq_vert = $this->Sc_num_lin_alt;
@@ -1268,21 +1255,13 @@ class sub_aggregate_apl
          $Campos_Crit  = "";
          $Campos_Falta = array();
          $Campos_Erros = array();
-          if ('validate_firstname_' == $this->NM_ajax_opcao)
+          if ('validate_kinship_' == $this->NM_ajax_opcao)
           {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'firstname_');
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'kinship_');
           }
-          if ('validate_lastname_' == $this->NM_ajax_opcao)
+          if ('validate_idcostumer_' == $this->NM_ajax_opcao)
           {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'lastname_');
-          }
-          if ('validate_doctype_' == $this->NM_ajax_opcao)
-          {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'doctype_');
-          }
-          if ('validate_docnumber_' == $this->NM_ajax_opcao)
-          {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'docnumber_');
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'idcostumer_');
           }
           if ('validate_idaggregate_' == $this->NM_ajax_opcao)
           {
@@ -1296,10 +1275,8 @@ class sub_aggregate_apl
          $Campos_Crit  = "";
          $Campos_Falta = array();
          $Campos_Erros = array();
-         $this->firstname_ = $GLOBALS["firstname_" . $sc_seq_vert]; 
-         $this->lastname_ = $GLOBALS["lastname_" . $sc_seq_vert]; 
-         $this->doctype_ = $GLOBALS["doctype_" . $sc_seq_vert]; 
-         $this->docnumber_ = $GLOBALS["docnumber_" . $sc_seq_vert]; 
+         $this->kinship_ = $GLOBALS["kinship_" . $sc_seq_vert]; 
+         $this->idcostumer_ = $GLOBALS["idcostumer_" . $sc_seq_vert]; 
          $this->idaggregate_ = $GLOBALS["idaggregate_" . $sc_seq_vert]; 
          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_form'][$sc_seq_vert]))
          {
@@ -1307,10 +1284,8 @@ class sub_aggregate_apl
              $this->idholder_ = $this->nmgp_dados_form['idholder_']; 
          }
          if (isset($this->idaggregate_)) { $this->nm_limpa_alfa($this->idaggregate_); }
-         if (isset($this->docnumber_)) { $this->nm_limpa_alfa($this->docnumber_); }
-         if (isset($this->doctype_)) { $this->nm_limpa_alfa($this->doctype_); }
-         if (isset($this->firstname_)) { $this->nm_limpa_alfa($this->firstname_); }
-         if (isset($this->lastname_)) { $this->nm_limpa_alfa($this->lastname_); }
+         if (isset($this->idcostumer_)) { $this->nm_limpa_alfa($this->idcostumer_); }
+         if (isset($this->kinship_)) { $this->nm_limpa_alfa($this->kinship_); }
          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_form'])) 
          {
             $this->nmgp_dados_form = $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_form'][$sc_seq_vert];
@@ -1342,10 +1317,8 @@ class sub_aggregate_apl
                 $this->nm_guardar_campos();
                 $this->nm_formatar_campos();
              }
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['firstname_'] =  $this->firstname_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['lastname_'] =  $this->lastname_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['doctype_'] =  $this->doctype_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['docnumber_'] =  $this->docnumber_; 
+             $this->form_vert_sub_aggregate[$sc_seq_vert]['kinship_'] =  $this->kinship_; 
+             $this->form_vert_sub_aggregate[$sc_seq_vert]['idcostumer_'] =  $this->idcostumer_; 
              $this->form_vert_sub_aggregate[$sc_seq_vert]['idaggregate_'] =  $this->idaggregate_; 
              $this->form_vert_sub_aggregate[$sc_seq_vert]['idholder_'] =  $this->idholder_; 
          }
@@ -1904,17 +1877,11 @@ class sub_aggregate_apl
    {
        switch($campo)
        {
-           case 'firstname_':
-               return "First Name";
+           case 'kinship_':
+               return "Kinship";
                break;
-           case 'lastname_':
-               return "Last Name";
-               break;
-           case 'doctype_':
-               return "Doc Type";
-               break;
-           case 'docnumber_':
-               return "Doc Number";
+           case 'idcostumer_':
+               return "Nome";
                break;
            case 'idaggregate_':
                return "Id Aggregate";
@@ -1970,14 +1937,10 @@ class sub_aggregate_apl
               $this->NM_ajax_info['errList']['geral_sub_aggregate'][] = "CSRF: " . $this->Ini->Nm_lang['lang_errm_ajax_csrf'];
           }
      }
-      if ((!is_array($filtro) && ('' == $filtro || 'firstname_' == $filtro)) || (is_array($filtro) && in_array('firstname_', $filtro)))
-        $this->ValidateField_firstname_($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!is_array($filtro) && ('' == $filtro || 'lastname_' == $filtro)) || (is_array($filtro) && in_array('lastname_', $filtro)))
-        $this->ValidateField_lastname_($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!is_array($filtro) && ('' == $filtro || 'doctype_' == $filtro)) || (is_array($filtro) && in_array('doctype_', $filtro)))
-        $this->ValidateField_doctype_($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!is_array($filtro) && ('' == $filtro || 'docnumber_' == $filtro)) || (is_array($filtro) && in_array('docnumber_', $filtro)))
-        $this->ValidateField_docnumber_($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!is_array($filtro) && ('' == $filtro || 'kinship_' == $filtro)) || (is_array($filtro) && in_array('kinship_', $filtro)))
+        $this->ValidateField_kinship_($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!is_array($filtro) && ('' == $filtro || 'idcostumer_' == $filtro)) || (is_array($filtro) && in_array('idcostumer_', $filtro)))
+        $this->ValidateField_idcostumer_($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!is_array($filtro) && ('' == $filtro || 'idaggregate_' == $filtro)) || (is_array($filtro) && in_array('idaggregate_', $filtro)))
         $this->ValidateField_idaggregate_($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if (!empty($Campos_Crit) || !empty($Campos_Falta) || !empty($this->Campos_Mens_erro))
@@ -1993,188 +1956,72 @@ class sub_aggregate_apl
       }
    }
 
-    function ValidateField_firstname_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    function ValidateField_kinship_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
         $hasError = false;
-      if (isset($this->Field_no_validate['firstname_'])) {
+      if (isset($this->Field_no_validate['kinship_'])) {
           return;
       }
       if ($this->nmgp_opcao != "excluir") 
       { 
-          if (NM_utf8_strlen($this->firstname_) > 45) 
+          if (NM_utf8_strlen($this->kinship_) > 50) 
           { 
               $hasError = true;
-              $Campos_Crit .= "First Name " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 45 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
-              if (!isset($Campos_Erros['firstname_']))
+              $Campos_Crit .= "Kinship " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              if (!isset($Campos_Erros['kinship_']))
               {
-                  $Campos_Erros['firstname_'] = array();
+                  $Campos_Erros['kinship_'] = array();
               }
-              $Campos_Erros['firstname_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 45 " . $this->Ini->Nm_lang['lang_errm_nchr'];
-              if (!isset($this->NM_ajax_info['errList']['firstname_']) || !is_array($this->NM_ajax_info['errList']['firstname_']))
+              $Campos_Erros['kinship_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              if (!isset($this->NM_ajax_info['errList']['kinship_']) || !is_array($this->NM_ajax_info['errList']['kinship_']))
               {
-                  $this->NM_ajax_info['errList']['firstname_'] = array();
+                  $this->NM_ajax_info['errList']['kinship_'] = array();
               }
-              $this->NM_ajax_info['errList']['firstname_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 45 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['kinship_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
       } 
         if ($hasError) {
             global $sc_seq_vert;
-            $fieldName = 'firstname_';
+            $fieldName = 'kinship_';
             if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
                 $fieldName .= $sc_seq_vert;
             }
             $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
         }
-    } // ValidateField_firstname_
+    } // ValidateField_kinship_
 
-    function ValidateField_lastname_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    function ValidateField_idcostumer_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
         $hasError = false;
-      if (isset($this->Field_no_validate['lastname_'])) {
-          return;
-      }
-      if ($this->nmgp_opcao != "excluir") 
-      { 
-          if (NM_utf8_strlen($this->lastname_) > 45) 
-          { 
-              $hasError = true;
-              $Campos_Crit .= "Last Name " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 45 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
-              if (!isset($Campos_Erros['lastname_']))
-              {
-                  $Campos_Erros['lastname_'] = array();
-              }
-              $Campos_Erros['lastname_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 45 " . $this->Ini->Nm_lang['lang_errm_nchr'];
-              if (!isset($this->NM_ajax_info['errList']['lastname_']) || !is_array($this->NM_ajax_info['errList']['lastname_']))
-              {
-                  $this->NM_ajax_info['errList']['lastname_'] = array();
-              }
-              $this->NM_ajax_info['errList']['lastname_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 45 " . $this->Ini->Nm_lang['lang_errm_nchr'];
-          } 
-      } 
-        if ($hasError) {
-            global $sc_seq_vert;
-            $fieldName = 'lastname_';
-            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
-                $fieldName .= $sc_seq_vert;
-            }
-            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
-        }
-    } // ValidateField_lastname_
-
-    function ValidateField_doctype_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
-    {
-        global $teste_validade;
-        $hasError = false;
-   if (isset($this->Field_no_validate['doctype_'])) {
+   if (isset($this->Field_no_validate['idcostumer_'])) {
        return;
    }
-      if ($this->doctype_ == "" && $this->nmgp_opcao != "excluir")
-      { 
-      } 
-      if ($this->doctype_ != "" && !in_array("doctype_", $this->sc_force_zero))
-      { 
-          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']) && !in_array($this->doctype_, $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']))
-          {
-              $hasError = true;
-              $Campos_Crit .= $this->Ini->Nm_lang['lang_errm_ajax_data'];
-              if (!isset($Campos_Erros['doctype_']))
-              {
-                  $Campos_Erros['doctype_'] = array();
-              }
-              $Campos_Erros['doctype_'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
-              if (!isset($this->NM_ajax_info['errList']['doctype_']) || !is_array($this->NM_ajax_info['errList']['doctype_']))
-              {
-                  $this->NM_ajax_info['errList']['doctype_'] = array();
-              }
-              $this->NM_ajax_info['errList']['doctype_'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
-          }
-      }
+               if (!empty($this->idcostumer_) && isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']) && !in_array($this->idcostumer_, $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']))
+               {
+                   $hasError = true;
+                   $Campos_Crit .= $this->Ini->Nm_lang['lang_errm_ajax_data'];
+                   if (!isset($Campos_Erros['idcostumer_']))
+                   {
+                       $Campos_Erros['idcostumer_'] = array();
+                   }
+                   $Campos_Erros['idcostumer_'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
+                   if (!isset($this->NM_ajax_info['errList']['idcostumer_']) || !is_array($this->NM_ajax_info['errList']['idcostumer_']))
+                   {
+                       $this->NM_ajax_info['errList']['idcostumer_'] = array();
+                   }
+                   $this->NM_ajax_info['errList']['idcostumer_'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
+               }
         if ($hasError) {
             global $sc_seq_vert;
-            $fieldName = 'doctype_';
+            $fieldName = 'idcostumer_';
             if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
                 $fieldName .= $sc_seq_vert;
             }
             $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
         }
-    } // ValidateField_doctype_
-
-    function ValidateField_docnumber_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
-    {
-        global $teste_validade;
-        $hasError = false;
-      nm_limpa_ciccnpj($this->docnumber_) ; 
-      if (isset($this->Field_no_validate['docnumber_'])) {
-          return;
-      }
-      if ($this->nmgp_opcao != "excluir") 
-      { 
-          if (trim($this->docnumber_) != "")  
-          { 
-              if ($this->doctype_ == "F")
-              { 
-                  if ($teste_validade->CIC($this->docnumber_) == false)  
-                  { 
-                      $hasError = true;
-                  $Campos_Crit .= "Doc Number; " ; 
-                  if (!isset($Campos_Erros['docnumber_']))
-                  {
-                      $Campos_Erros['docnumber_'] = array();
-                  }
-                  $Campos_Erros['docnumber_'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-                  if (!isset($this->NM_ajax_info['errList']['docnumber_']) || !is_array($this->NM_ajax_info['errList']['docnumber_']))
-                  {
-                      $this->NM_ajax_info['errList']['docnumber_'] = array();
-                  }
-                  $this->NM_ajax_info['errList']['docnumber_'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-                  } 
-              } 
-              elseif ($this->doctype_ == "J")
-              { 
-                  if ($teste_validade->CNPJ($this->docnumber_) == false)  
-                  { 
-                      $hasError = true;
-                  $Campos_Crit .= "Doc Number; " ; 
-                  if (!isset($Campos_Erros['docnumber_']))
-                  {
-                      $Campos_Erros['docnumber_'] = array();
-                  }
-                  $Campos_Erros['docnumber_'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-                  if (!isset($this->NM_ajax_info['errList']['docnumber_']) || !is_array($this->NM_ajax_info['errList']['docnumber_']))
-                  {
-                      $this->NM_ajax_info['errList']['docnumber_'] = array();
-                  }
-                  $this->NM_ajax_info['errList']['docnumber_'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-                  } 
-              } 
-              else 
-              { 
-                  $hasError = true;
-                  $Campos_Crit .= "Doc Number; " ; 
-                  if (!isset($Campos_Erros['docnumber_']))
-                  {
-                      $Campos_Erros['docnumber_'] = array();
-                  }
-                  $Campos_Erros['docnumber_'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-                  if (!isset($this->NM_ajax_info['errList']['docnumber_']) || !is_array($this->NM_ajax_info['errList']['docnumber_']))
-                  {
-                      $this->NM_ajax_info['errList']['docnumber_'] = array();
-                  }
-                  $this->NM_ajax_info['errList']['docnumber_'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-              } 
-          } 
-      } 
-        if ($hasError) {
-            global $sc_seq_vert;
-            $fieldName = 'docnumber_';
-            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
-                $fieldName .= $sc_seq_vert;
-            }
-            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
-        }
-    } // ValidateField_docnumber_
+    } // ValidateField_idcostumer_
 
     function ValidateField_idaggregate_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
@@ -2259,10 +2106,8 @@ class sub_aggregate_apl
    {
     global
            $sc_seq_vert;
-    $this->nmgp_dados_form['firstname_'] = $this->firstname_;
-    $this->nmgp_dados_form['lastname_'] = $this->lastname_;
-    $this->nmgp_dados_form['doctype_'] = $this->doctype_;
-    $this->nmgp_dados_form['docnumber_'] = $this->docnumber_;
+    $this->nmgp_dados_form['kinship_'] = $this->kinship_;
+    $this->nmgp_dados_form['idcostumer_'] = $this->idcostumer_;
     $this->nmgp_dados_form['idaggregate_'] = $this->idaggregate_;
     $this->nmgp_dados_form['idholder_'] = $this->idholder_;
     $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_form'][$sc_seq_vert] = $this->nmgp_dados_form;
@@ -2272,8 +2117,6 @@ class sub_aggregate_apl
       global $nm_form_submit;
          $this->Before_unformat = array();
          $this->formatado = false;
-      $this->Before_unformat['docnumber_'] = $this->docnumber_;
-      nm_limpa_ciccnpj($this->docnumber_) ; 
       $this->Before_unformat['idaggregate_'] = $this->idaggregate_;
       nm_limpa_numero($this->idaggregate_, $this->field_config['idaggregate_']['symbol_grp']) ; 
       $this->Before_unformat['idholder_'] = $this->idholder_;
@@ -2321,10 +2164,6 @@ class sub_aggregate_apl
    }
    function nm_clear_val($Nome_Campo)
    {
-      if ($Nome_Campo == "docnumber_")
-      {
-          nm_limpa_ciccnpj($this->docnumber_) ; 
-      }
       if ($Nome_Campo == "idaggregate_")
       {
           nm_limpa_numero($this->idaggregate_, $this->field_config['idaggregate_']['symbol_grp']) ; 
@@ -2337,10 +2176,6 @@ class sub_aggregate_apl
    function nm_formatar_campos($format_fields = array())
    {
       global $nm_form_submit;
-      if (!empty($this->docnumber_) || (!empty($format_fields) && isset($format_fields['docnumber_'])))
-      {
-          nmgp_Form_CicCnpj($this->docnumber_) ; 
-      }
       if ('' !== $this->idaggregate_ || (!empty($format_fields) && isset($format_fields['idaggregate_'])))
       {
           nmgp_Form_Num_Val($this->idaggregate_, $this->field_config['idaggregate_']['symbol_grp'], $this->field_config['idaggregate_']['symbol_dec'], "0", "S", $this->field_config['idaggregate_']['format_neg'], "", "", "-", $this->field_config['idaggregate_']['symbol_fmt']) ; 
@@ -2746,21 +2581,13 @@ class sub_aggregate_apl
               $this->form_vert_sub_aggregate[$this->nmgp_refresh_row] = $this->NM_ajax_info['param'];
               if ((isset($this->Embutida_ronly) && $this->Embutida_ronly) || $this->NM_ajax_force_values)
               {
-                  if (isset($this->NM_ajax_changed['firstname_']) && $this->NM_ajax_changed['firstname_'])
+                  if (isset($this->NM_ajax_changed['kinship_']) && $this->NM_ajax_changed['kinship_'])
                   {
-                      $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['firstname_'] = $this->firstname_;
+                      $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['kinship_'] = $this->kinship_;
                   }
-                  if (isset($this->NM_ajax_changed['lastname_']) && $this->NM_ajax_changed['lastname_'])
+                  if (isset($this->NM_ajax_changed['idcostumer_']) && $this->NM_ajax_changed['idcostumer_'])
                   {
-                      $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['lastname_'] = $this->lastname_;
-                  }
-                  if (isset($this->NM_ajax_changed['doctype_']) && $this->NM_ajax_changed['doctype_'])
-                  {
-                      $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['doctype_'] = $this->doctype_;
-                  }
-                  if (isset($this->NM_ajax_changed['docnumber_']) && $this->NM_ajax_changed['docnumber_'])
-                  {
-                      $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['docnumber_'] = $this->docnumber_;
+                      $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['idcostumer_'] = $this->idcostumer_;
                   }
                   if (isset($this->NM_ajax_changed['idaggregate_']) && $this->NM_ajax_changed['idaggregate_'])
                   {
@@ -2770,10 +2597,7 @@ class sub_aggregate_apl
           }
           if (isset($this->nmgp_refresh_row) && '' != $this->nmgp_refresh_row)
           {
-              $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['firstname_'] = $this->firstname_;
-              $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['lastname_'] = $this->lastname_;
-              $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['doctype_'] = $this->doctype_;
-              $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['docnumber_'] = $this->docnumber_;
+              $this->form_vert_sub_aggregate[$this->nmgp_refresh_row]['kinship_'] = $this->kinship_;
           }
           $this->NM_ajax_info['rsSize']            = sizeof($this->form_vert_sub_aggregate);
           $this->NM_ajax_info['buttonDisplayVert'] = array();
@@ -2788,79 +2612,111 @@ class sub_aggregate_apl
                       'update'   => $this->nmgp_botoes['update'],
                   );
               }
-              if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("firstname_", $this->nmgp_refresh_fields)))
+              if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("kinship_", $this->nmgp_refresh_fields)))
               {
-                  $sTmpValue = NM_charset_to_utf8($aRecData['firstname_']);
+                  $sTmpValue = NM_charset_to_utf8($aRecData['kinship_']);
                   $aLookup = array();
           $aLookupOrig = $aLookup;
-                  $this->NM_ajax_info['fldList']['firstname_' . $sc_seq_vert] = array(
+                  $this->NM_ajax_info['fldList']['kinship_' . $sc_seq_vert] = array(
                        'row'    => $sc_seq_vert,
                        'type'    => 'text',
-                       'valList' => array($sTmpValue),
+                       'valList' => array($this->form_encode_input($sTmpValue)),
                        );
               }
-              if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("lastname_", $this->nmgp_refresh_fields)))
+              if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("idcostumer_", $this->nmgp_refresh_fields)))
               {
-                  $sTmpValue = NM_charset_to_utf8($aRecData['lastname_']);
+                  $sTmpValue = NM_charset_to_utf8($aRecData['idcostumer_']);
                   $aLookup = array();
+ 
+$nmgp_def_dados = "" ; 
+if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']))
+{
+    $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']); 
+}
+else
+{
+    $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array(); 
+}
+   if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+   { 
+       $GLOBALS["NM_ERRO_IBASE"] = 1;  
+   } 
+   $nm_nao_carga = false;
+   $nmgp_def_dados = "" ; 
+
+   $old_value_idaggregate_ = $this->idaggregate_;
+   $this->nm_tira_formatacao();
+
+
+   $unformatted_value_idaggregate_ = $this->idaggregate_;
+
+   $nm_comando = "SELECT idCostumer, name  FROM cad_costumer  ORDER BY name";
+
+   $this->idaggregate_ = $old_value_idaggregate_;
+
+   $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando;
+   $_SESSION['scriptcase']['sc_sql_ult_conexao'] = '';
+   if ($nm_comando != "" && $rs = $this->Db->Execute($nm_comando))
+   {
+       while (!$rs->EOF) 
+       { 
+              $rs->fields[0] = str_replace(',', '.', $rs->fields[0]);
+              $rs->fields[0] = (strpos(strtolower($rs->fields[0]), "e")) ? (float)$rs->fields[0] : $rs->fields[0];
+              $rs->fields[0] = (string)$rs->fields[0];
+              $aLookup[] = array(sub_aggregate_pack_protect_string(NM_charset_to_utf8($rs->fields[0])) => str_replace('<', '&lt;', sub_aggregate_pack_protect_string(NM_charset_to_utf8($rs->fields[1]))));
+              $nmgp_def_dados .= $rs->fields[1] . "?#?" ; 
+              $nmgp_def_dados .= $rs->fields[0] . "?#?N?@?" ; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'][] = $rs->fields[0];
+              $rs->MoveNext() ; 
+       } 
+       $rs->Close() ; 
+   } 
+   elseif ($GLOBALS["NM_ERRO_IBASE"] != 1 && $nm_comando != "")  
+   {  
+       $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
+       exit; 
+   } 
+   $GLOBALS["NM_ERRO_IBASE"] = 0; 
           $aLookupOrig = $aLookup;
-                  $this->NM_ajax_info['fldList']['lastname_' . $sc_seq_vert] = array(
-                       'row'    => $sc_seq_vert,
-                       'type'    => 'text',
-                       'valList' => array($sTmpValue),
-                       );
-              }
-              if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("doctype_", $this->nmgp_refresh_fields)))
-              {
-                  $sTmpValue = NM_charset_to_utf8($aRecData['doctype_']);
-                  $aLookup = array();
-$aLookup[] = array(sub_aggregate_pack_protect_string('F') => str_replace('<', '&lt;',sub_aggregate_pack_protect_string("Fisica")));
-$aLookup[] = array(sub_aggregate_pack_protect_string('J') => str_replace('<', '&lt;',sub_aggregate_pack_protect_string("Juridica")));
-$_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_'][] = 'F';
-$_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_'][] = 'J';
-          $aLookupOrig = $aLookup;
-          $sOptComp = "";
-          if (isset($this->NM_ajax_info['select_html']['doctype_']) && !empty($this->NM_ajax_info['select_html']['doctype_']))
+          $sSelComp = "name=\"idcostumer_\"";
+          if (isset($this->NM_ajax_info['select_html']['idcostumer_']) && !empty($this->NM_ajax_info['select_html']['idcostumer_']))
           {
-              eval("\$sOptComp = \"" . str_replace('{SC_100PERC_CLASS_INPUT}', $this->classes_100perc_fields['input'], $this->NM_ajax_info['select_html']['doctype_']) . "\";");
+              eval("\$sSelComp = \"" . str_replace('{SC_100PERC_CLASS_INPUT}', $this->classes_100perc_fields['input'], $this->NM_ajax_info['select_html']['idcostumer_']) . "\";");
           }
-                  $this->NM_ajax_info['fldList']['doctype_' . $sc_seq_vert] = array(
+          $sLookup = '';
+          foreach ($aLookup as $aOption)
+          {
+              foreach ($aOption as $sValue => $sLabel)
+              {
+                  $sOpt     = ($sValue !== $sLabel) ? $sValue : $sLabel;
+                  $sLookup .= "<option value=\"" . $sOpt . "\">" . $sLabel . "</option>";
+              }
+          }
+          $aLookup  = $sLookup;
+                  $this->NM_ajax_info['fldList']['idcostumer_' . $sc_seq_vert] = array(
                        'row'    => $sc_seq_vert,
-                       'type'    => 'radio',
-                       'switch'  => false,
+                       'type'    => 'select',
                        'valList' => array($sTmpValue),
-               'colNum'  => 1,
-               'optComp'  => $sOptComp,
+               'optList' => $aLookup,
                        );
           $aLabel     = array();
           $aLabelTemp = array();
-          foreach ($this->NM_ajax_info['fldList']['doctype_' . $sc_seq_vert]['valList'] as $i => $v)
+          foreach ($this->NM_ajax_info['fldList']['idcostumer_' . $sc_seq_vert]['valList'] as $i => $v)
           {
-              $this->NM_ajax_info['fldList']['doctype_' . $sc_seq_vert]['valList'][$i] = sub_aggregate_pack_protect_string($v);
+              $this->NM_ajax_info['fldList']['idcostumer_' . $sc_seq_vert]['valList'][$i] = sub_aggregate_pack_protect_string($v);
           }
           foreach ($aLookupOrig as $aValData)
           {
-              if (in_array(key($aValData), $this->NM_ajax_info['fldList']['doctype_' . $sc_seq_vert]['valList']))
+              if (in_array(key($aValData), $this->NM_ajax_info['fldList']['idcostumer_' . $sc_seq_vert]['valList']))
               {
                   $aLabelTemp[key($aValData)] = current($aValData);
               }
           }
-          foreach ($this->NM_ajax_info['fldList']['doctype_' . $sc_seq_vert]['valList'] as $iIndex => $sValue)
+          foreach ($this->NM_ajax_info['fldList']['idcostumer_' . $sc_seq_vert]['valList'] as $iIndex => $sValue)
           {
               $aLabel[$iIndex] = (isset($aLabelTemp[$sValue])) ? $aLabelTemp[$sValue] : $sValue;
           }
-          $this->NM_ajax_info['fldList']['doctype_' . $sc_seq_vert]['labList'] = $aLabel;
-              }
-              if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("docnumber_", $this->nmgp_refresh_fields)))
-              {
-                  $sTmpValue = NM_charset_to_utf8($aRecData['docnumber_']);
-                  $aLookup = array();
-          $aLookupOrig = $aLookup;
-                  $this->NM_ajax_info['fldList']['docnumber_' . $sc_seq_vert] = array(
-                       'row'    => $sc_seq_vert,
-                       'type'    => 'text',
-                       'valList' => array($sTmpValue),
-                       );
+          $this->NM_ajax_info['fldList']['idcostumer_' . $sc_seq_vert]['labList'] = $aLabel;
               }
               if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("idaggregate_", $this->nmgp_refresh_fields)))
               {
@@ -3022,18 +2878,14 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
       if ($this->nmgp_opcao == "alterar")
       {
           $this->nmgp_dados_select = $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert];
-          if ($this->nmgp_dados_select['firstname_'] == $this->firstname_ &&
-              $this->nmgp_dados_select['lastname_'] == $this->lastname_ &&
-              $this->nmgp_dados_select['doctype_'] == $this->doctype_ &&
-              $this->nmgp_dados_select['docnumber_'] == $this->docnumber_ &&
+          if ($this->nmgp_dados_select['kinship_'] == $this->kinship_ &&
+              $this->nmgp_dados_select['idcostumer_'] == $this->idcostumer_ &&
               $this->nmgp_dados_select['idaggregate_'] == $this->idaggregate_)
           { }
           else
           {
-              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['firstname_'] = $this->firstname_;
-              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['lastname_'] = $this->lastname_;
-              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['doctype_'] = $this->doctype_;
-              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['docnumber_'] = $this->docnumber_;
+              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['kinship_'] = $this->kinship_;
+              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['idcostumer_'] = $this->idcostumer_;
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['idaggregate_'] = $this->idaggregate_;
           }
       }
@@ -3047,15 +2899,18 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
       { 
           $this->Ini->sc_tem_trans_banco = $this->Db->BeginTrans(); 
       } 
-      $NM_val_form['firstname_'] = $this->firstname_;
-      $NM_val_form['lastname_'] = $this->lastname_;
-      $NM_val_form['doctype_'] = $this->doctype_;
-      $NM_val_form['docnumber_'] = $this->docnumber_;
+      $NM_val_form['kinship_'] = $this->kinship_;
+      $NM_val_form['idcostumer_'] = $this->idcostumer_;
       $NM_val_form['idaggregate_'] = $this->idaggregate_;
       $NM_val_form['idholder_'] = $this->idholder_;
       if ($this->idaggregate_ === "" || is_null($this->idaggregate_))  
       { 
           $this->idaggregate_ = 0;
+      } 
+      if ($this->idcostumer_ === "" || is_null($this->idcostumer_))  
+      { 
+          $this->idcostumer_ = 0;
+          $this->sc_force_zero[] = 'idcostumer_';
       } 
       if ($this->idholder_ === "" || is_null($this->idholder_))  
       { 
@@ -3065,49 +2920,16 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
       $nm_bases_lob_geral = array_merge($this->Ini->nm_bases_ibase, $this->Ini->nm_bases_mysql, $this->Ini->nm_bases_access, $this->Ini->nm_bases_sqlite);
       if ($this->nmgp_opcao == "alterar" || $this->nmgp_opcao == "incluir") 
       {
-          $this->docnumber__before_qstr = $this->docnumber_;
-          $this->docnumber_ = substr($this->Db->qstr($this->docnumber_), 1, -1); 
+          $this->kinship__before_qstr = $this->kinship_;
+          $this->kinship_ = substr($this->Db->qstr($this->kinship_), 1, -1); 
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
           {
-              $this->docnumber_ = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->docnumber_);
+              $this->kinship_ = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->kinship_);
           }
-          if ($this->docnumber_ == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
+          if ($this->kinship_ == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
           { 
-              $this->docnumber_ = "null"; 
-              $NM_val_null[] = "docnumber_";
-          } 
-          $this->doctype__before_qstr = $this->doctype_;
-          $this->doctype_ = substr($this->Db->qstr($this->doctype_), 1, -1); 
-          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
-          {
-              $this->doctype_ = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->doctype_);
-          }
-          if ($this->doctype_ == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
-          { 
-              $this->doctype_ = "null"; 
-              $NM_val_null[] = "doctype_";
-          } 
-          $this->firstname__before_qstr = $this->firstname_;
-          $this->firstname_ = substr($this->Db->qstr($this->firstname_), 1, -1); 
-          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
-          {
-              $this->firstname_ = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->firstname_);
-          }
-          if ($this->firstname_ == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
-          { 
-              $this->firstname_ = "null"; 
-              $NM_val_null[] = "firstname_";
-          } 
-          $this->lastname__before_qstr = $this->lastname_;
-          $this->lastname_ = substr($this->Db->qstr($this->lastname_), 1, -1); 
-          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
-          {
-              $this->lastname_ = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->lastname_);
-          }
-          if ($this->lastname_ == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
-          { 
-              $this->lastname_ = "null"; 
-              $NM_val_null[] = "lastname_";
+              $this->kinship_ = "null"; 
+              $NM_val_null[] = "kinship_";
           } 
       }
       if ($this->nmgp_opcao == "alterar") 
@@ -3161,22 +2983,22 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "docNumber = '$this->docnumber_', docType = '$this->doctype_', firstName = '$this->firstname_', lastName = '$this->lastname_'"; 
+                  $SC_fields_update[] = "idCostumer = $this->idcostumer_, kinship = '$this->kinship_'"; 
               } 
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "docNumber = '$this->docnumber_', docType = '$this->doctype_', firstName = '$this->firstname_', lastName = '$this->lastname_'"; 
+                  $SC_fields_update[] = "idCostumer = $this->idcostumer_, kinship = '$this->kinship_'"; 
               } 
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "docNumber = '$this->docnumber_', docType = '$this->doctype_', firstName = '$this->firstname_', lastName = '$this->lastname_'"; 
+                  $SC_fields_update[] = "idCostumer = $this->idcostumer_, kinship = '$this->kinship_'"; 
               } 
               else 
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "docNumber = '$this->docnumber_', docType = '$this->doctype_', firstName = '$this->firstname_', lastName = '$this->lastname_'"; 
+                  $SC_fields_update[] = "idCostumer = $this->idcostumer_, kinship = '$this->kinship_'"; 
               } 
               if (isset($NM_val_form['idholder_']) && $NM_val_form['idholder_'] != $this->nmgp_dados_select['idholder_']) 
               { 
@@ -3221,10 +3043,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
                       }   
                   }   
               }   
-              $this->docnumber_ = $this->docnumber__before_qstr;
-              $this->doctype_ = $this->doctype__before_qstr;
-              $this->firstname_ = $this->firstname__before_qstr;
-              $this->lastname_ = $this->lastname__before_qstr;
+              $this->kinship_ = $this->kinship__before_qstr;
               if (in_array(strtolower($this->Ini->nm_tpbanco), $nm_bases_lob_geral))
               { 
               }   
@@ -3244,33 +3063,25 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
               $this->sc_teve_alt = true; 
               if     (isset($NM_val_form) && isset($NM_val_form['idaggregate_'])) { $this->idaggregate_ = $NM_val_form['idaggregate_']; }
               elseif (isset($this->idaggregate_)) { $this->nm_limpa_alfa($this->idaggregate_); }
-              if     (isset($NM_val_form) && isset($NM_val_form['docnumber_'])) { $this->docnumber_ = $NM_val_form['docnumber_']; }
-              elseif (isset($this->docnumber_)) { $this->nm_limpa_alfa($this->docnumber_); }
-              if     (isset($NM_val_form) && isset($NM_val_form['doctype_'])) { $this->doctype_ = $NM_val_form['doctype_']; }
-              elseif (isset($this->doctype_)) { $this->nm_limpa_alfa($this->doctype_); }
-              if     (isset($NM_val_form) && isset($NM_val_form['firstname_'])) { $this->firstname_ = $NM_val_form['firstname_']; }
-              elseif (isset($this->firstname_)) { $this->nm_limpa_alfa($this->firstname_); }
-              if     (isset($NM_val_form) && isset($NM_val_form['lastname_'])) { $this->lastname_ = $NM_val_form['lastname_']; }
-              elseif (isset($this->lastname_)) { $this->nm_limpa_alfa($this->lastname_); }
+              if     (isset($NM_val_form) && isset($NM_val_form['idcostumer_'])) { $this->idcostumer_ = $NM_val_form['idcostumer_']; }
+              elseif (isset($this->idcostumer_)) { $this->nm_limpa_alfa($this->idcostumer_); }
+              if     (isset($NM_val_form) && isset($NM_val_form['kinship_'])) { $this->kinship_ = $NM_val_form['kinship_']; }
+              elseif (isset($this->kinship_)) { $this->nm_limpa_alfa($this->kinship_); }
               $this->nm_proc_onload_record($this->nmgp_refresh_row);
 
               $this->nm_formatar_campos();
 
               $aOldRefresh               = $this->nmgp_refresh_fields;
-              $this->nmgp_refresh_fields = array_diff(array('firstname_', 'lastname_', 'doctype_', 'docnumber_', 'idaggregate_'), $aDoNotUpdate);
+              $this->nmgp_refresh_fields = array_diff(array('kinship_', 'idcostumer_', 'idaggregate_'), $aDoNotUpdate);
               $this->ajax_return_values();
               $this->nmgp_refresh_fields = $aOldRefresh;
 
               if (isset($this->Embutida_ronly) && $this->Embutida_ronly)
               {
 
-                  $this->NM_ajax_info['readOnly']['firstname_' . $this->nmgp_refresh_row] = 'on';
+                  $this->NM_ajax_info['readOnly']['kinship_' . $this->nmgp_refresh_row] = 'on';
 
-                  $this->NM_ajax_info['readOnly']['lastname_' . $this->nmgp_refresh_row] = 'on';
-
-                  $this->NM_ajax_info['readOnly']['doctype_' . $this->nmgp_refresh_row] = 'on';
-
-                  $this->NM_ajax_info['readOnly']['docnumber_' . $this->nmgp_refresh_row] = 'on';
+                  $this->NM_ajax_info['readOnly']['idcostumer_' . $this->nmgp_refresh_row] = 'on';
 
                   $this->NM_ajax_info['readOnly']['idaggregate_' . $this->nmgp_refresh_row] = 'on';
 
@@ -3308,23 +3119,23 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
           { 
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               { 
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (docNumber, docType, firstName, lastName, idHolder) VALUES ('$this->docnumber_', '$this->doctype_', '$this->firstname_', '$this->lastname_', $this->idholder_)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (idCostumer, kinship, idHolder) VALUES ($this->idcostumer_, '$this->kinship_', $this->idholder_)"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
               { 
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "docNumber, docType, firstName, lastName, idHolder) VALUES (" . $NM_seq_auto . "'$this->docnumber_', '$this->doctype_', '$this->firstname_', '$this->lastname_', $this->idholder_)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, kinship, idHolder) VALUES (" . $NM_seq_auto . "$this->idcostumer_, '$this->kinship_', $this->idholder_)"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "docNumber, docType, firstName, lastName, idHolder) VALUES (" . $NM_seq_auto . "'$this->docnumber_', '$this->doctype_', '$this->firstname_', '$this->lastname_', $this->idholder_)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, kinship, idHolder) VALUES (" . $NM_seq_auto . "$this->idcostumer_, '$this->kinship_', $this->idholder_)"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sqlite))
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "docNumber, docType, firstName, lastName, idHolder) VALUES (" . $NM_seq_auto . "'$this->docnumber_', '$this->doctype_', '$this->firstname_', '$this->lastname_', $this->idholder_)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, kinship, idHolder) VALUES (" . $NM_seq_auto . "$this->idcostumer_, '$this->kinship_', $this->idholder_)"; 
               }
               else
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "docNumber, docType, firstName, lastName, idHolder) VALUES (" . $NM_seq_auto . "'$this->docnumber_', '$this->doctype_', '$this->firstname_', '$this->lastname_', $this->idholder_)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, kinship, idHolder) VALUES (" . $NM_seq_auto . "$this->idcostumer_, '$this->kinship_', $this->idholder_)"; 
               }
               $comando = str_replace("N'null'", "null", $comando) ; 
               $comando = str_replace("'null'", "null", $comando) ; 
@@ -3420,27 +3231,19 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
                   $this->idaggregate_ = $rsy->fields[0];
                   $rsy->Close(); 
               } 
-              $this->docnumber_ = $this->docnumber__before_qstr;
-              $this->doctype_ = $this->doctype__before_qstr;
-              $this->firstname_ = $this->firstname__before_qstr;
-              $this->lastname_ = $this->lastname__before_qstr;
+              $this->kinship_ = $this->kinship__before_qstr;
               }
 
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['db_changed'] = true;
 
               $this->sc_evento = "insert"; 
-              $this->docnumber_ = $this->docnumber__before_qstr;
-              $this->doctype_ = $this->doctype__before_qstr;
-              $this->firstname_ = $this->firstname__before_qstr;
-              $this->lastname_ = $this->lastname__before_qstr;
+              $this->kinship_ = $this->kinship__before_qstr;
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['total']++; 
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['reg_qtd']++; 
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['reg_I_E']++; 
               $this->sc_teve_incl = true; 
-              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['firstname_'] = $this->firstname_;
-              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['lastname_'] = $this->lastname_;
-              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['doctype_'] = $this->doctype_;
-              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['docnumber_'] = $this->docnumber_;
+              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['kinship_'] = $this->kinship_;
+              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['idcostumer_'] = $this->idcostumer_;
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert]['idaggregate_'] = $this->idaggregate_;
               if (!empty($this->sc_force_zero))
               {
@@ -3458,103 +3261,109 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
                   }
               }
               if (isset($this->idaggregate_)) { $this->nm_limpa_alfa($this->idaggregate_); }
-              if (isset($this->docnumber_)) { $this->nm_limpa_alfa($this->docnumber_); }
-              if (isset($this->doctype_)) { $this->nm_limpa_alfa($this->doctype_); }
-              if (isset($this->firstname_)) { $this->nm_limpa_alfa($this->firstname_); }
-              if (isset($this->lastname_)) { $this->nm_limpa_alfa($this->lastname_); }
+              if (isset($this->idcostumer_)) { $this->nm_limpa_alfa($this->idcostumer_); }
+              if (isset($this->kinship_)) { $this->nm_limpa_alfa($this->kinship_); }
               if (isset($this->Embutida_form) && $this->Embutida_form)
               {
                   $this->nm_guardar_campos();
                   $this->nm_proc_onload_record($this->nmgp_refresh_row);
                   $this->nm_formatar_campos();
 
-                  $this->NM_ajax_info['fldList']['firstname_' . $this->nmgp_refresh_row]['type']    = 'text';
-                  $this->NM_ajax_info['fldList']['firstname_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->firstname_)));
-                  $this->NM_ajax_info['fldList']['firstname_' . $this->nmgp_refresh_row]['labList'] = array($this->form_encode_input(NM_charset_to_utf8($tmpLabel_firstname_)));
+                  $this->NM_ajax_info['fldList']['kinship_' . $this->nmgp_refresh_row]['type']    = 'text';
+                  $this->NM_ajax_info['fldList']['kinship_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->kinship_)));
+                  $this->NM_ajax_info['fldList']['kinship_' . $this->nmgp_refresh_row]['labList'] = array($this->form_encode_input(NM_charset_to_utf8($tmpLabel_kinship_)));
 
                   if ((isset($this->Embutida_form) && $this->Embutida_form) && (!isset($this->Embutida_ronly) || !$this->Embutida_ronly))
                   {
-                      if (!isset($this->NM_ajax_info['readOnly']['firstname_' . $this->nmgp_refresh_row]))
+                      if (!isset($this->NM_ajax_info['readOnly']['kinship_' . $this->nmgp_refresh_row]))
                       {
-                          $this->NM_ajax_info['readOnly']['firstname_' . $this->nmgp_refresh_row] = "off";
+                          $this->NM_ajax_info['readOnly']['kinship_' . $this->nmgp_refresh_row] = "off";
                       }
                   }
                   elseif (isset($this->Embutida_ronly) && $this->Embutida_ronly)
                   {
-                      if (!isset($this->NM_ajax_info['readOnly']['firstname_' . $this->nmgp_refresh_row]))
+                      if (!isset($this->NM_ajax_info['readOnly']['kinship_' . $this->nmgp_refresh_row]))
                       {
-                          $this->NM_ajax_info['readOnly']['firstname_' . $this->nmgp_refresh_row] = "on";
-                      }
-                  }
-
-                  $this->NM_ajax_info['fldList']['lastname_' . $this->nmgp_refresh_row]['type']    = 'text';
-                  $this->NM_ajax_info['fldList']['lastname_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->lastname_)));
-                  $this->NM_ajax_info['fldList']['lastname_' . $this->nmgp_refresh_row]['labList'] = array($this->form_encode_input(NM_charset_to_utf8($tmpLabel_lastname_)));
-
-                  if ((isset($this->Embutida_form) && $this->Embutida_form) && (!isset($this->Embutida_ronly) || !$this->Embutida_ronly))
-                  {
-                      if (!isset($this->NM_ajax_info['readOnly']['lastname_' . $this->nmgp_refresh_row]))
-                      {
-                          $this->NM_ajax_info['readOnly']['lastname_' . $this->nmgp_refresh_row] = "off";
-                      }
-                  }
-                  elseif (isset($this->Embutida_ronly) && $this->Embutida_ronly)
-                  {
-                      if (!isset($this->NM_ajax_info['readOnly']['lastname_' . $this->nmgp_refresh_row]))
-                      {
-                          $this->NM_ajax_info['readOnly']['lastname_' . $this->nmgp_refresh_row] = "on";
+                          $this->NM_ajax_info['readOnly']['kinship_' . $this->nmgp_refresh_row] = "on";
                       }
                   }
 
                   $aLookup = array();
-$aLookup[] = array(sub_aggregate_pack_protect_string('F') => str_replace('<', '&lt;',sub_aggregate_pack_protect_string("Fisica")));
-$aLookup[] = array(sub_aggregate_pack_protect_string('J') => str_replace('<', '&lt;',sub_aggregate_pack_protect_string("Juridica")));
-$_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_'][] = 'F';
-$_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_'][] = 'J';
+ 
+$nmgp_def_dados = "" ; 
+if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']))
+{
+    $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']); 
+}
+else
+{
+    $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array(); 
+}
+   if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+   { 
+       $GLOBALS["NM_ERRO_IBASE"] = 1;  
+   } 
+   $nm_nao_carga = false;
+   $nmgp_def_dados = "" ; 
+
+   $old_value_idaggregate_ = $this->idaggregate_;
+   $this->nm_tira_formatacao();
+
+
+   $unformatted_value_idaggregate_ = $this->idaggregate_;
+
+   $nm_comando = "SELECT idCostumer, name  FROM cad_costumer  ORDER BY name";
+
+   $this->idaggregate_ = $old_value_idaggregate_;
+
+   $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando;
+   $_SESSION['scriptcase']['sc_sql_ult_conexao'] = '';
+   if ($nm_comando != "" && $rs = $this->Db->Execute($nm_comando))
+   {
+       while (!$rs->EOF) 
+       { 
+              $rs->fields[0] = str_replace(',', '.', $rs->fields[0]);
+              $rs->fields[0] = (strpos(strtolower($rs->fields[0]), "e")) ? (float)$rs->fields[0] : $rs->fields[0];
+              $rs->fields[0] = (string)$rs->fields[0];
+              $aLookup[] = array(sub_aggregate_pack_protect_string(NM_charset_to_utf8($rs->fields[0])) => str_replace('<', '&lt;', sub_aggregate_pack_protect_string(NM_charset_to_utf8($rs->fields[1]))));
+              $nmgp_def_dados .= $rs->fields[1] . "?#?" ; 
+              $nmgp_def_dados .= $rs->fields[0] . "?#?N?@?" ; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'][] = $rs->fields[0];
+              $rs->MoveNext() ; 
+       } 
+       $rs->Close() ; 
+   } 
+   elseif ($GLOBALS["NM_ERRO_IBASE"] != 1 && $nm_comando != "")  
+   {  
+       $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
+       exit; 
+   } 
+   $GLOBALS["NM_ERRO_IBASE"] = 0; 
           $sLabelTemp = '';
           foreach ($aLookup as $aValData)
           {
-              if (key($aValData) == sub_aggregate_pack_protect_string(NM_charset_to_utf8($this->doctype_)))
+              if (key($aValData) == sub_aggregate_pack_protect_string(NM_charset_to_utf8($this->idcostumer_)))
               {
                   $sLabelTemp = current($aValData);
               }
           }
-          $tmpLabel_doctype_ = $sLabelTemp;
-                  $this->NM_ajax_info['fldList']['doctype_' . $this->nmgp_refresh_row]['type']    = 'radio';
-                  $this->NM_ajax_info['fldList']['doctype_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->doctype_)));
-                  $this->NM_ajax_info['fldList']['doctype_' . $this->nmgp_refresh_row]['labList'] = array($tmpLabel_doctype_);
+          $tmpLabel_idcostumer_ = $sLabelTemp;
+                  $this->NM_ajax_info['fldList']['idcostumer_' . $this->nmgp_refresh_row]['type']    = 'select';
+                  $this->NM_ajax_info['fldList']['idcostumer_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->idcostumer_)));
+                  $this->NM_ajax_info['fldList']['idcostumer_' . $this->nmgp_refresh_row]['labList'] = array($tmpLabel_idcostumer_);
 
                   if ((isset($this->Embutida_form) && $this->Embutida_form) && (!isset($this->Embutida_ronly) || !$this->Embutida_ronly))
                   {
-                      if (!isset($this->NM_ajax_info['readOnly']['doctype_' . $this->nmgp_refresh_row]))
+                      if (!isset($this->NM_ajax_info['readOnly']['idcostumer_' . $this->nmgp_refresh_row]))
                       {
-                          $this->NM_ajax_info['readOnly']['doctype_' . $this->nmgp_refresh_row] = "off";
+                          $this->NM_ajax_info['readOnly']['idcostumer_' . $this->nmgp_refresh_row] = "off";
                       }
                   }
                   elseif (isset($this->Embutida_ronly) && $this->Embutida_ronly)
                   {
-                      if (!isset($this->NM_ajax_info['readOnly']['doctype_' . $this->nmgp_refresh_row]))
+                      if (!isset($this->NM_ajax_info['readOnly']['idcostumer_' . $this->nmgp_refresh_row]))
                       {
-                          $this->NM_ajax_info['readOnly']['doctype_' . $this->nmgp_refresh_row] = "on";
-                      }
-                  }
-
-                  $this->NM_ajax_info['fldList']['docnumber_' . $this->nmgp_refresh_row]['type']    = 'text';
-                  $this->NM_ajax_info['fldList']['docnumber_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->docnumber_)));
-                  $this->NM_ajax_info['fldList']['docnumber_' . $this->nmgp_refresh_row]['labList'] = array($this->form_encode_input(NM_charset_to_utf8($tmpLabel_docnumber_)));
-
-                  if ((isset($this->Embutida_form) && $this->Embutida_form) && (!isset($this->Embutida_ronly) || !$this->Embutida_ronly))
-                  {
-                      if (!isset($this->NM_ajax_info['readOnly']['docnumber_' . $this->nmgp_refresh_row]))
-                      {
-                          $this->NM_ajax_info['readOnly']['docnumber_' . $this->nmgp_refresh_row] = "off";
-                      }
-                  }
-                  elseif (isset($this->Embutida_ronly) && $this->Embutida_ronly)
-                  {
-                      if (!isset($this->NM_ajax_info['readOnly']['docnumber_' . $this->nmgp_refresh_row]))
-                      {
-                          $this->NM_ajax_info['readOnly']['docnumber_' . $this->nmgp_refresh_row] = "on";
+                          $this->NM_ajax_info['readOnly']['idcostumer_' . $this->nmgp_refresh_row] = "on";
                       }
                   }
 
@@ -3892,10 +3701,8 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
           $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['reg_I_E'] = 0; 
       }
       $Cmps_ord_def = array();
-      $Cmps_ord_def[] = "firstName";
-      $Cmps_ord_def[] = "lastName";
-      $Cmps_ord_def[] = "docType";
-      $Cmps_ord_def[] = "docNumber";
+      $Cmps_ord_def[] = "kinship";
+      $Cmps_ord_def[] = "idCostumer";
       $Cmps_ord_def[] = "idAggregate";
       $sc_order_by  = "";
       $sc_order_by = "idAggregate";
@@ -3912,6 +3719,9 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['ordem_cmp'] = $this->nmgp_ordem; 
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['ordem_ord'] = ' asc'; 
               switch ($this->nmgp_ordem) {
+                  case "idCostumer":
+                      $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['ordem_ord'] = ' desc';
+                      break;
                   case "idAggregate":
                       $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['ordem_ord'] = ' desc';
                       break;
@@ -3938,11 +3748,11 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
       } 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT idAggregate, docNumber, docType, firstName, lastName, idHolder from " . $this->Ini->nm_tabela . $sc_where . $sc_order_by; 
+          $nmgp_select = "SELECT idAggregate, idCostumer, kinship, idHolder from " . $this->Ini->nm_tabela . $sc_where . $sc_order_by; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT idAggregate, docNumber, docType, firstName, lastName, idHolder from " . $this->Ini->nm_tabela . $sc_where . $sc_order_by; 
+          $nmgp_select = "SELECT idAggregate, idCostumer, kinship, idHolder from " . $this->Ini->nm_tabela . $sc_where . $sc_order_by; 
       } 
       if ($this->nmgp_opcao != "novo") 
       { 
@@ -4047,27 +3857,15 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
               }
               $this->idaggregate_ = $rs->fields[0] ; 
               $this->nmgp_dados_select['idaggregate_'] = $this->idaggregate_;
-              $this->docnumber_ = $rs->fields[1] ; 
-              $this->nmgp_dados_select['docnumber_'] = $this->docnumber_;
-              $this->docnumber_ = trim($this->docnumber_);
-              if (strlen($this->docnumber_) < 14 && strlen($this->docnumber_) != 11 && !empty($this->docnumber_)) 
-              { 
-                  $this->docnumber_ = str_repeat(0, 14 - strlen($this->docnumber_)) . $this->docnumber_; 
-              } 
-              if ($this->doctype_ == "F")
-              { 
-                  $this->docnumber_ = substr($this->docnumber_, strlen($this->docnumber_) - 11); 
-              } 
-              $this->doctype_ = $rs->fields[2] ; 
-              $this->nmgp_dados_select['doctype_'] = $this->doctype_;
-              $this->firstname_ = $rs->fields[3] ; 
-              $this->nmgp_dados_select['firstname_'] = $this->firstname_;
-              $this->lastname_ = $rs->fields[4] ; 
-              $this->nmgp_dados_select['lastname_'] = $this->lastname_;
-              $this->idholder_ = $rs->fields[5] ; 
+              $this->idcostumer_ = $rs->fields[1] ; 
+              $this->nmgp_dados_select['idcostumer_'] = $this->idcostumer_;
+              $this->kinship_ = $rs->fields[2] ; 
+              $this->nmgp_dados_select['kinship_'] = $this->kinship_;
+              $this->idholder_ = $rs->fields[3] ; 
               $this->nmgp_dados_select['idholder_'] = $this->idholder_;
               $GLOBALS["NM_ERRO_IBASE"] = 0; 
               $this->idaggregate_ = (string)$this->idaggregate_; 
+              $this->idcostumer_ = (string)$this->idcostumer_; 
               $this->idholder_ = (string)$this->idholder_; 
               if (empty($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['parms'])) 
               { 
@@ -4080,10 +3878,8 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
               $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['dados_select'][$sc_seq_vert] = $this->nmgp_dados_select;
               $this->nm_guardar_campos();
               $this->nm_formatar_campos();
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['firstname_'] =  $this->firstname_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['lastname_'] =  $this->lastname_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['doctype_'] =  $this->doctype_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['docnumber_'] =  $this->docnumber_; 
+             $this->form_vert_sub_aggregate[$sc_seq_vert]['kinship_'] =  $this->kinship_; 
+             $this->form_vert_sub_aggregate[$sc_seq_vert]['idcostumer_'] =  $this->idcostumer_; 
              $this->form_vert_sub_aggregate[$sc_seq_vert]['idaggregate_'] =  $this->idaggregate_; 
              $this->form_vert_sub_aggregate[$sc_seq_vert]['idholder_'] =  $this->idholder_; 
               $sc_seq_vert++; 
@@ -4126,10 +3922,8 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
           while ($sc_seq_vert <= $this->sc_max_reg_incl) 
           { 
               $this->idaggregate_ = "";  
-              $this->docnumber_ = "";  
-              $this->doctype_ = "";  
-              $this->firstname_ = "";  
-              $this->lastname_ = "";  
+              $this->idcostumer_ = "";  
+              $this->kinship_ = "";  
               $this->nm_proc_onload_record($sc_seq_vert);
               if (($this->Embutida_form || $this->Embutida_multi) && isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['foreign_key']) && !empty($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['foreign_key']))
               {
@@ -4144,10 +3938,8 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
               }
               $this->nm_guardar_campos();
               $this->nm_formatar_campos();
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['firstname_'] =  $this->firstname_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['lastname_'] =  $this->lastname_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['doctype_'] =  $this->doctype_; 
-             $this->form_vert_sub_aggregate[$sc_seq_vert]['docnumber_'] =  $this->docnumber_; 
+             $this->form_vert_sub_aggregate[$sc_seq_vert]['kinship_'] =  $this->kinship_; 
+             $this->form_vert_sub_aggregate[$sc_seq_vert]['idcostumer_'] =  $this->idcostumer_; 
              $this->form_vert_sub_aggregate[$sc_seq_vert]['idaggregate_'] =  $this->idaggregate_; 
              $this->form_vert_sub_aggregate[$sc_seq_vert]['idholder_'] =  $this->idholder_; 
               $sc_seq_vert++; 
@@ -4326,10 +4118,10 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_']
     function form_highlight_search_quicksearch(&$result, $field, $value)
     {
         $searchOk = false;
-        if ('SC_all_Cmp' == $this->nmgp_fast_search && in_array($field, array("firstname_", "lastname_", "doctype_", "docnumber_", "idaggregate_"))) {
+        if ('SC_all_Cmp' == $this->nmgp_fast_search && in_array($field, array("kinship_", "idcostumer_", "idaggregate_"))) {
             $searchOk = true;
         }
-        elseif ($field == $this->nmgp_fast_search && in_array($field, array("firstname_", "lastname_", "doctype_", "docnumber_", "idaggregate_"))) {
+        elseif ($field == $this->nmgp_fast_search && in_array($field, array("kinship_", "idcostumer_", "idaggregate_"))) {
             $searchOk = true;
         }
 
@@ -4662,13 +4454,67 @@ function sc_file_size($file, $format = false)
      }
  } // new_date_format
 
-   function Form_lookup_doctype_()
+   function Form_lookup_idcostumer_()
    {
-       $nmgp_def_dados  = "";
-       $nmgp_def_dados .= "Fisica?#?F?#?S?@?";
-       $nmgp_def_dados .= "Juridica?#?J?#?N?@?";
-       $todo = explode("?@?", $nmgp_def_dados);
-       return $todo;
+$nmgp_def_dados = "" ; 
+if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']))
+{
+    $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']); 
+}
+else
+{
+    $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array(); 
+}
+   if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+   { 
+       $GLOBALS["NM_ERRO_IBASE"] = 1;  
+   } 
+   $nm_nao_carga = false;
+   $nmgp_def_dados = "" ; 
+   if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']))
+   {
+       $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']); 
+   }
+   else
+   {
+       $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array(); 
+    }
+
+   $old_value_idaggregate_ = $this->idaggregate_;
+   $this->nm_tira_formatacao();
+
+
+   $unformatted_value_idaggregate_ = $this->idaggregate_;
+
+   $nm_comando = "SELECT idCostumer, name  FROM cad_costumer  ORDER BY name";
+
+   $this->idaggregate_ = $old_value_idaggregate_;
+
+   $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando;
+   $_SESSION['scriptcase']['sc_sql_ult_conexao'] = '';
+   if ($nm_comando != "" && $rs = $this->Db->Execute($nm_comando))
+   {
+       while (!$rs->EOF) 
+       { 
+              $rs->fields[0] = str_replace(',', '.', $rs->fields[0]);
+              $rs->fields[0] = (strpos(strtolower($rs->fields[0]), "e")) ? (float)$rs->fields[0] : $rs->fields[0];
+              $rs->fields[0] = (string)$rs->fields[0];
+              $nmgp_def_dados .= $rs->fields[1] . "?#?" ; 
+              $nmgp_def_dados .= $rs->fields[0] . "?#?N?@?" ; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'][] = $rs->fields[0];
+              $rs->MoveNext() ; 
+       } 
+       $rs->Close() ; 
+   } 
+   elseif ($GLOBALS["NM_ERRO_IBASE"] != 1 && $nm_comando != "")  
+   {  
+       $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
+       exit; 
+   } 
+   $GLOBALS["NM_ERRO_IBASE"] = 0; 
+   $todox = str_replace("?#?@?#?", "?#?@ ?#?", trim($nmgp_def_dados)) ; 
+   $todo  = explode("?@?", $todox) ; 
+   return $todo;
 
    }
    function SC_fast_search($in_fields, $arg_search, $data_search)
@@ -4700,25 +4546,17 @@ function sc_file_size($file, $format = false)
       }
       $sv_data = $data_search;
       foreach ($fields as $field) {
-          if ($field == "SC_all_Cmp" || $field == "firstname_") 
+          if ($field == "SC_all_Cmp" || $field == "kinship_") 
           {
-              $this->SC_monta_condicao($comando, "firstName", $arg_search, $data_search, "VARCHAR", false);
+              $this->SC_monta_condicao($comando, "kinship", $arg_search, $data_search, "VARCHAR", false);
           }
-          if ($field == "SC_all_Cmp" || $field == "lastname_") 
+          if ($field == "SC_all_Cmp" || $field == "idcostumer_") 
           {
-              $this->SC_monta_condicao($comando, "lastName", $arg_search, $data_search, "VARCHAR", false);
-          }
-          if ($field == "SC_all_Cmp" || $field == "doctype_") 
-          {
-              $data_lookup = $this->SC_lookup_doctype_($arg_search, $data_search);
+              $data_lookup = $this->SC_lookup_idcostumer_($arg_search, $data_search);
               if (is_array($data_lookup) && !empty($data_lookup)) 
               {
-                  $this->SC_monta_condicao($comando, "docType", $arg_search, $data_lookup, "VARCHAR", false);
+                  $this->SC_monta_condicao($comando, "idCostumer", $arg_search, $data_lookup, "INT", false);
               }
-          }
-          if ($field == "SC_all_Cmp" || $field == "docnumber_") 
-          {
-              $this->SC_monta_condicao($comando, "docNumber", $arg_search, $data_search, "VARCHAR", false);
           }
           if ($field == "SC_all_Cmp" || $field == "idaggregate_") 
           {
@@ -4785,7 +4623,7 @@ function sc_file_size($file, $format = false)
       if ($tp_unaccent) {
           $Nm_accent = $this->Ini->Nm_accent_yes;
       }
-      $nm_numeric[] = "idaggregate";$nm_numeric[] = "idholder";
+      $nm_numeric[] = "idaggregate";$nm_numeric[] = "idcostumer";$nm_numeric[] = "idholder";
       if (in_array($campo_join, $nm_numeric))
       {
          if ($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['decimal_db'] == ".")
@@ -4903,54 +4741,95 @@ function sc_file_size($file, $format = false)
             break;
          }
    }
-   function SC_lookup_doctype_($condicao, $campo)
+   function SC_lookup_idcostumer_($condicao, $campo)
    {
-       $data_look = array();
-       $campo  = substr($this->Db->qstr($campo), 1, -1);
-       $data_look['F'] = "Fisica";
-       $data_look['J'] = "Juridica";
        $result = array();
-       foreach ($data_look as $chave => $label) 
+       $campo_orig = $campo;
+       $campo  = substr($this->Db->qstr($campo), 1, -1);
+       $nm_comando = "SELECT name, idCostumer FROM cad_costumer WHERE (#cmp_iname#cmp_f#cmp_apos LIKE '%#arg_i" . $campo . "#arg_f%'#arg_apos)" ; 
+       if ($condicao == "ii")
        {
-           if ($condicao == "eq" && $campo == $label)
-           {
-               $result[] = $chave;
-           }
-           if ($condicao == "ii" && $campo == substr($label, 0, strlen($campo)))
-           {
-               $result[] = $chave;
-           }
-           if ($condicao == "qp" && strstr($label, $campo))
-           {
-               $result[] = $chave;
-           }
-           if ($condicao == "np" && !strstr($label, $campo))
-           {
-               $result[] = $chave;
-           }
-           if ($condicao == "df" && $campo != $label)
-           {
-               $result[] = $chave;
-           }
-           if ($condicao == "gt" && $label > $campo )
-           {
-               $result[] = $chave;
-           }
-           if ($condicao == "ge" && $label >= $campo)
-            {
-               $result[] = $chave;
-           }
-           if ($condicao == "lt" && $label < $campo)
-           {
-               $result[] = $chave;
-           }
-           if ($condicao == "le" && $label <= $campo)
-           {
-               $result[] = $chave;
-           }
-          
+           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "LIKE '#arg_i" . $campo . "#arg_f%'", $nm_comando);
        }
-       return $result;
+       if ($condicao == "np")
+       {
+           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "NOT LIKE '%#arg_i" . $campo . "#arg_f%'", $nm_comando);
+       }
+       if ($condicao == "df")
+       {
+           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "<> '#arg_i" . $campo . "#arg_f'", $nm_comando);
+       }
+       if ($condicao == "gt")
+       {
+           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "> '#arg_i" . $campo . "#arg_f'", $nm_comando);
+       }
+       if ($condicao == "ge")
+       {
+           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", ">= '#arg_i" . $campo . "#arg_f'", $nm_comando);
+       }
+       if ($condicao == "lt")
+       {
+           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "< '#arg_i" . $campo . "#arg_f'", $nm_comando);
+       }
+       if ($condicao == "le")
+       {
+           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "<= '#arg_i" . $campo . "#arg_f'", $nm_comando);
+       }
+       $nm_comando = str_replace(array('#cmp_i','#cmp_f','#cmp_apos','#arg_i','#arg_f','#arg_apos'), array('','','','','',''), $nm_comando); 
+       $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando; 
+       $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+       if ($rx = $this->Db->Execute($nm_comando)) 
+       { 
+           $campo = $campo_orig;
+           while (!$rx->EOF) 
+           { 
+               $chave = $rx->fields[1];
+               $label = $rx->fields[0];
+               if ($condicao == "eq" && $campo == $label)
+               {
+                   $result[] = $chave;
+               }
+               if ($condicao == "ii" && $campo == substr($label, 0, strlen($campo)))
+               {
+                   $result[] = $chave;
+               }
+               if ($condicao == "qp" && strstr($label, $campo))
+               {
+                   $result[] = $chave;
+               }
+               if ($condicao == "np" && !strstr($label, $campo))
+               {
+                   $result[] = $chave;
+               }
+               if ($condicao == "df" && $campo != $label)
+               {
+                   $result[] = $chave;
+               }
+               if ($condicao == "gt" && $label > $campo )
+               {
+                   $result[] = $chave;
+               }
+               if ($condicao == "ge" && $label >= $campo)
+               {
+                   $result[] = $chave;
+               }
+               if ($condicao == "lt" && $label < $campo)
+               {
+                   $result[] = $chave;
+               }
+               if ($condicao == "le" && $label <= $campo)
+               {
+                   $result[] = $chave;
+               }
+               $rx->MoveNext() ;
+           }  
+           return $result;
+       }  
+       elseif ($GLOBALS["NM_ERRO_IBASE"] != 1)  
+       { 
+           $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
+           exit; 
+       } 
    }
 function nmgp_redireciona($tipo=0)
 {
@@ -5238,6 +5117,8 @@ if (parent && parent.scAjaxDetailValue)
     function scGetDefaultFieldOrder($fieldName)
     {
         switch ($fieldName) {
+            case "idCostumer":
+                return 'desc';
             case "idAggregate":
                 return 'desc';
             case "idHolder":

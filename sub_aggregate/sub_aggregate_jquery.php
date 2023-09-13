@@ -51,36 +51,22 @@ function scSetFocusOnField($oField) {
 } // scSetFocusOnField
 
 function scEventControl_init(iSeqRow) {
-  scEventControl_data["firstname_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["lastname_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["doctype_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["docnumber_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
+  scEventControl_data["kinship_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
+  scEventControl_data["idcostumer_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["idaggregate_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
 }
 
 function scEventControl_active(iSeqRow) {
-  if (scEventControl_data["firstname_" + iSeqRow] && scEventControl_data["firstname_" + iSeqRow]["blur"]) {
+  if (scEventControl_data["kinship_" + iSeqRow] && scEventControl_data["kinship_" + iSeqRow]["blur"]) {
     return true;
   }
-  if (scEventControl_data["firstname_" + iSeqRow] && scEventControl_data["firstname_" + iSeqRow]["change"]) {
+  if (scEventControl_data["kinship_" + iSeqRow] && scEventControl_data["kinship_" + iSeqRow]["change"]) {
     return true;
   }
-  if (scEventControl_data["lastname_" + iSeqRow] && scEventControl_data["lastname_" + iSeqRow]["blur"]) {
+  if (scEventControl_data["idcostumer_" + iSeqRow] && scEventControl_data["idcostumer_" + iSeqRow]["blur"]) {
     return true;
   }
-  if (scEventControl_data["lastname_" + iSeqRow] && scEventControl_data["lastname_" + iSeqRow]["change"]) {
-    return true;
-  }
-  if (scEventControl_data["doctype_" + iSeqRow] && scEventControl_data["doctype_" + iSeqRow]["blur"]) {
-    return true;
-  }
-  if (scEventControl_data["doctype_" + iSeqRow] && scEventControl_data["doctype_" + iSeqRow]["change"]) {
-    return true;
-  }
-  if (scEventControl_data["docnumber_" + iSeqRow] && scEventControl_data["docnumber_" + iSeqRow]["blur"]) {
-    return true;
-  }
-  if (scEventControl_data["docnumber_" + iSeqRow] && scEventControl_data["docnumber_" + iSeqRow]["change"]) {
+  if (scEventControl_data["idcostumer_" + iSeqRow] && scEventControl_data["idcostumer_" + iSeqRow]["change"]) {
     return true;
   }
   if (scEventControl_data["idaggregate_" + iSeqRow] && scEventControl_data["idaggregate_" + iSeqRow]["blur"]) {
@@ -106,6 +92,9 @@ function scEventControl_onFocus(oField, iSeq) {
   fieldId = $(oField).attr("id");
   fieldName = fieldId.substr(12);
   scEventControl_data[fieldName]["blur"] = true;
+  if ("idcostumer_" + iSeq == fieldName) {
+    scEventControl_data[fieldName]["blur"] = false;
+  }
   scEventControl_data[fieldName]["change"] = false;
 } // scEventControl_onFocus
 
@@ -132,18 +121,12 @@ function scJQEventsAdd(iSeqRow) {
   $('#id_sc_field_idaggregate_' + iSeqRow).bind('blur', function() { sc_sub_aggregate_idaggregate__onblur(this, iSeqRow) })
                                           .bind('change', function() { sc_sub_aggregate_idaggregate__onchange(this, iSeqRow) })
                                           .bind('focus', function() { sc_sub_aggregate_idaggregate__onfocus(this, iSeqRow) });
-  $('#id_sc_field_docnumber_' + iSeqRow).bind('blur', function() { sc_sub_aggregate_docnumber__onblur(this, iSeqRow) })
-                                        .bind('change', function() { sc_sub_aggregate_docnumber__onchange(this, iSeqRow) })
-                                        .bind('focus', function() { sc_sub_aggregate_docnumber__onfocus(this, iSeqRow) });
-  $('#id_sc_field_doctype_' + iSeqRow).bind('blur', function() { sc_sub_aggregate_doctype__onblur(this, iSeqRow) })
-                                      .bind('change', function() { sc_sub_aggregate_doctype__onchange(this, iSeqRow) })
-                                      .bind('focus', function() { sc_sub_aggregate_doctype__onfocus(this, iSeqRow) });
-  $('#id_sc_field_firstname_' + iSeqRow).bind('blur', function() { sc_sub_aggregate_firstname__onblur(this, iSeqRow) })
-                                        .bind('change', function() { sc_sub_aggregate_firstname__onchange(this, iSeqRow) })
-                                        .bind('focus', function() { sc_sub_aggregate_firstname__onfocus(this, iSeqRow) });
-  $('#id_sc_field_lastname_' + iSeqRow).bind('blur', function() { sc_sub_aggregate_lastname__onblur(this, iSeqRow) })
-                                       .bind('change', function() { sc_sub_aggregate_lastname__onchange(this, iSeqRow) })
-                                       .bind('focus', function() { sc_sub_aggregate_lastname__onfocus(this, iSeqRow) });
+  $('#id_sc_field_idcostumer_' + iSeqRow).bind('blur', function() { sc_sub_aggregate_idcostumer__onblur(this, iSeqRow) })
+                                         .bind('change', function() { sc_sub_aggregate_idcostumer__onchange(this, iSeqRow) })
+                                         .bind('focus', function() { sc_sub_aggregate_idcostumer__onfocus(this, iSeqRow) });
+  $('#id_sc_field_kinship_' + iSeqRow).bind('blur', function() { sc_sub_aggregate_kinship__onblur(this, iSeqRow) })
+                                      .bind('change', function() { sc_sub_aggregate_kinship__onchange(this, iSeqRow) })
+                                      .bind('focus', function() { sc_sub_aggregate_kinship__onfocus(this, iSeqRow) });
   $('#id_sc_field_idholder_' + iSeqRow).bind('change', function() { sc_sub_aggregate_idholder__onchange(this, iSeqRow) });
 } // scJQEventsAdd
 
@@ -162,62 +145,32 @@ function sc_sub_aggregate_idaggregate__onfocus(oThis, iSeqRow) {
   scCssFocus(oThis, iSeqRow);
 }
 
-function sc_sub_aggregate_docnumber__onblur(oThis, iSeqRow) {
-  do_ajax_sub_aggregate_validate_docnumber_(iSeqRow);
+function sc_sub_aggregate_idcostumer__onblur(oThis, iSeqRow) {
+  do_ajax_sub_aggregate_validate_idcostumer_(iSeqRow);
   scCssBlur(oThis, iSeqRow);
 }
 
-function sc_sub_aggregate_docnumber__onchange(oThis, iSeqRow) {
+function sc_sub_aggregate_idcostumer__onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
   nm_check_insert(iSeqRow);
 }
 
-function sc_sub_aggregate_docnumber__onfocus(oThis, iSeqRow) {
+function sc_sub_aggregate_idcostumer__onfocus(oThis, iSeqRow) {
   scEventControl_onFocus(oThis, iSeqRow);
   scCssFocus(oThis, iSeqRow);
 }
 
-function sc_sub_aggregate_doctype__onblur(oThis, iSeqRow) {
-  do_ajax_sub_aggregate_validate_doctype_(iSeqRow);
+function sc_sub_aggregate_kinship__onblur(oThis, iSeqRow) {
+  do_ajax_sub_aggregate_validate_kinship_(iSeqRow);
   scCssBlur(oThis, iSeqRow);
 }
 
-function sc_sub_aggregate_doctype__onchange(oThis, iSeqRow) {
+function sc_sub_aggregate_kinship__onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
   nm_check_insert(iSeqRow);
 }
 
-function sc_sub_aggregate_doctype__onfocus(oThis, iSeqRow) {
-  scEventControl_onFocus(oThis, iSeqRow);
-  scCssFocus(oThis, iSeqRow);
-}
-
-function sc_sub_aggregate_firstname__onblur(oThis, iSeqRow) {
-  do_ajax_sub_aggregate_validate_firstname_(iSeqRow);
-  scCssBlur(oThis, iSeqRow);
-}
-
-function sc_sub_aggregate_firstname__onchange(oThis, iSeqRow) {
-  scMarkFormAsChanged();
-  nm_check_insert(iSeqRow);
-}
-
-function sc_sub_aggregate_firstname__onfocus(oThis, iSeqRow) {
-  scEventControl_onFocus(oThis, iSeqRow);
-  scCssFocus(oThis, iSeqRow);
-}
-
-function sc_sub_aggregate_lastname__onblur(oThis, iSeqRow) {
-  do_ajax_sub_aggregate_validate_lastname_(iSeqRow);
-  scCssBlur(oThis, iSeqRow);
-}
-
-function sc_sub_aggregate_lastname__onchange(oThis, iSeqRow) {
-  scMarkFormAsChanged();
-  nm_check_insert(iSeqRow);
-}
-
-function sc_sub_aggregate_lastname__onfocus(oThis, iSeqRow) {
+function sc_sub_aggregate_kinship__onfocus(oThis, iSeqRow) {
   scEventControl_onFocus(oThis, iSeqRow);
   scCssFocus(oThis, iSeqRow);
 }
@@ -233,51 +186,33 @@ function displayChange_block(block, status) {
 }
 
 function displayChange_block_0(status) {
-	displayChange_field("firstname_", "", status);
-	displayChange_field("lastname_", "", status);
-	displayChange_field("doctype_", "", status);
-	displayChange_field("docnumber_", "", status);
+	displayChange_field("kinship_", "", status);
+	displayChange_field("idcostumer_", "", status);
 }
 
 function displayChange_row(row, status) {
-	displayChange_field_firstname_(row, status);
-	displayChange_field_lastname_(row, status);
-	displayChange_field_doctype_(row, status);
-	displayChange_field_docnumber_(row, status);
+	displayChange_field_kinship_(row, status);
+	displayChange_field_idcostumer_(row, status);
 	displayChange_field_idaggregate_(row, status);
 }
 
 function displayChange_field(field, row, status) {
-	if ("firstname_" == field) {
-		displayChange_field_firstname_(row, status);
+	if ("kinship_" == field) {
+		displayChange_field_kinship_(row, status);
 	}
-	if ("lastname_" == field) {
-		displayChange_field_lastname_(row, status);
-	}
-	if ("doctype_" == field) {
-		displayChange_field_doctype_(row, status);
-	}
-	if ("docnumber_" == field) {
-		displayChange_field_docnumber_(row, status);
+	if ("idcostumer_" == field) {
+		displayChange_field_idcostumer_(row, status);
 	}
 	if ("idaggregate_" == field) {
 		displayChange_field_idaggregate_(row, status);
 	}
 }
 
-function displayChange_field_firstname_(row, status) {
+function displayChange_field_kinship_(row, status) {
     var fieldId;
 }
 
-function displayChange_field_lastname_(row, status) {
-    var fieldId;
-}
-
-function displayChange_field_doctype_(row, status) {
-    var fieldId;
-}
-
-function displayChange_field_docnumber_(row, status) {
+function displayChange_field_idcostumer_(row, status) {
     var fieldId;
 }
 

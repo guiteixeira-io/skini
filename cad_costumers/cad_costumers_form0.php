@@ -739,6 +739,8 @@ if (!isset($this->NM_ajax_info['param']['buffer_output']) || !$this->NM_ajax_inf
 }
 
 ?>
+<script type="text/javascript" src="<?php  echo $this->Ini->path_js . "/jsrsClient.js" ?>"> 
+</script> 
 <div id="idJSSpecChar" style="display: none;"></div>
 <script type="text/javascript">
 function NM_tp_critica(TP)
@@ -752,6 +754,8 @@ function NM_tp_critica(TP)
 <?php
  include_once("cad_costumers_js0.php");
 ?>
+<script type="text/javascript" src="<?php  echo $this->Ini->path_js . "/jsrsClient.js" ?>"> 
+</script> 
 <script type="text/javascript"> 
  function setLocale(oSel)
  {
@@ -1927,7 +1931,9 @@ else
 <?php } else { ?>
 <span id="id_read_on_zipcode" class="sc-ui-readonly-zipcode css_zipcode_line" style="<?php echo $sStyleReadLab_zipcode; ?>"><?php echo $this->form_format_readonly("zipcode", $this->form_encode_input($this->zipcode)); ?></span><span id="id_read_off_zipcode" class="css_read_off_zipcode<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_zipcode; ?>">
  <input class="sc-js-input scFormObjectOdd css_zipcode_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_zipcode" type=text name="zipcode" value="<?php echo $this->form_encode_input($zipcode) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=10"; } ?> alt="{datatype: 'integer', maxLength: 10, thousandsSep: '<?php echo str_replace("'", "\'", $this->field_config['zipcode']['symbol_grp']); ?>', thousandsFormat: <?php echo $this->field_config['zipcode']['symbol_fmt']; ?>, allowNegative: false, onlyNegative: false, negativePos: <?php echo (4 == $this->field_config['zipcode']['format_neg'] ? "'suffix'" : "'prefix'") ?>, enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=8"; } ?> alt="{datatype: 'cep', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" >&nbsp;<?php echo nmButtonOutput($this->arr_buttons, "bzipcode", "tb_show('', '" . $this->Ini->sc_protocolo . $this->Ini->server . $this->Ini->path_link . SC_dir_app_name('cad_costumers'). "/cad_costumers_cep.php?cep=&form_origem=F1;CEP,zipcode;UF,zipstate;CIDADE,zipcity;BAIRRO,zipdistrict;RUA,zipstreet&TB_iframe=true&height=350&width=420&modal=true', '')", "tb_show('', '" . $this->Ini->sc_protocolo . $this->Ini->server . $this->Ini->path_link . SC_dir_app_name('cad_costumers'). "/cad_costumers_cep.php?cep=&form_origem=F1;CEP,zipcode;UF,zipstate;CIDADE,zipcity;BAIRRO,zipdistrict;RUA,zipstreet&TB_iframe=true&height=350&width=420&modal=true', '')", "zipcode_cep", "", "", "", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+
+</span><?php } ?>
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_zipcode_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_zipcode_text"></span></td></tr></table></td></tr></table> </TD>
    <?php }?>
 

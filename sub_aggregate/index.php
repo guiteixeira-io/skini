@@ -292,7 +292,7 @@ class sub_aggregate_ini
       $this->nm_hr_criacao   = "173305"; 
       $this->nm_autor_alt    = "admin"; 
       $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "090240"; 
+      $this->nm_hr_ult_alt   = "125228"; 
       list($NM_usec, $NM_sec) = explode(" ", microtime()); 
       $this->nm_timestamp    = (float) $NM_sec; 
       $this->nm_app_version  = "1.0.0"; 
@@ -1089,7 +1089,7 @@ class sub_aggregate_ini
       $this->nm_bases_odbc       = array("odbc");
       $this->nm_bases_progress   = array("progress", "pdo_progress_odbc");
       $this->nm_bases_all        = array_merge($this->nm_bases_access, $this->nm_bases_ibase, $this->nm_bases_mysql, $this->nm_bases_postgres, $this->nm_bases_sqlite, $this->nm_bases_sybase, $this->nm_bases_vfp, $this->nm_bases_odbc, $this->nm_bases_progress);
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1DcXGZSBiZ1BYD5F7HuBYVcXKDWFaVoBOD9BiZkBiHABYHQJwDEBODkFeH5FYVoFGHQJKDQBqHArYHQXGDMvsVIBsV5FYHMBODcNmZSBqZ1rYHQFaHgvCHArCH5F/DoJsHQXsDuFaZ1vCVWBODMrwV9FeDuFqHMX7HQBqZ1X7DSNOHQBOHgvCHArCH5FGZuBODcBiDuBqHABYV5FaHgNKDkBODuFqDoFGDcBqVIJwD1rwHQF7HgBYVkJqHEXCHIraHQJKH9FUD1BeHuraDMrwV9BUH5FqHMBOHQJmZSBqZ1NOD5JwHgvCHEJqHEFqHMFGHQBiH9FUD1veHQXGDMrwV9FeV5FYHIJeHQBiZSBqHIrwHQNUDMrYZSXeDuFYVoXGDcJeZ9rqD1BeHuFGDMvsVIB/Dur/HMrqHQBiZkFGHIBeHuBqHgvCHEJqDWF/HMJwHQFYZSFUHIrKHuX7DMrwVcB/H5B7VEFGHQNmH9BODSrYHQFGHgvCHArsH5F/HMBqHQFYDQFaZ1BYHuBqHgNKDkBODuFqDoFGDcBqVIJwD1rwD5JeDMBYZSJqV5FaDoBODcJeDQFGD1veD5BOHgrYDkBsH5B7VEBiHQFYH9BOHArKD5XGDEBOZSXeDuFaDoJeDcJeDQX7Z1zGV5BiDMNOVIBOHEFYDoJeDcJUZ1FaD1NaD5FaHgvsVkXeDWFqZuFaHQNmDQX7HArYD5B/HgrKV9FiV5X7VErqHQBqZkFUZ1rYD5BqDEBeHEBUDWBmZuJeHQBiDuBOZ1rwVWXGHuBYDkFCDuX7VoX7D9BsH9B/Z1BeZMB/HgvCZSJGH5FYDoF7D9NwH9X7DSBYV5JeHuBYVcFKH5FqVoB/D9XOH9B/D1zGD5FaDMrYZSXeDuFYVoXGDcJeZ9rqD1BeV5BqHgvsDkB/V5X7DoX7D9BsH9FaD1rwZMB/DMNKZSJ3DuFYHIJwHQFYDQB/D1veHQBqDMBOVcFiV5FYHMB/DcFYZkFGDSrYHQJwDEBODkFeH5FYVoFGHQJKDQJsZ1rwHuJeDMzGDkFCH5XCHIFUHQXGZ1B/HAN7D5FaHgBeZSJqDWXCVoJsDcBiH9BiHAveD5NUHgNKDkBOV5FYHMBiHQFYH9FaD1rwZMFaDMBYVkJqV5FaDoraDcBwZSX7HIrwV5BOHgrKVcBODuX7VoB/D9BiZ1F7D1zGV5FUDErKHEFiDuJeDoBOHQJKDQJsZ1vCV5FGHuNOV9FeDWXCHMBiD9BsVIraD1rwV5X7HgBeHENiH5FYVoFaHQNmDQFGHIrKD5rqHgvsVIBOHEX7VoBOHQJmZ1F7Z1vmD5rqDEBOHArCDWF/DoBODcBwDQFUZ1rwV5X7HuzGVIBOV5X7DoJsD9XGZSB/HArYHQJwDEBODkFeH5FYVoFGHQJKDQBqHAvmV5JeDMvOZSNiH5B7VorqHQBqZkBiHAzGD5JeHgBeHEFiV5B3DoF7D9XsDuFaHAveV5XGDMBOVcFCH5FqVoraDcNmZSFaHIBeHuJsHgveHEJGDWr/HMXGD9NmDuBqD1veVWJsDMvmVcFKV5BmVoBqD9BsZkFGHArKHQraHgBeHArCV5XCHIFGHQNwDQFaDSBYHQBODMzGV9FiDWXCHIJsHQXOZkFGHArKV5FUDMrYZSXeV5FqHIJsHQJeDuBOZ1vCV5Je";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1D9XsDQFUHINaVWBODMvOZSJqH5FqVEBiHQNmZ1BOHANOHQF7DMBYHArCDWF/VoBiDcJUZSX7Z1BYHuFaDMvOVIBsDWXCDoJsDcBwH9B/Z1rYHQJwHgBeHEJGDuJeZuJeD9NwDQJsHIvsV5BOHgrKVcB/DWF/VEX7DcFYZSB/HAN7HQJsHgNKHArCDWFqHIJsD9XsZ9JeD1BeD5F7DMvmVcrsDWXCDoraDcNwH9B/HAN7D5XGDEBOZSXeV5XCZuJsDcBwDuFaHAveD5NUHgNKDkBOV5FYHMBiHQFYH9FaD1rwZMFaDMBYVkJqV5FaDoraDcBwZSX7HIrwV5BOHgrKVcBODuX7VoB/D9BiZ1F7D1zGV5FUDErKHEFiDuJeDoBOHQJKDQJsZ1vCV5FGHuNOV9FeDWXCVoX7HQXGZSB/HArYD5rqHgNOVkXeHEXCDoraDcBwDQFGHIrwHQFaHgrwDkB/HEFYDoXGHQJmZ1F7Z1vmD5rqDEBOHArCDWF/HMBqHQJeH9BiZ1BYHuX7HgvOVIBsV5FYHMraHQFYZkFGD1rKD5JwHgBOHArCV5B3ZuJeHQXGDuFaHIBeHuBODMvsVcXKHEF/HMF7HQFYZkFGD1zGZMBqDMveHArsDWFqDoJsDcJUZSX7HIBeD5BqHgvsZSJ3H5FqHMBOHQBqZSBODSNOHQNUHgBeVkJqH5FYHIFUHQXGDuBqD1BeHuX7DMvmVIBsV5F/VoBiHQFYZ1BODSrYHuX7HgveVkJqH5F/HMBqHQXGDuFaZ1BYHQrqDMBYVIBsDuFqHMB/DcBwH9B/HIrwV5JeDMBYDkBsH5FYHIF7HQJeH9FUHIrKHuJeDMBYV9FeDuX7HIrqHQFYZ1BOHArKHuJsHgNOZSJqDuJeHIrqHQXGDQFUD1BOVWBqDMvODkB/HEFYHMJeHQFYZkBiD1rKHuBOHgNOHErCV5FqHIXGDcJUZSX7HIBeD5BqHgvsZSJ3H5FqVoFGDcBqH9BOZ1BeD5BqDMBYHEJGH5F/VoJeDcXOZSBiD1BOVWFaDMrwDkB/DWXCVoX7D9BsH9B/HIBeD5XGDMBYHEXeV5B7DoNUHQXsH9X7DSBYD5rqHgrKVcFCH5B7VoraHQBiZSB/HArYZMB/HgvsHEXeDWX7VoJwDcBwDuBOZ1rwVWJeDMvsV9FiV5FYVorqD9JmZ1rqHAvsZMXGHgveHAFKV5FaZuBqD9NmZSFGHIrwV5BOHuNODkBOV5X7VENUHQFYH9FaD1rwD5rqDErKVkXeHEFqDoBOD9NmDQJsD1BeV5FUHuzGDkBOH5XKVoraDcBwH9B/HIrwV5JeDMBYDkBsH5FYDoXGDcJeZSFUZ1rwD5BOHuNODkFCH5FqVENUDcNwH9BqHIrwHQJsHgNOHENiH5F/HMXGHQFYDQBOZ1BYHuFUHgrwV9FeHEFYHMBiD9BsVIraD1rwV5X7HgBeHErsDWrGDoBOHQBiZ9XGD1BOV5JeDMvsV9BUDWXKVoFGHQJmZ1F7Z1vmD5rqDEBOHArCDWF/HIX7D9NwZ9F7HAvOVWBODMvmVcFCDWFaDoJsHQNmZSBOHIBeD5XGDMvCZSXeDWXCZuB/D9JKDQJwHABYHuJwDMvmVcFKV5BmVoBqD9BsZkFGHArKHQraHgBeHArCV5XCHIFGHQNwDQFaDSBYHQBODMzGV9FiDWXCHIJsHQXOZkFGHArKV5FUDMrYZSXeV5FqHIJsHQJeDuBOZ1vCV5Je";
       $this->prep_conect();
       if (!isset($_SESSION['sc_session'][$this->sc_page]['sub_aggregate']['ordem_cmp'])) { 
           $_SESSION['sc_session'][$this->sc_page]['sub_aggregate']['ordem_cmp'] = ""; 
@@ -1832,10 +1832,8 @@ ob_start();
     SC_dir_app_ini('skini');
     $sc_conv_var = array();
     $sc_conv_var['idaggregate'] = "idaggregate_";
-    $sc_conv_var['docnumber'] = "docnumber_";
-    $sc_conv_var['doctype'] = "doctype_";
-    $sc_conv_var['firstname'] = "firstname_";
-    $sc_conv_var['lastname'] = "lastname_";
+    $sc_conv_var['idcostumer'] = "idcostumer_";
+    $sc_conv_var['kinship'] = "kinship_";
     $sc_conv_var['idholder'] = "idholder_";
     if (!empty($_FILES))
     {
@@ -1987,30 +1985,17 @@ ob_start();
 
     if (isset($_POST['rs']) && !is_array($_POST['rs']) && 'ajax_' == substr($_POST['rs'], 0, 5) && isset($_POST['rsargs']) && !empty($_POST['rsargs']) && !isset($_SESSION['scriptcase']['sub_aggregate']['session_timeout']['redir']))
     {
-        if ('ajax_sub_aggregate_validate_firstname_' == $_POST['rs'])
+        if ('ajax_sub_aggregate_validate_kinship_' == $_POST['rs'])
         {
-            $firstname_ = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $kinship_ = NM_utf8_urldecode($_POST['rsargs'][0]);
             $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][1]);
             $script_case_init = NM_utf8_urldecode($_POST['rsargs'][2]);
         }
-        if ('ajax_sub_aggregate_validate_lastname_' == $_POST['rs'])
+        if ('ajax_sub_aggregate_validate_idcostumer_' == $_POST['rs'])
         {
-            $lastname_ = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $idcostumer_ = NM_utf8_urldecode($_POST['rsargs'][0]);
             $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][1]);
             $script_case_init = NM_utf8_urldecode($_POST['rsargs'][2]);
-        }
-        if ('ajax_sub_aggregate_validate_doctype_' == $_POST['rs'])
-        {
-            $doctype_ = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][1]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][2]);
-        }
-        if ('ajax_sub_aggregate_validate_docnumber_' == $_POST['rs'])
-        {
-            $docnumber_ = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $doctype_ = NM_utf8_urldecode($_POST['rsargs'][1]);
-            $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][2]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][3]);
         }
         if ('ajax_sub_aggregate_validate_idaggregate_' == $_POST['rs'])
         {
@@ -2020,20 +2005,18 @@ ob_start();
         }
         if ('ajax_sub_aggregate_submit_form' == $_POST['rs'])
         {
-            $firstname_ = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $lastname_ = NM_utf8_urldecode($_POST['rsargs'][1]);
-            $doctype_ = NM_utf8_urldecode($_POST['rsargs'][2]);
-            $docnumber_ = NM_utf8_urldecode($_POST['rsargs'][3]);
-            $idaggregate_ = NM_utf8_urldecode($_POST['rsargs'][4]);
-            $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][5]);
-            $nm_form_submit = NM_utf8_urldecode($_POST['rsargs'][6]);
-            $nmgp_url_saida = NM_utf8_urldecode($_POST['rsargs'][7]);
-            $nmgp_opcao = NM_utf8_urldecode($_POST['rsargs'][8]);
-            $nmgp_ancora = NM_utf8_urldecode($_POST['rsargs'][9]);
-            $nmgp_num_form = NM_utf8_urldecode($_POST['rsargs'][10]);
-            $nmgp_parms = NM_utf8_urldecode($_POST['rsargs'][11]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][12]);
-            $csrf_token = NM_utf8_urldecode($_POST['rsargs'][13]);
+            $kinship_ = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $idcostumer_ = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $idaggregate_ = NM_utf8_urldecode($_POST['rsargs'][2]);
+            $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][3]);
+            $nm_form_submit = NM_utf8_urldecode($_POST['rsargs'][4]);
+            $nmgp_url_saida = NM_utf8_urldecode($_POST['rsargs'][5]);
+            $nmgp_opcao = NM_utf8_urldecode($_POST['rsargs'][6]);
+            $nmgp_ancora = NM_utf8_urldecode($_POST['rsargs'][7]);
+            $nmgp_num_form = NM_utf8_urldecode($_POST['rsargs'][8]);
+            $nmgp_parms = NM_utf8_urldecode($_POST['rsargs'][9]);
+            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][10]);
+            $csrf_token = NM_utf8_urldecode($_POST['rsargs'][11]);
         }
         if ('ajax_sub_aggregate_navigate_form' == $_POST['rs'])
         {
@@ -2516,7 +2499,7 @@ ob_start();
     $inicial_sub_aggregate->inicializa();
 
     $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['select_html'] = array();
-    $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['select_html']['doctype_'] = " onClick=\\\"\\\" ";
+    $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['select_html']['idcostumer_'] = "class=\\\"sc-js-input scFormObjectOddMult css_idcostumer__obj{SC_100PERC_CLASS_INPUT}\\\" style=\\\"\\\" id=\\\"id_sc_field_idcostumer_\" . \$sc_seq_vert . \"\\\" name=\\\"idcostumer_\" . \$sc_seq_vert . \"\\\" size=\\\"1\\\" alt=\\\"{type: 'select', enterTab: false}\\\"";
 
     if (!defined('SC_SAJAX_LOADED'))
     {
@@ -2530,10 +2513,8 @@ ob_start();
     $sajax_request_type = "POST";
     sajax_init();
     //$sajax_debug_mode = 1;
-    sajax_export("ajax_sub_aggregate_validate_firstname_");
-    sajax_export("ajax_sub_aggregate_validate_lastname_");
-    sajax_export("ajax_sub_aggregate_validate_doctype_");
-    sajax_export("ajax_sub_aggregate_validate_docnumber_");
+    sajax_export("ajax_sub_aggregate_validate_kinship_");
+    sajax_export("ajax_sub_aggregate_validate_idcostumer_");
     sajax_export("ajax_sub_aggregate_validate_idaggregate_");
     sajax_export("ajax_sub_aggregate_submit_form");
     sajax_export("ajax_sub_aggregate_navigate_form");
@@ -2600,14 +2581,14 @@ ob_start();
     {
     }
 
-    function ajax_sub_aggregate_validate_firstname_($firstname_, $nmgp_refresh_row, $script_case_init)
+    function ajax_sub_aggregate_validate_kinship_($kinship_, $nmgp_refresh_row, $script_case_init)
     {
         global $inicial_sub_aggregate;
         //register_shutdown_function("sub_aggregate_pack_ajax_response");
         $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_flag          = true;
-        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_opcao         = 'validate_firstname_';
+        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_opcao         = 'validate_kinship_';
         $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['param'] = array(
-                  'firstname_' => NM_utf8_urldecode($firstname_),
+                  'kinship_' => NM_utf8_urldecode($kinship_),
                   'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
                   'script_case_init' => NM_utf8_urldecode($script_case_init),
                   'buffer_output' => true,
@@ -2618,16 +2599,16 @@ ob_start();
         }
         $inicial_sub_aggregate->contr_sub_aggregate->controle();
         exit;
-    } // ajax_validate_firstname_
+    } // ajax_validate_kinship_
 
-    function ajax_sub_aggregate_validate_lastname_($lastname_, $nmgp_refresh_row, $script_case_init)
+    function ajax_sub_aggregate_validate_idcostumer_($idcostumer_, $nmgp_refresh_row, $script_case_init)
     {
         global $inicial_sub_aggregate;
         //register_shutdown_function("sub_aggregate_pack_ajax_response");
         $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_flag          = true;
-        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_opcao         = 'validate_lastname_';
+        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_opcao         = 'validate_idcostumer_';
         $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['param'] = array(
-                  'lastname_' => NM_utf8_urldecode($lastname_),
+                  'idcostumer_' => NM_utf8_urldecode($idcostumer_),
                   'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
                   'script_case_init' => NM_utf8_urldecode($script_case_init),
                   'buffer_output' => true,
@@ -2638,48 +2619,7 @@ ob_start();
         }
         $inicial_sub_aggregate->contr_sub_aggregate->controle();
         exit;
-    } // ajax_validate_lastname_
-
-    function ajax_sub_aggregate_validate_doctype_($doctype_, $nmgp_refresh_row, $script_case_init)
-    {
-        global $inicial_sub_aggregate;
-        //register_shutdown_function("sub_aggregate_pack_ajax_response");
-        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_flag          = true;
-        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_opcao         = 'validate_doctype_';
-        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['param'] = array(
-                  'doctype_' => NM_utf8_urldecode($doctype_),
-                  'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
-                  'script_case_init' => NM_utf8_urldecode($script_case_init),
-                  'buffer_output' => true,
-                 );
-        if ($inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['param']['buffer_output'])
-        {
-            ob_start();
-        }
-        $inicial_sub_aggregate->contr_sub_aggregate->controle();
-        exit;
-    } // ajax_validate_doctype_
-
-    function ajax_sub_aggregate_validate_docnumber_($docnumber_, $doctype_, $nmgp_refresh_row, $script_case_init)
-    {
-        global $inicial_sub_aggregate;
-        //register_shutdown_function("sub_aggregate_pack_ajax_response");
-        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_flag          = true;
-        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_opcao         = 'validate_docnumber_';
-        $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['param'] = array(
-                  'docnumber_' => NM_utf8_urldecode($docnumber_),
-                  'doctype_' => NM_utf8_urldecode($doctype_),
-                  'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
-                  'script_case_init' => NM_utf8_urldecode($script_case_init),
-                  'buffer_output' => true,
-                 );
-        if ($inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['param']['buffer_output'])
-        {
-            ob_start();
-        }
-        $inicial_sub_aggregate->contr_sub_aggregate->controle();
-        exit;
-    } // ajax_validate_docnumber_
+    } // ajax_validate_idcostumer_
 
     function ajax_sub_aggregate_validate_idaggregate_($idaggregate_, $nmgp_refresh_row, $script_case_init)
     {
@@ -2701,17 +2641,15 @@ ob_start();
         exit;
     } // ajax_validate_idaggregate_
 
-    function ajax_sub_aggregate_submit_form($firstname_, $lastname_, $doctype_, $docnumber_, $idaggregate_, $nmgp_refresh_row, $nm_form_submit, $nmgp_url_saida, $nmgp_opcao, $nmgp_ancora, $nmgp_num_form, $nmgp_parms, $script_case_init, $csrf_token)
+    function ajax_sub_aggregate_submit_form($kinship_, $idcostumer_, $idaggregate_, $nmgp_refresh_row, $nm_form_submit, $nmgp_url_saida, $nmgp_opcao, $nmgp_ancora, $nmgp_num_form, $nmgp_parms, $script_case_init, $csrf_token)
     {
         global $inicial_sub_aggregate;
         //register_shutdown_function("sub_aggregate_pack_ajax_response");
         $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_flag          = true;
         $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_opcao         = 'submit_form';
         $inicial_sub_aggregate->contr_sub_aggregate->NM_ajax_info['param'] = array(
-                  'firstname_' => NM_utf8_urldecode($firstname_),
-                  'lastname_' => NM_utf8_urldecode($lastname_),
-                  'doctype_' => NM_utf8_urldecode($doctype_),
-                  'docnumber_' => NM_utf8_urldecode($docnumber_),
+                  'kinship_' => NM_utf8_urldecode($kinship_),
+                  'idcostumer_' => NM_utf8_urldecode($idcostumer_),
                   'idaggregate_' => NM_utf8_urldecode($idaggregate_),
                   'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
                   'nm_form_submit' => NM_utf8_urldecode($nm_form_submit),

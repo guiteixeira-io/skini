@@ -1,15 +1,9 @@
 .css_idaggregate__label {text-align:;}
 .css_idaggregate__line {text-align:left;}
 .css_idaggregate__obj {text-align:left;}
-.css_docnumber__label { }
-.css_docnumber__line { }
-.css_docnumber__obj { }
-.css_doctype__label { }
-.css_doctype__line { }
-.css_doctype__obj { }
-.css_firstname__label { }
-.css_firstname__line { }
-.css_firstname__obj { }
-.css_lastname__label { }
-.css_lastname__line { }
-.css_lastname__obj { }
+.css_idcostumer__label { }
+.css_idcostumer__line {text-align:left;}
+.css_idcostumer__obj {text-align:left;}
+.css_kinship__label { }
+.css_kinship__line { }
+.css_kinship__obj { }

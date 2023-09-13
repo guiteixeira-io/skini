@@ -335,6 +335,7 @@ function sc_cad_costumers_zipcode_onblur(oThis, iSeqRow) {
 
 function sc_cad_costumers_zipcode_onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
+  cep_zipcode(oThis.value, 'F1;CEP,zipcode;UF,zipstate;CIDADE,zipcity;BAIRRO,zipdistrict;RUA,zipstreet');
 }
 
 function sc_cad_costumers_zipcode_onfocus(oThis, iSeqRow) {

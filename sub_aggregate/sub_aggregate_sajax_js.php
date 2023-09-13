@@ -2980,27 +2980,27 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
 
   }
 
-  // ---------- Validate firstname_
-  function do_ajax_sub_aggregate_validate_firstname_(iNumLinha)
+  // ---------- Validate kinship_
+  function do_ajax_sub_aggregate_validate_kinship_(iNumLinha)
   {
-    var nomeCampo_firstname_ = "firstname_" + iNumLinha;
-    var var_firstname_ = scAjaxGetFieldText(nomeCampo_firstname_);
+    var nomeCampo_kinship_ = "kinship_" + iNumLinha;
+    var var_kinship_ = scAjaxGetFieldText(nomeCampo_kinship_);
     var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_sub_aggregate_validate_firstname_(var_firstname_, iNumLinha, var_script_case_init, do_ajax_sub_aggregate_validate_firstname__cb);
-  } // do_ajax_sub_aggregate_validate_firstname_
+    x_ajax_sub_aggregate_validate_kinship_(var_kinship_, iNumLinha, var_script_case_init, do_ajax_sub_aggregate_validate_kinship__cb);
+  } // do_ajax_sub_aggregate_validate_kinship_
 
-  function do_ajax_sub_aggregate_validate_firstname__cb(sResp)
+  function do_ajax_sub_aggregate_validate_kinship__cb(sResp)
   {
     oResp = scAjaxResponse(sResp);
     scAjaxRedir();
     iLineNumber = scAjaxGetLineNumber();
     if ("" != iLineNumber)
     {
-      sFieldValid = "firstname_" + iLineNumber;
+      sFieldValid = "kinship_" + iLineNumber;
     }
     else
     {
-      sFieldValid = "firstname_";
+      sFieldValid = "kinship_";
     }
     scEventControl_onBlur(sFieldValid);
     scAjaxUpdateFieldErrors(sFieldValid, "valid");
@@ -3009,13 +3009,13 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     {
       var sImgStatus = sc_img_status_ok;
       scAjaxHideErrorDisplay(sFieldValid);
-      scErrorLineOff(iLineNumber, "firstname_");
+      scErrorLineOff(iLineNumber, "kinship_");
     }
     else
     {
       var sImgStatus = sc_img_status_err;
       scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
-      scErrorLineOn(iLineNumber, "firstname_");
+      scErrorLineOn(iLineNumber, "kinship_");
     }
     var $oImg = $('#id_sc_status_' + sFieldValid);
     if (0 < $oImg.length)
@@ -3025,29 +3025,29 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxShowDebug();
     scAjaxSetMaster();
     scAjaxSetFocus();
-  } // do_ajax_sub_aggregate_validate_firstname__cb
+  } // do_ajax_sub_aggregate_validate_kinship__cb
 
-  // ---------- Validate lastname_
-  function do_ajax_sub_aggregate_validate_lastname_(iNumLinha)
+  // ---------- Validate idcostumer_
+  function do_ajax_sub_aggregate_validate_idcostumer_(iNumLinha)
   {
-    var nomeCampo_lastname_ = "lastname_" + iNumLinha;
-    var var_lastname_ = scAjaxGetFieldText(nomeCampo_lastname_);
+    var nomeCampo_idcostumer_ = "idcostumer_" + iNumLinha;
+    var var_idcostumer_ = scAjaxGetFieldSelect(nomeCampo_idcostumer_);
     var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_sub_aggregate_validate_lastname_(var_lastname_, iNumLinha, var_script_case_init, do_ajax_sub_aggregate_validate_lastname__cb);
-  } // do_ajax_sub_aggregate_validate_lastname_
+    x_ajax_sub_aggregate_validate_idcostumer_(var_idcostumer_, iNumLinha, var_script_case_init, do_ajax_sub_aggregate_validate_idcostumer__cb);
+  } // do_ajax_sub_aggregate_validate_idcostumer_
 
-  function do_ajax_sub_aggregate_validate_lastname__cb(sResp)
+  function do_ajax_sub_aggregate_validate_idcostumer__cb(sResp)
   {
     oResp = scAjaxResponse(sResp);
     scAjaxRedir();
     iLineNumber = scAjaxGetLineNumber();
     if ("" != iLineNumber)
     {
-      sFieldValid = "lastname_" + iLineNumber;
+      sFieldValid = "idcostumer_" + iLineNumber;
     }
     else
     {
-      sFieldValid = "lastname_";
+      sFieldValid = "idcostumer_";
     }
     scEventControl_onBlur(sFieldValid);
     scAjaxUpdateFieldErrors(sFieldValid, "valid");
@@ -3056,13 +3056,13 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     {
       var sImgStatus = sc_img_status_ok;
       scAjaxHideErrorDisplay(sFieldValid);
-      scErrorLineOff(iLineNumber, "lastname_");
+      scErrorLineOff(iLineNumber, "idcostumer_");
     }
     else
     {
       var sImgStatus = sc_img_status_err;
       scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
-      scErrorLineOn(iLineNumber, "lastname_");
+      scErrorLineOn(iLineNumber, "idcostumer_");
     }
     var $oImg = $('#id_sc_status_' + sFieldValid);
     if (0 < $oImg.length)
@@ -3072,103 +3072,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxShowDebug();
     scAjaxSetMaster();
     scAjaxSetFocus();
-  } // do_ajax_sub_aggregate_validate_lastname__cb
-
-  // ---------- Validate doctype_
-  function do_ajax_sub_aggregate_validate_doctype_(iNumLinha)
-  {
-    var nomeCampo_doctype_ = "doctype_" + iNumLinha;
-    var var_doctype_ = scAjaxGetFieldRadio(nomeCampo_doctype_);
-    var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_sub_aggregate_validate_doctype_(var_doctype_, iNumLinha, var_script_case_init, do_ajax_sub_aggregate_validate_doctype__cb);
-  } // do_ajax_sub_aggregate_validate_doctype_
-
-  function do_ajax_sub_aggregate_validate_doctype__cb(sResp)
-  {
-    oResp = scAjaxResponse(sResp);
-    scAjaxRedir();
-    iLineNumber = scAjaxGetLineNumber();
-    if ("" != iLineNumber)
-    {
-      sFieldValid = "doctype_" + iLineNumber;
-    }
-    else
-    {
-      sFieldValid = "doctype_";
-    }
-    scEventControl_onBlur(sFieldValid);
-    scAjaxUpdateFieldErrors(sFieldValid, "valid");
-    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
-    if ("" == sFieldErrors)
-    {
-      var sImgStatus = sc_img_status_ok;
-      scAjaxHideErrorDisplay(sFieldValid);
-      scErrorLineOff(iLineNumber, "doctype_");
-    }
-    else
-    {
-      var sImgStatus = sc_img_status_err;
-      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
-      scErrorLineOn(iLineNumber, "doctype_");
-    }
-    var $oImg = $('#id_sc_status_' + sFieldValid);
-    if (0 < $oImg.length)
-    {
-      $oImg.attr('src', sImgStatus).css('display', '');
-    }
-    scAjaxShowDebug();
-    scAjaxSetMaster();
-    scAjaxSetFocus();
-  } // do_ajax_sub_aggregate_validate_doctype__cb
-
-  // ---------- Validate docnumber_
-  function do_ajax_sub_aggregate_validate_docnumber_(iNumLinha)
-  {
-    var nomeCampo_docnumber_ = "docnumber_" + iNumLinha;
-    var nomeCampo_doctype_ = "doctype_" + iNumLinha;
-    var var_docnumber_ = scAjaxGetFieldText(nomeCampo_docnumber_);
-    var var_doctype_ = scAjaxGetFieldRadio(nomeCampo_doctype_);
-    var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_sub_aggregate_validate_docnumber_(var_docnumber_, var_doctype_, iNumLinha, var_script_case_init, do_ajax_sub_aggregate_validate_docnumber__cb);
-  } // do_ajax_sub_aggregate_validate_docnumber_
-
-  function do_ajax_sub_aggregate_validate_docnumber__cb(sResp)
-  {
-    oResp = scAjaxResponse(sResp);
-    scAjaxRedir();
-    iLineNumber = scAjaxGetLineNumber();
-    if ("" != iLineNumber)
-    {
-      sFieldValid = "docnumber_" + iLineNumber;
-    }
-    else
-    {
-      sFieldValid = "docnumber_";
-    }
-    scEventControl_onBlur(sFieldValid);
-    scAjaxUpdateFieldErrors(sFieldValid, "valid");
-    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
-    if ("" == sFieldErrors)
-    {
-      var sImgStatus = sc_img_status_ok;
-      scAjaxHideErrorDisplay(sFieldValid);
-      scErrorLineOff(iLineNumber, "docnumber_");
-    }
-    else
-    {
-      var sImgStatus = sc_img_status_err;
-      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
-      scErrorLineOn(iLineNumber, "docnumber_");
-    }
-    var $oImg = $('#id_sc_status_' + sFieldValid);
-    if (0 < $oImg.length)
-    {
-      $oImg.attr('src', sImgStatus).css('display', '');
-    }
-    scAjaxShowDebug();
-    scAjaxSetMaster();
-    scAjaxSetFocus();
-  } // do_ajax_sub_aggregate_validate_docnumber__cb
+  } // do_ajax_sub_aggregate_validate_idcostumer__cb
 
   // ---------- Validate idaggregate_
   function do_ajax_sub_aggregate_validate_idaggregate_(iNumLinha)
@@ -3735,10 +3639,8 @@ function scJs_sweetalert_params(params) {
     sc_num_ult_line = iNumLinha;
     sc_num_ult_tr   = indexTR;
     scAjaxHideMessage();
-    var var_firstname_ = scAjaxGetFieldText("firstname_" + iNumLinha);
-    var var_lastname_ = scAjaxGetFieldText("lastname_" + iNumLinha);
-    var var_doctype_ = scAjaxGetFieldRadio("doctype_" + iNumLinha);
-    var var_docnumber_ = scAjaxGetFieldText("docnumber_" + iNumLinha);
+    var var_kinship_ = scAjaxGetFieldText("kinship_" + iNumLinha);
+    var var_idcostumer_ = scAjaxGetFieldSelect("idcostumer_" + iNumLinha);
     var var_idaggregate_ = scAjaxGetFieldHidden("idaggregate_" + iNumLinha);
     var var_nm_form_submit = document.F1.nm_form_submit.value;
     var var_nmgp_url_saida = document.F1.nmgp_url_saida.value;
@@ -3772,7 +3674,7 @@ function scJs_sweetalert_params(params) {
 <?php
     }
 ?>
-    x_ajax_sub_aggregate_submit_form(var_firstname_, var_lastname_, var_doctype_, var_docnumber_, var_idaggregate_, var_nmgp_refresh_row, var_nm_form_submit, var_nmgp_url_saida, var_nmgp_opcao, var_nmgp_ancora, var_nmgp_num_form, var_nmgp_parms, var_script_case_init, var_csrf_token, do_ajax_sub_aggregate_submit_form_cb);
+    x_ajax_sub_aggregate_submit_form(var_kinship_, var_idcostumer_, var_idaggregate_, var_nmgp_refresh_row, var_nm_form_submit, var_nmgp_url_saida, var_nmgp_opcao, var_nmgp_ancora, var_nmgp_num_form, var_nmgp_parms, var_script_case_init, var_csrf_token, do_ajax_sub_aggregate_submit_form_cb);
   } // do_ajax_sub_aggregate_submit_form
 
   function do_ajax_sub_aggregate_submit_form_cb(sResp)
@@ -3867,10 +3769,8 @@ function scJs_sweetalert_params(params) {
       scResetFormChanges();
       scAjaxShowMessage("success");
       scAjaxHideErrorDisplay("table");
-      scAjaxHideErrorDisplay("firstname_" + sc_num_ult_line);
-      scAjaxHideErrorDisplay("lastname_" + sc_num_ult_line);
-      scAjaxHideErrorDisplay("doctype_" + sc_num_ult_line);
-      scAjaxHideErrorDisplay("docnumber_" + sc_num_ult_line);
+      scAjaxHideErrorDisplay("kinship_" + sc_num_ult_line);
+      scAjaxHideErrorDisplay("idcostumer_" + sc_num_ult_line);
       scAjaxHideErrorDisplay("idaggregate_" + sc_num_ult_line);
 <?php
 if (isset($this->Embutida_form) && $this->Embutida_form) {
@@ -3955,10 +3855,8 @@ if (isset($this->Embutida_form) && $this->Embutida_form) {
     scAjaxHideErrorDisplay("table");
     for (iNavForm = 1; iNavForm < <?php echo $this->sc_max_reg; ?> + 1; iNavForm++)
     {
-      scAjaxHideErrorDisplay("firstname_" + iNavForm);
-      scAjaxHideErrorDisplay("lastname_" + iNavForm);
-      scAjaxHideErrorDisplay("doctype_" + iNavForm);
-      scAjaxHideErrorDisplay("docnumber_" + iNavForm);
+      scAjaxHideErrorDisplay("kinship_" + iNavForm);
+      scAjaxHideErrorDisplay("idcostumer_" + iNavForm);
       scAjaxHideErrorDisplay("idaggregate_" + iNavForm);
     }
     var var_idaggregate_ = document.F2.idaggregate_.value;
@@ -4074,53 +3972,37 @@ $sLineInfo = $this->Embutida_form ? '' : ' (linha " + iNumLinha + ")';
 ?>
   function ajax_create_tables(iNumLinha)
   {
-    ajax_field_list[iTotCampos] = "firstname_" + iNumLinha;
+    ajax_field_list[iTotCampos] = "kinship_" + iNumLinha;
     iTotCampos++;
-    ajax_field_list[iTotCampos] = "lastname_" + iNumLinha;
-    iTotCampos++;
-    ajax_field_list[iTotCampos] = "doctype_" + iNumLinha;
-    iTotCampos++;
-    ajax_field_list[iTotCampos] = "docnumber_" + iNumLinha;
+    ajax_field_list[iTotCampos] = "idcostumer_" + iNumLinha;
     iTotCampos++;
     ajax_field_list[iTotCampos] = "idaggregate_" + iNumLinha;
     iTotCampos++;
-    ajax_error_list["firstname_" + iNumLinha] = {"label": "First Name<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
-    ajax_error_list["lastname_" + iNumLinha] = {"label": "Last Name<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
-    ajax_error_list["doctype_" + iNumLinha] = {"label": "Doc Type<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
-    ajax_error_list["docnumber_" + iNumLinha] = {"label": "Doc Number<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
+    ajax_error_list["kinship_" + iNumLinha] = {"label": "Kinship<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
+    ajax_error_list["idcostumer_" + iNumLinha] = {"label": "Nome<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
     ajax_error_list["idaggregate_" + iNumLinha] = {"label": "Id Aggregate<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
-    ajax_field_mult["firstname_"][iNumLinha] = "firstname_" + iNumLinha;
-    ajax_field_mult["lastname_"][iNumLinha] = "lastname_" + iNumLinha;
-    ajax_field_mult["doctype_"][iNumLinha] = "doctype_" + iNumLinha;
-    ajax_field_mult["docnumber_"][iNumLinha] = "docnumber_" + iNumLinha;
+    ajax_field_mult["kinship_"][iNumLinha] = "kinship_" + iNumLinha;
+    ajax_field_mult["idcostumer_"][iNumLinha] = "idcostumer_" + iNumLinha;
     ajax_field_mult["idaggregate_"][iNumLinha] = "idaggregate_" + iNumLinha;
-    ajax_field_id["firstname_" + iNumLinha] = new Array("hidden_field_label_firstname_", "hidden_field_data_firstname_" + iNumLinha);
-    ajax_field_id["lastname_" + iNumLinha] = new Array("hidden_field_label_lastname_", "hidden_field_data_lastname_" + iNumLinha);
-    ajax_field_id["doctype_" + iNumLinha] = new Array("hidden_field_label_doctype_", "hidden_field_data_doctype_" + iNumLinha);
-    ajax_field_id["docnumber_" + iNumLinha] = new Array("hidden_field_label_docnumber_", "hidden_field_data_docnumber_" + iNumLinha);
-    ajax_error_count["firstname_" + iNumLinha] = "off";
-    ajax_error_count["lastname_" + iNumLinha] = "off";
-    ajax_error_count["doctype_" + iNumLinha] = "off";
-    ajax_error_count["docnumber_" + iNumLinha] = "off";
+    ajax_field_id["kinship_" + iNumLinha] = new Array("hidden_field_label_kinship_", "hidden_field_data_kinship_" + iNumLinha);
+    ajax_field_id["idcostumer_" + iNumLinha] = new Array("hidden_field_label_idcostumer_", "hidden_field_data_idcostumer_" + iNumLinha);
+    ajax_error_count["kinship_" + iNumLinha] = "off";
+    ajax_error_count["idcostumer_" + iNumLinha] = "off";
     ajax_error_count["idaggregate_" + iNumLinha] = "off";
 <?php
 if (!$this->Grid_editavel)
 {
 ?>
-    ajax_read_only["firstname_" + iNumLinha] = "off";
-    ajax_read_only["lastname_" + iNumLinha] = "off";
-    ajax_read_only["doctype_" + iNumLinha] = "off";
-    ajax_read_only["docnumber_" + iNumLinha] = "off";
+    ajax_read_only["kinship_" + iNumLinha] = "off";
+    ajax_read_only["idcostumer_" + iNumLinha] = "off";
     ajax_read_only["idaggregate_" + iNumLinha] = "on";
 <?php
 }
 else
 {
 ?>
-    ajax_read_only["firstname_" + iNumLinha] = "on";
-    ajax_read_only["lastname_" + iNumLinha] = "on";
-    ajax_read_only["doctype_" + iNumLinha] = "on";
-    ajax_read_only["docnumber_" + iNumLinha] = "on";
+    ajax_read_only["kinship_" + iNumLinha] = "on";
+    ajax_read_only["idcostumer_" + iNumLinha] = "on";
     ajax_read_only["idaggregate_" + iNumLinha] = "on";
 <?php
 }
@@ -4128,10 +4010,8 @@ else
   }
   function ajax_destroy_tables(iNumLinha)
   {
-    ajax_error_list["firstname_" + iNumLinha] = null;
-    ajax_error_list["lastname_" + iNumLinha] = null;
-    ajax_error_list["doctype_" + iNumLinha] = null;
-    ajax_error_list["docnumber_" + iNumLinha] = null;
+    ajax_error_list["kinship_" + iNumLinha] = null;
+    ajax_error_list["idcostumer_" + iNumLinha] = null;
     ajax_error_list["idaggregate_" + iNumLinha] = null;
   }
 
@@ -4159,10 +4039,8 @@ else
   };
 
   var ajax_field_mult = {
-    "firstname_": new Array(),
-    "lastname_": new Array(),
-    "doctype_": new Array(),
-    "docnumber_": new Array(),
+    "kinship_": new Array(),
+    "idcostumer_": new Array(),
     "idaggregate_": new Array()
   };
 
@@ -4182,26 +4060,16 @@ else
   {
     for (iNumLinha = 1; iNumLinha < Lim_linhas; iNumLinha++)
     {
-      ajax_error_list["firstname_" + iNumLinha]["valid"] = new Array();
-      ajax_error_list["firstname_" + iNumLinha]["onblur"] = new Array();
-      ajax_error_list["firstname_" + iNumLinha]["onchange"] = new Array();
-      ajax_error_list["firstname_" + iNumLinha]["onclick"] = new Array();
-      ajax_error_list["firstname_" + iNumLinha]["onfocus"] = new Array();
-      ajax_error_list["lastname_" + iNumLinha]["valid"] = new Array();
-      ajax_error_list["lastname_" + iNumLinha]["onblur"] = new Array();
-      ajax_error_list["lastname_" + iNumLinha]["onchange"] = new Array();
-      ajax_error_list["lastname_" + iNumLinha]["onclick"] = new Array();
-      ajax_error_list["lastname_" + iNumLinha]["onfocus"] = new Array();
-      ajax_error_list["doctype_" + iNumLinha]["valid"] = new Array();
-      ajax_error_list["doctype_" + iNumLinha]["onblur"] = new Array();
-      ajax_error_list["doctype_" + iNumLinha]["onchange"] = new Array();
-      ajax_error_list["doctype_" + iNumLinha]["onclick"] = new Array();
-      ajax_error_list["doctype_" + iNumLinha]["onfocus"] = new Array();
-      ajax_error_list["docnumber_" + iNumLinha]["valid"] = new Array();
-      ajax_error_list["docnumber_" + iNumLinha]["onblur"] = new Array();
-      ajax_error_list["docnumber_" + iNumLinha]["onchange"] = new Array();
-      ajax_error_list["docnumber_" + iNumLinha]["onclick"] = new Array();
-      ajax_error_list["docnumber_" + iNumLinha]["onfocus"] = new Array();
+      ajax_error_list["kinship_" + iNumLinha]["valid"] = new Array();
+      ajax_error_list["kinship_" + iNumLinha]["onblur"] = new Array();
+      ajax_error_list["kinship_" + iNumLinha]["onchange"] = new Array();
+      ajax_error_list["kinship_" + iNumLinha]["onclick"] = new Array();
+      ajax_error_list["kinship_" + iNumLinha]["onfocus"] = new Array();
+      ajax_error_list["idcostumer_" + iNumLinha]["valid"] = new Array();
+      ajax_error_list["idcostumer_" + iNumLinha]["onblur"] = new Array();
+      ajax_error_list["idcostumer_" + iNumLinha]["onchange"] = new Array();
+      ajax_error_list["idcostumer_" + iNumLinha]["onclick"] = new Array();
+      ajax_error_list["idcostumer_" + iNumLinha]["onfocus"] = new Array();
       ajax_error_list["idaggregate_" + iNumLinha]["valid"] = new Array();
       ajax_error_list["idaggregate_" + iNumLinha]["onblur"] = new Array();
       ajax_error_list["idaggregate_" + iNumLinha]["onchange"] = new Array();
@@ -4244,21 +4112,13 @@ else
   function mdOpenObjects(iSeq)
   {
 <?php
-  $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['firstname_'])) ? $this->nmgp_cmp_readonly['firstname_'] : 'off';
+  $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['kinship_'])) ? $this->nmgp_cmp_readonly['kinship_'] : 'off';
 ?>
-    scAjaxFieldRead("firstname_" + iSeq, "<?php echo $NM_contr_readonly ?>");
+    scAjaxFieldRead("kinship_" + iSeq, "<?php echo $NM_contr_readonly ?>");
 <?php
-  $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['lastname_'])) ? $this->nmgp_cmp_readonly['lastname_'] : 'off';
+  $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['idcostumer_'])) ? $this->nmgp_cmp_readonly['idcostumer_'] : 'off';
 ?>
-    scAjaxFieldRead("lastname_" + iSeq, "<?php echo $NM_contr_readonly ?>");
-<?php
-  $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['doctype_'])) ? $this->nmgp_cmp_readonly['doctype_'] : 'off';
-?>
-    scAjaxFieldRead("doctype_" + iSeq, "<?php echo $NM_contr_readonly ?>");
-<?php
-  $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['docnumber_'])) ? $this->nmgp_cmp_readonly['docnumber_'] : 'off';
-?>
-    scAjaxFieldRead("docnumber_" + iSeq, "<?php echo $NM_contr_readonly ?>");
+    scAjaxFieldRead("idcostumer_" + iSeq, "<?php echo $NM_contr_readonly ?>");
 <?php
   $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['idaggregate_'])) ? $this->nmgp_cmp_readonly['idaggregate_'] : 'on';
 ?>
@@ -4267,10 +4127,8 @@ else
 
   function mdCloseObjects(iSeq)
   {
-    scAjaxFieldRead("firstname_" + iSeq, "on");
-    scAjaxFieldRead("lastname_" + iSeq, "on");
-    scAjaxFieldRead("doctype_" + iSeq, "on");
-    scAjaxFieldRead("docnumber_" + iSeq, "on");
+    scAjaxFieldRead("kinship_" + iSeq, "on");
+    scAjaxFieldRead("idcostumer_" + iSeq, "on");
     scAjaxFieldRead("idaggregate_" + iSeq, "on");
     rerunHeaderDisplay = 1;
     scSetFixedHeaders(true);
@@ -4339,14 +4197,12 @@ else
     {
       ajax_error_count[sIdError + iRow] = "on";
     }
-    if (bErrorRow || ("on" == ajax_error_count["firstname_" + iRow] || "on" == ajax_error_count["lastname_" + iRow] || "on" == ajax_error_count["doctype_" + iRow] || "on" == ajax_error_count["docnumber_" + iRow] || "on" == ajax_error_count["idaggregate_" + iRow]))
+    if (bErrorRow || ("on" == ajax_error_count["kinship_" + iRow] || "on" == ajax_error_count["idcostumer_" + iRow] || "on" == ajax_error_count["idaggregate_" + iRow]))
     {
       $("#hidden_field_data_sc_seq" + iRow).addClass("scFormErrorLine");
       $("#hidden_field_data_sc_actions" + iRow).addClass("scFormErrorLine");
-      $("#hidden_field_data_firstname_" + iRow).addClass("scFormErrorLine");
-      $("#hidden_field_data_lastname_" + iRow).addClass("scFormErrorLine");
-      $("#hidden_field_data_doctype_" + iRow).addClass("scFormErrorLine");
-      $("#hidden_field_data_docnumber_" + iRow).addClass("scFormErrorLine");
+      $("#hidden_field_data_kinship_" + iRow).addClass("scFormErrorLine");
+      $("#hidden_field_data_idcostumer_" + iRow).addClass("scFormErrorLine");
       $("#hidden_field_data_idaggregate_" + iRow).addClass("scFormErrorLine");
     }
   }
@@ -4362,23 +4218,19 @@ else
     {
       ajax_error_count[sIdError + iRow] = "off";
     }
-    if (bErrorRow || ("off" == ajax_error_count["firstname_" + iRow] && "off" == ajax_error_count["lastname_" + iRow] && "off" == ajax_error_count["doctype_" + iRow] && "off" == ajax_error_count["docnumber_" + iRow] && "off" == ajax_error_count["idaggregate_" + iRow]))
+    if (bErrorRow || ("off" == ajax_error_count["kinship_" + iRow] && "off" == ajax_error_count["idcostumer_" + iRow] && "off" == ajax_error_count["idaggregate_" + iRow]))
     {
       if (bErrorRow)
       {
-        ajax_error_count["firstname_" + iRow] = "off";
-        ajax_error_count["lastname_" + iRow] = "off";
-        ajax_error_count["doctype_" + iRow] = "off";
-        ajax_error_count["docnumber_" + iRow] = "off";
+        ajax_error_count["kinship_" + iRow] = "off";
+        ajax_error_count["idcostumer_" + iRow] = "off";
         ajax_error_count["idaggregate_" + iRow] = "off";
       }
       var sCssLine = scErrorLineCss(iRow);
       $("#hidden_field_data_sc_seq" + iRow).removeClass("scFormErrorLine");
       $("#hidden_field_data_sc_actions" + iRow).removeClass("scFormErrorLine");
-      $("#hidden_field_data_firstname_" + iRow).removeClass("scFormErrorLine");
-      $("#hidden_field_data_lastname_" + iRow).removeClass("scFormErrorLine");
-      $("#hidden_field_data_doctype_" + iRow).removeClass("scFormErrorLine");
-      $("#hidden_field_data_docnumber_" + iRow).removeClass("scFormErrorLine");
+      $("#hidden_field_data_kinship_" + iRow).removeClass("scFormErrorLine");
+      $("#hidden_field_data_idcostumer_" + iRow).removeClass("scFormErrorLine");
       $("#hidden_field_data_idaggregate_" + iRow).removeClass("scFormErrorLine");
     }
   }
@@ -4411,7 +4263,7 @@ else
   {
     var aValue = new Array();
     aValue[0] = {"value" : sValue};
-    if ("firstname_" == sIndex)
+    if ("kinship_" == sIndex)
     {
       scAjaxSetFieldText(sIndex, aValue, "", "", true);
       updateHeaderFooter(sIndex, aValue);
@@ -4428,43 +4280,9 @@ else
 
       return;
     }
-    if ("lastname_" == sIndex)
+    if ("idcostumer_" == sIndex)
     {
-      scAjaxSetFieldText(sIndex, aValue, "", "", true);
-      updateHeaderFooter(sIndex, aValue);
-
-      if ($("#id_sc_field_" + sIndex).length) {
-          $("#id_sc_field_" + sIndex).change();
-      }
-      else if (document.F1.elements[sIndex]) {
-          $(document.F1.elements[sIndex]).change();
-      }
-      else if (document.F1.elements[sFieldName + "[]"]) {
-          $(document.F1.elements[sFieldName + "[]"]).change();
-      }
-
-      return;
-    }
-    if ("doctype_" == sIndex)
-    {
-      scAjaxSetFieldRadio(sIndex, aValue, null, 1, null, "", false, true);
-      updateHeaderFooter(sIndex, aValue);
-
-      if ($("#id_sc_field_" + sIndex).length) {
-          $("#id_sc_field_" + sIndex).change();
-      }
-      else if (document.F1.elements[sIndex]) {
-          $(document.F1.elements[sIndex]).change();
-      }
-      else if (document.F1.elements[sFieldName + "[]"]) {
-          $(document.F1.elements[sFieldName + "[]"]).change();
-      }
-
-      return;
-    }
-    if ("docnumber_" == sIndex)
-    {
-      scAjaxSetFieldText(sIndex, aValue, "", "", true);
+      scAjaxSetFieldSelect(sIndex, aValue, null);
       updateHeaderFooter(sIndex, aValue);
 
       if ($("#id_sc_field_" + sIndex).length) {

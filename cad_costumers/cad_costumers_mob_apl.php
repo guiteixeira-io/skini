@@ -1156,13 +1156,6 @@ class cad_costumers_mob_apl
       $this->field_config['phonenumber']['symbol_dec'] = '';
       $this->field_config['phonenumber']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
       $this->field_config['phonenumber']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
-      //-- zipcode
-      $this->field_config['zipcode']               = array();
-      $this->field_config['zipcode']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
-      $this->field_config['zipcode']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
-      $this->field_config['zipcode']['symbol_dec'] = '';
-      $this->field_config['zipcode']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
-      $this->field_config['zipcode']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
       //-- idcostumer
       $this->field_config['idcostumer']               = array();
       $this->field_config['idcostumer']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
@@ -2327,37 +2320,15 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     {
         global $teste_validade;
         $hasError = false;
+      nm_limpa_cep($this->zipcode) ; 
       if (isset($this->Field_no_validate['zipcode'])) {
-          nm_limpa_numero($this->zipcode, $this->field_config['zipcode']['symbol_grp']) ; 
           return;
       }
-      if ($this->zipcode === "" || is_null($this->zipcode))  
-      { 
-          $this->zipcode = 0;
-          $this->sc_force_zero[] = 'zipcode';
-      } 
-      nm_limpa_numero($this->zipcode, $this->field_config['zipcode']['symbol_grp']) ; 
       if ($this->nmgp_opcao != "excluir") 
       { 
-          if ($this->zipcode != '')  
+          if (trim($this->zipcode) != "")  
           { 
-              $iTestSize = 10;
-              if (strlen($this->zipcode) > $iTestSize)  
-              { 
-                  $hasError = true;
-                  $Campos_Crit .= "CEP: " . $this->Ini->Nm_lang['lang_errm_size']; 
-                  if (!isset($Campos_Erros['zipcode']))
-                  {
-                      $Campos_Erros['zipcode'] = array();
-                  }
-                  $Campos_Erros['zipcode'][] = $this->Ini->Nm_lang['lang_errm_size'];
-                  if (!isset($this->NM_ajax_info['errList']['zipcode']) || !is_array($this->NM_ajax_info['errList']['zipcode']))
-                  {
-                      $this->NM_ajax_info['errList']['zipcode'] = array();
-                  }
-                  $this->NM_ajax_info['errList']['zipcode'][] = $this->Ini->Nm_lang['lang_errm_size'];
-              } 
-              if ($teste_validade->Valor($this->zipcode, 10, 0, -0, 9999999999, "N") == false)  
+              if (strlen($this->zipcode) != 8  || (int)$this->zipcode == 0)
               { 
                   $hasError = true;
                   $Campos_Crit .= "CEP; " ; 
@@ -2373,6 +2344,11 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
                   $this->NM_ajax_info['errList']['zipcode'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
               } 
           } 
+      } 
+      if ($this->zipcode === "" || is_null($this->zipcode))  
+      { 
+          $this->zipcode = 0;
+          $this->sc_force_zero[] = 'zipcode';
       } 
         if ($hasError) {
             global $sc_seq_vert;
@@ -2651,7 +2627,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       $this->nm_tira_mask($this->phonenumber, "(99) 99999-9999", "(){}[].,;:-+/ "); 
       nm_limpa_numero($this->phonenumber, $this->field_config['phonenumber']['symbol_grp']) ; 
       $this->Before_unformat['zipcode'] = $this->zipcode;
-      nm_limpa_numero($this->zipcode, $this->field_config['zipcode']['symbol_grp']) ; 
+      nm_limpa_cep($this->zipcode) ; 
       $this->Before_unformat['idcostumer'] = $this->idcostumer;
       nm_limpa_numero($this->idcostumer, $this->field_config['idcostumer']['symbol_grp']) ; 
    }
@@ -2712,7 +2688,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       }
       if ($Nome_Campo == "zipcode")
       {
-          nm_limpa_numero($this->zipcode, $this->field_config['zipcode']['symbol_grp']) ; 
+          nm_limpa_cep($this->zipcode) ; 
       }
       if ($Nome_Campo == "idcostumer")
       {
@@ -2739,9 +2715,9 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       {
           $this->nm_gera_mask($this->phonenumber, "(99) 99999-9999"); 
       }
-      if ('' !== $this->zipcode || (!empty($format_fields) && isset($format_fields['zipcode'])))
+      if (!empty($this->zipcode) || (!empty($format_fields) && isset($format_fields['zipcode'])))
       {
-          nmgp_Form_Num_Val($this->zipcode, $this->field_config['zipcode']['symbol_grp'], $this->field_config['zipcode']['symbol_dec'], "0", "S", $this->field_config['zipcode']['format_neg'], "", "", "-", $this->field_config['zipcode']['symbol_fmt']) ; 
+          nmgp_Form_Cep($this->zipcode) ; 
       }
    }
    function nm_gera_mask(&$nm_campo, $nm_mask)
@@ -6166,8 +6142,6 @@ if (parent && parent.scAjaxDetailValue)
     {
         switch ($fieldName) {
             case "phoneNumber":
-                return true;
-            case "zipCode":
                 return true;
             case "idCostumer":
                 return true;

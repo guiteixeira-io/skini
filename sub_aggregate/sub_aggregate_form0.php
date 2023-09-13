@@ -846,7 +846,7 @@ $orderColRule = '';
     var alphaIconDesc = "fas fa-sort-alpha-down-alt sc-form-order-icon sc-form-order-icon-unused";
     var numericIconAsc = "fas fa-sort-numeric-down sc-form-order-icon sc-form-order-icon-unused";
     var numericIconDesc = "fas fa-sort-numeric-down-alt sc-form-order-icon sc-form-order-icon-unused";
-    var orderFieldList = ["firstName", "lastName", "docType", "docNumber", "idAggregate"];
+    var orderFieldList = ["kinship", "idCostumer", "idAggregate"];
     function scSetOrderColumn(clickedColumn)
     {
         let fieldClass;
@@ -901,6 +901,8 @@ $orderColRule = '';
     function scGetDefaultFieldOrder(fieldName)
     {
         switch (fieldName) {
+            case "idCostumer":
+                return 'desc';
             case "idAggregate":
                 return 'desc';
             case "idHolder":
@@ -972,21 +974,21 @@ $orderColRule = '';
         $this->form_fixed_column_no++;
 }?>
    <?php
-    $sStyleHidden_firstname_ = '';
-    if (isset($this->nmgp_cmp_hidden['firstname_']) && $this->nmgp_cmp_hidden['firstname_'] == 'off') {
-        $sStyleHidden_firstname_ = 'display: none';
+    $sStyleHidden_kinship_ = '';
+    if (isset($this->nmgp_cmp_hidden['kinship_']) && $this->nmgp_cmp_hidden['kinship_'] == 'off') {
+        $sStyleHidden_kinship_ = 'display: none';
     }
-    if (1 || !isset($this->nmgp_cmp_hidden['firstname_']) || $this->nmgp_cmp_hidden['firstname_'] == 'on') {
-        if (!isset($this->nm_new_label['firstname_'])) {
-            $this->nm_new_label['firstname_'] = "First Name";
+    if (1 || !isset($this->nmgp_cmp_hidden['kinship_']) || $this->nmgp_cmp_hidden['kinship_'] == 'on') {
+        if (!isset($this->nm_new_label['kinship_'])) {
+            $this->nm_new_label['kinship_'] = "Kinship";
         }
-        $SC_Label = "" . $this->nm_new_label['firstname_']  . "";
+        $SC_Label = "" . $this->nm_new_label['kinship_']  . "";
         $label_fieldName = nl2br($SC_Label);
 
         // label & order
         $divLabelStyle = '; justify-content: left';
-        $fieldSortRule = $this->scGetColumnOrderRule("firstName", $orderColName, $orderColOrient, $orderColRule);
-        $fieldSortIcon = $this->scGetColumnOrderIcon("firstName", $fieldSortRule);
+        $fieldSortRule = $this->scGetColumnOrderRule("kinship", $orderColName, $orderColOrient, $orderColRule);
+        $fieldSortIcon = $this->scGetColumnOrderIcon("kinship", $fieldSortRule);
 
         if (empty($this->Ini->Label_sort_pos)) {
             $this->Ini->Label_sort_pos = "right_field";
@@ -1005,7 +1007,7 @@ $orderColRule = '';
         } else {
             $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
         }
-        $label_labelContent = "<a href=\"javascript:nm_move('ordem', 'firstName')\" class=\"scFormLabelLink scFormLabelLinkOddMult\">" . $label_labelContent . "</a>";
+        $label_labelContent = "<a href=\"javascript:nm_move('ordem', 'kinship')\" class=\"scFormLabelLink scFormLabelLinkOddMult\">" . $label_labelContent . "</a>";
         $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
 
         // controls
@@ -1016,28 +1018,28 @@ $orderColRule = '';
         $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
         $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
 ?>
-    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult css_firstname__label sc-col-title <?php echo $classColFld ?>" id="hidden_field_label_firstname_" style="<?php echo $sStyleHidden_firstname_; ?>" > <?php echo $label_final ?> </TD>
+    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult css_kinship__label sc-col-title <?php echo $classColFld ?>" id="hidden_field_label_kinship_" style="<?php echo $sStyleHidden_kinship_; ?>" > <?php echo $label_final ?> </TD>
    <?php
         $this->form_fixed_column_no++;
     }
 ?>
 
    <?php
-    $sStyleHidden_lastname_ = '';
-    if (isset($this->nmgp_cmp_hidden['lastname_']) && $this->nmgp_cmp_hidden['lastname_'] == 'off') {
-        $sStyleHidden_lastname_ = 'display: none';
+    $sStyleHidden_idcostumer_ = '';
+    if (isset($this->nmgp_cmp_hidden['idcostumer_']) && $this->nmgp_cmp_hidden['idcostumer_'] == 'off') {
+        $sStyleHidden_idcostumer_ = 'display: none';
     }
-    if (1 || !isset($this->nmgp_cmp_hidden['lastname_']) || $this->nmgp_cmp_hidden['lastname_'] == 'on') {
-        if (!isset($this->nm_new_label['lastname_'])) {
-            $this->nm_new_label['lastname_'] = "Last Name";
+    if (1 || !isset($this->nmgp_cmp_hidden['idcostumer_']) || $this->nmgp_cmp_hidden['idcostumer_'] == 'on') {
+        if (!isset($this->nm_new_label['idcostumer_'])) {
+            $this->nm_new_label['idcostumer_'] = "Nome";
         }
-        $SC_Label = "" . $this->nm_new_label['lastname_']  . "";
+        $SC_Label = "" . $this->nm_new_label['idcostumer_']  . "";
         $label_fieldName = nl2br($SC_Label);
 
         // label & order
         $divLabelStyle = '; justify-content: left';
-        $fieldSortRule = $this->scGetColumnOrderRule("lastName", $orderColName, $orderColOrient, $orderColRule);
-        $fieldSortIcon = $this->scGetColumnOrderIcon("lastName", $fieldSortRule);
+        $fieldSortRule = $this->scGetColumnOrderRule("idCostumer", $orderColName, $orderColOrient, $orderColRule);
+        $fieldSortIcon = $this->scGetColumnOrderIcon("idCostumer", $fieldSortRule);
 
         if (empty($this->Ini->Label_sort_pos)) {
             $this->Ini->Label_sort_pos = "right_field";
@@ -1056,7 +1058,7 @@ $orderColRule = '';
         } else {
             $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
         }
-        $label_labelContent = "<a href=\"javascript:nm_move('ordem', 'lastName')\" class=\"scFormLabelLink scFormLabelLinkOddMult\">" . $label_labelContent . "</a>";
+        $label_labelContent = "<a href=\"javascript:nm_move('ordem', 'idCostumer')\" class=\"scFormLabelLink scFormLabelLinkOddMult\">" . $label_labelContent . "</a>";
         $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
 
         // controls
@@ -1067,109 +1069,7 @@ $orderColRule = '';
         $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
         $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
 ?>
-    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult css_lastname__label sc-col-title <?php echo $classColFld ?>" id="hidden_field_label_lastname_" style="<?php echo $sStyleHidden_lastname_; ?>" > <?php echo $label_final ?> </TD>
-   <?php
-        $this->form_fixed_column_no++;
-    }
-?>
-
-   <?php
-    $sStyleHidden_doctype_ = '';
-    if (isset($this->nmgp_cmp_hidden['doctype_']) && $this->nmgp_cmp_hidden['doctype_'] == 'off') {
-        $sStyleHidden_doctype_ = 'display: none';
-    }
-    if (1 || !isset($this->nmgp_cmp_hidden['doctype_']) || $this->nmgp_cmp_hidden['doctype_'] == 'on') {
-        if (!isset($this->nm_new_label['doctype_'])) {
-            $this->nm_new_label['doctype_'] = "Doc Type";
-        }
-        $SC_Label = "" . $this->nm_new_label['doctype_']  . "";
-        $label_fieldName = nl2br($SC_Label);
-
-        // label & order
-        $divLabelStyle = '; justify-content: left';
-        $fieldSortRule = $this->scGetColumnOrderRule("docType", $orderColName, $orderColOrient, $orderColRule);
-        $fieldSortIcon = $this->scGetColumnOrderIcon("docType", $fieldSortRule);
-
-        if (empty($this->Ini->Label_sort_pos)) {
-            $this->Ini->Label_sort_pos = "right_field";
-        }
-
-        if (empty($fieldSortIcon)) {
-            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "\<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
-        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
-        } else {
-            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
-        }
-        $label_labelContent = "<a href=\"javascript:nm_move('ordem', 'docType')\" class=\"scFormLabelLink scFormLabelLinkOddMult\">" . $label_labelContent . "</a>";
-        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
-
-        // controls
-        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->form_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->form_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->form_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
-        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
-
-        // final label
-        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
-        $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
-?>
-    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult css_doctype__label sc-col-title <?php echo $classColFld ?>" id="hidden_field_label_doctype_" style="<?php echo $sStyleHidden_doctype_; ?>" > <?php echo $label_final ?> </TD>
-   <?php
-        $this->form_fixed_column_no++;
-    }
-?>
-
-   <?php
-    $sStyleHidden_docnumber_ = '';
-    if (isset($this->nmgp_cmp_hidden['docnumber_']) && $this->nmgp_cmp_hidden['docnumber_'] == 'off') {
-        $sStyleHidden_docnumber_ = 'display: none';
-    }
-    if (1 || !isset($this->nmgp_cmp_hidden['docnumber_']) || $this->nmgp_cmp_hidden['docnumber_'] == 'on') {
-        if (!isset($this->nm_new_label['docnumber_'])) {
-            $this->nm_new_label['docnumber_'] = "Doc Number";
-        }
-        $SC_Label = "" . $this->nm_new_label['docnumber_']  . "";
-        $label_fieldName = nl2br($SC_Label);
-
-        // label & order
-        $divLabelStyle = '; justify-content: left';
-        $fieldSortRule = $this->scGetColumnOrderRule("docNumber", $orderColName, $orderColOrient, $orderColRule);
-        $fieldSortIcon = $this->scGetColumnOrderIcon("docNumber", $fieldSortRule);
-
-        if (empty($this->Ini->Label_sort_pos)) {
-            $this->Ini->Label_sort_pos = "right_field";
-        }
-
-        if (empty($fieldSortIcon)) {
-            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "\<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
-        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
-        } else {
-            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
-        }
-        $label_labelContent = "<a href=\"javascript:nm_move('ordem', 'docNumber')\" class=\"scFormLabelLink scFormLabelLinkOddMult\">" . $label_labelContent . "</a>";
-        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
-
-        // controls
-        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->form_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->form_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->form_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
-        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
-
-        // final label
-        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
-        $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
-?>
-    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult css_docnumber__label sc-col-title <?php echo $classColFld ?>" id="hidden_field_label_docnumber_" style="<?php echo $sStyleHidden_docnumber_; ?>" > <?php echo $label_final ?> </TD>
+    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult css_idcostumer__label sc-col-title <?php echo $classColFld ?>" id="hidden_field_label_idcostumer_" style="<?php echo $sStyleHidden_idcostumer_; ?>" > <?php echo $label_final ?> </TD>
    <?php
         $this->form_fixed_column_no++;
     }
@@ -1235,18 +1135,14 @@ function Form_Corpo($Line_Add = false, $Table_refresh = false)
        $this->idholder_ = $this->form_vert_sub_aggregate[$sc_seq_vert]['idholder_'];
        if (isset($this->Embutida_ronly) && $this->Embutida_ronly && !$Line_Add)
        {
-           $this->nmgp_cmp_readonly['firstname_'] = true;
-           $this->nmgp_cmp_readonly['lastname_'] = true;
-           $this->nmgp_cmp_readonly['doctype_'] = true;
-           $this->nmgp_cmp_readonly['docnumber_'] = true;
+           $this->nmgp_cmp_readonly['kinship_'] = true;
+           $this->nmgp_cmp_readonly['idcostumer_'] = true;
            $this->nmgp_cmp_readonly['idaggregate_'] = true;
        }
        elseif ($Line_Add)
        {
-           if (!isset($this->nmgp_cmp_readonly['firstname_']) || $this->nmgp_cmp_readonly['firstname_'] != "on") {$this->nmgp_cmp_readonly['firstname_'] = false;}
-           if (!isset($this->nmgp_cmp_readonly['lastname_']) || $this->nmgp_cmp_readonly['lastname_'] != "on") {$this->nmgp_cmp_readonly['lastname_'] = false;}
-           if (!isset($this->nmgp_cmp_readonly['doctype_']) || $this->nmgp_cmp_readonly['doctype_'] != "on") {$this->nmgp_cmp_readonly['doctype_'] = false;}
-           if (!isset($this->nmgp_cmp_readonly['docnumber_']) || $this->nmgp_cmp_readonly['docnumber_'] != "on") {$this->nmgp_cmp_readonly['docnumber_'] = false;}
+           if (!isset($this->nmgp_cmp_readonly['kinship_']) || $this->nmgp_cmp_readonly['kinship_'] != "on") {$this->nmgp_cmp_readonly['kinship_'] = false;}
+           if (!isset($this->nmgp_cmp_readonly['idcostumer_']) || $this->nmgp_cmp_readonly['idcostumer_'] != "on") {$this->nmgp_cmp_readonly['idcostumer_'] = false;}
            if (!isset($this->nmgp_cmp_readonly['idaggregate_']) || $this->nmgp_cmp_readonly['idaggregate_'] != "on") {$this->nmgp_cmp_readonly['idaggregate_'] = false;}
        }
             if (isset($this->form_vert_form_preenchimento[$sc_seq_vert])) {
@@ -1255,109 +1151,57 @@ function Form_Corpo($Line_Add = false, $Table_refresh = false)
                   eval("\$this->" . $sCmpNome . " = \$mCmpVal;");
               }
             }
-        $this->firstname_ = $this->form_vert_sub_aggregate[$sc_seq_vert]['firstname_']; 
-       $firstname_ = $this->firstname_; 
-       $sStyleHidden_firstname_ = '';
-       if (isset($sCheckRead_firstname_))
+        $this->kinship_ = $this->form_vert_sub_aggregate[$sc_seq_vert]['kinship_']; 
+       $kinship_ = $this->kinship_; 
+       $sStyleHidden_kinship_ = '';
+       if (isset($sCheckRead_kinship_))
        {
-           unset($sCheckRead_firstname_);
+           unset($sCheckRead_kinship_);
        }
-       if (isset($this->nmgp_cmp_readonly['firstname_']))
+       if (isset($this->nmgp_cmp_readonly['kinship_']))
        {
-           $sCheckRead_firstname_ = $this->nmgp_cmp_readonly['firstname_'];
+           $sCheckRead_kinship_ = $this->nmgp_cmp_readonly['kinship_'];
        }
-       if (isset($this->nmgp_cmp_hidden['firstname_']) && $this->nmgp_cmp_hidden['firstname_'] == 'off')
+       if (isset($this->nmgp_cmp_hidden['kinship_']) && $this->nmgp_cmp_hidden['kinship_'] == 'off')
        {
-           unset($this->nmgp_cmp_hidden['firstname_']);
-           $sStyleHidden_firstname_ = 'display: none;';
+           unset($this->nmgp_cmp_hidden['kinship_']);
+           $sStyleHidden_kinship_ = 'display: none;';
        }
-       $bTestReadOnly_firstname_ = true;
-       $sStyleReadLab_firstname_ = 'display: none;';
-       $sStyleReadInp_firstname_ = '';
-       if (isset($this->nmgp_cmp_readonly['firstname_']) && $this->nmgp_cmp_readonly['firstname_'] == 'on')
+       $bTestReadOnly_kinship_ = true;
+       $sStyleReadLab_kinship_ = 'display: none;';
+       $sStyleReadInp_kinship_ = '';
+       if (isset($this->nmgp_cmp_readonly['kinship_']) && $this->nmgp_cmp_readonly['kinship_'] == 'on')
        {
-           $bTestReadOnly_firstname_ = false;
-           unset($this->nmgp_cmp_readonly['firstname_']);
-           $sStyleReadLab_firstname_ = '';
-           $sStyleReadInp_firstname_ = 'display: none;';
+           $bTestReadOnly_kinship_ = false;
+           unset($this->nmgp_cmp_readonly['kinship_']);
+           $sStyleReadLab_kinship_ = '';
+           $sStyleReadInp_kinship_ = 'display: none;';
        }
-       $this->lastname_ = $this->form_vert_sub_aggregate[$sc_seq_vert]['lastname_']; 
-       $lastname_ = $this->lastname_; 
-       $sStyleHidden_lastname_ = '';
-       if (isset($sCheckRead_lastname_))
+       $this->idcostumer_ = $this->form_vert_sub_aggregate[$sc_seq_vert]['idcostumer_']; 
+       $idcostumer_ = $this->idcostumer_; 
+       $sStyleHidden_idcostumer_ = '';
+       if (isset($sCheckRead_idcostumer_))
        {
-           unset($sCheckRead_lastname_);
+           unset($sCheckRead_idcostumer_);
        }
-       if (isset($this->nmgp_cmp_readonly['lastname_']))
+       if (isset($this->nmgp_cmp_readonly['idcostumer_']))
        {
-           $sCheckRead_lastname_ = $this->nmgp_cmp_readonly['lastname_'];
+           $sCheckRead_idcostumer_ = $this->nmgp_cmp_readonly['idcostumer_'];
        }
-       if (isset($this->nmgp_cmp_hidden['lastname_']) && $this->nmgp_cmp_hidden['lastname_'] == 'off')
+       if (isset($this->nmgp_cmp_hidden['idcostumer_']) && $this->nmgp_cmp_hidden['idcostumer_'] == 'off')
        {
-           unset($this->nmgp_cmp_hidden['lastname_']);
-           $sStyleHidden_lastname_ = 'display: none;';
+           unset($this->nmgp_cmp_hidden['idcostumer_']);
+           $sStyleHidden_idcostumer_ = 'display: none;';
        }
-       $bTestReadOnly_lastname_ = true;
-       $sStyleReadLab_lastname_ = 'display: none;';
-       $sStyleReadInp_lastname_ = '';
-       if (isset($this->nmgp_cmp_readonly['lastname_']) && $this->nmgp_cmp_readonly['lastname_'] == 'on')
+       $bTestReadOnly_idcostumer_ = true;
+       $sStyleReadLab_idcostumer_ = 'display: none;';
+       $sStyleReadInp_idcostumer_ = '';
+       if (isset($this->nmgp_cmp_readonly['idcostumer_']) && $this->nmgp_cmp_readonly['idcostumer_'] == 'on')
        {
-           $bTestReadOnly_lastname_ = false;
-           unset($this->nmgp_cmp_readonly['lastname_']);
-           $sStyleReadLab_lastname_ = '';
-           $sStyleReadInp_lastname_ = 'display: none;';
-       }
-       $this->doctype_ = $this->form_vert_sub_aggregate[$sc_seq_vert]['doctype_']; 
-       $doctype_ = $this->doctype_; 
-       $sStyleHidden_doctype_ = '';
-       if (isset($sCheckRead_doctype_))
-       {
-           unset($sCheckRead_doctype_);
-       }
-       if (isset($this->nmgp_cmp_readonly['doctype_']))
-       {
-           $sCheckRead_doctype_ = $this->nmgp_cmp_readonly['doctype_'];
-       }
-       if (isset($this->nmgp_cmp_hidden['doctype_']) && $this->nmgp_cmp_hidden['doctype_'] == 'off')
-       {
-           unset($this->nmgp_cmp_hidden['doctype_']);
-           $sStyleHidden_doctype_ = 'display: none;';
-       }
-       $bTestReadOnly_doctype_ = true;
-       $sStyleReadLab_doctype_ = 'display: none;';
-       $sStyleReadInp_doctype_ = '';
-       if (isset($this->nmgp_cmp_readonly['doctype_']) && $this->nmgp_cmp_readonly['doctype_'] == 'on')
-       {
-           $bTestReadOnly_doctype_ = false;
-           unset($this->nmgp_cmp_readonly['doctype_']);
-           $sStyleReadLab_doctype_ = '';
-           $sStyleReadInp_doctype_ = 'display: none;';
-       }
-       $this->docnumber_ = $this->form_vert_sub_aggregate[$sc_seq_vert]['docnumber_']; 
-       $docnumber_ = $this->docnumber_; 
-       $sStyleHidden_docnumber_ = '';
-       if (isset($sCheckRead_docnumber_))
-       {
-           unset($sCheckRead_docnumber_);
-       }
-       if (isset($this->nmgp_cmp_readonly['docnumber_']))
-       {
-           $sCheckRead_docnumber_ = $this->nmgp_cmp_readonly['docnumber_'];
-       }
-       if (isset($this->nmgp_cmp_hidden['docnumber_']) && $this->nmgp_cmp_hidden['docnumber_'] == 'off')
-       {
-           unset($this->nmgp_cmp_hidden['docnumber_']);
-           $sStyleHidden_docnumber_ = 'display: none;';
-       }
-       $bTestReadOnly_docnumber_ = true;
-       $sStyleReadLab_docnumber_ = 'display: none;';
-       $sStyleReadInp_docnumber_ = '';
-       if (isset($this->nmgp_cmp_readonly['docnumber_']) && $this->nmgp_cmp_readonly['docnumber_'] == 'on')
-       {
-           $bTestReadOnly_docnumber_ = false;
-           unset($this->nmgp_cmp_readonly['docnumber_']);
-           $sStyleReadLab_docnumber_ = '';
-           $sStyleReadInp_docnumber_ = 'display: none;';
+           $bTestReadOnly_idcostumer_ = false;
+           unset($this->nmgp_cmp_readonly['idcostumer_']);
+           $sStyleReadLab_idcostumer_ = '';
+           $sStyleReadInp_idcostumer_ = 'display: none;';
        }
        $this->idaggregate_ = $this->form_vert_sub_aggregate[$sc_seq_vert]['idaggregate_']; 
        $idaggregate_ = $this->idaggregate_; 
@@ -1489,99 +1333,164 @@ if ($this->nmgp_opcao != "novo") {
    <?php 
        $this->form_fixed_column_no++;
 }?>
-   <?php if (isset($this->nmgp_cmp_hidden['firstname_']) && $this->nmgp_cmp_hidden['firstname_'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="firstname_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($firstname_) . "\">"; ?>
+   <?php if (isset($this->nmgp_cmp_hidden['kinship_']) && $this->nmgp_cmp_hidden['kinship_'] == 'off') { $sc_hidden_yes++;  ?>
+<input type="hidden" name="kinship_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($kinship_) . "\">"; ?>
 <?php } else { $sc_hidden_no++; 
        $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
 ?>
 
-    <TD class="scFormDataOddMult css_firstname__line <?php echo $classColFld ?>" id="hidden_field_data_firstname_<?php echo $sc_seq_vert; ?>" style="<?php echo $sStyleHidden_firstname_; ?>"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOddMult css_firstname__line" style="vertical-align: top;padding: 0px">
-<?php if ($bTestReadOnly_firstname_ && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["firstname_"]) &&  $this->nmgp_cmp_readonly["firstname_"] == "on") { 
+    <TD class="scFormDataOddMult css_kinship__line <?php echo $classColFld ?>" id="hidden_field_data_kinship_<?php echo $sc_seq_vert; ?>" style="<?php echo $sStyleHidden_kinship_; ?>"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOddMult css_kinship__line" style="vertical-align: top;padding: 0px">
+<?php if ($bTestReadOnly_kinship_ && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["kinship_"]) &&  $this->nmgp_cmp_readonly["kinship_"] == "on") { 
 
  ?>
-<input type="hidden" name="firstname_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($firstname_) . "\">" . $firstname_ . ""; ?>
+<input type="hidden" name="kinship_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($kinship_) . "\">" . $kinship_ . ""; ?>
 <?php } else { ?>
-<span id="id_read_on_firstname_<?php echo $sc_seq_vert ?>" class="sc-ui-readonly-firstname_<?php echo $sc_seq_vert ?> css_firstname__line" style="<?php echo $sStyleReadLab_firstname_; ?>"><?php echo $this->form_format_readonly("firstname_", $this->form_encode_input($this->firstname_)); ?></span><span id="id_read_off_firstname_<?php echo $sc_seq_vert ?>" class="css_read_off_firstname_<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_firstname_; ?>">
- <input class="sc-js-input scFormObjectOddMult css_firstname__obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_firstname_<?php echo $sc_seq_vert ?>" type=text name="firstname_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($firstname_) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=20"; } ?> maxlength=45 alt="{datatype: 'text', maxLength: 45, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddMultWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_firstname_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_firstname_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
+<span id="id_read_on_kinship_<?php echo $sc_seq_vert ?>" class="sc-ui-readonly-kinship_<?php echo $sc_seq_vert ?> css_kinship__line" style="<?php echo $sStyleReadLab_kinship_; ?>"><?php echo $this->form_format_readonly("kinship_", $this->form_encode_input($this->kinship_)); ?></span><span id="id_read_off_kinship_<?php echo $sc_seq_vert ?>" class="css_read_off_kinship_<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_kinship_; ?>">
+ <input class="sc-js-input scFormObjectOddMult css_kinship__obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_kinship_<?php echo $sc_seq_vert ?>" type=text name="kinship_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($kinship_) ?>"
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=50"; } ?> maxlength=50 alt="{datatype: 'text', maxLength: 50, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddMultWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_kinship_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_kinship_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
    <?php $this->form_fixed_column_no++; ?>
 <?php }?>
 
-   <?php if (isset($this->nmgp_cmp_hidden['lastname_']) && $this->nmgp_cmp_hidden['lastname_'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="lastname_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($lastname_) . "\">"; ?>
+   <?php if (isset($this->nmgp_cmp_hidden['idcostumer_']) && $this->nmgp_cmp_hidden['idcostumer_'] == 'off') { $sc_hidden_yes++; ?>
+<input type=hidden name="idcostumer_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($this->idcostumer_) . "\">"; ?>
 <?php } else { $sc_hidden_no++; 
        $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
 ?>
 
-    <TD class="scFormDataOddMult css_lastname__line <?php echo $classColFld ?>" id="hidden_field_data_lastname_<?php echo $sc_seq_vert; ?>" style="<?php echo $sStyleHidden_lastname_; ?>"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOddMult css_lastname__line" style="vertical-align: top;padding: 0px">
-<?php if ($bTestReadOnly_lastname_ && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["lastname_"]) &&  $this->nmgp_cmp_readonly["lastname_"] == "on") { 
+    <TD class="scFormDataOddMult css_idcostumer__line <?php echo $classColFld ?>" id="hidden_field_data_idcostumer_<?php echo $sc_seq_vert; ?>" style="<?php echo $sStyleHidden_idcostumer_; ?>"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOddMult css_idcostumer__line" style="vertical-align: top;padding: 0px">
+<?php if ($bTestReadOnly_idcostumer_ && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["idcostumer_"]) &&  $this->nmgp_cmp_readonly["idcostumer_"] == "on") { 
+ 
+$nmgp_def_dados = "" ; 
+if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']))
+{
+    $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']); 
+}
+else
+{
+    $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array(); 
+}
+   if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+   { 
+       $GLOBALS["NM_ERRO_IBASE"] = 1;  
+   } 
+   $nm_nao_carga = false;
+   $nmgp_def_dados = "" ; 
+   if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']))
+   {
+       $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_']); 
+   }
+   else
+   {
+       $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'] = array(); 
+    }
 
- ?>
-<input type="hidden" name="lastname_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($lastname_) . "\">" . $lastname_ . ""; ?>
-<?php } else { ?>
-<span id="id_read_on_lastname_<?php echo $sc_seq_vert ?>" class="sc-ui-readonly-lastname_<?php echo $sc_seq_vert ?> css_lastname__line" style="<?php echo $sStyleReadLab_lastname_; ?>"><?php echo $this->form_format_readonly("lastname_", $this->form_encode_input($this->lastname_)); ?></span><span id="id_read_off_lastname_<?php echo $sc_seq_vert ?>" class="css_read_off_lastname_<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_lastname_; ?>">
- <input class="sc-js-input scFormObjectOddMult css_lastname__obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_lastname_<?php echo $sc_seq_vert ?>" type=text name="lastname_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($lastname_) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=20"; } ?> maxlength=45 alt="{datatype: 'text', maxLength: 45, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddMultWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_lastname_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_lastname_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
-   <?php $this->form_fixed_column_no++; ?>
-<?php }?>
-
-   <?php if (isset($this->nmgp_cmp_hidden['doctype_']) && $this->nmgp_cmp_hidden['doctype_'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="doctype_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($doctype_) . "\">"; ?>
-<?php } else { $sc_hidden_no++; 
-       $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+   $old_value_idaggregate_ = $this->idaggregate_;
+   $this->nm_tira_formatacao();
+
+
+   $unformatted_value_idaggregate_ = $this->idaggregate_;
+
+   $nm_comando = "SELECT idCostumer, name  FROM cad_costumer  ORDER BY name";
+
+   $this->idaggregate_ = $old_value_idaggregate_;
+
+   $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando;
+   $_SESSION['scriptcase']['sc_sql_ult_conexao'] = '';
+   if ($nm_comando != "" && $rs = $this->Db->Execute($nm_comando))
+   {
+       while (!$rs->EOF) 
+       { 
+              $rs->fields[0] = str_replace(',', '.', $rs->fields[0]);
+              $rs->fields[0] = (strpos(strtolower($rs->fields[0]), "e")) ? (float)$rs->fields[0] : $rs->fields[0];
+              $rs->fields[0] = (string)$rs->fields[0];
+              $nmgp_def_dados .= $rs->fields[1] . "?#?" ; 
+              $nmgp_def_dados .= $rs->fields[0] . "?#?N?@?" ; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_idcostumer_'][] = $rs->fields[0];
+              $rs->MoveNext() ; 
+       } 
+       $rs->Close() ; 
+   } 
+   elseif ($GLOBALS["NM_ERRO_IBASE"] != 1 && $nm_comando != "")  
+   {  
+       $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
+       exit; 
+   } 
+   $GLOBALS["NM_ERRO_IBASE"] = 0; 
+   $x = 0; 
+   $idcostumer__look = ""; 
+   $todox = str_replace("?#?@?#?", "?#?@ ?#?", trim($nmgp_def_dados)) ; 
+   $todo  = explode("?@?", $todox) ; 
+   while (!empty($todo[$x])) 
+   {
+          $cadaselect = explode("?#?", $todo[$x]) ; 
+          if ($cadaselect[1] == "@ ") {$cadaselect[1]= trim($cadaselect[1]); } ; 
+          if (isset($this->Embutida_ronly) && $this->Embutida_ronly && isset($this->idcostumer__1))
+          {
+              foreach ($this->idcostumer__1 as $tmp_idcostumer_)
+              {
+                  if (trim($tmp_idcostumer_) === trim($cadaselect[1])) {$idcostumer__look .= $cadaselect[0] . '__SC_BREAK_LINE__';}
+              }
+          }
+          elseif (isset($cadaselect[1]) && is_string($this->idcostumer_) && trim($this->idcostumer_) === trim($cadaselect[1])) {$idcostumer__look .= $cadaselect[0];} 
+          $x++; 
+   }
+
 ?>
-
-    <TD class="scFormDataOddMult css_doctype__line <?php echo $classColFld ?>" id="hidden_field_data_doctype_<?php echo $sc_seq_vert; ?>" style="<?php echo $sStyleHidden_doctype_; ?>"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOddMult css_doctype__line" style="vertical-align: top;padding: 0px">
-<?php if ($bTestReadOnly_doctype_ && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["doctype_"]) &&  $this->nmgp_cmp_readonly["doctype_"] == "on") { 
-
- if ("F" == $this->doctype_) { $doctype__look = "Fisica";} 
- if ("J" == $this->doctype_) { $doctype__look = "Juridica";} 
-?>
-<input type="hidden" name="doctype_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($doctype_) . "\">" . $doctype__look . ""; ?>
+<input type="hidden" name="idcostumer_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($idcostumer_) . "\">" . $idcostumer__look . ""; ?>
 <?php } else { ?>
-
 <?php
-
- if ("F" == $this->doctype_) { $doctype__look = "Fisica";} 
- if ("J" == $this->doctype_) { $doctype__look = "Juridica";} 
-?>
-<span id="id_read_on_doctype_<?php echo $sc_seq_vert ; ?>"  class="css_doctype__line" style="<?php echo $sStyleReadLab_doctype_; ?>"><?php echo $this->form_format_readonly("doctype_", $this->form_encode_input($doctype__look)); ?></span><span id="id_read_off_doctype_<?php echo $sc_seq_vert ; ?>" class="css_read_off_doctype_ css_doctype__line" style="<?php echo $sStyleReadInp_doctype_; ?>"><div id="idAjaxRadio_doctype_<?php echo $sc_seq_vert ; ?>" style="display: inline-block"  class="css_doctype__line">
-<TABLE cellspacing=0 cellpadding=0 border=0><TR>
-  <TD class="scFormDataFontOddMult css_doctype__line"><?php $tempOptionId = "id-opt-doctype_" . $sc_seq_vert . "-1"; ?>
-    <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-doctype_ sc-ui-radio-doctype_<?php echo $sc_seq_vert ?>" type=radio name="doctype_<?php echo $sc_seq_vert ?>" value="F"
-<?php $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_'][] = 'F'; ?>
-<?php  if ("F" == $this->doctype_)  { echo " checked" ;} ?><?php  if (empty($this->doctype_)) { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Fisica</label></TD>
-</TR>
-<TR>
-  <TD class="scFormDataFontOddMult css_doctype__line"><?php $tempOptionId = "id-opt-doctype_" . $sc_seq_vert . "-2"; ?>
-    <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-doctype_ sc-ui-radio-doctype_<?php echo $sc_seq_vert ?>" type=radio name="doctype_<?php echo $sc_seq_vert ?>" value="J"
-<?php $_SESSION['sc_session'][$this->Ini->sc_page]['sub_aggregate']['Lookup_doctype_'][] = 'J'; ?>
-<?php  if ("J" == $this->doctype_)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Juridica</label></TD>
-</TR></TABLE>
-</div>
-</span><?php  }?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_doctype_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_doctype_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
-   <?php $this->form_fixed_column_no++; ?>
-<?php }?>
-
-   <?php if (isset($this->nmgp_cmp_hidden['docnumber_']) && $this->nmgp_cmp_hidden['docnumber_'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="docnumber_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($docnumber_) . "\">"; ?>
-<?php } else { $sc_hidden_no++; 
-       $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
-?>
-
-    <TD class="scFormDataOddMult css_docnumber__line <?php echo $classColFld ?>" id="hidden_field_data_docnumber_<?php echo $sc_seq_vert; ?>" style="<?php echo $sStyleHidden_docnumber_; ?>"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOddMult css_docnumber__line" style="vertical-align: top;padding: 0px">
-<?php if ($bTestReadOnly_docnumber_ && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["docnumber_"]) &&  $this->nmgp_cmp_readonly["docnumber_"] == "on") { 
-
- ?>
-<input type="hidden" name="docnumber_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($docnumber_) . "\">" . $docnumber_ . ""; ?>
-<?php } else { ?>
-<span id="id_read_on_docnumber_<?php echo $sc_seq_vert ?>" class="sc-ui-readonly-docnumber_<?php echo $sc_seq_vert ?> css_docnumber__line" style="<?php echo $sStyleReadLab_docnumber_; ?>"><?php echo $this->form_format_readonly("docnumber_", $this->form_encode_input($this->docnumber_)); ?></span><span id="id_read_off_docnumber_<?php echo $sc_seq_vert ?>" class="css_read_off_docnumber_<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_docnumber_; ?>">
- <input class="sc-js-input scFormObjectOddMult css_docnumber__obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_docnumber_<?php echo $sc_seq_vert ?>" type=text name="docnumber_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($docnumber_) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=16"; } ?> alt="{datatype: 'mask', maskList: '999.999.999-99;99.999.999/9999-99', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddMultWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_docnumber_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_docnumber_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
+   $todo = $this->Form_lookup_idcostumer_();
+   $x = 0 ; 
+   $idcostumer__look = ""; 
+   while (!empty($todo[$x])) 
+   {
+          $cadaselect = explode("?#?", $todo[$x]) ; 
+          if ($cadaselect[1] == "@ ") {$cadaselect[1]= trim($cadaselect[1]); } ; 
+          if (isset($this->Embutida_ronly) && $this->Embutida_ronly && isset($this->idcostumer__1))
+          {
+              foreach ($this->idcostumer__1 as $tmp_idcostumer_)
+              {
+                  if (trim($tmp_idcostumer_) === trim($cadaselect[1])) {$idcostumer__look .= $cadaselect[0] . '__SC_BREAK_LINE__';}
+              }
+          }
+          elseif (isset($cadaselect[1]) && is_string($this->idcostumer_) && trim($this->idcostumer_) === trim($cadaselect[1])) { $idcostumer__look .= $cadaselect[0]; } 
+          $x++; 
+   }
+          if (empty($idcostumer__look))
+          {
+              $idcostumer__look = $this->idcostumer_;
+          }
+   $x = 0; 
+   echo "<span id=\"id_read_on_idcostumer_" . $sc_seq_vert . "\" class=\"css_idcostumer__line\" style=\"" .  $sStyleReadLab_idcostumer_ . "\">" . $this->form_format_readonly("idcostumer_", $this->form_encode_input($idcostumer__look)) . "</span><span id=\"id_read_off_idcostumer_" . $sc_seq_vert . "\" class=\"css_read_off_idcostumer_" . $this->classes_100perc_fields['span_input'] . "\" style=\"white-space: nowrap; " . $sStyleReadInp_idcostumer_ . "\">";
+   echo " <span id=\"idAjaxSelect_idcostumer_" .  $sc_seq_vert . "\" class=\"" . $this->classes_100perc_fields['span_select'] . "\"><select class=\"sc-js-input scFormObjectOddMult css_idcostumer__obj" . $this->classes_100perc_fields['input'] . "\" style=\"\" id=\"id_sc_field_idcostumer_" . $sc_seq_vert . "\" name=\"idcostumer_" . $sc_seq_vert . "\" size=\"1\" alt=\"{type: 'select', enterTab: false}\">" ; 
+   echo "\r" ; 
+   while (!empty($todo[$x]) && !$nm_nao_carga) 
+   {
+          $cadaselect = explode("?#?", $todo[$x]) ; 
+          if ($cadaselect[1] == "@ ") {$cadaselect[1]= trim($cadaselect[1]); } ; 
+          echo "  <option value=\"$cadaselect[1]\"" ; 
+          if (trim($this->idcostumer_) === trim($cadaselect[1])) 
+          {
+              echo " selected" ; 
+          }
+          if (strtoupper($cadaselect[2]) == "S") 
+          {
+              if (empty($this->idcostumer_)) 
+              {
+                  echo " selected" ;
+              } 
+           } 
+          echo ">" . str_replace('<', '&lt;',$cadaselect[0]) . "</option>" ; 
+          echo "\r" ; 
+          $x++ ; 
+   }  ; 
+   echo " </select></span>" ; 
+   echo "\r" ; 
+   echo "</span>";
+?> 
+<?php  }?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_idcostumer_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_idcostumer_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
    <?php $this->form_fixed_column_no++; ?>
 <?php }?>
 
@@ -1605,37 +1514,21 @@ if ($this->nmgp_opcao != "novo") {
 
    </tr>
 <?php   
-        if (isset($sCheckRead_firstname_))
+        if (isset($sCheckRead_kinship_))
        {
-           $this->nmgp_cmp_readonly['firstname_'] = $sCheckRead_firstname_;
+           $this->nmgp_cmp_readonly['kinship_'] = $sCheckRead_kinship_;
        }
-       if ('display: none;' == $sStyleHidden_firstname_)
+       if ('display: none;' == $sStyleHidden_kinship_)
        {
-           $this->nmgp_cmp_hidden['firstname_'] = 'off';
+           $this->nmgp_cmp_hidden['kinship_'] = 'off';
        }
-       if (isset($sCheckRead_lastname_))
+       if (isset($sCheckRead_idcostumer_))
        {
-           $this->nmgp_cmp_readonly['lastname_'] = $sCheckRead_lastname_;
+           $this->nmgp_cmp_readonly['idcostumer_'] = $sCheckRead_idcostumer_;
        }
-       if ('display: none;' == $sStyleHidden_lastname_)
+       if ('display: none;' == $sStyleHidden_idcostumer_)
        {
-           $this->nmgp_cmp_hidden['lastname_'] = 'off';
-       }
-       if (isset($sCheckRead_doctype_))
-       {
-           $this->nmgp_cmp_readonly['doctype_'] = $sCheckRead_doctype_;
-       }
-       if ('display: none;' == $sStyleHidden_doctype_)
-       {
-           $this->nmgp_cmp_hidden['doctype_'] = 'off';
-       }
-       if (isset($sCheckRead_docnumber_))
-       {
-           $this->nmgp_cmp_readonly['docnumber_'] = $sCheckRead_docnumber_;
-       }
-       if ('display: none;' == $sStyleHidden_docnumber_)
-       {
-           $this->nmgp_cmp_hidden['docnumber_'] = 'off';
+           $this->nmgp_cmp_hidden['idcostumer_'] = 'off';
        }
        if (isset($sCheckRead_idaggregate_))
        {

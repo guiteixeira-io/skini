@@ -3571,6 +3571,28 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxSetMaster();
     scAjaxSetFocus();
   } // do_ajax_cad_costumers_validate_observation_cb
+
+  var cepReturnFieldData;
+
+  function cepReturnValues(fieldConf)
+  {
+    cepReturnFieldData = fieldConf;
+  } // cepReturnValues
+
+  function cepForceValue(fieldName, fieldValue)
+  {
+    var i, fieldOptions, fieldOption;
+    fieldOptions = $("#id_sc_field_" + fieldName).find("option");
+    for (i = 0; i < fieldOptions.length; i++) {
+      fieldOption = $(fieldOptions[i]);
+      if (fieldValue == fieldOption.val() || fieldValue == fieldOption.text()) {
+        $("#id_sc_field_" + fieldName).prop("selectedIndex", fieldOption.index());
+        cepReturnFieldData[fieldName] = null;
+        return;
+      }
+    }
+  } // cepForceValue
+
 function scAjaxShowErrorDisplay(sErrorId, sErrorMsg) {
 	if ("table" != sErrorId && !$("id_error_display_" + sErrorId + "_frame").hasClass('scFormToastDivFixed')) {
 		scAjaxShowErrorDisplay_default(sErrorId, sErrorMsg);

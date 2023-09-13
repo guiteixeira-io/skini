@@ -475,6 +475,148 @@ function sc_rtrim(str, chars) {
         chars = chars || "\\s";
         return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
 }
+var CEP     = 0;
+var RUA     = 1;
+var TIPOEXT = 2;
+var LOGRAD  = 3;
+var BAIRRO  = 4;
+var CIDADE  = 5;
+var UF      = 6;
+var LAT     = 7;
+var LONG    = 8;
+function cep_updateSelect(campo, valor) {
+	var oFormField = $("#id_sc_field_" + campo);
+	oFormField.val(valor);
+	if (oFormField.hasClass("select2-hidden-accessible")) {
+        $("#id_sc_field_" + campo).select2("destroy");
+		var select2Field = campo;
+        scJQSelect2Add("", select2Field);
+	}
+}
+function cep_array(string)
+{
+   return string.split("#;#");
+}
+function cep_zipcode(num_cep, campos_cep)
+{
+   retorno_cep  = campos_cep;
+   jsrsExecute("cad_costumers_mob_cep.php?cep=" + num_cep + "&onchange=s", recebe_zipcode, "zipcode", num_cep, false);
+}
+function recebe_zipcode(string)
+{
+   if (string.substr(0, 3) == "nao")
+   {
+       alert ("<?php echo html_entity_decode($this->Ini->Nm_lang['lang_othr_cepn'], ENT_COMPAT, $_SESSION['scriptcase']['charset']); ?>");
+       return;
+   }
+   if (string.substr(0, 4) == "scep")
+   {
+       alert (string.substr(4));
+       return;
+   }
+   arr_dados  = cep_array(string);
+   retorno_cep += ";";
+   arr_campos = retorno_cep.split(";");
+   ix = 1;
+   var returnValues = {};
+   while (arr_campos[ix] != "")
+   {
+       arr_cada_cmp = arr_campos[ix].split(",");
+       if (arr_cada_cmp[0] == "CEP")    { ind = 0;}
+       if (arr_cada_cmp[0] == "RUA")    { ind = 1;}
+       if (arr_cada_cmp[0] == "TIPOEXT"){ ind = 2;}
+       if (arr_cada_cmp[0] == "LOGRAD") { ind = 3;}
+       if (arr_cada_cmp[0] == "BAIRRO") { ind = 4;}
+       if (arr_cada_cmp[0] == "CIDADE") { ind = 5;}
+       if (arr_cada_cmp[0] == "UF")     { ind = 6;}
+       if (arr_cada_cmp[0] == "LAT")    { ind = 7;}
+       if (arr_cada_cmp[0] == "LONG")   { ind = 8;}
+       dado_saida = arr_dados[ind];
+       xxx = eval("document.F1." + arr_cada_cmp[1] + ".value = " + 'dado_saida');
+       returnValues[ arr_cada_cmp[1] ] = {"type": arr_cada_cmp[0], "value": dado_saida};
+       Obj_Ret_Cep = 'id_read_on_' + arr_cada_cmp[1];
+       if (document.getElementById(Obj_Ret_Cep))
+       {
+           document.getElementById(Obj_Ret_Cep).innerHTML = dado_saida;
+       }
+       Obj_Ret_Cep = 'id_ajax_label_' + arr_cada_cmp[1];
+       if (document.getElementById(Obj_Ret_Cep))
+       {
+           document.getElementById(Obj_Ret_Cep).innerHTML = dado_saida;
+       }
+       Obj_Ret_Cep = 'id_ac_' + arr_cada_cmp[1];
+       if (document.getElementById(Obj_Ret_Cep))
+       {
+           document.getElementById(Obj_Ret_Cep).value = dado_saida;
+       }
+       var fieldObj = $("#id_sc_field_" + arr_cada_cmp[1]);
+       if (fieldObj.length && ("select" == fieldObj[0].type || "select-one" == fieldObj[0].type || "select-multiple" == fieldObj[0].type)) {
+           cep_updateSelect(arr_cada_cmp[1], dado_saida);
+       }
+       ix++;
+   }
+   cepReturnValues(returnValues);
+}
+function cep_zipcode(num_cep, campos_cep)
+{
+   retorno_cep  = campos_cep;
+   jsrsExecute("cad_costumers_mob_cep.php?cep=" + num_cep + "&onchange=s", recebe_zipcode, "zipcode", num_cep, false);
+}
+function recebe_zipcode(string)
+{
+   if (string.substr(0, 3) == "nao")
+   {
+       alert ("<?php echo html_entity_decode($this->Ini->Nm_lang['lang_othr_cepn'], ENT_COMPAT, $_SESSION['scriptcase']['charset']); ?>");
+       return;
+   }
+   if (string.substr(0, 4) == "scep")
+   {
+       alert (string.substr(4));
+       return;
+   }
+   arr_dados  = cep_array(string);
+   retorno_cep += ";";
+   arr_campos = retorno_cep.split(";");
+   ix = 1;
+   var returnValues = {};
+   while (arr_campos[ix] != "")
+   {
+       arr_cada_cmp = arr_campos[ix].split(",");
+       if (arr_cada_cmp[0] == "CEP")    { ind = 0;}
+       if (arr_cada_cmp[0] == "RUA")    { ind = 1;}
+       if (arr_cada_cmp[0] == "TIPOEXT"){ ind = 2;}
+       if (arr_cada_cmp[0] == "LOGRAD") { ind = 3;}
+       if (arr_cada_cmp[0] == "BAIRRO") { ind = 4;}
+       if (arr_cada_cmp[0] == "CIDADE") { ind = 5;}
+       if (arr_cada_cmp[0] == "UF")     { ind = 6;}
+       if (arr_cada_cmp[0] == "LAT")    { ind = 7;}
+       if (arr_cada_cmp[0] == "LONG")   { ind = 8;}
+       dado_saida = arr_dados[ind];
+       xxx = eval("document.F1." + arr_cada_cmp[1] + ".value = " + 'dado_saida');
+       returnValues[ arr_cada_cmp[1] ] = {"type": arr_cada_cmp[0], "value": dado_saida};
+       Obj_Ret_Cep = 'id_read_on_' + arr_cada_cmp[1];
+       if (document.getElementById(Obj_Ret_Cep))
+       {
+           document.getElementById(Obj_Ret_Cep).innerHTML = dado_saida;
+       }
+       Obj_Ret_Cep = 'id_ajax_label_' + arr_cada_cmp[1];
+       if (document.getElementById(Obj_Ret_Cep))
+       {
+           document.getElementById(Obj_Ret_Cep).innerHTML = dado_saida;
+       }
+       Obj_Ret_Cep = 'id_ac_' + arr_cada_cmp[1];
+       if (document.getElementById(Obj_Ret_Cep))
+       {
+           document.getElementById(Obj_Ret_Cep).value = dado_saida;
+       }
+       var fieldObj = $("#id_sc_field_" + arr_cada_cmp[1]);
+       if (fieldObj.length && ("select" == fieldObj[0].type || "select-one" == fieldObj[0].type || "select-multiple" == fieldObj[0].type)) {
+           cep_updateSelect(arr_cada_cmp[1], dado_saida);
+       }
+       ix++;
+   }
+   cepReturnValues(returnValues);
+}
 var hasJsFormOnload = false;
 
 function scCssFocus(oHtmlObj)

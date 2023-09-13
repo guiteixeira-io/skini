@@ -211,6 +211,7 @@ function scJQEventsAdd(iSeqRow) {
   $('#id_sc_field_email' + iSeqRow).bind('blur', function() { sc_cad_costumers_email_onblur(this, iSeqRow) })
                                    .bind('focus', function() { sc_cad_costumers_email_onfocus(this, iSeqRow) });
   $('#id_sc_field_zipcode' + iSeqRow).bind('blur', function() { sc_cad_costumers_zipcode_onblur(this, iSeqRow) })
+                                     .bind('change', function() { sc_cad_costumers_zipcode_onchange(this, iSeqRow) })
                                      .bind('focus', function() { sc_cad_costumers_zipcode_onfocus(this, iSeqRow) });
   $('#id_sc_field_zipstate' + iSeqRow).bind('blur', function() { sc_cad_costumers_zipstate_onblur(this, iSeqRow) })
                                       .bind('focus', function() { sc_cad_costumers_zipstate_onfocus(this, iSeqRow) });
@@ -289,6 +290,10 @@ function sc_cad_costumers_email_onfocus(oThis, iSeqRow) {
 function sc_cad_costumers_zipcode_onblur(oThis, iSeqRow) {
   do_ajax_cad_costumers_mob_validate_zipcode();
   scCssBlur(oThis);
+}
+
+function sc_cad_costumers_zipcode_onchange(oThis, iSeqRow) {
+  cep_zipcode(oThis.value, 'F1;CEP,zipcode;UF,zipstate;CIDADE,zipcity;BAIRRO,zipdistrict;RUA,zipstreet');
 }
 
 function sc_cad_costumers_zipcode_onfocus(oThis, iSeqRow) {
