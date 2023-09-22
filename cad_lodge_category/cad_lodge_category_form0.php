@@ -688,6 +688,9 @@ if (!$this->NM_ajax_flag && isset($this->NM_non_ajax_info['ajaxJavascript']) && 
     if ("hidden_bloco_1" == block_id) {
       scAjaxDetailHeight("sub_lodgePrice", $($("#nmsc_iframe_liga_sub_lodgePrice")[0].contentWindow.document).innerHeight());
     }
+    if ("hidden_bloco_2" == block_id) {
+      scAjaxDetailHeight("cad_lodge", $($("#nmsc_iframe_liga_cad_lodge")[0].contentWindow.document).innerHeight());
+    }
   }
  }
 
@@ -932,11 +935,11 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
           <select id='fast_search_f0_t' multiple=multiple  class="scFormToolbarInput" style="vertical-align: middle;" name="nmgp_fast_search_t" onChange="change_fast_t = 'CH';">
 <?php 
           $SC_Label_atu['SC_all_Cmp'] = $this->Ini->Nm_lang['lang_srch_all_fields']; 
-          $SC_Label_atu['idlodgecategory'] = (isset($this->nm_new_label['idlodgecategory'])) ? $this->nm_new_label['idlodgecategory'] : 'ID'; 
-          $SC_Label_atu['name'] = (isset($this->nm_new_label['name'])) ? $this->nm_new_label['name'] : 'Name'; 
-          $SC_Label_atu['capacity'] = (isset($this->nm_new_label['capacity'])) ? $this->nm_new_label['capacity'] : 'Capacity'; 
-          $SC_Label_atu['color'] = (isset($this->nm_new_label['color'])) ? $this->nm_new_label['color'] : 'Color'; 
+          $SC_Label_atu['name'] = (isset($this->nm_new_label['name'])) ? $this->nm_new_label['name'] : 'Nome'; 
+          $SC_Label_atu['capacity'] = (isset($this->nm_new_label['capacity'])) ? $this->nm_new_label['capacity'] : 'Capacidade'; 
+          $SC_Label_atu['color'] = (isset($this->nm_new_label['color'])) ? $this->nm_new_label['color'] : 'Cor'; 
           $SC_Label_atu['price'] = (isset($this->nm_new_label['price'])) ? $this->nm_new_label['price'] : 'Preço'; 
+          $SC_Label_atu['lodge'] = (isset($this->nm_new_label['lodge'])) ? $this->nm_new_label['lodge'] : 'Acomodação'; 
           foreach ($SC_Label_atu as $CMP => $LABEL)
           {
               if($CMP == 'SC_all_Cmp')
@@ -1240,84 +1243,18 @@ unset($NM_ult_sep);
 ?>
 <?php $sc_hidden_no = 1; $sc_hidden_yes = 0; ?>
    <a name="bloco_0"></a>
-   <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="30%" height="">
+   <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="100%" height="">
 <div id="div_hidden_bloco_0"><!-- bloco_c -->
 <?php
 ?>
-<TABLE align="center" id="hidden_bloco_0" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php
-           if ('novo' != $this->nmgp_opcao && !isset($this->nmgp_cmp_readonly['idlodgecategory']))
-           {
-               $this->nmgp_cmp_readonly['idlodgecategory'] = 'on';
-           }
-?>
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
-   <?php
-    if (!isset($this->nm_new_label['idlodgecategory']))
-    {
-        $this->nm_new_label['idlodgecategory'] = "ID";
-    }
-?>
-<?php
-   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
-   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
-   $idlodgecategory = $this->idlodgecategory;
-   $sStyleHidden_idlodgecategory = '';
-   if (isset($this->nmgp_cmp_hidden['idlodgecategory']) && $this->nmgp_cmp_hidden['idlodgecategory'] == 'off')
-   {
-       unset($this->nmgp_cmp_hidden['idlodgecategory']);
-       $sStyleHidden_idlodgecategory = 'display: none;';
-   }
-   $bTestReadOnly = true;
-   $sStyleReadLab_idlodgecategory = 'display: none;';
-   $sStyleReadInp_idlodgecategory = '';
-   if (/*($this->nmgp_opcao != "novo" && $this->nmgp_opc_ant != "incluir") || */(isset($this->nmgp_cmp_readonly["idlodgecategory"]) &&  $this->nmgp_cmp_readonly["idlodgecategory"] == "on"))
-   {
-       $bTestReadOnly = false;
-       unset($this->nmgp_cmp_readonly['idlodgecategory']);
-       $sStyleReadLab_idlodgecategory = '';
-       $sStyleReadInp_idlodgecategory = 'display: none;';
-   }
-?>
-<?php if (isset($this->nmgp_cmp_hidden['idlodgecategory']) && $this->nmgp_cmp_hidden['idlodgecategory'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="idlodgecategory" value="<?php echo $this->form_encode_input($idlodgecategory) . "\">"; ?>
-<?php } else { $sc_hidden_no++; ?>
-<?php if ((isset($this->Embutida_form) && $this->Embutida_form) || ($this->nmgp_opcao != "novo" && $this->nmgp_opc_ant != "incluir")) { ?>
-
-    <TD class="scFormDataOdd css_idlodgecategory_line" id="hidden_field_data_idlodgecategory" style="<?php echo $sStyleHidden_idlodgecategory; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_idlodgecategory_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_idlodgecategory_label" style=""><span id="id_label_idlodgecategory"><?php echo $this->nm_new_label['idlodgecategory']; ?></span></span><br><span id="id_read_on_idlodgecategory" class="css_idlodgecategory_line" style="<?php echo $sStyleReadLab_idlodgecategory; ?>"><?php echo $this->form_format_readonly("idlodgecategory", $this->form_encode_input($this->idlodgecategory)); ?></span><span id="id_read_off_idlodgecategory" class="css_read_off_idlodgecategory" style="<?php echo $sStyleReadInp_idlodgecategory; ?>"><input type="hidden" name="idlodgecategory" value="<?php echo $this->form_encode_input($idlodgecategory) . "\">"?><span id="id_ajax_label_idlodgecategory"><?php echo nl2br($idlodgecategory); ?></span>
-</span></span></td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_idlodgecategory_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_idlodgecategory_text"></span></td></tr></table></td></tr></table> </TD>
-   <?php }
-      else
-      {
-         $sc_hidden_no--;
-      }
-?>
-<?php }?>
-
-
-
-
-
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
-
-
-
-
-<?php } 
-?> 
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+<TABLE align="center" id="hidden_bloco_0" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
       $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
 
 
    <?php
     if (!isset($this->nm_new_label['name']))
     {
-        $this->nm_new_label['name'] = "Name";
+        $this->nm_new_label['name'] = "Nome";
     }
 ?>
 <?php
@@ -1357,28 +1294,10 @@ unset($NM_ult_sep);
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_name_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_name_text"></span></td></tr></table></td></tr></table> </TD>
    <?php }?>
 
-
-
-
-
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
-
-
-
-
-<?php } 
-?> 
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
    <?php
     if (!isset($this->nm_new_label['capacity']))
     {
-        $this->nm_new_label['capacity'] = "Capacity";
+        $this->nm_new_label['capacity'] = "Capacidade";
     }
 ?>
 <?php
@@ -1418,28 +1337,10 @@ unset($NM_ult_sep);
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_capacity_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_capacity_text"></span></td></tr></table></td></tr></table> </TD>
    <?php }?>
 
-
-
-
-
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
-
-
-
-
-<?php } 
-?> 
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
    <?php
     if (!isset($this->nm_new_label['color']))
     {
-        $this->nm_new_label['color'] = "Color";
+        $this->nm_new_label['color'] = "Cor";
     }
 ?>
 <?php
@@ -1501,14 +1402,19 @@ unset($NM_ult_sep);
 
 
 
+<?php $sStyleHidden_name_dumb = ('' == $sStyleHidden_name) ? 'display: none' : ''; ?>
+    <TD class="scFormDataOdd" id="hidden_field_data_name_dumb" style="<?php echo $sStyleHidden_name_dumb; ?>"></TD>
+<?php $sStyleHidden_capacity_dumb = ('' == $sStyleHidden_capacity) ? 'display: none' : ''; ?>
+    <TD class="scFormDataOdd" id="hidden_field_data_capacity_dumb" style="<?php echo $sStyleHidden_capacity_dumb; ?>"></TD>
 <?php $sStyleHidden_color_dumb = ('' == $sStyleHidden_color) ? 'display: none' : ''; ?>
     <TD class="scFormDataOdd" id="hidden_field_data_color_dumb" style="<?php echo $sStyleHidden_color_dumb; ?>"></TD>
    </tr>
 <?php $sc_hidden_no = 1; ?>
 </TABLE></div><!-- bloco_f -->
    </td>
-   <td width="70%" height="">
+   </tr></table>
    <a name="bloco_1"></a>
+   <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="50%" height="">
 <div id="div_hidden_bloco_1"><!-- bloco_c -->
 <TABLE align="center" id="hidden_bloco_1" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
       $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
@@ -1560,12 +1466,12 @@ unset($NM_ult_sep);
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_form_insert'] = 'on';
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_form_update'] = 'on';
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_form_delete'] = 'on';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_form_btn_nav'] = 'off';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_form_btn_nav'] = 'on';
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_grid_edit'] = 'off';
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_grid_edit_link'] = 'off';
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_qtd_reg'] = '10';
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_liga_tp_pag'] = 'parcial';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_parms'] = "NM_btn_insert*scinS*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinS*scoutNM_btn_navega*scinN*scout";
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['embutida_parms'] = "NM_btn_insert*scinS*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinS*scoutNM_btn_navega*scinS*scoutlink_remove_margin*scinok*scoutlink_remove_border*scinok*scout";
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['foreign_key']['idlodgecategory'] = $this->nmgp_dados_form['idlodgecategory'];
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['where_filter'] = "idLodgeCategory = " . $this->nmgp_dados_form['idlodgecategory'] . "";
  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['sub_lodgePrice_script_case_init'] ]['sub_lodgePrice']['where_detal']  = "idLodgeCategory = " . $this->nmgp_dados_form['idlodgecategory'] . "";
@@ -1603,7 +1509,7 @@ else
 
 
 
-<?php if ($sc_hidden_yes > 0) { ?>
+<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
 
 
     <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
@@ -1611,7 +1517,132 @@ else
 
 
 
-<?php } ?>
+<?php } 
+?> 
+
+
+
+
+
+
+<?php $sStyleHidden_price_dumb = ('' == $sStyleHidden_price) ? 'display: none' : ''; ?>
+    <TD class="scFormDataOdd" id="hidden_field_data_price_dumb" style="<?php echo $sStyleHidden_price_dumb; ?>"></TD>
+   </tr>
+<?php $sc_hidden_no = 1; ?>
+</TABLE></div><!-- bloco_f -->
+   </td>
+   <td width="50%" height="">
+   <a name="bloco_2"></a>
+<div id="div_hidden_bloco_2"><!-- bloco_c -->
+<TABLE align="center" id="hidden_bloco_2" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
+
+
+   <?php
+    if (!isset($this->nm_new_label['lodge']))
+    {
+        $this->nm_new_label['lodge'] = "Acomodação";
+    }
+?>
+<?php
+   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
+   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
+   $lodge = $this->lodge;
+   $sStyleHidden_lodge = '';
+   if (isset($this->nmgp_cmp_hidden['lodge']) && $this->nmgp_cmp_hidden['lodge'] == 'off')
+   {
+       unset($this->nmgp_cmp_hidden['lodge']);
+       $sStyleHidden_lodge = 'display: none;';
+   }
+   $bTestReadOnly = true;
+   $sStyleReadLab_lodge = 'display: none;';
+   $sStyleReadInp_lodge = '';
+   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['lodge']) && $this->nmgp_cmp_readonly['lodge'] == 'on')
+   {
+       $bTestReadOnly = false;
+       unset($this->nmgp_cmp_readonly['lodge']);
+       $sStyleReadLab_lodge = '';
+       $sStyleReadInp_lodge = 'display: none;';
+   }
+?>
+<?php if (isset($this->nmgp_cmp_hidden['lodge']) && $this->nmgp_cmp_hidden['lodge'] == 'off') { $sc_hidden_yes++;  ?>
+<input type="hidden" name="lodge" value="<?php echo $this->form_encode_input($lodge) . "\">"; ?>
+<?php } else { $sc_hidden_no++; ?>
+
+    <TD class="scFormDataOdd css_lodge_line" id="hidden_field_data_lodge" style="<?php echo $sStyleHidden_lodge; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td width="100%" class="scFormDataFontOdd css_lodge_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_lodge_label" style=""><span id="id_label_lodge"><?php echo $this->nm_new_label['lodge']; ?></span></span><br>
+<?php
+ if (isset($_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_lodge'] ]) && '' != $_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_lodge'] ]) {
+     $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] = $_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_lodge'] ];
+ }
+ else {
+     $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] = $this->Ini->sc_page;
+ }
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_proc']  = false;
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_form']  = true;
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_call']  = true;
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_multi'] = false;
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_liga_form_insert'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_liga_form_update'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_liga_form_delete'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_liga_form_btn_nav'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_liga_grid_edit'] = 'off';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_liga_grid_edit_link'] = 'off';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_liga_qtd_reg'] = '10';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_liga_tp_pag'] = 'parcial';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['embutida_parms'] = "NM_btn_insert*scinS*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinS*scoutNM_btn_navega*scinS*scoutlink_remove_margin*scinok*scoutlink_remove_border*scinok*scout";
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['foreign_key']['idlodgecategory'] = $this->nmgp_dados_form['idlodgecategory'];
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['where_filter'] = "idLodgeCategory = " . $this->nmgp_dados_form['idlodgecategory'] . "";
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['where_detal']  = "idLodgeCategory = " . $this->nmgp_dados_form['idlodgecategory'] . "";
+ if ($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge_category']['total'] < 0)
+ {
+     $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init'] ]['cad_lodge']['where_filter'] = "1 <> 1";
+ }
+ $sDetailSrc = ('novo' == $this->nmgp_opcao) ? 'cad_lodge_category_empty.htm' : $this->Ini->link_cad_lodge_edit . '?script_case_init=' . $this->form_encode_input($this->Ini->sc_page) . '&script_case_detail=Y';
+if (isset($this->Ini->sc_lig_target['C_@scinf_lodge']) && 'nmsc_iframe_liga_cad_lodge' != $this->Ini->sc_lig_target['C_@scinf_lodge'])
+{
+    if ('novo' != $this->nmgp_opcao)
+    {
+        $sDetailSrc .= '&under_dashboard=1&dashboard_app=' . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['dashboard_info']['dashboard_app'] . '&own_widget=' . $this->Ini->sc_lig_target['C_@scinf_lodge'] . '&parent_widget=' . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['dashboard_info']['own_widget'];
+        $sDetailSrc  = $this->addUrlParam($sDetailSrc, 'script_case_init', $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['cad_lodge_script_case_init']);
+    }
+?>
+<script type="text/javascript">
+$(function() {
+    scOpenMasterDetail("<?php echo $this->Ini->sc_lig_target['C_@scinf_lodge'] ?>", "<?php echo $sDetailSrc; ?>");
+});
+</script>
+<?php
+}
+else
+{
+?>
+<iframe border="0" id="nmsc_iframe_liga_cad_lodge"  marginWidth="0" marginHeight="0" frameborder="0" valign="top" height="100" width="100%" name="nmsc_iframe_liga_cad_lodge"  scrolling="auto" src="<?php echo $sDetailSrc; ?>"></iframe>
+<?php
+}
+?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_lodge_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_lodge_text"></span></td></tr></table></td></tr></table> </TD>
+   <?php }?>
+
+
+
+
+
+<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
+
+
+    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
+
+
+
+
+<?php } 
+?> 
+
+
+
+
+
+
    </td></tr></table>
    </tr>
 </TABLE></div><!-- bloco_f -->
@@ -1790,7 +1821,7 @@ unset($NM_ult_sep);
 </form> 
 <script> 
 <?php
-  $nm_sc_blocos_da_pag = array(0,1);
+  $nm_sc_blocos_da_pag = array(0,1,2);
 
   foreach ($this->Ini->nm_hidden_blocos as $bloco => $hidden)
   {
@@ -1806,7 +1837,7 @@ unset($NM_ult_sep);
 ?>
 $(window).bind("load", function() {
 <?php
-  $nm_sc_blocos_da_pag = array(0,1);
+  $nm_sc_blocos_da_pag = array(0,1,2);
 
   foreach ($this->Ini->nm_hidden_blocos as $bloco => $hidden)
   {

@@ -98,6 +98,9 @@ function scEventControl_onFocus(oField, iSeq) {
   var fieldId, fieldName;
   fieldId = $(oField).attr("id");
   fieldName = fieldId.substr(12);
+  if ("price_" + iSeq == fieldName) {
+    _scCalculatorBlurOk[fieldId] = false;
+  }
   scEventControl_data[fieldName]["blur"] = true;
   if ("idlodgecategory_" + iSeq == fieldName) {
     scEventControl_data[fieldName]["blur"] = false;
@@ -121,6 +124,13 @@ function scEventControl_onChange(sFieldName) {
 function scEventControl_onAutocomp(sFieldName) {
   scEventControl_data[sFieldName]["autocomp"] = false;
 } // scEventControl_onChange
+
+function scEventControl_onCalculator_price_() {
+  if (!_scCalculatorControl["id_sc_field_price_"]) {
+    _scCalculatorBlurOk["id_sc_field_price_"] = true;
+    do_ajax_sub_lodgePrice_event_price__onblur();
+  }
+} // scEventControl_onCalculator_price_
 
 var scEventControl_data = {};
 
@@ -626,6 +636,183 @@ function scSetFixedHeadersSize(formHeaders) {
 		}
 	}
 }
+var jqCalcMonetPos = {};
+var _scCalculatorBlurOk = {};
+
+function scJQCalculatorAdd(iSeqRow) {
+  _scCalculatorBlurOk["id_sc_field_quantitypersons_" + iSeqRow] = true;
+  $("#id_sc_field_price_" + iSeqRow).calculator({
+    onOpen: function(value, inst) {
+      if (typeof _scCalculatorControl !== "undefined") {
+        if (!_scCalculatorControl["id_sc_field_price_" + iSeqRow]) {
+          _scCalculatorControl["id_sc_field_price_" + iSeqRow] = true;
+        }
+      }
+      value = scJQCalculatorUnformat(value, "#id_sc_field_price_" + iSeqRow, '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_grp']); ?>', <?php echo $this->field_config['price_']['symbol_fmt']; ?>, '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_dec']); ?>', '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_mon']); ?>');
+      $(this).val(value);
+      _scCalculatorWidth = $(".calculator-popup").width();
+    },
+    onClose: function(value, inst) {
+      var oldValue = $(this.val);
+      if (typeof _scCalculatorControl !== "undefined") {
+        if (_scCalculatorControl["id_sc_field_price_" + iSeqRow]) {
+          _scCalculatorControl["id_sc_field_price_" + iSeqRow] = null;
+        }
+      }
+      value = scJQCalculatorFormat(value, "#id_sc_field_price_" + iSeqRow, '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_grp']); ?>', <?php echo $this->field_config['price_']['symbol_fmt']; ?>, '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_dec']); ?>', 2, '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_mon']); ?>');
+      $(this).val(value);
+      if (oldValue != value) {
+        $(this).trigger('change');
+      }
+    },
+    precision: 2,
+    showOn: "button",
+<?php
+$miniCalculatorIcon = $this->jqueryIconFile('calculator');
+$miniCalculatorFA   = $this->jqueryFAFile('calculator');
+if ('' != $miniCalculatorIcon) {
+?>
+    buttonImage: "<?php echo $miniCalculatorIcon; ?>",
+    buttonImageOnly: true,
+<?php
+}
+elseif ('' != $miniCalculatorFA) {
+?>
+    buttonText: "",
+<?php
+}
+?>
+  })
+<?php
+if ('' != $miniCalculatorFA) {
+?>
+    .next('button').append("<?php echo $miniCalculatorFA; ?>")
+<?php
+}
+?>
+;
+
+} // scJQCalculatorAdd
+
+var _scCalculatorWidth = 0;
+$(function() {
+    $(window).on("scroll", function() {
+        for (let calcField in _scCalculatorControl) {
+            if (_scCalculatorControl[calcField]) {
+                $(".calculator-popup").offset({left: $("#" + calcField).offset().left}).width(_scCalculatorWidth);
+            }
+        }
+    });
+});
+function scJQCalculatorUnformat(fValue, sField, sThousands, sFormat, sDecimals, sMonetary) {
+  fValue = scJQCalculatorCurrency(fValue, sField, sMonetary);
+  if ("" != sThousands) {
+    if ("." == sThousands) {
+      sThousands = "\\.";
+    }
+    sRegEx = eval("/" + sThousands + "/g");
+    fValue = fValue.replace(sRegEx, "");
+  }
+  if ("." != sDecimals) {
+    sRegEx = eval("/" + sDecimals + "/g");
+    fValue = fValue.replace(sRegEx, ".");
+  }
+  if ("." == fValue.substr(0, 1) || "," == fValue.substr(0, 1)) {
+    fValue = "0" + fValue;
+  }
+  return fValue;
+} // scJQCalculatorUnformat
+
+function scJQCalculatorFormat(fValue, sField, sThousands, sFormat, sDecimals, iPrecision, sMonetary) {
+  fValue = scJQCalculatorCurrency(fValue.toString(), sField, sMonetary);
+  if (-1 < fValue.indexOf('.')) {
+    var parts = fValue.split('.'),
+        pref = parts[0],
+        suf = parts[1];
+  }
+  else {
+    var pref = fValue,
+        suf = '';
+  }
+  if ('' != sThousands) {
+    if (3 == sFormat) {
+      if (4 <= pref.length) {
+        pref_rest = pref.substr(0, pref.length - 3);
+        pref = sThousands + pref.substr(pref.length - 3);
+        while (2 < pref_rest.length) {
+          pref = sThousands + pref_rest.substr(pref_rest.length - 2) + pref;
+          pref_rest = pref_rest.substr(0, pref_rest.length - 2);
+        }
+        if ('' != pref_rest) {
+          pref = pref_rest + pref;
+        }
+      }
+    }
+    else if (2 == sFormat) {
+      if (4 <= pref.length) {
+        pref = pref.substr(0, pref.length - 3) + sThousands + pref.substr(pref.length - 3);
+      }
+    }
+    else {
+      pref_rest = pref;
+      pref = '';
+      while (3 < pref_rest.length) {
+        pref = sThousands + pref_rest.substr(pref_rest.length - 3) + pref;
+        pref_rest = pref_rest.substr(0, pref_rest.length - 3);
+      }
+      if ('' != pref_rest) {
+        pref = pref_rest + pref;
+      }
+    }
+  }
+  if ('' != iPrecision) {
+    if (suf.length > iPrecision) {
+      suf = '1' + suf.substr(0, iPrecision) + '.' + suf.substr(iPrecision);
+      suf = Math.round(parseFloat(suf)).toString().substr(1);
+    }
+    else {
+      while (suf.length < iPrecision) {
+        suf += '0';
+      }
+    }
+  }
+  if ('' != sDecimals && '' != suf) {
+    fValue = pref + sDecimals + suf;
+  }
+  else {
+    fValue = pref;
+  }
+  if ('' != sMonetary) {
+    fValue = 'left' == jqCalcMonetPos[sField] ? sMonetary + ' ' + fValue : fValue + ' ' + sMonetary;
+  }
+  return fValue;
+} // scJQCalculatorFormat
+
+function scJQCalculatorCurrency(fValue, sField, sMonetary) {
+  if ("" != sMonetary) {
+    if (sMonetary + ' ' == fValue.substr(0, sMonetary.length + 1)) {
+        fValue = fValue.substr(sMonetary.length + 1);
+        jqCalcMonetPos[sField] = 'left';
+    }
+    else if (sMonetary == fValue.substr(0, sMonetary.length)) {
+        fValue = fValue.substr(sMonetary.length + 1);
+        jqCalcMonetPos[sField] = 'left';
+    }
+    else if (' ' + sMonetary == fValue.substr(fValue.length - sMonetary.length - 1)) {
+        fValue = fValue.substr(0, fValue.length - sMonetary.length - 1);
+        jqCalcMonetPos[sField] = 'right';
+    }
+    else if (sMonetary == fValue.substr(fValue.length - sMonetary.length)) {
+        fValue = fValue.substr(0, fValue.length - sMonetary.length);
+        jqCalcMonetPos[sField] = 'right';
+    }
+  }
+  if ("" == fValue) {
+    fValue = "0";
+  }
+  return fValue;
+} // scJQCalculatorCurrency
+
 function scJQUploadAdd(iSeqRow) {
 } // scJQUploadAdd
 
@@ -808,6 +995,7 @@ function scJQSelect2Add_idlodgecategory_(seqRow) {
 function scJQElementsAdd(iLine) {
   scJQEventsAdd(iLine);
   scEventControl_init(iLine);
+  scJQCalculatorAdd(iLine);
   scJQUploadAdd(iLine);
   scJQPasswordToggleAdd(iLine);
   scJQSelect2Add(iLine);

@@ -186,6 +186,8 @@ function Sel_cmp_process()
       $tab_blk_campos[] = "docnumber";
       $tab_ger_campos['phonenumber'] = "on";
       $tab_blk_campos[] = "phonenumber";
+      $tab_ger_campos['mobilephone'] = "on";
+      $tab_blk_campos[] = "mobilephone";
       $tab_ger_campos['email'] = "on";
       $tab_blk_campos[] = "email";
       $tab_ger_campos['holdertype'] = "on";

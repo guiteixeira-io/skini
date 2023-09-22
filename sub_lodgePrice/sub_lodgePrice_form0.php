@@ -122,6 +122,47 @@ else
  <script type="text/javascript" src="<?php echo $this->Ini->url_lib_js ?>frameControl.js"></script>
  <link rel="stylesheet" type="text/css" href="<?php echo $this->Ini->path_prod ?>/third/jquery_plugin/viewerjs/viewer.css" />
  <SCRIPT type="text/javascript" src="<?php echo $this->Ini->path_prod; ?>/third/jquery_plugin/viewerjs/viewer.js"></SCRIPT>
+ <link rel="stylesheet" href="<?php echo $this->Ini->path_prod ?>/third/jquery_plugin/calculator/jquery.calculator.css" type="text/css" media="screen" />
+ <SCRIPT type="text/javascript" src="<?php echo $this->Ini->path_prod; ?>/third/jquery_plugin/calculator/jquery.plugin.js"></SCRIPT>
+ <SCRIPT type="text/javascript" src="<?php echo $this->Ini->path_prod; ?>/third/jquery_plugin/calculator/jquery.calculator.js"></SCRIPT>
+<?php
+switch ($_SESSION['scriptcase']['str_lang']) {
+        case 'ca':
+        case 'da':
+        case 'de':
+        case 'es':
+        case 'fr':
+        case 'hr':
+        case 'it':
+        case 'nl':
+        case 'no':
+        case 'pl':
+        case 'ru':
+//        case 'sr':
+        case 'sl':
+        case 'uk':
+                $tmpCalcLocale = $_SESSION['scriptcase']['str_lang'];
+                break;
+        case 'pt_br':
+                $tmpCalcLocale = 'pt-BR';
+                break;
+        case 'tr':
+                $tmpCalcLocale = 'ar';
+                break;
+        case 'zh_cn':
+                $tmpCalcLocale = 'zh-CN';
+                break;
+//        case 'zh_hk':
+//                $tmpCalcLocale = 'zh-TW';
+//                break;
+        default:
+                $tmpCalcLocale = '';
+                break;
+}
+if ('' != $tmpCalcLocale) {
+        echo " <SCRIPT type=\"text/javascript\" src=\"{$this->Ini->path_prod}/third/jquery_plugin/calculator/jquery.calculator-$tmpCalcLocale.js\"></SCRIPT>\r\n";
+}
+?>
  <SCRIPT type="text/javascript" src="<?php echo $this->Ini->url_lib_js; ?>jquery.iframe-transport.js"></SCRIPT>
  <SCRIPT type="text/javascript" src="<?php echo $this->Ini->url_lib_js; ?>jquery.fileupload.js"></SCRIPT>
  <SCRIPT type="text/javascript" src="<?php echo $this->Ini->path_prod; ?>/third/jquery_plugin/malsup-blockui/jquery.blockUI.js"></SCRIPT>
@@ -209,6 +250,20 @@ else
    cursor: pointer;
   }
  </style>
+<?php
+$miniCalculatorFA = $this->jqueryFAFile('calculator');
+if ('' != $miniCalculatorFA) {
+?>
+<style type="text/css">
+.css_read_off_price_ button {
+	background-color: transparent;
+	border: 0;
+	padding: 0
+}
+</style>
+<?php
+}
+?>
 <link rel="stylesheet" href="<?php echo $this->Ini->path_prod ?>/third/jquery_plugin/select2/css/select2.min.css" type="text/css" />
 <script type="text/javascript" src="<?php echo $this->Ini->path_prod ?>/third/jquery_plugin/select2/js/select2.full.min.js"></script>
  <SCRIPT type="text/javascript" src="<?php echo $this->Ini->url_lib_js; ?>scInput.js"></SCRIPT>
@@ -951,8 +1006,8 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
           $SC_Label_atu['SC_all_Cmp'] = $this->Ini->Nm_lang['lang_srch_all_fields']; 
           $SC_Label_atu['idlodgeprice_'] = (isset($this->nm_new_label['idlodgeprice_'])) ? $this->nm_new_label['idlodgeprice_'] : 'Id Lodge Price'; 
           $SC_Label_atu['idlodgecategory_'] = (isset($this->nm_new_label['idlodgecategory_'])) ? $this->nm_new_label['idlodgecategory_'] : 'Lodge Category'; 
-          $SC_Label_atu['price_'] = (isset($this->nm_new_label['price_'])) ? $this->nm_new_label['price_'] : 'Price'; 
-          $SC_Label_atu['quantitypersons_'] = (isset($this->nm_new_label['quantitypersons_'])) ? $this->nm_new_label['quantitypersons_'] : 'Quantity Persons'; 
+          $SC_Label_atu['price_'] = (isset($this->nm_new_label['price_'])) ? $this->nm_new_label['price_'] : 'Preço'; 
+          $SC_Label_atu['quantitypersons_'] = (isset($this->nm_new_label['quantitypersons_'])) ? $this->nm_new_label['quantitypersons_'] : 'Pessoas'; 
           foreach ($SC_Label_atu as $CMP => $LABEL)
           {
               if($CMP == 'SC_all_Cmp')
@@ -1504,7 +1559,7 @@ $orderColRule = '';
     }
     if (1 || !isset($this->nmgp_cmp_hidden['price_']) || $this->nmgp_cmp_hidden['price_'] == 'on') {
         if (!isset($this->nm_new_label['price_'])) {
-            $this->nm_new_label['price_'] = "Price";
+            $this->nm_new_label['price_'] = "Preço";
         }
         $SC_Label = "" . $this->nm_new_label['price_']  . "";
         $label_fieldName = nl2br($SC_Label);
@@ -1555,7 +1610,7 @@ $orderColRule = '';
     }
     if (1 || !isset($this->nmgp_cmp_hidden['quantitypersons_']) || $this->nmgp_cmp_hidden['quantitypersons_'] == 'on') {
         if (!isset($this->nm_new_label['quantitypersons_'])) {
-            $this->nm_new_label['quantitypersons_'] = "Quantity Persons";
+            $this->nm_new_label['quantitypersons_'] = "Pessoas";
         }
         $SC_Label = "" . $this->nm_new_label['quantitypersons_']  . "";
         $label_fieldName = nl2br($SC_Label);
@@ -2043,7 +2098,7 @@ else
 <?php } else { ?>
 <span id="id_read_on_price_<?php echo $sc_seq_vert ?>" class="sc-ui-readonly-price_<?php echo $sc_seq_vert ?> css_price__line" style="<?php echo $sStyleReadLab_price_; ?>"><?php echo $this->form_format_readonly("price_", $this->form_encode_input($this->price_)); ?></span><span id="id_read_off_price_<?php echo $sc_seq_vert ?>" class="css_read_off_price_<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_price_; ?>">
  <input class="sc-js-input scFormObjectOddMult css_price__obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_price_<?php echo $sc_seq_vert ?>" type=text name="price_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($price_) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=10"; } ?> alt="{datatype: 'integer', maxLength: 10, thousandsSep: '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_grp']); ?>', thousandsFormat: <?php echo $this->field_config['price_']['symbol_fmt']; ?>, allowNegative: false, onlyNegative: false, negativePos: <?php echo (4 == $this->field_config['price_']['format_neg'] ? "'suffix'" : "'prefix'") ?>, alignment: 'left', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddMultWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=10"; } ?> alt="{datatype: 'currency', currencySymbol: '<?php echo $this->field_config['price_']['symbol_mon']; ?>', currencyPosition: '<?php echo ((1 == $this->field_config['price_']['format_pos'] || 3 == $this->field_config['price_']['format_pos']) ? 'left' : 'right'); ?>', maxLength: 10, precision: 2, decimalSep: '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_dec']); ?>', thousandsSep: '<?php echo str_replace("'", "\'", $this->field_config['price_']['symbol_grp']); ?>', thousandsFormat: <?php echo $this->field_config['price_']['symbol_fmt']; ?>, manualDecimals: true, allowNegative: false, onlyNegative: false, negativePos: <?php echo (4 == $this->field_config['price_']['format_neg'] ? "'suffix'" : "'prefix'") ?>, alignment: 'left', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddMultWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_price_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_price_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
    <?php $this->form_fixed_column_no++; ?>
 <?php }?>

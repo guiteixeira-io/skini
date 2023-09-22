@@ -303,7 +303,6 @@ if ($_SESSION['scriptcase']['men_checkout']['glo_nm_usa_grupo'] == "S")
 $path_apls     .= "/";
 $this->str_schema_all = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
 include("../_lib/lang/". $this->str_lang .".lang.php");
-include("../_lib/css/" . $this->str_schema_all . "_menutab.php");
 include("../_lib/css/" . $this->str_schema_all . "_menuH.php");
 if(isset($pagina_schemamenu) && !empty($pagina_schemamenu) && is_file("../_lib/menuicons/". $pagina_schemamenu .".php"))
 {
@@ -315,9 +314,6 @@ include("../_lib/lang/lang_config_region.php");
 $this->regionalDefault();
 $Str_btn_menu = trim($str_button) . "/" . trim($str_button) . $_SESSION['scriptcase']['reg_conf']['css_dir'] . ".php";
 $Str_btn_css  = trim($str_button) . "/" . trim($str_button) . ".css";
-$this->css_menutab_active_close_icon    = trim($css_menutab_active_close_icon);
-$this->css_menutab_inactive_close_icon  = trim($css_menutab_inactive_close_icon);
-$this->breadcrumbline_separator  = trim($breadcrumbline_separator);
 include($path_btn . $Str_btn_menu);
 if (!function_exists("nmButtonOutput"))
 {
@@ -574,6 +570,80 @@ else
 {
     $_SESSION['scriptcase']['sc_saida_men_checkout'] = (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : "javascript:window.close()";
 }
+$this->str_schema_all = $STR_schema_all = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['men_checkout'] = "on";
+} 
+if (!isset($_SESSION['scriptcase']['men_checkout']['session_timeout']['redir']) && (!isset($_SESSION['scriptcase']['sc_apl_seg']['men_checkout']) || $_SESSION['scriptcase']['sc_apl_seg']['men_checkout'] != "on"))
+{ 
+    $NM_Mens_Erro = $this->Nm_lang['lang_errm_unth_user'];
+       header("X-XSS-Protection: 1; mode=block");
+       header("X-Frame-Options: SAMEORIGIN");
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+    <HTML>
+     <HEAD>
+      <TITLE></TITLE>
+     <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
+      <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>      <META http-equiv="Pragma" content="no-cache"/>
+ <META http <META http <META http <META http <META http      <link rel="shortcut icon" href="../_lib/img/grp__NM__ico__NM__barraca-de-acampamento.ico">
+      <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_all ?>_menuH.css" /> 
+      <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_all ?>_menuH<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" /> 
+      <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_grid.css" /> 
+      <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_grid<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" /> 
+     </HEAD>
+     <body>
+       <table align="center" class="scGridBorder"><tr><td style="padding: 0">
+       <table style="width: 100%" class="scGridTabela"><tr class="scGridFieldOdd"><td class="scGridFieldOddFont" style="padding: 15px 30px; text-align: center">
+        <?php echo $NM_Mens_Erro; ?>
+        <br />
+        <form name="Fseg" method="post" target="_self">
+         <input type="hidden" name="script_case_init" value="<?php echo NM_encode_input($script_case_init) ?>"/> 
+         <input type="button" name="sc_sai_seg" value="OK" onclick="nm_saida()"> 
+        </form> 
+       </td></tr></table>
+       </td></tr></table>
+<?php
+              if (isset($_SESSION['scriptcase']['nm_sc_retorno']) && !empty($_SESSION['scriptcase']['nm_sc_retorno']))
+              {
+?>
+<br /><br /><br />
+<table align="center" class="scGridBorder" style="width: 450px"><tr><td style="padding: 0">
+ <table style="width: 100%" class="scGridTabela">
+  <tr class="scGridFieldOdd">
+   <td class="scGridFieldOddFont" style="padding: 15px 30px">
+    <?php echo $this->Nm_lang['lang_errm_unth_hwto']; ?>
+   </td>
+  </tr>
+ </table>
+</td></tr></table>
+<?php
+              }
+?>
+     </body>
+     <?php
+     if ((isset($nmgp_outra_jan) && $nmgp_outra_jan == 'true') || (isset($_SESSION['scriptcase']['sc_outra_jan']) && ($_SESSION['scriptcase']['sc_outra_jan'] == 'menutree' || $_SESSION['scriptcase']['sc_outra_jan'] == 'menu')))
+     {
+       $saida_final = 'window.close();';
+     }
+     else
+     {
+       $saida_final = 'history.back();';
+     }
+     ?>
+    <script type="text/javascript">
+      function nm_saida()
+      {
+<?php 
+             echo $saida_final;
+?> 
+      }
+     </script> 
+<?php
+    exit;
+} 
 $this->sc_Include($path_libs . "/nm_ini_lib.php", "F", "nm_dir_normaliza") ; 
 /* Dados do menu em sessao */
 $_SESSION['nm_menu'] = array('prod' => $str_root . $_SESSION['scriptcase']['men_checkout']['glo_nm_path_prod'] . '/third/COOLjsMenu/',
@@ -607,31 +677,31 @@ if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_sessi
 { 
     $_SESSION['scriptcase']['sc_apl_seg']['img_menu'] = "on";
 } 
-if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/fil_costumer_checkout_ini.php'))
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/tas_costumerCheck_out_ini.php'))
 {
-    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/fil_costumer_checkout_ini.php');
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/tas_costumerCheck_out_ini.php');
     if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
     {
-        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']))
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['tas_costumerCheck_out']))
         {
-            $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout'] = "on";
+            $_SESSION['scriptcase']['sc_apl_seg']['tas_costumerCheck_out'] = "on";
         }
     }
     if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
     { 
-        $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout'] = "on";
+        $_SESSION['scriptcase']['sc_apl_seg']['tas_costumerCheck_out'] = "on";
     } 
 }
 if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
 { 
-    $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout'] = "on";
+    $_SESSION['scriptcase']['sc_apl_seg']['tas_costumerCheck_out'] = "on";
 } 
 /* Itens do Menu */
 
 $sOutputBuffer = ob_get_contents();
 ob_end_clean();
 
- $nm_var_lab[0] = "Por alojamento";
+ $nm_var_lab[0] = "Rápido";
 if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($nm_var_lab[0]))
 {
     $nm_var_lab[0] = sc_convert_encoding($nm_var_lab[0], $_SESSION['scriptcase']['charset'], "UTF-8");
@@ -642,13 +712,13 @@ if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($nm_var_hint[0])
     $nm_var_hint[0] = sc_convert_encoding($nm_var_hint[0], $_SESSION['scriptcase']['charset'], "UTF-8");
 }
 $saida_apl = $_SESSION['scriptcase']['sc_saida_men_checkout'];
-if (isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) == "on")
+if (isset($_SESSION['scriptcase']['sc_apl_seg']['tas_costumerCheck_out']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['tas_costumerCheck_out']) == "on")
 {
-    $men_checkout_menuData['data'] .= "item_2|.|" . $nm_var_lab[0] . "|men_checkout_form_php.php?sc_item_menu=item_2&sc_apl_menu=fil_costumer_checkout&sc_apl_link=" . urlencode($men_checkout_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['men_checkout']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[0] . "||" . $this->men_checkout_target('_parent') . "|" . "\n";
+    $men_checkout_menuData['data'] .= "item_2|.|" . $nm_var_lab[0] . "|men_checkout_form_php.php?sc_item_menu=item_2&sc_apl_menu=tas_costumerCheck_out&sc_apl_link=" . urlencode($men_checkout_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['men_checkout']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[0] . "||" . $this->men_checkout_target('_self') . "|" . "\n";
 }
 else
 {
-    $men_checkout_menuData['data'] .= "item_2|.|" . $nm_var_lab[0] . "||||_parent|disabled\n";
+    $men_checkout_menuData['data'] .= "item_2|.|" . $nm_var_lab[0] . "||||_self|disabled\n";
 }
 if(isset($_SESSION['scriptcase']['force_menu_orientacao']) && !empty($_SESSION['scriptcase']['force_menu_orientacao']))
 {
@@ -662,8 +732,8 @@ elseif($this->force_mobile || ($_SESSION['scriptcase']['device_mobile'] && $_SES
 
 $men_checkout_menuData['data'] = array();
 $str_disabled = "N";
-$str_link = "men_checkout_form_php.php?sc_item_menu=item_2&sc_apl_menu=fil_costumer_checkout&sc_apl_link=" . urlencode($men_checkout_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['men_checkout']['glo_nm_usa_grupo'] . "";
-if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) || strtolower($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) != "on")
+$str_link = "men_checkout_form_php.php?sc_item_menu=item_2&sc_apl_menu=tas_costumerCheck_out&sc_apl_link=" . urlencode($men_checkout_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['men_checkout']['glo_nm_usa_grupo'] . "";
+if (!isset($_SESSION['scriptcase']['sc_apl_seg']['tas_costumerCheck_out']) || strtolower($_SESSION['scriptcase']['sc_apl_seg']['tas_costumerCheck_out']) != "on")
 {
     $str_link = "#";
     $str_disabled = "Y";
@@ -671,13 +741,13 @@ if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) || st
     $str_icon = "";
     $icon_aba = "";
     $icon_aba_inactive = "";
-    if(empty($icon_aba) && isset($arr_menuicons['filter']['active']))
+    if(empty($icon_aba) && isset($arr_menuicons['form']['active']))
     {
-        $icon_aba = $arr_menuicons['filter']['active'];
+        $icon_aba = $arr_menuicons['form']['active'];
     }
-    if(empty($icon_aba_inactive) && isset($arr_menuicons['filter']['inactive']))
+    if(empty($icon_aba_inactive) && isset($arr_menuicons['form']['inactive']))
     {
-        $icon_aba_inactive = $arr_menuicons['filter']['inactive'];
+        $icon_aba_inactive = $arr_menuicons['form']['inactive'];
     }
     $men_checkout_menuData['data'][] = array(
         'label'    => "" . $nm_var_lab[0] . "",
@@ -688,7 +758,7 @@ if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) || st
         'icon'     => $str_icon,
         'icon_aba' => $icon_aba,
         'icon_aba_inactive' => $icon_aba_inactive,
-        'target'   => " item-target=\"" . $this->men_checkout_target('_parent') . "\"",
+        'target'   => " item-target=\"" . $this->men_checkout_target('_self') . "\"",
         'sc_id'    => "item_2",
         'disabled' => $str_disabled,
         'display'     => "text_img",
@@ -841,13 +911,11 @@ if ($men_checkout_menuData['iframe'])
  } 
  ?> 
  <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_btngrp.css<?php if (@is_file($this->path_css . $this->str_schema_all . '_btngrp.css')) { echo '?scp=' . md5($this->path_css . $this->str_schema_all . '_btngrp.css'); } ?>" /> 
- <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_menutab.css" /> 
- <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_menutab<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" /> 
  <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_menuH<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" /> 
  <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_menuH.css<?php if (@is_file($this->path_css . $this->str_schema_all . '_menuH.css')) { echo '?scp=' . md5($this->path_css . $this->str_schema_all . '_menuH.css'); } ?>" /> 
  <link rel="stylesheet" type="text/css" href="../_lib/buttons/<?php echo $Str_btn_css ?>" /> 
  <link rel="stylesheet" href="<?php echo $_SESSION['scriptcase']['men_checkout']['glo_nm_path_prod']; ?>/third/font-awesome/css/all.min.css" type="text/css" media="screen" />
-<link rel="stylesheet" type="text/css" href="../_lib/css/_menuTheme/scriptcase_Scriptcase_LigthGray_<?php echo ($this->menu_orientacao!='vertical')?'hor':'vert'; ?>_<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir']; ?>.css<?php if (@is_file($this->path_css . '_menuTheme/' . "scriptcase_Scriptcase_LigthGray" . '_' . (($this->menu_orientacao!='vertical')?'hor':'vert') . '.css')) { echo '?scp=' . md5($this->path_css . '_menuTheme/' . "scriptcase_Scriptcase_LigthGray" . '_' . (($this->menu_orientacao=='horizontal')?'hor':'vert') . '.css'); } ?>" />
+<link rel="stylesheet" type="text/css" href="../_lib/css/_menuTheme/sys_Mac_green-clear-sub_<?php echo ($this->menu_orientacao!='vertical')?'hor':'vert'; ?>_<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir']; ?>.css<?php if (@is_file($this->path_css . '_menuTheme/' . "sys_Mac_green-clear-sub" . '_' . (($this->menu_orientacao!='vertical')?'hor':'vert') . '.css')) { echo '?scp=' . md5($this->path_css . '_menuTheme/' . "sys_Mac_green-clear-sub" . '_' . (($this->menu_orientacao=='horizontal')?'hor':'vert') . '.css'); } ?>" />
 <style>
    .scTabText {
    }    <?php
@@ -950,10 +1018,6 @@ else
 ?>
 <script type="text/javascript" src="<?php echo $_SESSION['scriptcase']['men_checkout']['glo_nm_path_prod']; ?>/third/jquery/js/jquery.js"></script>
 <script type="text/javascript" src="../_lib/lib/js/menu_structure.js"></script>
-<script  type="text/javascript" src="<?php echo $_SESSION['scriptcase']['men_checkout']['glo_nm_path_prod']; ?>/third/jquery_plugin/contextmenu/jquery.contextmenu.js"></script>
- <link rel="stylesheet" type="text/css" href="<?php echo $_SESSION['scriptcase']['men_checkout']['glo_nm_path_prod']; ?>/third/jquery_plugin/contextmenu/contextmenu.css" /> 
- <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_contextmenu.css" /> 
- <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_contextmenu.css<?php if (@is_file($this->path_css . $this->str_schema_all . '_contextmenu.css')) { echo '?scp=' . md5($this->path_css . $this->str_schema_all . '_contextmenu.css'); } ?>" /> 
 <script type="text/javascript" src="<?php echo $_SESSION['scriptcase']['men_checkout']['glo_nm_path_prod']; ?>/third/sweetalert/sweetalert2.all.min.js"></script>
 <script type="text/javascript" src="<?php echo $_SESSION['scriptcase']['men_checkout']['glo_nm_path_prod']; ?>/third/sweetalert/polyfill.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_sweetalert.css" />
@@ -1292,7 +1356,6 @@ if($menu_mobile_hide == 'S')
       if($menutree_mobile_float != 'S')
       {
       ?>
-  setTimeout(function(){ scToggleOverflow(); }, 600);
       <?php
       }
       ?>
@@ -1314,7 +1377,6 @@ if($menu_mobile_hide == 'S')
       if($menutree_mobile_float != 'S')
       {
       ?>
-  setTimeout(function(){ scToggleOverflow(); }, 600);
       <?php
       }
       ?>
@@ -1327,103 +1389,6 @@ echo $str_bmenu;
 <script>
 $(document).ready(function() {
 });
-        $( document ).ready(function() {
-            $.contextMenu({
-                selector:'#contrl_abas > li',
-                leftButton: true,
-                callback: function(key, options)
-                {
-                        switch(key)
-                        {
-                            case 'close':
-                                contextMenuCloseTab($(this).attr('id'));
-                            break;
-
-                            case 'closeall':
-                                contextMenuCloseAllTabs();
-                            break;
-
-                            case 'closeothers':
-                                contextMenuCloseOthersTabs($(this).attr('id'));
-                            break;
-
-                            case 'closeright':
-                                contextMenuCloseRight($(this).attr('id'));
-                            break;
-
-                            case 'closeleft':
-                                contextMenuCloseLeft($(this).attr('id'));
-                            break;
-                        }
-                    },
-                items: {
-                        "close": {name: '<?php echo str_replace("'", "\'", $this->Nm_lang['lang_othr_contextmenu_close']); ?>'},
-                        "closeall": {name: '<?php echo str_replace("'", "\'", $this->Nm_lang['lang_othr_contextmenu_closeall']); ?>'},
-                        "closeothers" : {name: '<?php echo str_replace("'", "\'", $this->Nm_lang['lang_othr_contextmenu_closeothers']); ?>'},
-                        "closeright" : {name: '<?php echo str_replace("'", "\'", $this->Nm_lang['lang_othr_contextmenu_closeright']); ?>'},
-                        "closeleft" : {name: '<?php echo str_replace("'", "\'", $this->Nm_lang['lang_othr_contextmenu_closeleft']); ?>'},
-                    }
-            });
-        });
-
-        function contextMenuCloseAllTabs()
-        {
-            $( "#contrl_abas li" ).each(function( index ) {
-                contextMenuCloseTab($( this ).attr('id'));
-            });
-        }
-
-        function contextMenuCloseTab(str_id)
-        {
-            if(str_id.indexOf('aba_td_') >= 0)
-            {
-                str_id = str_id.substr(7);
-            }
-            del_aba_td( str_id );
-        }
-
-        function contextMenuCloseRight(str_id)
-        {
-            bol_start_del = false;
-            $( "#contrl_abas li" ).each(function( index ) {
-
-                if(bol_start_del)
-                {
-                    contextMenuCloseTab($( this ).attr('id'));
-                }
-
-                if(str_id == $( this ).attr('id'))
-                {
-                    bol_start_del = true;
-                }
-            });
-        }
-
-
-        function contextMenuCloseLeft(str_id)
-        {
-            $( "#contrl_abas li" ).each(function( index ) {
-
-                if(str_id == $( this ).attr('id'))
-                {
-                     return false;
-                }
-                else
-                {
-                    contextMenuCloseTab($( this ).attr('id'));
-                }
-            });
-        }
-
-        function contextMenuCloseOthersTabs(str_id)
-        {
-            $( "#contrl_abas li" ).each(function( index ) {
-                if(str_id != $( this ).attr('id'))
-                {
-                    contextMenuCloseTab($( this ).attr('id'));
-                }
-            });
-        }
 
 function expandMenu()
 {
@@ -1451,319 +1416,6 @@ function clearFastMenu(arr_link)
 {
   return false;
 }
-Tab_iframes         = new Array();
-Tab_labels          = new Array();
-Tab_hints           = new Array();
-Tab_icons           = new Array();
-Tab_icons_inactive  = new Array();
-Tab_abas            = new Array();
-Tab_refresh         = new Array();
-Tab_icon_fa         = new Array();
-Tab_icon_fa_inactive= new Array();
-Tab_display         = new Array();
-Tab_display_position= new Array();
-Tab_links          = new Array();
-var scScrollInterval = divOverflow = false;
-Tab_ico_def        = new Array();
-Tab_ico_ina_def    = new Array();
-<?php
- foreach ($arr_menuicons as $tp => $icon)
- {
-    echo "Tab_ico_def['$tp']     = '" . $icon['active'] . "';\r\n";
-    echo "Tab_ico_ina_def['$tp'] = '" . $icon['inactive'] . "';\r\n";
- }
-?>
-Aba_atual    = "";
-<?php
- $seq = 0;
-echo "Tab_iframes[" . $seq . "] = \"men_checkout\";\r\n";
-echo "Tab_labels['men_checkout'] = \"\";\r\n";
-echo "Tab_hints['men_checkout'] = \"\";\r\n";
-echo "Tab_abas['men_checkout']   = \"none\";\r\n";
-echo "Tab_refresh['men_checkout']   = \"\";\r\n";
-echo "Tab_icons['men_checkout'] = \"scriptcase__NM__ico__NM__sc_menu_home_e.png\";\r\n";
-echo "Tab_icons_inactive['men_checkout'] = \"scriptcase__NM__ico__NM__sc_menu_home_d.png\";\r\n";
-echo "Tab_icon_fa['men_checkout']   = \"\";\r\n";
-echo "Tab_icon_fa_inactive['men_checkout']   = \"\";\r\n";
-echo "Tab_display['men_checkout']   = \"\";\r\n";
-echo "Tab_display_position['men_checkout']   = \"\";\r\n";
-echo "Tab_links['men_checkout']   = \"\";\r\n";
-         $seq++;
- if(isset($men_checkout_menuData['data']) && !empty($men_checkout_menuData['data']))
- {
-   foreach ($men_checkout_menuData['data'] as $ind => $dados_menu)
-   {
-     if ($dados_menu['link'] != "#")
-     {
-         if(empty($dados_menu['hint']))
-         {
-             $dados_menu['hint'] = $dados_menu['label'];
-         }
-         echo "Tab_iframes[" . $seq . "] = \"" . $dados_menu['id'] . "\";\r\n";
-         echo "Tab_labels['" . $dados_menu['id'] . "'] = \"" . str_replace('"', '\"', $dados_menu['label']) . "\";\r\n";
-         echo "Tab_hints['" . $dados_menu['id'] . "'] = \"" . strip_tags(str_replace('"', '\"', $dados_menu['hint'])) . "\";\r\n";
-         echo "Tab_abas['" . $dados_menu['id'] . "']   = \"none\";\r\n";
-         echo "Tab_refresh['" . $dados_menu['id'] . "']   = \"\";\r\n";
-         echo "Tab_icons['" . $dados_menu['id'] . "'] = \"" . $dados_menu['icon_aba'] . "\";\r\n";
-         echo "Tab_icons_inactive['" . $dados_menu['id'] . "'] = \"" . $dados_menu['icon_aba_inactive'] . "\";\r\n";
-         echo "Tab_icon_fa['" . $dados_menu['id'] . "'] = \"" . $dados_menu['icon_fa'] . "\";\r\n";
-         echo "Tab_icon_fa_inactive['" . $dados_menu['id'] . "'] = \"" . $dados_menu['icon_fa'] . "\";\r\n";
-         echo "Tab_display['" . $dados_menu['id'] . "'] = \"" . $dados_menu['display'] . "\";\r\n";
-         echo "Tab_display_position['" . $dados_menu['id'] . "'] = \"" . $dados_menu['display_position'] . "\";\r\n";
-         echo "Tab_links['" . $dados_menu['id'] . "']   = \"\";\r\n";
-         $seq++;
-     }
-   }
- }
- if(isset($men_checkout_menuData['data_vertical']) && !empty($men_checkout_menuData['data_vertical']))
- {
-   foreach ($men_checkout_menuData['data_vertical'] as $ind => $dados_menu)
-   {
-     if ($dados_menu['link'] != "#")
-     {
-         if(empty($dados_menu['hint']))
-         {
-             $dados_menu['hint'] = $dados_menu['label'];
-         }
-         echo "Tab_iframes[" . $seq . "] = \"" . $dados_menu['id'] . "\";\r\n";
-         echo "Tab_labels['" . $dados_menu['id'] . "'] = \"" . str_replace('"', '\"', $dados_menu['label']) . "\";\r\n";
-         echo "Tab_hints['" . $dados_menu['id'] . "'] = \"" . str_replace('"', '\"', $dados_menu['hint']) . "\";\r\n";
-         echo "Tab_abas['" . $dados_menu['id'] . "']   = \"none\";\r\n";
-         echo "Tab_refresh['" . $dados_menu['id'] . "']   = \"\";\r\n";
-         echo "Tab_icons['" . $dados_menu['id'] . "'] = \"" . $dados_menu['icon_aba'] . "\";\r\n";
-         echo "Tab_icons_inactive['" . $dados_menu['id'] . "'] = \"" . $dados_menu['icon_aba_inactive'] . "\";\r\n";
-         echo "Tab_icon_fa['" . $dados_menu['id'] . "'] = \"" . $dados_menu['icon_fa'] . "\";\r\n";
-         echo "Tab_icon_fa_inactive['" . $dados_menu['id'] . "'] = \"" . $dados_menu['icon_fa'] . "\";\r\n";
-         echo "Tab_display['" . $dados_menu['id'] . "'] = \"" . $dados_menu['display'] . "\";\r\n";
-         echo "Tab_display_position['" . $dados_menu['id'] . "'] = \"" . $dados_menu['display_position'] . "\";\r\n";
-         echo "Tab_links['" . $dados_menu['id'] . "']   = \"\";\r\n";
-         $seq++;
-     }
-   }
- }
-?>
-Qtd_apls = <?php echo $seq ?>;
-function createIframe(str_id, str_label, str_hint, str_img_on, str_img_off, str_link, tp_apl)
-{
-    apl_exist = false;
-    Tab_icons[str_id] = str_img_on;
-    Tab_icons_inactive[str_id] = str_img_off;
-    Tab_refresh[str_id] = "";
-    if (tp_apl == null || tp_apl == '')
-    {
-        tp_apl = 'others';
-    }
-    if (Tab_icons[str_id] == '')
-    {
-        Tab_icons[str_id] = Tab_ico_def[tp_apl];
-    }
-    if (Tab_icons_inactive[str_id] == '')
-    {
-        Tab_icons_inactive[str_id] = Tab_ico_ina_def[tp_apl];
-    }
-    for (i = 0; i < Qtd_apls; i++)
-    {
-        if (Tab_iframes[i] == str_id) {
-            apl_exist = true;
-        }
-    }
-    if (apl_exist)
-    {
-        if (Tab_abas[str_id] != 'show') {
-            createAba(str_id);
-        }
-        var iframe = document.getElementById('iframe_' + str_id);
-        iframe.src = str_link;
-        mudaIframe(str_id);
-        return;
-    }
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.id = 'iframe_' + str_id;
-    iframe.name = 'men_checkout_' + str_id + '_iframe';
-    iframe.src = str_link;
-    $('#Iframe_control').append(iframe);
-    $('#iframe_' + str_id).addClass( 'scMenuIframe');
-    Tab_iframes[Qtd_apls] = str_id;
-    Tab_labels[str_id] = str_label;
-    Tab_hints[str_id] = str_hint;
-    Tab_abas[str_id]   = 'none';
-    Tab_links[str_id]   = '';
-    Qtd_apls++;
-    createAba(str_id);
-    mudaIframe(str_id);
-}
-function createAba(str_id)
-{
-    var tmp = "";
-    var html_icon = "";
-        html_icon = "<div style='display:inline-block;'>";
-        str_icon = Tab_icons[str_id];
-        if(str_icon=='')
-        {
-            str_icon = 'scriptcase__NM__ico__NM__sc_menu_others_e.png';
-        }
-        if(str_icon != '')
-        {
-            html_icon += "<img id='aba_td_" + str_id + "_icon_active' src='<?php echo $this->path_botoes; ?>/"+ str_icon +"' align='absmiddle' class='scTabIcon'>";
-        }
-        str_icon = Tab_icons_inactive[str_id];
-        if(str_icon=='')
-        {
-            str_icon = 'scriptcase__NM__ico__NM__sc_menu_others_d.png';
-        }
-        if(str_icon != '')
-        {
-            html_icon += "<img id='aba_td_" + str_id + "_icon_inactive' src='<?php echo $this->path_botoes; ?>/"+ str_icon +"' align='absmiddle' class='scTabIcon' style='display:none;'>";
-        }
-        html_icon += "</div>";
-    if(Tab_display[ str_id ] == 'text_fontawesomeicon' || Tab_display[ str_id ] == 'only_fontawesomeicon')
-    {
-        html_icon = "<i id='aba_td_" + str_id + "_icon_active' class='"+ Tab_icon_fa[str_id] +"' style='vertical-align:middle;padding: 0px 4px; display:none;'></i>";
-        html_icon += "<i id='aba_td_" + str_id + "_icon_inactive' class='"+ Tab_icon_fa_inactive[str_id] +"' style='vertical-align:middle;padding: 0px 4px;'></i>";
-    }
-    tmp  = "<li onclick=\"mudaIframe('" + str_id + "');\" id='aba_td_" + str_id + "' style='cursor:pointer' class='lslide scTabActive' title=\"" + Tab_hints[str_id] + "\">";
-    if(Tab_display_position[ str_id ] != 'img_right')
-    {
-        tmp += html_icon;
-    }
-    var home_style="";
-    if(str_id === 'men_checkout'){ home_style=";padding-left:4px;min-height:14px;"; }
-    tmp += "<div id='aba_td_txt_" + str_id + "' style='display:inline-block;cursor:pointer"+home_style+"' class='scTabText' >";
-    tmp += Tab_labels[str_id];
-    if(Tab_display_position[ str_id ] == 'img_right')
-    {
-        tmp += html_icon;
-    }
-    tmp += "</div>";
-    tmp += "<div id='aba_td_3_" + str_id + "' style='display:none;'>...</div>";
-    tmp += "<div style='display:inline-block;'>";
-    tmp += "    <img id='aba_td_img_" + str_id + "' src='<?php echo $this->path_botoes . "/" . $this->css_menutab_active_close_icon; ?>' onclick=\"event.stopPropagation(); del_aba_td('" + str_id + "'); \" align='absmiddle' class='scTabCloseIcon' style='cursor:pointer; z-index:9999;'>";
-    tmp += "</div>";
-    tmp += "</li>";
-    $('#contrl_abas').append(tmp);
-    Tab_abas[str_id] = 'show';
-}
-function mudaIframe(str_id)
-{
-    $('#iframe_men_checkout').hide();
-    if (str_id == "")
-    {
-        $('#iframe_men_checkout').show();
-        $('#iframe_' + Aba_atual).prop('src', '');
-        $('#links_abas').hide();
-        $('#id_links_abas').hide();
-    }
-    else
-    {
-        $('#aba_td_' + Aba_atual).removeClass( 'scTabActive' );
-        $('#aba_td_' + Aba_atual).addClass( 'scTabInactive' );
-        $('#aba_td_' + Aba_atual+'_icon_active').hide();
-        $('#aba_td_' + Aba_atual+'_icon_inactive').show();
-        $('#aba_td_img_' + Aba_atual).prop( 'src', '<?php echo $this->path_botoes . "/" . $this->css_menutab_inactive_close_icon; ?>' );
-    }
-    for (i = 0; i < Tab_iframes.length; i++) 
-    {
-        if (Tab_iframes[i] == str_id) 
-        {
-            if($('#iframe_' + Tab_iframes[i]).length < 1)
-            {
-                $('#Iframe_control').append('<iframe id="iframe_'+ Tab_iframes[i] +'" name="men_checkout_'+ Tab_iframes[i] +'_iframe" frameborder="0" class="scMenuIframe" style="display: none; width: 100%; height: 100%;" src=""></iframe>');
-            }
-            $('#iframe_' + Tab_iframes[i]).show();
-            Aba_atual    = str_id;
-            $('#aba_td_' + Aba_atual).removeClass( 'scTabInactive' );
-            $('#aba_td_' + Aba_atual).addClass( 'scTabActive' );
-            $('#aba_td_' + Aba_atual+'_icon_active').show();
-            $('#aba_td_' + Aba_atual+'_icon_inactive').hide();
-            $('#aba_td_img_' + Aba_atual).prop( 'src', '<?php echo $this->path_botoes . "/" . $this->css_menutab_active_close_icon; ?>' );
-            if (Tab_iframes[i] != 'men_checkout') 
-            {
-                Iframe_atual = "men_checkout_" + Tab_iframes[i] + '_iframe';
-            }
-            $('#iframe_' + Tab_iframes[i]).contents().find('body').css('width', '');
-            $('#iframe_' + Tab_iframes[i])[0].contentWindow.focus();
-        } else {
-            $('#iframe_' + Tab_iframes[i]).hide();
-        }
-    }
-    if (Tab_refresh[str_id] == 'S' && typeof document.getElementById('iframe_' + str_id).contentWindow.nm_move === 'function')
-    {
-        Tab_refresh[str_id] = '';
-        document.getElementById('iframe_' + str_id).contentWindow.nm_move('igual');
-    }
-}
-function del_aba_td(str_id)
-{
-    $('#aba_td_' + str_id).remove();
-    Tab_abas[str_id] = 'none';
-    $('#iframe_' + str_id).prop('src', '');
-    if (Aba_atual == str_id)
-    {
-        str_id = "";
-        for (i = 0; i < Tab_iframes.length; i++) 
-        {
-            if (Tab_abas[Tab_iframes[i]] == 'show' && Tab_refresh[Tab_iframes[i]] == 'S')
-            {
-                str_id = Tab_iframes[i];
-            }
-        }
-        if (str_id == "")
-        {
-            for (i = 0; i < Tab_iframes.length; i++) 
-            {
-                if (Tab_abas[Tab_iframes[i]] == 'show')
-                {
-                    str_id = Tab_iframes[i];
-                }
-            }
-        }
-        if (str_id == "")
-        {
-            str_id = "men_checkout";
-        }
-        mudaIframe(str_id);
-    }
-  scToggleOverflow();
-}
-$( document ).ready(function() { scToggleOverflow() });
-function scToggleOverflow()
-{
-    $('.scTabScroll').hide();
-    $('#div_contrl_abas').removeClass('div-overflow');
-    $('#contrl_abas').width('');
-
-    tabsWidth = 0;
-    if($('.scMenuTTable').length)
-    {
-        tabsWidth = $('#contrl_abas').outerWidth();
-        windowWidth = $('#contrl_abas').closest('.ui-layout-pane').outerWidth();
-    }
-    else
-    {
-        tabsWidth = $('#contrl_abas').outerWidth();
-        windowWidth = $( window ).outerWidth();
-    }
-
-    if(windowWidth < tabsWidth)
-    {
-        $('.scTabScroll').show();
-        $('#div_contrl_abas').addClass('div-overflow');
-        $('#contrl_abas').width((windowWidth - $('#id_links_abas').outerWidth()));
-    }
-}
-
-function scTabScroll(axis) {
-  if (axis == 'stop') {
-      clearInterval(scScrollInterval);
-      return;
-  }
-  if (axis == 'left') {
-      scScrollInterval = setInterval("$('#div_contrl_abas').scrollLeft($('#div_contrl_abas').scrollLeft() - 3)", 2);
-  } else {
-      scScrollInterval = setInterval("$('#div_contrl_abas').scrollLeft($('#div_contrl_abas').scrollLeft() + 3)", 2);
-  }
-}
         function checkSubMenuPosition(str_id)
         {
             submenu = $('#' + str_id + '.menu__link').next('ul');
@@ -1776,10 +1428,8 @@ function scTabScroll(axis) {
            }
         }function openMenuItem(str_id)
 {
-  str_target_sv = "";
   if (str_id != "iframe_men_checkout")
   {
-      str_target_sv = str_id + "_iframe";
       str_id        = str_id.replace("men_checkout_","");
   }
     if($('#Iframe_control').length && $('#' + str_id).parent().length < 0)
@@ -1798,21 +1448,6 @@ function scTabScroll(axis) {
   str_target = $('#' + str_id).attr('item-target');
   if (typeof str_link !== typeof undefined && str_link !== false) {
     str_id = str_id.replace('iframe_men_checkout', 'men_checkout');
-    if (str_target == "men_checkout_iframe" && str_link != '' && str_link != '#' && str_link != 'javascript:')
-    {
-        str_target = (str_target_sv != "") ? str_target_sv : str_target;
-        mudaIframe(str_id);
-        if (str_id != "men_checkout")
-        {
-            $('#links_abas').css('display','');
-            $('#id_links_abas').css('display','');
-        }
-        if (str_id != "men_checkout" && Tab_abas[str_id] != 'show')
-        {
-            createAba(str_id);
-      scToggleOverflow();
-        }
-    }
     //test link type
     if (str_link != '' && str_link != '#' && str_link != 'javascript:')
     {
@@ -1905,26 +1540,6 @@ if($this->menu_orientacao != 'vertical')
 ?>
   </tr>
 <?php echo $this->nm_show_toolbarmenu('', $saida_apl, $men_checkout_menuData, $path_imag_cab); ?><?php echo $this->nm_gera_degrade(1, $bg_line_degrade, $path_imag_cab); ?>  <tr>
-        <td id="links_abas" style="display: none;">
-          <script>     function isMobile() {
-        var check = false;
-        (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
-        return check;
-    }
-    $(document).ready(function () {
-        if (!$('#idMenuHeader').length && $('#idMenuFLoat').length) {
-            $('#id_links_abas').css('padding-top', $('#bmenu').outerHeight() + 'px');
-        }
-    })</script>
-          <div id="id_links_abas" style="display: none; " class='scTabLine'>
-            <div class='scTabScroll left' style='float:left;display:none;' onmousedown='scTabScroll("left");' onmouseup='scTabScroll("stop");' onmouseout='scTabScroll("stop");'></div>
-            <div class='scTabScroll right' style='float:right;display:none;'onmousedown='scTabScroll("right");' onmouseup='scTabScroll("stop");' onmouseout='scTabScroll("stop");'></div>
-            <div id='div_contrl_abas' class='scTabCtrl' style='overflow:hidden;white-space: nowrap;'>
-              <ul id='contrl_abas' style='margin:0px; padding:0px; display: inline-block;'></ul>
-            </div>
-          </div>
-        </td>
-        </tr><tr>
 <?php
 }
 else
@@ -1945,26 +1560,6 @@ else
     <td id='id_iframe_td' style="border-width: 1px; width: 100%; height: 100%; padding: 0px">
       <table cellspacing=0 cellpadding=0 width='100%' height='100%'>
         <tr>
-        <td id="links_abas" style="display: none;">
-          <script>     function isMobile() {
-        var check = false;
-        (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
-        return check;
-    }
-    $(document).ready(function () {
-        if (!$('#idMenuHeader').length && $('#idMenuFLoat').length) {
-            $('#id_links_abas').css('padding-top', $('#bmenu').outerHeight() + 'px');
-        }
-    })</script>
-          <div id="id_links_abas" style="display: none; " class='scTabLine'>
-            <div class='scTabScroll left' style='float:left;display:none;' onmousedown='scTabScroll("left");' onmouseup='scTabScroll("stop");' onmouseout='scTabScroll("stop");'></div>
-            <div class='scTabScroll right' style='float:right;display:none;'onmousedown='scTabScroll("right");' onmouseup='scTabScroll("stop");' onmouseout='scTabScroll("stop");'></div>
-            <div id='div_contrl_abas' class='scTabCtrl' style='overflow:hidden;white-space: nowrap;'>
-              <ul id='contrl_abas' style='margin:0px; padding:0px; display: inline-block;'></ul>
-            </div>
-          </div>
-        </td>
-        </tr><tr>
         <td width='100%' height='100%' style='vertical-align:top;text-align:center;'>
 <?php
 }
@@ -2340,9 +1935,8 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $men_checkout_menuData, $pat
    }
    function Gera_sc_init($apl_menu)
    {
-        $_SESSION['scriptcase']['men_checkout']['sc_init'][$apl_menu] = rand(2, 10000);
-        $_SESSION['sc_session'][$_SESSION['scriptcase']['men_checkout']['sc_init'][$apl_menu]] = array();
-        return  $_SESSION['scriptcase']['men_checkout']['sc_init'][$apl_menu];
+        $_SESSION['scriptcase']['men_checkout']['sc_init'][$apl_menu] = 1;
+        return  1;
    }
    function regionalDefault()
    {

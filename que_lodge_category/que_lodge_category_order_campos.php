@@ -94,15 +94,12 @@ function Ord_cmp_init()
    $tab_ger_campos = array();
    $tab_def_campos = array();
    $tab_labels     = array();
-   $tab_ger_campos['idlodgecategory'] = "on";
-   $tab_def_campos['idlodgecategory'] = "idLodgeCategory";
-   $tab_labels["idlodgecategory"]   = (isset($_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["idlodgecategory"])) ? $_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["idlodgecategory"] : "Id Lodge Category";
    $tab_ger_campos['name'] = "on";
    $tab_def_campos['name'] = "name";
-   $tab_labels["name"]   = (isset($_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["name"])) ? $_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["name"] : "Name";
+   $tab_labels["name"]   = (isset($_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["name"])) ? $_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["name"] : "Acomodação";
    $tab_ger_campos['capacity'] = "on";
    $tab_def_campos['capacity'] = "capacity";
-   $tab_labels["capacity"]   = (isset($_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["capacity"])) ? $_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["capacity"] : "Capacity";
+   $tab_labels["capacity"]   = (isset($_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["capacity"])) ? $_SESSION['sc_session'][$sc_init]['que_lodge_category']['labels']["capacity"] : "Capacidade";
    if (isset($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['field_display']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['field_display']))
    {
        foreach ($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['field_display'] as $NM_cada_field => $NM_cada_opc)

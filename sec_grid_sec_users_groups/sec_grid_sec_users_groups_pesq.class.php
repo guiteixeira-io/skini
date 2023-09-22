@@ -39,8 +39,8 @@ class sec_grid_sec_users_groups_pesq
    {
       global $bprocessa;
       include("../_lib/css/" . $this->Ini->str_schema_filter . "_filter.php");
-      $this->Ini->Str_btn_filter = "scriptcase9_Lemon/scriptcase9_Lemon" . $_SESSION['scriptcase']['reg_conf']['css_dir'] . ".php";
-      $this->Str_btn_filter_css  = "scriptcase9_Lemon/scriptcase9_Lemon.css";
+      $this->Ini->Str_btn_filter = trim($str_button) . "/" . trim($str_button) . $_SESSION['scriptcase']['reg_conf']['css_dir'] . ".php";
+      $this->Str_btn_filter_css  = trim($str_button) . "/" . trim($str_button) . ".css";
       $this->Ini->str_google_fonts = (isset($str_google_fonts) && !empty($str_google_fonts))?$str_google_fonts:'';
       include($this->Ini->path_btn . $this->Ini->Str_btn_filter);
       $_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_users_groups']['path_libs_php'] = $this->Ini->path_lib_php;
@@ -1823,22 +1823,12 @@ function nm_open_popup(parms)
  <TR align="center">
   <TD class="scFilterTableTd scGridPage">
 <style>
-#lin1_col1 { padding-left:9px; padding-top:7px;  height:27px; overflow:hidden; text-align:left;}			 
-#lin1_col2 { padding-right:9px; padding-top:7px; height:27px; text-align:right; overflow:hidden;   font-size:12px; font-weight:normal;}
+    .scMenuTHeaderFont img, .scGridHeaderFont img , .scFormHeaderFont img , .scTabHeaderFont img , .scContainerHeaderFont img , .scFilterHeaderFont img { height:23px;}
 </style>
-
-<div style="width: 100%">
- <div class="scFilterHeader" style="height:11px; display: block; border-width:0px; "></div>
- <div style="height:37px; border-width:0px 0px 1px 0px;  border-style: dashed; border-color:#ddd; display: block">
- 	<table style="width:100%; border-collapse:collapse; padding:0;">
-    	<tr>
-        	<td id="lin1_col1" class="scFilterHeaderFont"><span></span></td>
-            <td id="lin1_col2" class="scFilterHeaderFont"><span></span></td>
-        </tr>
-    </table>		 
- </div>
-</div>
-  </TD>
+<div class="scFilterHeader" style="height: 54px; padding: 17px 15px; box-sizing: border-box;margin: -1px 0px 0px 0px;width: 100%;">
+    <div class="scFilterHeaderFont" style="float: left; text-transform: uppercase;"><?php echo $this->Ini->Nm_lang['lang_list_users_x_groups'] ?></div>
+    <div class="scFilterHeaderFont" style="float: right;"><?php echo $nm_data_fixa; ?></div>
+</div>  </TD>
  </TR>
 <?php
    }

@@ -51,21 +51,23 @@ function scSetFocusOnField($oField) {
 } // scSetFocusOnField
 
 function scEventControl_init(iSeqRow) {
+  scEventControl_data["facephoto" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["docnumber" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["name" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
+  scEventControl_data["frequencytype" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["rg" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["nationality" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["frequencytype" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["holdertype" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["aggregate" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["phonenumber" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["email" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
+  scEventControl_data["mobilephone" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["zipcode" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["zipcity" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["zipstate" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["zipdistrict" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["zipstreet" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["zipnumber" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
+  scEventControl_data["aggregate" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["observation" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
 }
 
@@ -82,6 +84,12 @@ function scEventControl_active(iSeqRow) {
   if (scEventControl_data["name" + iSeqRow] && scEventControl_data["name" + iSeqRow]["change"]) {
     return true;
   }
+  if (scEventControl_data["frequencytype" + iSeqRow] && scEventControl_data["frequencytype" + iSeqRow]["blur"]) {
+    return true;
+  }
+  if (scEventControl_data["frequencytype" + iSeqRow] && scEventControl_data["frequencytype" + iSeqRow]["change"]) {
+    return true;
+  }
   if (scEventControl_data["rg" + iSeqRow] && scEventControl_data["rg" + iSeqRow]["blur"]) {
     return true;
   }
@@ -94,22 +102,10 @@ function scEventControl_active(iSeqRow) {
   if (scEventControl_data["nationality" + iSeqRow] && scEventControl_data["nationality" + iSeqRow]["change"]) {
     return true;
   }
-  if (scEventControl_data["frequencytype" + iSeqRow] && scEventControl_data["frequencytype" + iSeqRow]["blur"]) {
-    return true;
-  }
-  if (scEventControl_data["frequencytype" + iSeqRow] && scEventControl_data["frequencytype" + iSeqRow]["change"]) {
-    return true;
-  }
   if (scEventControl_data["holdertype" + iSeqRow] && scEventControl_data["holdertype" + iSeqRow]["blur"]) {
     return true;
   }
   if (scEventControl_data["holdertype" + iSeqRow] && scEventControl_data["holdertype" + iSeqRow]["change"]) {
-    return true;
-  }
-  if (scEventControl_data["aggregate" + iSeqRow] && scEventControl_data["aggregate" + iSeqRow]["blur"]) {
-    return true;
-  }
-  if (scEventControl_data["aggregate" + iSeqRow] && scEventControl_data["aggregate" + iSeqRow]["change"]) {
     return true;
   }
   if (scEventControl_data["phonenumber" + iSeqRow] && scEventControl_data["phonenumber" + iSeqRow]["blur"]) {
@@ -122,6 +118,12 @@ function scEventControl_active(iSeqRow) {
     return true;
   }
   if (scEventControl_data["email" + iSeqRow] && scEventControl_data["email" + iSeqRow]["change"]) {
+    return true;
+  }
+  if (scEventControl_data["mobilephone" + iSeqRow] && scEventControl_data["mobilephone" + iSeqRow]["blur"]) {
+    return true;
+  }
+  if (scEventControl_data["mobilephone" + iSeqRow] && scEventControl_data["mobilephone" + iSeqRow]["change"]) {
     return true;
   }
   if (scEventControl_data["zipcode" + iSeqRow] && scEventControl_data["zipcode" + iSeqRow]["blur"]) {
@@ -158,6 +160,12 @@ function scEventControl_active(iSeqRow) {
     return true;
   }
   if (scEventControl_data["zipnumber" + iSeqRow] && scEventControl_data["zipnumber" + iSeqRow]["change"]) {
+    return true;
+  }
+  if (scEventControl_data["aggregate" + iSeqRow] && scEventControl_data["aggregate" + iSeqRow]["blur"]) {
+    return true;
+  }
+  if (scEventControl_data["aggregate" + iSeqRow] && scEventControl_data["aggregate" + iSeqRow]["change"]) {
     return true;
   }
   if (scEventControl_data["observation" + iSeqRow] && scEventControl_data["observation" + iSeqRow]["blur"]) {
@@ -201,6 +209,9 @@ var scEventControl_data = {};
 
 function scJQEventsAdd(iSeqRow) {
   $('#id_sc_field_idcostumer' + iSeqRow).bind('change', function() { sc_cad_costumers_idcostumer_onchange(this, iSeqRow) });
+  $('#id_sc_field_facephoto' + iSeqRow).bind('blur', function() { sc_cad_costumers_facephoto_onblur(this, iSeqRow) })
+                                       .bind('change', function() { sc_cad_costumers_facephoto_onchange(this, iSeqRow) })
+                                       .bind('focus', function() { sc_cad_costumers_facephoto_onfocus(this, iSeqRow) });
   $('#id_sc_field_docnumber' + iSeqRow).bind('blur', function() { sc_cad_costumers_docnumber_onblur(this, iSeqRow) })
                                        .bind('change', function() { sc_cad_costumers_docnumber_onchange(this, iSeqRow) })
                                        .bind('focus', function() { sc_cad_costumers_docnumber_onfocus(this, iSeqRow) });
@@ -213,6 +224,9 @@ function scJQEventsAdd(iSeqRow) {
   $('#id_sc_field_phonenumber' + iSeqRow).bind('blur', function() { sc_cad_costumers_phonenumber_onblur(this, iSeqRow) })
                                          .bind('change', function() { sc_cad_costumers_phonenumber_onchange(this, iSeqRow) })
                                          .bind('focus', function() { sc_cad_costumers_phonenumber_onfocus(this, iSeqRow) });
+  $('#id_sc_field_mobilephone' + iSeqRow).bind('blur', function() { sc_cad_costumers_mobilephone_onblur(this, iSeqRow) })
+                                         .bind('change', function() { sc_cad_costumers_mobilephone_onchange(this, iSeqRow) })
+                                         .bind('focus', function() { sc_cad_costumers_mobilephone_onfocus(this, iSeqRow) });
   $('#id_sc_field_email' + iSeqRow).bind('blur', function() { sc_cad_costumers_email_onblur(this, iSeqRow) })
                                    .bind('change', function() { sc_cad_costumers_email_onchange(this, iSeqRow) })
                                    .bind('focus', function() { sc_cad_costumers_email_onfocus(this, iSeqRow) });
@@ -247,15 +261,29 @@ function scJQEventsAdd(iSeqRow) {
                                         .bind('change', function() { sc_cad_costumers_holdertype_onchange(this, iSeqRow) })
                                         .bind('focus', function() { sc_cad_costumers_holdertype_onfocus(this, iSeqRow) });
   $('#id_sc_field_idholder' + iSeqRow).bind('change', function() { sc_cad_costumers_idholder_onchange(this, iSeqRow) });
+  $('#id_sc_field_locate' + iSeqRow).bind('change', function() { sc_cad_costumers_locate_onchange(this, iSeqRow) });
   $('#id_sc_field_aggregate' + iSeqRow).bind('blur', function() { sc_cad_costumers_aggregate_onblur(this, iSeqRow) })
                                        .bind('change', function() { sc_cad_costumers_aggregate_onchange(this, iSeqRow) })
                                        .bind('focus', function() { sc_cad_costumers_aggregate_onfocus(this, iSeqRow) });
   $('.sc-ui-radio-frequencytype' + iSeqRow).on('click', function() { scMarkFormAsChanged(); });
   $('.sc-ui-radio-holdertype' + iSeqRow).on('click', function() { scMarkFormAsChanged(); });
+  $('.sc-ui-radio-locate' + iSeqRow).on('click', function() { scMarkFormAsChanged(); });
 } // scJQEventsAdd
 
 function sc_cad_costumers_idcostumer_onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
+}
+
+function sc_cad_costumers_facephoto_onblur(oThis, iSeqRow) {
+  scCssBlur(oThis);
+}
+
+function sc_cad_costumers_facephoto_onchange(oThis, iSeqRow) {
+  scMarkFormAsChanged();
+}
+
+function sc_cad_costumers_facephoto_onfocus(oThis, iSeqRow) {
+  scCssFocus(oThis);
 }
 
 function sc_cad_costumers_docnumber_onblur(oThis, iSeqRow) {
@@ -310,6 +338,20 @@ function sc_cad_costumers_phonenumber_onchange(oThis, iSeqRow) {
 }
 
 function sc_cad_costumers_phonenumber_onfocus(oThis, iSeqRow) {
+  scEventControl_onFocus(oThis, iSeqRow);
+  scCssFocus(oThis);
+}
+
+function sc_cad_costumers_mobilephone_onblur(oThis, iSeqRow) {
+  do_ajax_cad_costumers_validate_mobilephone();
+  scCssBlur(oThis);
+}
+
+function sc_cad_costumers_mobilephone_onchange(oThis, iSeqRow) {
+  scMarkFormAsChanged();
+}
+
+function sc_cad_costumers_mobilephone_onfocus(oThis, iSeqRow) {
   scEventControl_onFocus(oThis, iSeqRow);
   scCssFocus(oThis);
 }
@@ -473,6 +515,10 @@ function sc_cad_costumers_idholder_onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
 }
 
+function sc_cad_costumers_locate_onchange(oThis, iSeqRow) {
+  scMarkFormAsChanged();
+}
+
 function sc_cad_costumers_aggregate_onblur(oThis, iSeqRow) {
   do_ajax_cad_costumers_validate_aggregate();
   scCssBlur(oThis);
@@ -500,30 +546,22 @@ function displayChange_block(block, status) {
 	if ("3" == block) {
 		displayChange_block_3(status);
 	}
-	if ("4" == block) {
-		displayChange_block_4(status);
-	}
 }
 
 function displayChange_block_0(status) {
-	displayChange_field("docnumber", "", status);
-	displayChange_field("name", "", status);
-	displayChange_field("rg", "", status);
-	displayChange_field("nationality", "", status);
-	displayChange_field("frequencytype", "", status);
-	displayChange_field("holdertype", "", status);
+	displayChange_field("facephoto", "", status);
 }
 
 function displayChange_block_1(status) {
-	displayChange_field("aggregate", "", status);
-}
-
-function displayChange_block_2(status) {
+	displayChange_field("docnumber", "", status);
+	displayChange_field("name", "", status);
+	displayChange_field("frequencytype", "", status);
+	displayChange_field("rg", "", status);
+	displayChange_field("nationality", "", status);
+	displayChange_field("holdertype", "", status);
 	displayChange_field("phonenumber", "", status);
 	displayChange_field("email", "", status);
-}
-
-function displayChange_block_3(status) {
+	displayChange_field("mobilephone", "", status);
 	displayChange_field("zipcode", "", status);
 	displayChange_field("zipcity", "", status);
 	displayChange_field("zipstate", "", status);
@@ -532,35 +570,47 @@ function displayChange_block_3(status) {
 	displayChange_field("zipnumber", "", status);
 }
 
-function displayChange_block_4(status) {
+function displayChange_block_2(status) {
+	displayChange_field("aggregate", "", status);
+}
+
+function displayChange_block_3(status) {
 	displayChange_field("observation", "", status);
 }
 
 function displayChange_row(row, status) {
+	displayChange_field_facephoto(row, status);
 	displayChange_field_docnumber(row, status);
 	displayChange_field_name(row, status);
+	displayChange_field_frequencytype(row, status);
 	displayChange_field_rg(row, status);
 	displayChange_field_nationality(row, status);
-	displayChange_field_frequencytype(row, status);
 	displayChange_field_holdertype(row, status);
-	displayChange_field_aggregate(row, status);
 	displayChange_field_phonenumber(row, status);
 	displayChange_field_email(row, status);
+	displayChange_field_mobilephone(row, status);
 	displayChange_field_zipcode(row, status);
 	displayChange_field_zipcity(row, status);
 	displayChange_field_zipstate(row, status);
 	displayChange_field_zipdistrict(row, status);
 	displayChange_field_zipstreet(row, status);
 	displayChange_field_zipnumber(row, status);
+	displayChange_field_aggregate(row, status);
 	displayChange_field_observation(row, status);
 }
 
 function displayChange_field(field, row, status) {
+	if ("facephoto" == field) {
+		displayChange_field_facephoto(row, status);
+	}
 	if ("docnumber" == field) {
 		displayChange_field_docnumber(row, status);
 	}
 	if ("name" == field) {
 		displayChange_field_name(row, status);
+	}
+	if ("frequencytype" == field) {
+		displayChange_field_frequencytype(row, status);
 	}
 	if ("rg" == field) {
 		displayChange_field_rg(row, status);
@@ -568,20 +618,17 @@ function displayChange_field(field, row, status) {
 	if ("nationality" == field) {
 		displayChange_field_nationality(row, status);
 	}
-	if ("frequencytype" == field) {
-		displayChange_field_frequencytype(row, status);
-	}
 	if ("holdertype" == field) {
 		displayChange_field_holdertype(row, status);
-	}
-	if ("aggregate" == field) {
-		displayChange_field_aggregate(row, status);
 	}
 	if ("phonenumber" == field) {
 		displayChange_field_phonenumber(row, status);
 	}
 	if ("email" == field) {
 		displayChange_field_email(row, status);
+	}
+	if ("mobilephone" == field) {
+		displayChange_field_mobilephone(row, status);
 	}
 	if ("zipcode" == field) {
 		displayChange_field_zipcode(row, status);
@@ -601,9 +648,16 @@ function displayChange_field(field, row, status) {
 	if ("zipnumber" == field) {
 		displayChange_field_zipnumber(row, status);
 	}
+	if ("aggregate" == field) {
+		displayChange_field_aggregate(row, status);
+	}
 	if ("observation" == field) {
 		displayChange_field_observation(row, status);
 	}
+}
+
+function displayChange_field_facephoto(row, status) {
+    var fieldId;
 }
 
 function displayChange_field_docnumber(row, status) {
@@ -611,6 +665,10 @@ function displayChange_field_docnumber(row, status) {
 }
 
 function displayChange_field_name(row, status) {
+    var fieldId;
+}
+
+function displayChange_field_frequencytype(row, status) {
     var fieldId;
 }
 
@@ -622,19 +680,8 @@ function displayChange_field_nationality(row, status) {
     var fieldId;
 }
 
-function displayChange_field_frequencytype(row, status) {
-    var fieldId;
-}
-
 function displayChange_field_holdertype(row, status) {
     var fieldId;
-}
-
-function displayChange_field_aggregate(row, status) {
-    var fieldId;
-	if ("on" == status && typeof $("#nmsc_iframe_liga_sub_aggregate")[0].contentWindow.scRecreateSelect2 === "function") {
-		$("#nmsc_iframe_liga_sub_aggregate")[0].contentWindow.scRecreateSelect2();
-	}
 }
 
 function displayChange_field_phonenumber(row, status) {
@@ -642,6 +689,10 @@ function displayChange_field_phonenumber(row, status) {
 }
 
 function displayChange_field_email(row, status) {
+    var fieldId;
+}
+
+function displayChange_field_mobilephone(row, status) {
     var fieldId;
 }
 
@@ -669,6 +720,13 @@ function displayChange_field_zipnumber(row, status) {
     var fieldId;
 }
 
+function displayChange_field_aggregate(row, status) {
+    var fieldId;
+	if ("on" == status && typeof $("#nmsc_iframe_liga_sub_aggregate")[0].contentWindow.scRecreateSelect2 === "function") {
+		$("#nmsc_iframe_liga_sub_aggregate")[0].contentWindow.scRecreateSelect2();
+	}
+}
+
 function displayChange_field_observation(row, status) {
     var fieldId;
 }
@@ -692,6 +750,115 @@ function scCheckNoPageSelected() {
 	}
 }
 function scJQUploadAdd(iSeqRow) {
+  $("#id_sc_field_facephoto" + iSeqRow).fileupload({
+    datatype: "json",
+    url: "cad_costumers_ul_save.php",
+    dropZone: $("#hidden_field_data_facephoto" + iSeqRow),
+    formData: function() {
+      return [
+        {name: 'param_field', value: 'facephoto'},
+        {name: 'param_seq', value: '<?php echo $this->Ini->sc_page; ?>'},
+        {name: 'upload_file_row', value: iSeqRow}
+      ];
+    },
+    progress: function(e, data) {
+      var loader, progress;
+      if (data.lengthComputable && window.FormData !== undefined) {
+        loader = $("#id_img_loader_facephoto" + iSeqRow);
+        loaderContent = $("#id_img_loader_facephoto" + iSeqRow + " .scProgressBarLoading");
+        loaderContent.html("&nbsp;");
+        progress = parseInt(data.loaded / data.total * 100, 10);
+        loader.show().find("div").css("width", progress + "%");
+      }
+      else {
+        loader = $("#id_ajax_loader_facephoto" + iSeqRow);
+        loader.show();
+      }
+    },
+    done: function(e, data) {
+      var fileData, respData, respPos, respMsg, thumbDisplay, checkDisplay, var_ajax_img_thumb, oTemp;
+      fileData = null;
+      respMsg = "";
+      if (data && data.result && data.result[0] && data.result[0].body) {
+        respData = data.result[0].body.innerText;
+        respPos = respData.indexOf("[{");
+        if (-1 !== respPos) {
+          respMsg = respData.substr(0, respPos);
+          respData = respData.substr(respPos);
+          fileData = $.parseJSON(respData);
+        }
+        else {
+          respMsg = respData;
+        }
+      }
+      else {
+        respData = data.result;
+        respPos = respData.indexOf("[{");
+        if (-1 !== respPos) {
+          respMsg = respData.substr(0, respPos);
+          respData = respData.substr(respPos);
+          fileData = eval(respData);
+        }
+        else {
+          respMsg = respData;
+        }
+      }
+      if (window.FormData !== undefined)
+      {
+        $("#id_img_loader_facephoto" + iSeqRow).hide();
+      }
+      else
+      {
+        $("#id_ajax_loader_facephoto" + iSeqRow).hide();
+      }
+      if (null == fileData) {
+        if ("" != respMsg) {
+          oTemp = {"htmOutput" : "<?php echo $this->Ini->Nm_lang['lang_errm_upld_admn']; ?>"};
+          scAjaxShowDebug(oTemp);
+        }
+        return;
+      }
+      if (fileData[0].error && "" != fileData[0].error) {
+        var uploadErrorMessage = "";
+        oResp = {};
+        if ("acceptFileTypes" == fileData[0].error) {
+          uploadErrorMessage = "<?php echo $this->form_encode_input($this->Ini->Nm_lang['lang_errm_file_invl']) ?>";
+        }
+        else if ("maxFileSize" == fileData[0].error) {
+          uploadErrorMessage = "<?php echo $this->form_encode_input($this->Ini->Nm_lang['lang_errm_file_size']) ?>";
+        }
+        else if ("minFileSize" == fileData[0].error) {
+          uploadErrorMessage = "<?php echo $this->form_encode_input($this->Ini->Nm_lang['lang_errm_file_size']) ?>";
+        }
+        else if ("emptyFile" == fileData[0].error) {
+          uploadErrorMessage = "<?php echo $this->form_encode_input($this->Ini->Nm_lang['lang_errm_file_empty']) ?>";
+        }
+        scAjaxShowErrorDisplay("table", uploadErrorMessage);
+        return;
+      }
+      $("#id_sc_field_facephoto" + iSeqRow).val("");
+      $("#id_sc_field_facephoto_ul_name" + iSeqRow).val(fileData[0].sc_ul_name);
+      $("#id_sc_field_facephoto_ul_type" + iSeqRow).val(fileData[0].type);
+      var_ajax_img_facephoto = '<?php echo $this->Ini->path_imag_temp; ?>/' + fileData[0].sc_image_source;
+      var_ajax_img_thumb = '<?php echo $this->Ini->path_imag_temp; ?>/' + fileData[0].sc_thumb_prot;
+      thumbDisplay = ("" == var_ajax_img_facephoto) ? "none" : "";
+      $("#id_ajax_img_facephoto" + iSeqRow).attr("src", var_ajax_img_thumb);
+      $("#id_ajax_img_facephoto" + iSeqRow).css("display", thumbDisplay);
+      if (document.F1.temp_out1_facephoto) {
+        document.F1.temp_out_facephoto.value = var_ajax_img_thumb;
+        document.F1.temp_out1_facephoto.value = var_ajax_img_facephoto;
+      }
+      else if (document.F1.temp_out_facephoto) {
+        document.F1.temp_out_facephoto.value = var_ajax_img_facephoto;
+      }
+      checkDisplay = ("" == fileData[0].sc_random_prot.substr(12)) ? "none" : "";
+      $("#chk_ajax_img_facephoto" + iSeqRow).css("display", checkDisplay);
+      $("#txt_ajax_img_facephoto" + iSeqRow).html(fileData[0].name);
+      $("#txt_ajax_img_facephoto" + iSeqRow).css("display", checkDisplay);
+      $("#id_ajax_link_facephoto" + iSeqRow).html(fileData[0].sc_random_prot.substr(12));
+    }
+  });
+
 } // scJQUploadAdd
 
 var api_cache_requests = [];

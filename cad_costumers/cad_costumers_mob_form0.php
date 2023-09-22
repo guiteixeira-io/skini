@@ -192,6 +192,8 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
  <link rel="stylesheet" type="text/css" href="<?php echo $this->Ini->path_link ?>_lib/css/<?php echo $this->Ini->str_schema_all ?>_tab<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" />
  <link rel="stylesheet" type="text/css" href="<?php echo $this->Ini->path_link ?>_lib/buttons/<?php echo $this->Ini->Str_btn_form . '/' . $this->Ini->Str_btn_form ?>.css" />
  <link rel="stylesheet" type="text/css" href="<?php echo $this->Ini->path_prod; ?>/third/font-awesome/css/all.min.css" />
+ <link rel="stylesheet" type="text/css" href="<?php echo $this->Ini->path_link ?>_lib/css/<?php echo $this->Ini->str_schema_all ?>_progressbar.css" />
+ <link rel="stylesheet" type="text/css" href="<?php echo $this->Ini->path_link ?>_lib/css/<?php echo $this->Ini->str_schema_all ?>_progressbar<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" />
 <?php
    include_once("../_lib/css/" . $this->Ini->str_schema_all . "_tab.php");
  }
@@ -677,7 +679,7 @@ if (!$this->NM_ajax_flag && isset($this->NM_non_ajax_info['ajaxJavascript']) && 
   }
 
   if (show_block[block_id]) {
-    if ("hidden_bloco_1" == block_id) {
+    if ("hidden_bloco_2" == block_id) {
       scAjaxDetailHeight("sub_aggregate", $($("#nmsc_iframe_liga_sub_aggregate")[0].contentWindow.document).innerHeight());
     }
   }
@@ -787,7 +789,7 @@ $(function() {
 	scAjaxError_markFieldList(scInsertFieldWithErrors);
 });
  </script>
-<form  name="F1" method="post" 
+<form  name="F1" method="post" enctype="multipart/form-data" 
                action="cad_costumers_mob.php" 
                target="_self">
 <input type="hidden" name="nmgp_url_saida" value="">
@@ -810,6 +812,15 @@ if ('novo' == $this->nmgp_opcao || 'incluir' == $this->nmgp_opcao)
 <input type="hidden" name="script_case_init" value="<?php  echo $this->form_encode_input($this->Ini->sc_page); ?>">
 <input type="hidden" name="NM_cancel_return_new" value="<?php echo $this->NM_cancel_return_new ?>">
 <input type="hidden" name="csrf_token" value="<?php echo $this->scCsrfGetToken() ?>" />
+<input type="hidden" name="upload_file_flag" value="">
+<input type="hidden" name="upload_file_check" value="">
+<input type="hidden" name="upload_file_name" value="">
+<input type="hidden" name="upload_file_temp" value="">
+<input type="hidden" name="upload_file_libs" value="">
+<input type="hidden" name="upload_file_height" value="">
+<input type="hidden" name="upload_file_width" value="">
+<input type="hidden" name="upload_file_aspect" value="">
+<input type="hidden" name="upload_file_type" value="">
 <input type="hidden" name="idcostumer" value="<?php  echo $this->form_encode_input($this->idcostumer) ?>">
 <input type="hidden" name="_sc_force_mobile" id="sc-id-mobile-control" value="" />
 <?php
@@ -1171,7 +1182,92 @@ unset($NM_ult_sep);
 <div id="div_hidden_bloco_0"><!-- bloco_c -->
 <?php
 ?>
-<TABLE align="center" id="hidden_bloco_0" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+<TABLE align="center" id="hidden_bloco_0" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><input type="hidden" name="facephoto_ul_name" id="id_sc_field_facephoto_ul_name" value="<?php echo $this->form_encode_input($this->facephoto_ul_name);?>">
+<input type="hidden" name="facephoto_ul_type" id="id_sc_field_facephoto_ul_type" value="<?php echo $this->form_encode_input($this->facephoto_ul_type);?>">
+<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
+
+
+   <?php
+    if (!isset($this->nm_new_label['facephoto']))
+    {
+        $this->nm_new_label['facephoto'] = "Foto";
+    }
+?>
+<?php
+   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
+   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
+   $facephoto = $this->facephoto;
+   $sStyleHidden_facephoto = '';
+   if (isset($this->nmgp_cmp_hidden['facephoto']) && $this->nmgp_cmp_hidden['facephoto'] == 'off')
+   {
+       unset($this->nmgp_cmp_hidden['facephoto']);
+       $sStyleHidden_facephoto = 'display: none;';
+   }
+   $bTestReadOnly = true;
+   $sStyleReadLab_facephoto = 'display: none;';
+   $sStyleReadInp_facephoto = '';
+   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['facephoto']) && $this->nmgp_cmp_readonly['facephoto'] == 'on')
+   {
+       $bTestReadOnly = false;
+       unset($this->nmgp_cmp_readonly['facephoto']);
+       $sStyleReadLab_facephoto = '';
+       $sStyleReadInp_facephoto = 'display: none;';
+   }
+?>
+<?php if (isset($this->nmgp_cmp_hidden['facephoto']) && $this->nmgp_cmp_hidden['facephoto'] == 'off') { $sc_hidden_yes++;  ?>
+<input type="hidden" name="facephoto" value="<?php echo $this->form_encode_input($facephoto) . "\">"; ?>
+<?php } else { $sc_hidden_no++; ?>
+
+    <TD class="scFormDataOdd css_facephoto_line" id="hidden_field_data_facephoto" style="<?php echo $sStyleHidden_facephoto; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_facephoto_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_facephoto_label" style=""><span id="id_label_facephoto"><?php echo $this->nm_new_label['facephoto']; ?></span></span><br>
+ <?php $this->NM_ajax_info['varList'][] = array("var_ajax_img_facephoto" => $out1_facephoto); ?><script>var var_ajax_img_facephoto = '<?php echo $out1_facephoto; ?>';</script><input type="hidden" name="temp_out_facephoto" value="<?php echo $this->form_encode_input($out_facephoto); ?>" /><input type="hidden" name="temp_out1_facephoto" value="<?php echo $this->form_encode_input($out1_facephoto); ?>" /><?php if (!empty($out_facephoto)) {  echo "<a  href=\"javascript:nm_mostra_img(var_ajax_img_facephoto, '" . $this->nmgp_return_img['facephoto'][0] . "', '" . $this->nmgp_return_img['facephoto'][1] . "')\"><img id=\"id_ajax_img_facephoto\"  border=\"0\" src=\"$out_facephoto\"></a>"; } else {  echo "<img id=\"id_ajax_img_facephoto\" border=\"0\" style=\"display: none\">"; } ?><br>
+<?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["facephoto"]) &&  $this->nmgp_cmp_readonly["facephoto"] == "on") { 
+
+ ?>
+<img id=\"facephoto_img_uploading\" style=\"display: none\" border=\"0\" src=\"" . $this->Ini->path_icones . "/scriptcase__NM__ajax_load.gif\" align=\"absmiddle\" /><input type="hidden" name="facephoto" value="<?php echo $this->form_encode_input($facephoto) . "\">" . $facephoto . ""; ?>
+<?php } else { ?>
+<span id="id_read_off_facephoto" class="css_read_off_facephoto<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_facephoto; ?>"><span style="display:inline-block"><span id="sc-id-upload-select-facephoto" class="fileinput-button fileinput-button-padding scButton_default">
+ <span><?php echo $this->Ini->Nm_lang['lang_select_file'] ?></span>
+
+ <input class="sc-js-input scFormObjectOdd css_facephoto_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" title="<?php echo $this->Ini->Nm_lang['lang_select_file'] ?>" type="file" name="facephoto[]" id="id_sc_field_facephoto" onchange="<?php if ($this->nmgp_opcao == "novo") {echo "if (document.F1.elements['sc_check_vert[" . $sc_seq_vert . "]']) { document.F1.elements['sc_check_vert[" . $sc_seq_vert . "]'].checked = true }"; }?>"></span></span>
+<?php
+   $sCheckInsert = "";
+?>
+<span id="chk_ajax_img_facephoto"<?php if ($this->nmgp_opcao == "novo" || empty($facephoto)) { echo " style=\"display: none\""; } ?>> <input type=checkbox name="facephoto_limpa" value="<?php echo $facephoto_limpa . '" '; if ($facephoto_limpa == "S"){echo "checked ";} ?> onclick="this.value = ''; if (this.checked){ this.value = 'S'};<?php echo $sCheckInsert ?>"><?php echo $this->Ini->Nm_lang['lang_btns_dele_hint']; ?> &nbsp;</span><img id="facephoto_img_uploading" style="display: none" border="0" src="<?php echo $this->Ini->path_icones; ?>/scriptcase__NM__ajax_load.gif" align="absmiddle" /><div id="id_img_loader_facephoto" class="progress progress-success progress-striped active scProgressBarStart" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="display: none"><div class="bar scProgressBarLoading">&nbsp;</div></div><img id="id_ajax_loader_facephoto" src="<?php echo $this->Ini->path_icones ?>/scriptcase__NM__ajax_load.gif" style="display: none" /></span><?php } ?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_facephoto_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_facephoto_text"></span></td></tr></table></td></tr></table> </TD>
+   <?php }?>
+
+
+
+
+
+<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
+
+
+    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
+
+
+
+
+<?php } 
+?> 
+
+
+
+
+
+
+<?php $sStyleHidden_facephoto_dumb = ('' == $sStyleHidden_facephoto) ? 'display: none' : ''; ?>
+    <TD class="scFormDataOdd" id="hidden_field_data_facephoto_dumb" style="<?php echo $sStyleHidden_facephoto_dumb; ?>"></TD>
+   </tr>
+<?php $sc_hidden_no = 1; ?>
+</TABLE></div><!-- bloco_f -->
+   </td>
+   </tr></table>
+   <a name="bloco_1"></a>
+   <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="100%" height="">
+<div id="div_hidden_bloco_1"><!-- bloco_c -->
+<TABLE align="center" id="hidden_bloco_1" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
       $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
 
 
@@ -1277,6 +1373,85 @@ unset($NM_ult_sep);
  <input class="sc-js-input scFormObjectOdd css_name_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_name" type=text name="name" value="<?php echo $this->form_encode_input($name) ?>"
  <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=50"; } ?> maxlength=255 alt="{datatype: 'text', maxLength: 255, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_name_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_name_text"></span></td></tr></table></td></tr></table> </TD>
+   <?php }?>
+
+
+
+
+
+<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
+
+
+    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
+
+
+
+
+<?php } 
+?> 
+<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
+
+
+   <?php
+    if (!isset($this->nm_new_label['frequencytype']))
+    {
+        $this->nm_new_label['frequencytype'] = "Mensalista";
+    }
+?>
+<?php
+   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
+   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
+   $frequencytype = $this->frequencytype;
+   $sStyleHidden_frequencytype = '';
+   if (isset($this->nmgp_cmp_hidden['frequencytype']) && $this->nmgp_cmp_hidden['frequencytype'] == 'off')
+   {
+       unset($this->nmgp_cmp_hidden['frequencytype']);
+       $sStyleHidden_frequencytype = 'display: none;';
+   }
+   $bTestReadOnly = true;
+   $sStyleReadLab_frequencytype = 'display: none;';
+   $sStyleReadInp_frequencytype = '';
+   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['frequencytype']) && $this->nmgp_cmp_readonly['frequencytype'] == 'on')
+   {
+       $bTestReadOnly = false;
+       unset($this->nmgp_cmp_readonly['frequencytype']);
+       $sStyleReadLab_frequencytype = '';
+       $sStyleReadInp_frequencytype = 'display: none;';
+   }
+?>
+<?php if (isset($this->nmgp_cmp_hidden['frequencytype']) && $this->nmgp_cmp_hidden['frequencytype'] == 'off') { $sc_hidden_yes++;  ?>
+<input type="hidden" name="frequencytype" value="<?php echo $this->form_encode_input($frequencytype) . "\">"; ?>
+<?php } else { $sc_hidden_no++; ?>
+
+    <TD class="scFormDataOdd css_frequencytype_line" id="hidden_field_data_frequencytype" style="<?php echo $sStyleHidden_frequencytype; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_frequencytype_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_frequencytype_label" style=""><span id="id_label_frequencytype"><?php echo $this->nm_new_label['frequencytype']; ?></span></span><br>
+<?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["frequencytype"]) &&  $this->nmgp_cmp_readonly["frequencytype"] == "on") { 
+
+ if ("M" == $this->frequencytype) { $frequencytype_look = "Sim";} 
+ if ("D" == $this->frequencytype) { $frequencytype_look = "Não";} 
+?>
+<input type="hidden" name="frequencytype" value="<?php echo $this->form_encode_input($frequencytype) . "\">" . $frequencytype_look . ""; ?>
+<?php } else { ?>
+
+<?php
+
+ if ("M" == $this->frequencytype) { $frequencytype_look = "Sim";} 
+ if ("D" == $this->frequencytype) { $frequencytype_look = "Não";} 
+?>
+<span id="id_read_on_frequencytype"  class="css_frequencytype_line" style="<?php echo $sStyleReadLab_frequencytype; ?>"><?php echo $this->form_format_readonly("frequencytype", $this->form_encode_input($frequencytype_look)); ?></span><span id="id_read_off_frequencytype" class="css_read_off_frequencytype css_frequencytype_line" style="<?php echo $sStyleReadInp_frequencytype; ?>"><div id="idAjaxRadio_frequencytype" style="display: inline-block"  class="css_frequencytype_line">
+<TABLE cellspacing=0 cellpadding=0 border=0><TR>
+  <TD class="scFormDataFontOdd css_frequencytype_line"><?php $tempOptionId = "id-opt-frequencytype" . $sc_seq_vert . "-1"; ?>
+    <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-frequencytype sc-ui-radio-frequencytype" type=radio name="frequencytype" value="M"
+<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['Lookup_frequencytype'][] = 'M'; ?>
+<?php  if ("M" == $this->frequencytype)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Sim</label></TD>
+  <TD class="scFormDataFontOdd css_frequencytype_line"><?php $tempOptionId = "id-opt-frequencytype" . $sc_seq_vert . "-2"; ?>
+    <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-frequencytype sc-ui-radio-frequencytype" type=radio name="frequencytype" value="D"
+<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['Lookup_frequencytype'][] = 'D'; ?>
+<?php  if ("D" == $this->frequencytype)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Não</label></TD>
+</TR></TABLE>
+</div>
+</span><?php  }?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_frequencytype_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_frequencytype_text"></span></td></tr></table></td></tr></table> </TD>
    <?php }?>
 
 
@@ -1420,85 +1595,6 @@ unset($NM_ult_sep);
 
 
    <?php
-    if (!isset($this->nm_new_label['frequencytype']))
-    {
-        $this->nm_new_label['frequencytype'] = "Mensalista";
-    }
-?>
-<?php
-   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
-   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
-   $frequencytype = $this->frequencytype;
-   $sStyleHidden_frequencytype = '';
-   if (isset($this->nmgp_cmp_hidden['frequencytype']) && $this->nmgp_cmp_hidden['frequencytype'] == 'off')
-   {
-       unset($this->nmgp_cmp_hidden['frequencytype']);
-       $sStyleHidden_frequencytype = 'display: none;';
-   }
-   $bTestReadOnly = true;
-   $sStyleReadLab_frequencytype = 'display: none;';
-   $sStyleReadInp_frequencytype = '';
-   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['frequencytype']) && $this->nmgp_cmp_readonly['frequencytype'] == 'on')
-   {
-       $bTestReadOnly = false;
-       unset($this->nmgp_cmp_readonly['frequencytype']);
-       $sStyleReadLab_frequencytype = '';
-       $sStyleReadInp_frequencytype = 'display: none;';
-   }
-?>
-<?php if (isset($this->nmgp_cmp_hidden['frequencytype']) && $this->nmgp_cmp_hidden['frequencytype'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="frequencytype" value="<?php echo $this->form_encode_input($frequencytype) . "\">"; ?>
-<?php } else { $sc_hidden_no++; ?>
-
-    <TD class="scFormDataOdd css_frequencytype_line" id="hidden_field_data_frequencytype" style="<?php echo $sStyleHidden_frequencytype; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_frequencytype_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_frequencytype_label" style=""><span id="id_label_frequencytype"><?php echo $this->nm_new_label['frequencytype']; ?></span></span><br>
-<?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["frequencytype"]) &&  $this->nmgp_cmp_readonly["frequencytype"] == "on") { 
-
- if ("M" == $this->frequencytype) { $frequencytype_look = "Sim";} 
- if ("D" == $this->frequencytype) { $frequencytype_look = "Não";} 
-?>
-<input type="hidden" name="frequencytype" value="<?php echo $this->form_encode_input($frequencytype) . "\">" . $frequencytype_look . ""; ?>
-<?php } else { ?>
-
-<?php
-
- if ("M" == $this->frequencytype) { $frequencytype_look = "Sim";} 
- if ("D" == $this->frequencytype) { $frequencytype_look = "Não";} 
-?>
-<span id="id_read_on_frequencytype"  class="css_frequencytype_line" style="<?php echo $sStyleReadLab_frequencytype; ?>"><?php echo $this->form_format_readonly("frequencytype", $this->form_encode_input($frequencytype_look)); ?></span><span id="id_read_off_frequencytype" class="css_read_off_frequencytype css_frequencytype_line" style="<?php echo $sStyleReadInp_frequencytype; ?>"><div id="idAjaxRadio_frequencytype" style="display: inline-block"  class="css_frequencytype_line">
-<TABLE cellspacing=0 cellpadding=0 border=0><TR>
-  <TD class="scFormDataFontOdd css_frequencytype_line"><?php $tempOptionId = "id-opt-frequencytype" . $sc_seq_vert . "-1"; ?>
-    <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-frequencytype sc-ui-radio-frequencytype" type=radio name="frequencytype" value="M"
-<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['Lookup_frequencytype'][] = 'M'; ?>
-<?php  if ("M" == $this->frequencytype)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Sim</label></TD>
-  <TD class="scFormDataFontOdd css_frequencytype_line"><?php $tempOptionId = "id-opt-frequencytype" . $sc_seq_vert . "-2"; ?>
-    <input id="<?php echo $tempOptionId ?>"  class="sc-ui-radio-frequencytype sc-ui-radio-frequencytype" type=radio name="frequencytype" value="D"
-<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['Lookup_frequencytype'][] = 'D'; ?>
-<?php  if ("D" == $this->frequencytype)  { echo " checked" ;} ?>  onClick="" ><label for="<?php echo $tempOptionId ?>">Não</label></TD>
-</TR></TABLE>
-</div>
-</span><?php  }?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_frequencytype_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_frequencytype_text"></span></td></tr></table></td></tr></table> </TD>
-   <?php }?>
-
-
-
-
-
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
-
-
-
-
-<?php } 
-?> 
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
-   <?php
     if (!isset($this->nm_new_label['holdertype']))
     {
         $this->nm_new_label['holdertype'] = "Titular";
@@ -1575,146 +1671,7 @@ unset($NM_ult_sep);
 
 <?php } 
 ?> 
-
-
-
-
-
-
-<?php $sStyleHidden_holdertype_dumb = ('' == $sStyleHidden_holdertype) ? 'display: none' : ''; ?>
-    <TD class="scFormDataOdd" id="hidden_field_data_holdertype_dumb" style="<?php echo $sStyleHidden_holdertype_dumb; ?>"></TD>
-   </tr>
-<?php $sc_hidden_no = 1; ?>
-</TABLE></div><!-- bloco_f -->
-   </td>
-   </tr></table>
-   <a name="bloco_1"></a>
-   <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="100%" height="">
-<div id="div_hidden_bloco_1"><!-- bloco_c -->
-<TABLE align="center" id="hidden_bloco_1" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
-   <?php
-    if (!isset($this->nm_new_label['aggregate']))
-    {
-        $this->nm_new_label['aggregate'] = "Agregado";
-    }
-?>
-<?php
-   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
-   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
-   $aggregate = $this->aggregate;
-   $sStyleHidden_aggregate = '';
-   if (isset($this->nmgp_cmp_hidden['aggregate']) && $this->nmgp_cmp_hidden['aggregate'] == 'off')
-   {
-       unset($this->nmgp_cmp_hidden['aggregate']);
-       $sStyleHidden_aggregate = 'display: none;';
-   }
-   $bTestReadOnly = true;
-   $sStyleReadLab_aggregate = 'display: none;';
-   $sStyleReadInp_aggregate = '';
-   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['aggregate']) && $this->nmgp_cmp_readonly['aggregate'] == 'on')
-   {
-       $bTestReadOnly = false;
-       unset($this->nmgp_cmp_readonly['aggregate']);
-       $sStyleReadLab_aggregate = '';
-       $sStyleReadInp_aggregate = 'display: none;';
-   }
-?>
-<?php if (isset($this->nmgp_cmp_hidden['aggregate']) && $this->nmgp_cmp_hidden['aggregate'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="aggregate" value="<?php echo $this->form_encode_input($aggregate) . "\">"; ?>
-<?php } else { $sc_hidden_no++; ?>
-
-    <TD class="scFormDataOdd css_aggregate_line" id="hidden_field_data_aggregate" style="<?php echo $sStyleHidden_aggregate; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td width="100%" class="scFormDataFontOdd css_aggregate_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_aggregate_label" style=""><span id="id_label_aggregate"><?php echo $this->nm_new_label['aggregate']; ?></span></span><br>
-<?php
- if (isset($_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_aggregate'] ]) && '' != $_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_aggregate'] ]) {
-     $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] = $_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_aggregate'] ];
- }
- else {
-     $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] = $this->Ini->sc_page;
- }
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_proc']  = false;
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_form']  = true;
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_call']  = true;
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_multi'] = false;
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_form_insert'] = 'on';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_form_update'] = 'on';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_form_delete'] = 'on';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_form_btn_nav'] = 'off';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_grid_edit'] = 'on';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_grid_edit_link'] = 'on';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_qtd_reg'] = '5';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_tp_pag'] = 'parcial';
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_parms'] = "NM_btn_insert*scinS*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinS*scoutNM_btn_navega*scinN*scout";
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['foreign_key']['idholder'] = $this->nmgp_dados_form['idcostumer'];
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['where_filter'] = "idHolder = " . $this->nmgp_dados_form['idcostumer'] . "";
- $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['where_detal']  = "idHolder = " . $this->nmgp_dados_form['idcostumer'] . "";
- if ($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['cad_costumers_mob']['total'] < 0)
- {
-     $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['where_filter'] = "1 <> 1";
- }
- $sDetailSrc = ('novo' == $this->nmgp_opcao) ? 'cad_costumers_mob_empty.htm' : $this->Ini->link_sub_aggregate_mob_edit . '?script_case_init=' . $this->form_encode_input($this->Ini->sc_page) . '&script_case_detail=Y';
- foreach ($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob'] as $i => $v)
- {
-     $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate'][$i] = $v;
- }
-if (isset($this->Ini->sc_lig_target['C_@scinf_aggregate']) && 'nmsc_iframe_liga_sub_aggregate_mob' != $this->Ini->sc_lig_target['C_@scinf_aggregate'])
-{
-    if ('novo' != $this->nmgp_opcao)
-    {
-        $sDetailSrc .= '&under_dashboard=1&dashboard_app=' . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['dashboard_app'] . '&own_widget=' . $this->Ini->sc_lig_target['C_@scinf_aggregate'] . '&parent_widget=' . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['own_widget'];
-        $sDetailSrc  = $this->addUrlParam($sDetailSrc, 'script_case_init', $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init']);
-    }
-?>
-<script type="text/javascript">
-$(function() {
-    scOpenMasterDetail("<?php echo $this->Ini->sc_lig_target['C_@scinf_aggregate'] ?>", "<?php echo $sDetailSrc; ?>");
-});
-</script>
-<?php
-}
-else
-{
-?>
-<iframe border="0" id="nmsc_iframe_liga_sub_aggregate_mob"  marginWidth="0" marginHeight="0" frameborder="0" valign="top" height="100" width="100%" name="nmsc_iframe_liga_sub_aggregate_mob"  scrolling="auto" src="<?php echo $sDetailSrc; ?>"></iframe>
-<?php
-}
-?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_aggregate_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_aggregate_text"></span></td></tr></table></td></tr></table> </TD>
-   <?php }?>
-
-
-
-
-
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
-
-
-
-
-<?php } 
-?> 
-
-
-
-
-
-
-<?php $sStyleHidden_aggregate_dumb = ('' == $sStyleHidden_aggregate) ? 'display: none' : ''; ?>
-    <TD class="scFormDataOdd" id="hidden_field_data_aggregate_dumb" style="<?php echo $sStyleHidden_aggregate_dumb; ?>"></TD>
-   </tr>
-<?php $sc_hidden_no = 1; ?>
-</TABLE></div><!-- bloco_f -->
-   </td>
-   </tr></table>
-   <a name="bloco_2"></a>
-   <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="100%" height="">
-<div id="div_hidden_bloco_2"><!-- bloco_c -->
-<TABLE align="center" id="hidden_bloco_2" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
       $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
 
 
@@ -1757,7 +1714,7 @@ else
 <?php } else { ?>
 <span id="id_read_on_phonenumber" class="sc-ui-readonly-phonenumber css_phonenumber_line" style="<?php echo $sStyleReadLab_phonenumber; ?>"><?php echo $this->form_format_readonly("phonenumber", $this->form_encode_input($this->phonenumber)); ?></span><span id="id_read_off_phonenumber" class="css_read_off_phonenumber<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_phonenumber; ?>">
  <input class="sc-js-input scFormObjectOdd css_phonenumber_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_phonenumber" type=text name="phonenumber" value="<?php echo $this->form_encode_input($phonenumber) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=20"; } ?> alt="{datatype: 'mask', maskList: '(99) 99999-9999', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=20"; } ?> alt="{datatype: 'mask', maskList: '(99) 9999-9999', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_phonenumber_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_phonenumber_text"></span></td></tr></table></td></tr></table> </TD>
    <?php }?>
 
@@ -1838,23 +1795,68 @@ else
 
 <?php } 
 ?> 
+<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
+
+
+   <?php
+    if (!isset($this->nm_new_label['mobilephone']))
+    {
+        $this->nm_new_label['mobilephone'] = "Celular";
+    }
+?>
+<?php
+   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
+   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
+   $mobilephone = $this->mobilephone;
+   $sStyleHidden_mobilephone = '';
+   if (isset($this->nmgp_cmp_hidden['mobilephone']) && $this->nmgp_cmp_hidden['mobilephone'] == 'off')
+   {
+       unset($this->nmgp_cmp_hidden['mobilephone']);
+       $sStyleHidden_mobilephone = 'display: none;';
+   }
+   $bTestReadOnly = true;
+   $sStyleReadLab_mobilephone = 'display: none;';
+   $sStyleReadInp_mobilephone = '';
+   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['mobilephone']) && $this->nmgp_cmp_readonly['mobilephone'] == 'on')
+   {
+       $bTestReadOnly = false;
+       unset($this->nmgp_cmp_readonly['mobilephone']);
+       $sStyleReadLab_mobilephone = '';
+       $sStyleReadInp_mobilephone = 'display: none;';
+   }
+?>
+<?php if (isset($this->nmgp_cmp_hidden['mobilephone']) && $this->nmgp_cmp_hidden['mobilephone'] == 'off') { $sc_hidden_yes++;  ?>
+<input type="hidden" name="mobilephone" value="<?php echo $this->form_encode_input($mobilephone) . "\">"; ?>
+<?php } else { $sc_hidden_no++; ?>
+
+    <TD class="scFormDataOdd css_mobilephone_line" id="hidden_field_data_mobilephone" style="<?php echo $sStyleHidden_mobilephone; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_mobilephone_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_mobilephone_label" style=""><span id="id_label_mobilephone"><?php echo $this->nm_new_label['mobilephone']; ?></span></span><br>
+<?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["mobilephone"]) &&  $this->nmgp_cmp_readonly["mobilephone"] == "on") { 
+
+ ?>
+<input type="hidden" name="mobilephone" value="<?php echo $this->form_encode_input($mobilephone) . "\">" . $mobilephone . ""; ?>
+<?php } else { ?>
+<span id="id_read_on_mobilephone" class="sc-ui-readonly-mobilephone css_mobilephone_line" style="<?php echo $sStyleReadLab_mobilephone; ?>"><?php echo $this->form_format_readonly("mobilephone", $this->form_encode_input($this->mobilephone)); ?></span><span id="id_read_off_mobilephone" class="css_read_off_mobilephone<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_mobilephone; ?>">
+ <input class="sc-js-input scFormObjectOdd css_mobilephone_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_mobilephone" type=text name="mobilephone" value="<?php echo $this->form_encode_input($mobilephone) ?>"
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=20"; } ?> alt="{datatype: 'mask', maskList: '(99) 9 9999-9999', alignment: 'left', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_mobilephone_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_mobilephone_text"></span></td></tr></table></td></tr></table> </TD>
+   <?php }?>
+
 
 
 
 
+<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
 
 
-<?php $sStyleHidden_email_dumb = ('' == $sStyleHidden_email) ? 'display: none' : ''; ?>
-    <TD class="scFormDataOdd" id="hidden_field_data_email_dumb" style="<?php echo $sStyleHidden_email_dumb; ?>"></TD>
-   </tr>
-<?php $sc_hidden_no = 1; ?>
-</TABLE></div><!-- bloco_f -->
-   </td>
-   </tr></table>
-   <a name="bloco_3"></a>
-   <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="100%" height="">
-<div id="div_hidden_bloco_3"><!-- bloco_c -->
-<TABLE align="center" id="hidden_bloco_3" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
+
+
+
+
+<?php } 
+?> 
+<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
       $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
 
 
@@ -1960,7 +1962,7 @@ else
 <?php } else { ?>
 <span id="id_read_on_zipcity" class="sc-ui-readonly-zipcity css_zipcity_line" style="<?php echo $sStyleReadLab_zipcity; ?>"><?php echo $this->form_format_readonly("zipcity", $this->form_encode_input($this->zipcity)); ?></span><span id="id_read_off_zipcity" class="css_read_off_zipcity<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_zipcity; ?>">
  <input class="sc-js-input scFormObjectOdd css_zipcity_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_zipcity" type=text name="zipcity" value="<?php echo $this->form_encode_input($zipcity) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=50"; } ?> maxlength=50 alt="{datatype: 'text', maxLength: 50, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=45"; } ?> maxlength=50 alt="{datatype: 'text', maxLength: 50, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_zipcity_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_zipcity_text"></span></td></tr></table></td></tr></table> </TD>
    <?php }?>
 
@@ -2082,7 +2084,7 @@ else
 <?php } else { ?>
 <span id="id_read_on_zipdistrict" class="sc-ui-readonly-zipdistrict css_zipdistrict_line" style="<?php echo $sStyleReadLab_zipdistrict; ?>"><?php echo $this->form_format_readonly("zipdistrict", $this->form_encode_input($this->zipdistrict)); ?></span><span id="id_read_off_zipdistrict" class="css_read_off_zipdistrict<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_zipdistrict; ?>">
  <input class="sc-js-input scFormObjectOdd css_zipdistrict_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_zipdistrict" type=text name="zipdistrict" value="<?php echo $this->form_encode_input($zipdistrict) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=50"; } ?> maxlength=50 alt="{datatype: 'text', maxLength: 50, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=45"; } ?> maxlength=50 alt="{datatype: 'text', maxLength: 50, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_zipdistrict_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_zipdistrict_text"></span></td></tr></table></td></tr></table> </TD>
    <?php }?>
 
@@ -2143,7 +2145,7 @@ else
 <?php } else { ?>
 <span id="id_read_on_zipstreet" class="sc-ui-readonly-zipstreet css_zipstreet_line" style="<?php echo $sStyleReadLab_zipstreet; ?>"><?php echo $this->form_format_readonly("zipstreet", $this->form_encode_input($this->zipstreet)); ?></span><span id="id_read_off_zipstreet" class="css_read_off_zipstreet<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_zipstreet; ?>">
  <input class="sc-js-input scFormObjectOdd css_zipstreet_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_zipstreet" type=text name="zipstreet" value="<?php echo $this->form_encode_input($zipstreet) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=50"; } ?> maxlength=50 alt="{datatype: 'text', maxLength: 50, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=45"; } ?> maxlength=50 alt="{datatype: 'text', maxLength: 50, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
 </td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_zipstreet_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_zipstreet_text"></span></td></tr></table></td></tr></table> </TD>
    <?php }?>
 
@@ -2235,10 +2237,133 @@ else
 </TABLE></div><!-- bloco_f -->
    </td>
    </tr></table>
-   <a name="bloco_4"></a>
+   <a name="bloco_2"></a>
    <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="100%" height="">
-<div id="div_hidden_bloco_4"><!-- bloco_c -->
-<TABLE align="center" id="hidden_bloco_4" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+<div id="div_hidden_bloco_2"><!-- bloco_c -->
+<TABLE align="center" id="hidden_bloco_2" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
+      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
+
+
+   <?php
+    if (!isset($this->nm_new_label['aggregate']))
+    {
+        $this->nm_new_label['aggregate'] = "Agregado";
+    }
+?>
+<?php
+   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
+   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
+   $aggregate = $this->aggregate;
+   $sStyleHidden_aggregate = '';
+   if (isset($this->nmgp_cmp_hidden['aggregate']) && $this->nmgp_cmp_hidden['aggregate'] == 'off')
+   {
+       unset($this->nmgp_cmp_hidden['aggregate']);
+       $sStyleHidden_aggregate = 'display: none;';
+   }
+   $bTestReadOnly = true;
+   $sStyleReadLab_aggregate = 'display: none;';
+   $sStyleReadInp_aggregate = '';
+   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['aggregate']) && $this->nmgp_cmp_readonly['aggregate'] == 'on')
+   {
+       $bTestReadOnly = false;
+       unset($this->nmgp_cmp_readonly['aggregate']);
+       $sStyleReadLab_aggregate = '';
+       $sStyleReadInp_aggregate = 'display: none;';
+   }
+?>
+<?php if (isset($this->nmgp_cmp_hidden['aggregate']) && $this->nmgp_cmp_hidden['aggregate'] == 'off') { $sc_hidden_yes++;  ?>
+<input type="hidden" name="aggregate" value="<?php echo $this->form_encode_input($aggregate) . "\">"; ?>
+<?php } else { $sc_hidden_no++; ?>
+
+    <TD class="scFormDataOdd css_aggregate_line" id="hidden_field_data_aggregate" style="<?php echo $sStyleHidden_aggregate; ?>vertical-align: top;"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td width="100%" class="scFormDataFontOdd css_aggregate_line" style="vertical-align: top;padding: 0px"><span class="scFormLabelOddFormat css_aggregate_label" style=""><span id="id_label_aggregate"><?php echo $this->nm_new_label['aggregate']; ?></span></span><br>
+<?php
+ if (isset($_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_aggregate'] ]) && '' != $_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_aggregate'] ]) {
+     $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] = $_SESSION['scriptcase']['dashboard_scinit'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['dashboard_app'] ][ $this->Ini->sc_lig_target['C_@scinf_aggregate'] ];
+ }
+ else {
+     $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] = $this->Ini->sc_page;
+ }
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_proc']  = false;
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_form']  = true;
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_call']  = true;
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_multi'] = false;
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_form_insert'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_form_update'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_form_delete'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_form_btn_nav'] = 'off';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_grid_edit'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_grid_edit_link'] = 'on';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_qtd_reg'] = '5';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_liga_tp_pag'] = 'parcial';
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['embutida_parms'] = "NM_btn_insert*scinS*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinS*scoutNM_btn_navega*scinN*scout";
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['foreign_key']['idholder'] = $this->nmgp_dados_form['idcostumer'];
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['where_filter'] = "idHolder = " . $this->nmgp_dados_form['idcostumer'] . "";
+ $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['where_detal']  = "idHolder = " . $this->nmgp_dados_form['idcostumer'] . "";
+ if ($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['cad_costumers_mob']['total'] < 0)
+ {
+     $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob']['where_filter'] = "1 <> 1";
+ }
+ $sDetailSrc = ('novo' == $this->nmgp_opcao) ? 'cad_costumers_mob_empty.htm' : $this->Ini->link_sub_aggregate_mob_edit . '?script_case_init=' . $this->form_encode_input($this->Ini->sc_page) . '&script_case_detail=Y';
+ foreach ($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate_mob'] as $i => $v)
+ {
+     $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init'] ]['sub_aggregate'][$i] = $v;
+ }
+if (isset($this->Ini->sc_lig_target['C_@scinf_aggregate']) && 'nmsc_iframe_liga_sub_aggregate_mob' != $this->Ini->sc_lig_target['C_@scinf_aggregate'])
+{
+    if ('novo' != $this->nmgp_opcao)
+    {
+        $sDetailSrc .= '&under_dashboard=1&dashboard_app=' . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['dashboard_app'] . '&own_widget=' . $this->Ini->sc_lig_target['C_@scinf_aggregate'] . '&parent_widget=' . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['dashboard_info']['own_widget'];
+        $sDetailSrc  = $this->addUrlParam($sDetailSrc, 'script_case_init', $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['sub_aggregate_mob_script_case_init']);
+    }
+?>
+<script type="text/javascript">
+$(function() {
+    scOpenMasterDetail("<?php echo $this->Ini->sc_lig_target['C_@scinf_aggregate'] ?>", "<?php echo $sDetailSrc; ?>");
+});
+</script>
+<?php
+}
+else
+{
+?>
+<iframe border="0" id="nmsc_iframe_liga_sub_aggregate_mob"  marginWidth="0" marginHeight="0" frameborder="0" valign="top" height="100" width="100%" name="nmsc_iframe_liga_sub_aggregate_mob"  scrolling="auto" src="<?php echo $sDetailSrc; ?>"></iframe>
+<?php
+}
+?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_aggregate_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_aggregate_text"></span></td></tr></table></td></tr></table> </TD>
+   <?php }?>
+
+
+
+
+
+<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
+
+
+    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 1; ?>" >&nbsp;</TD>
+
+
+
+
+<?php } 
+?> 
+
+
+
+
+
+
+<?php $sStyleHidden_aggregate_dumb = ('' == $sStyleHidden_aggregate) ? 'display: none' : ''; ?>
+    <TD class="scFormDataOdd" id="hidden_field_data_aggregate_dumb" style="<?php echo $sStyleHidden_aggregate_dumb; ?>"></TD>
+   </tr>
+<?php $sc_hidden_no = 1; ?>
+</TABLE></div><!-- bloco_f -->
+   </td>
+   </tr></table>
+   <a name="bloco_3"></a>
+   <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="100%" height="">
+<div id="div_hidden_bloco_3"><!-- bloco_c -->
+<TABLE align="center" id="hidden_bloco_3" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
       $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
 
 
@@ -2285,7 +2410,7 @@ $observation_val = str_replace('<br />', '__SC_BREAK_LINE__', nl2br($observation
 <input type="hidden" name="observation" value="<?php echo $this->form_encode_input($observation) . "\">" . $observation_val . ""; ?>
 <?php } else { ?>
 <span id="id_read_on_observation" class="sc-ui-readonly-observation css_observation_line" style="<?php echo $sStyleReadLab_observation; ?>"><?php echo $this->form_format_readonly("observation", $this->form_encode_input($observation_val)); ?></span><span id="id_read_off_observation" class="css_read_off_observation<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_observation; ?>">
- <textarea class="sc-js-input scFormObjectOdd css_observation_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="white-space: pre-wrap;" name="observation" id="id_sc_field_observation" rows="10" cols="200"
+ <textarea class="sc-js-input scFormObjectOdd css_observation_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="white-space: pre-wrap;" name="observation" id="id_sc_field_observation" rows="25" cols="100"
  alt="{datatype: 'text', maxLength: 32767, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: true, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" >
 <?php echo $observation; ?>
 </textarea>
@@ -2452,9 +2577,20 @@ unset($NM_ult_sep);
 </table></div>
 
 </form> 
+<?php
+      $Tzone = ini_get('date.timezone');
+      if (empty($Tzone))
+      {
+?>
+<script> 
+  _scAjaxShowMessage({title: '', message: "<?php echo $this->Ini->Nm_lang['lang_errm_tz']; ?>", isModal: false, timeout: 0, showButton: false, buttonLabel: "Ok", topPos: 0, leftPos: 0, width: 0, height: 0, redirUrl: "", redirTarget: "", redirParam: "", showClose: true, showBodyIcon: false, isToast: false, toastPos: ""});
+</script> 
+<?php
+      }
+?>
 <script> 
 <?php
-  $nm_sc_blocos_da_pag = array(0,1,2,3,4);
+  $nm_sc_blocos_da_pag = array(0,1,2,3);
 
   foreach ($this->Ini->nm_hidden_blocos as $bloco => $hidden)
   {
@@ -2470,7 +2606,7 @@ unset($NM_ult_sep);
 ?>
 $(window).bind("load", function() {
 <?php
-  $nm_sc_blocos_da_pag = array(0,1,2,3,4);
+  $nm_sc_blocos_da_pag = array(0,1,2,3);
 
   foreach ($this->Ini->nm_hidden_blocos as $bloco => $hidden)
   {

@@ -52,18 +52,16 @@ class cad_lodge_apl
    var $Ini;
    var $Erro;
    var $Db;
-   var $idlodge;
-   var $idlodgecategory;
-   var $idlodgecategory_1;
-   var $number;
-   var $name;
-   var $status;
-   var $status_1;
+   var $idlodge_;
+   var $idlodgecategory_;
+   var $idlodgecategory__1;
+   var $number_;
+   var $status_;
+   var $status__1;
    var $nm_data;
    var $nmgp_opcao;
    var $nmgp_opc_ant;
    var $sc_evento;
-   var $sc_insert_on;
    var $nmgp_clone;
    var $nmgp_return_img = array();
    var $nmgp_dados_form = array();
@@ -78,6 +76,15 @@ class cad_lodge_apl
    var $nmgp_cmp_readonly = array();
    var $nmgp_cmp_hidden   = array();
    var $Field_no_validate  = array();
+   var $sc_teve_incl = false;
+   var $sc_teve_excl = false;
+   var $sc_teve_alt  = false;
+   var $sc_after_all_insert = false;
+   var $sc_after_all_update = false;
+   var $sc_after_all_delete = false;
+   var $sc_max_reg = 10; 
+   var $sc_max_reg_incl = 10; 
+   var $form_vert_cad_lodge = array();
    var $form_paginacao = 'parcial';
    var $lig_edit_lookup      = false;
    var $lig_edit_lookup_call = false;
@@ -87,7 +94,7 @@ class cad_lodge_apl
    var $Embutida_call  = false;
    var $Embutida_ronly = false;
    var $Embutida_proc  = false;
-   var $Embutida_form  = false;
+   var $Embutida_form  = true;
    var $Grid_editavel  = false;
    var $url_webhelp = '';
    var $nm_todas_criticas;
@@ -100,6 +107,7 @@ class cad_lodge_apl
    function ini_controle()
    {
         global $nm_url_saida, $teste_validade, $script_case_init, 
+               $GLOBALS, $Campos_Crit, $Campos_Falta, $Campos_Erros, $sc_seq_vert, $sc_check_incl, 
                $glo_senha_protect, $nm_apl_dependente, $nm_form_submit, $sc_check_excl, $nm_opc_form_php, $nm_call_php, $nm_opc_lookup;
 
 
@@ -109,17 +117,9 @@ class cad_lodge_apl
           {
               $this->csrf_token = $this->NM_ajax_info['param']['csrf_token'];
           }
-          if (isset($this->NM_ajax_info['param']['idlodge']))
+          if (isset($this->NM_ajax_info['param']['idlodge_']))
           {
-              $this->idlodge = $this->NM_ajax_info['param']['idlodge'];
-          }
-          if (isset($this->NM_ajax_info['param']['idlodgecategory']))
-          {
-              $this->idlodgecategory = $this->NM_ajax_info['param']['idlodgecategory'];
-          }
-          if (isset($this->NM_ajax_info['param']['name']))
-          {
-              $this->name = $this->NM_ajax_info['param']['name'];
+              $this->idlodge_ = $this->NM_ajax_info['param']['idlodge_'];
           }
           if (isset($this->NM_ajax_info['param']['nm_form_submit']))
           {
@@ -161,21 +161,37 @@ class cad_lodge_apl
           {
               $this->nmgp_parms = $this->NM_ajax_info['param']['nmgp_parms'];
           }
+          if (isset($this->NM_ajax_info['param']['nmgp_refresh_row']))
+          {
+              $this->nmgp_refresh_row = $this->NM_ajax_info['param']['nmgp_refresh_row'];
+          }
           if (isset($this->NM_ajax_info['param']['nmgp_url_saida']))
           {
               $this->nmgp_url_saida = $this->NM_ajax_info['param']['nmgp_url_saida'];
           }
-          if (isset($this->NM_ajax_info['param']['number']))
+          if (isset($this->NM_ajax_info['param']['number_']))
           {
-              $this->number = $this->NM_ajax_info['param']['number'];
+              $this->number_ = $this->NM_ajax_info['param']['number_'];
+          }
+          if (isset($this->NM_ajax_info['param']['sc_clone']))
+          {
+              $this->sc_clone = $this->NM_ajax_info['param']['sc_clone'];
+          }
+          if (isset($this->NM_ajax_info['param']['sc_seq_clone']))
+          {
+              $this->sc_seq_clone = $this->NM_ajax_info['param']['sc_seq_clone'];
+          }
+          if (isset($this->NM_ajax_info['param']['sc_seq_vert']))
+          {
+              $this->sc_seq_vert = $this->NM_ajax_info['param']['sc_seq_vert'];
           }
           if (isset($this->NM_ajax_info['param']['script_case_init']))
           {
               $this->script_case_init = $this->NM_ajax_info['param']['script_case_init'];
           }
-          if (isset($this->NM_ajax_info['param']['status']))
+          if (isset($this->NM_ajax_info['param']['status_']))
           {
-              $this->status = $this->NM_ajax_info['param']['status'];
+              $this->status_ = $this->NM_ajax_info['param']['status_'];
           }
           if (isset($this->nmgp_refresh_fields))
           {
@@ -190,6 +206,10 @@ class cad_lodge_apl
 
       $this->scSajaxReservedWords = array('rs', 'rst', 'rsrnd', 'rsargs');
       $this->sc_conv_var = array();
+      $this->sc_conv_var['idlodge'] = "idlodge_";
+      $this->sc_conv_var['idlodgecategory'] = "idlodgecategory_";
+      $this->sc_conv_var['number'] = "number_";
+      $this->sc_conv_var['status'] = "status_";
       if (!empty($_FILES))
       {
           foreach ($_FILES as $nmgp_campo => $nmgp_valores)
@@ -309,6 +329,8 @@ class cad_lodge_apl
           { 
               unset($_SESSION['nm_aba_bg_color']);
           }   
+          $this->NM_where_filter = "";
+          $tem_where_parms       = false;
           $nmgp_parms = str_replace("@aspass@", "'", $this->nmgp_parms);
           $nmgp_parms = str_replace("*scout", "?@?", $nmgp_parms);
           $nmgp_parms = str_replace("*scin", "?#?", $nmgp_parms);
@@ -337,8 +359,28 @@ class cad_lodge_apl
                  if ($cadapar[1] == "@ ") {$cadapar[1] = trim($cadapar[1]); }
                  $Tmp_par = $cadapar[0];
                  $this->$Tmp_par = $cadapar[1];
+                 if ($cadapar[0] == "idLodge_")
+                 {
+                     $this->NM_where_filter .= (empty($this->NM_where_filter)) ? "(" : " and ";
+                     $this->NM_where_filter .= "idLodge = '" . $this->idLodge_ . "'";
+                     $this->has_where_params = true;
+                     $tem_where_parms        = true;
+                 }
+                 elseif ($cadapar[0] == "NM_where_filter")
+                 {
+                     $this->has_where_params = false;
+                     $tem_where_parms        = false;
+                 }
              }
              $ix++;
+          }
+          if ($tem_where_parms)
+          {
+              $this->NM_where_filter .= ")";
+          }
+          elseif (empty($this->NM_where_filter))
+          {
+              unset($this->NM_where_filter);
           }
           if (isset($this->NM_where_filter_form))
           {
@@ -489,11 +531,11 @@ class cad_lodge_apl
       $this->Ini->Label_sort      = !isset($str_label_sort)      || "" == trim($str_label_sort)      ? ""     : $str_label_sort;
       $this->Ini->Label_sort_asc  = !isset($str_label_sort_asc)  || "" == trim($str_label_sort_asc)  ? ""     : $str_label_sort_asc;
       $this->Ini->Label_sort_desc = !isset($str_label_sort_desc) || "" == trim($str_label_sort_desc) ? ""     : $str_label_sort_desc;
-      $this->Ini->Img_status_ok       = !isset($str_img_status_ok)  || "" == trim($str_img_status_ok)   ? ""     : $str_img_status_ok;
-      $this->Ini->Img_status_err      = !isset($str_img_status_err) || "" == trim($str_img_status_err)  ? ""     : $str_img_status_err;
-      $this->Ini->Css_status          = "scFormInputError";
-      $this->Ini->Css_status_pwd_box  = "scFormInputErrorPwdBox";
-      $this->Ini->Css_status_pwd_text = "scFormInputErrorPwdText";
+      $this->Ini->Img_status_ok       = !isset($str_img_status_ok_mult)  || "" == trim($str_img_status_ok_mult)   ? ""     : $str_img_status_ok_mult;
+      $this->Ini->Img_status_err      = !isset($str_img_status_err_mult) || "" == trim($str_img_status_err_mult)  ? ""     : $str_img_status_err_mult;
+      $this->Ini->Css_status          = "scFormInputErrorMult";
+      $this->Ini->Css_status_pwd_box  = "scFormInputErrorMultPwdBox";
+      $this->Ini->Css_status_pwd_text = "scFormInputErrorMultPwdText";
       $this->Ini->Error_icon_span      = !isset($str_error_icon_span)  || "" == trim($str_error_icon_span)  ? false  : "message" == $str_error_icon_span;
       $this->Ini->Img_qs_search        = !isset($img_qs_search)        || "" == trim($img_qs_search)        ? "scriptcase__NM__qs_lupa.png"  : $img_qs_search;
       $this->Ini->Img_qs_clean         = !isset($img_qs_clean)         || "" == trim($img_qs_clean)         ? "scriptcase__NM__qs_close.png" : $img_qs_clean;
@@ -557,7 +599,6 @@ class cad_lodge_apl
           $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['embutida_liga_grid_edit'] = $this->Embutida_call;
       }
 
-      $this->Ini->cor_grid_par = $this->Ini->cor_grid_impar;
       $this->nm_location = $this->Ini->sc_protocolo . $this->Ini->server . $dir_raiz; 
       $this->nmgp_url_saida  = $nm_url_saida;
       $this->nmgp_form_show  = "on";
@@ -660,6 +701,19 @@ class cad_lodge_apl
       $this->nmgp_botoes['copy'] = "off";
       $this->nmgp_botoes['update'] = "on";
       $this->nmgp_botoes['delete'] = "on";
+      if ('total' == $this->form_paginacao)
+      {
+          $this->nmgp_botoes['first']   = "off";
+          $this->nmgp_botoes['back']    = "off";
+          $this->nmgp_botoes['forward'] = "off";
+          $this->nmgp_botoes['last']    = "off";
+          $this->nmgp_botoes['navpage'] = "off";
+          $this->nmgp_botoes['goto']    = "off";
+          $this->nmgp_botoes['qtline']  = "off";
+          $this->nmgp_botoes['summary'] = "on";
+      }
+      else
+      {
       $this->nmgp_botoes['first'] = "on";
       $this->nmgp_botoes['back'] = "on";
       $this->nmgp_botoes['forward'] = "on";
@@ -667,8 +721,9 @@ class cad_lodge_apl
       $this->nmgp_botoes['summary'] = "on";
       $this->nmgp_botoes['navpage'] = "on";
       $this->nmgp_botoes['goto'] = "on";
-      $this->nmgp_botoes['qtline'] = "off";
+      $this->nmgp_botoes['qtline'] = "on";
       $this->nmgp_botoes['reload'] = "on";
+      }
       if (isset($this->NM_btn_cancel) && 'N' == $this->NM_btn_cancel)
       {
           $this->nmgp_botoes['cancel'] = "off";
@@ -814,26 +869,22 @@ class cad_lodge_apl
       {
           foreach ($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['field_display'] as $NM_cada_field => $NM_cada_opc)
           {
-              $this->nmgp_cmp_hidden[$NM_cada_field] = $NM_cada_opc;
-              $this->NM_ajax_info['fieldDisplay'][$NM_cada_field] = $NM_cada_opc;
+              $this->nmgp_cmp_hidden[$NM_cada_field . "_"] = $NM_cada_opc;
+              $this->NM_ajax_info['fieldDisplay'][$NM_cada_field . "_"] = $NM_cada_opc;
           }
       }
       if (isset($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['field_readonly']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['field_readonly']))
       {
           foreach ($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['field_readonly'] as $NM_cada_field => $NM_cada_opc)
           {
-              $this->nmgp_cmp_readonly[$NM_cada_field] = "on";
-              $this->NM_ajax_info['readOnly'][$NM_cada_field] = $NM_cada_opc;
+              $this->nmgp_cmp_readonly[$NM_cada_field . "_"] = "on";
+              $this->NM_ajax_info['readOnly'][$NM_cada_field . "_"] = $NM_cada_opc;
           }
       }
       if (isset($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['exit']) && $_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['exit'] != '')
       {
           $_SESSION['scriptcase']['sc_url_saida'][$this->Ini->sc_page]       = $_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['exit'];
           $_SESSION['scriptcase']['sc_force_url_saida'][$this->Ini->sc_page] = true;
-      }
-      if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form']))
-      {
-          $this->nmgp_dados_form = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'];
       }
       $glo_senha_protect = (isset($_SESSION['scriptcase']['glo_senha_protect'])) ? $_SESSION['scriptcase']['glo_senha_protect'] : "S";
       $this->aba_iframe = false;
@@ -955,6 +1006,10 @@ class cad_lodge_apl
       }
       $this->Erro      = new cad_lodge_erro();
       $this->Erro->Ini = $this->Ini;
+      if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_max_reg']) && strtolower($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_max_reg']) == "all")
+      {
+          $this->form_paginacao = "total";
+      }
       $this->proc_fast_search = false;
       if ($this->nmgp_opcao == "fast_search")  
       {
@@ -967,7 +1022,7 @@ class cad_lodge_apl
       { 
          if (empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['opcao']))
          { 
-             if ($this->idlodge != "")   
+             if ($this->idlodge_ != "")   
              { 
                  $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['opcao'] = "igual" ;  
              }   
@@ -1009,10 +1064,6 @@ class cad_lodge_apl
       {
       }
       $this->nm_flag_iframe = false;
-      if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'])) 
-      {
-         $this->nmgp_dados_form = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'];
-      }
       if ($this->nmgp_opcao == "edit_novo")  
       {
           $this->nmgp_opcao = "novo";
@@ -1021,7 +1072,6 @@ class cad_lodge_apl
 //
       $this->NM_case_insensitive = false;
       $this->sc_evento = $this->nmgp_opcao;
-      $this->sc_insert_on = false;
             if ('ajax_check_file' == $this->nmgp_opcao ){
                  ob_start(); 
                  include_once("../_lib/lib/php/nm_api.php"); 
@@ -1046,53 +1096,50 @@ class cad_lodge_apl
             echo $out1_img_cache;
                exit;
             }
-      if (isset($this->idlodge)) { $this->nm_limpa_alfa($this->idlodge); }
-      if (isset($this->idlodgecategory)) { $this->nm_limpa_alfa($this->idlodgecategory); }
-      if (isset($this->number)) { $this->nm_limpa_alfa($this->number); }
-      if (isset($this->name)) { $this->nm_limpa_alfa($this->name); }
-      if (isset($this->status)) { $this->nm_limpa_alfa($this->status); }
-      $Campos_Crit       = "";
-      $Campos_erro       = "";
-      $Campos_Falta      = array();
-      $Campos_Erros      = array();
-      $dir_raiz          = strrpos($_SERVER['PHP_SELF'],"/") ;  
-      $dir_raiz          =  substr($_SERVER['PHP_SELF'], 0, $dir_raiz + 1) ;  
-      $this->Field_no_validate = (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Field_no_validate'])) ? $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Field_no_validate'] : array();
-      $this->nm_location = $this->Ini->sc_protocolo . $this->Ini->server . $dir_raiz; 
-      $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['opc_edit'] = true;  
-     if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'])) 
-     {
-        $this->nmgp_dados_select = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'];
-     }
    }
 
    function loadFieldConfig()
    {
       $this->field_config = array();
-      //-- idlodge
-      $this->field_config['idlodge']               = array();
-      $this->field_config['idlodge']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
-      $this->field_config['idlodge']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
-      $this->field_config['idlodge']['symbol_dec'] = '';
-      $this->field_config['idlodge']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
-      $this->field_config['idlodge']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
-      //-- number
-      $this->field_config['number']               = array();
-      $this->field_config['number']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
-      $this->field_config['number']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
-      $this->field_config['number']['symbol_dec'] = '';
-      $this->field_config['number']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
-      $this->field_config['number']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
+      //-- number_
+      $this->field_config['number_']               = array();
+      $this->field_config['number_']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
+      $this->field_config['number_']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
+      $this->field_config['number_']['symbol_dec'] = '';
+      $this->field_config['number_']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
+      $this->field_config['number_']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
+      //-- idlodge_
+      $this->field_config['idlodge_']               = array();
+      $this->field_config['idlodge_']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
+      $this->field_config['idlodge_']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
+      $this->field_config['idlodge_']['symbol_dec'] = '';
+      $this->field_config['idlodge_']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
+      $this->field_config['idlodge_']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
    }
 
    function controle()
    {
         global $nm_url_saida, $teste_validade, 
+               $GLOBALS, $Campos_Crit, $Campos_Falta, $Campos_Erros, $sc_seq_vert, $sc_check_incl, 
                $glo_senha_protect, $nm_apl_dependente, $nm_form_submit, $sc_check_excl, $nm_opc_form_php, $nm_call_php, $nm_opc_lookup;
 
 
       $this->ini_controle();
-
+      if ($this->nmgp_opcao == "change_qtd_line")
+      {
+          $this->NM_btn_navega = "N";
+          if (strtolower($this->nmgp_max_line) == "all")
+          {
+              $this->nmgp_opcao = "inicio";
+              $this->form_paginacao = "total";
+          }
+          else
+          {
+              $this->nmgp_opcao = "igual";
+              $this->form_paginacao = "parcial";
+          }
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_max_reg'] = $this->nmgp_max_line;
+      }
       if ('' != $_SESSION['scriptcase']['change_regional_old'])
       {
           $_SESSION['scriptcase']['str_conf_reg'] = $_SESSION['scriptcase']['change_regional_old'];
@@ -1111,41 +1158,342 @@ class cad_lodge_apl
           $_SESSION['scriptcase']['change_regional_new'] = '';
       }
 
-      if ($nm_form_submit == 1 && ($this->nmgp_opcao == 'inicio' || $this->nmgp_opcao == 'igual'))
+      $Campos_Crit       = "";
+      $Campos_erro       = "";
+      $Campos_Falta      = array();
+      $Campos_Erros      = array();
+      $dir_raiz          = strrpos($_SERVER['PHP_SELF'],"/") ;  
+      $dir_raiz          =  substr($_SERVER['PHP_SELF'], 0, $dir_raiz + 1) ;  
+      $this->Field_no_validate = (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Field_no_validate'])) ? $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Field_no_validate'] : array();
+      $this->nm_location = $this->Ini->sc_protocolo . $this->Ini->server . $dir_raiz; 
+      $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['opc_edit'] = true;  
+      $sc_contr_vert = (isset($GLOBALS["sc_contr_vert"])) ? $GLOBALS["sc_contr_vert"] : "";
+      $sc_seq_vert   = 1; 
+      $sc_opc_salva  = $this->nmgp_opcao; 
+      $sc_todas_Crit = "";
+      $sc_check_excl = array(); 
+      $sc_check_incl = array(); 
+      if (isset($GLOBALS["sc_check_vert"]) && is_array($GLOBALS["sc_check_vert"])) 
+      { 
+          if ($this->nmgp_opcao == "incluir" || ($this->nmgp_opcao == "recarga" && $this->nmgp_opc_ant == "novo"))
+          {
+              $sc_check_incl = $GLOBALS["sc_check_vert"]; 
+          }
+          elseif ($this->nmgp_opcao == "alterar" || $this->nmgp_opcao == "excluir" || $this->nmgp_opcao == "recarga")
+          {
+              $sc_check_excl = $GLOBALS["sc_check_vert"]; 
+          }
+      } 
+      elseif ($this->nmgp_opcao == 'incluir' && isset($_POST['upload_file_row']) && '' != $_POST['upload_file_row'])
       {
-          $this->nm_tira_formatacao();
+          $sc_check_incl = array($_POST['upload_file_row']);
       }
-      if (!$this->NM_ajax_flag || 'alterar' != $this->nmgp_opcao || 'submit_form' != $this->NM_ajax_opcao)
+      if (empty($this->nmgp_opcao)) 
+      { 
+          $this->nmgp_opcao = "inicio";
+      } 
+      if ($this->NM_ajax_flag && 'add_new_line' == $this->NM_ajax_opcao)
       {
+         $this->nmgp_opcao = "novo";
+         $this->nm_select_banco();
+         $this->nm_gera_html();
+         $this->NM_ajax_info['newline'] = NM_utf8_urldecode($this->New_Line);
+         $this->NM_close_db();
+         cad_lodge_pack_ajax_response();
+         exit;
       }
-//
-//-----> 
-//
+      if ($this->NM_ajax_flag && 'backup_line' == $this->NM_ajax_opcao)
+      {
+         $this->nmgp_opcao = "igual";
+         $this->nm_tira_formatacao();
+         $this->nm_select_banco();
+         $this->ajax_return_values();
+         $this->NM_close_db();
+         cad_lodge_pack_ajax_response();
+         exit;
+      }
+      if ($this->NM_ajax_flag && 'submit_form' == $this->NM_ajax_opcao)
+      {
+         if (isset($this->number_)) { $this->nm_limpa_alfa($this->number_); }
+         if (isset($this->status_)) { $this->nm_limpa_alfa($this->status_); }
+         if (isset($this->Sc_num_lin_alt) && $this->Sc_num_lin_alt > 0) 
+         {
+             $sc_seq_vert = $this->Sc_num_lin_alt;
+         }
+         if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'][$sc_seq_vert]))
+         {
+             $this->nmgp_dados_form = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'][$sc_seq_vert];
+             $this->idlodge_ = $this->nmgp_dados_form['idlodge_']; 
+             $this->idlodgecategory_ = $this->nmgp_dados_form['idlodgecategory_']; 
+         }
+         $this->controle_form_vert();
+         if ($Campos_Crit != "" || !empty($Campos_Falta) || $this->Campos_Mens_erro != "")
+         {
+             $this->NM_rollback_db();
+              if ($this->NM_ajax_flag)
+              {
+                  if (!isset($this->NM_ajax_info['errList']['geral_cad_lodge']) || !is_array($this->NM_ajax_info['errList']['geral_cad_lodge']))
+                  {
+                      $this->NM_ajax_info['errList']['geral_cad_lodge'] = array();
+                  }
+                  if ($Campos_Crit != "")
+                  {
+                      $this->NM_ajax_info['errList']['geral_cad_lodge'][] = $Campos_Crit;
+                  }
+                  if (!empty($Campos_Falta))
+                  {
+                      $this->NM_ajax_info['errList']['geral_cad_lodge'][] = $this->Formata_Campos_Falta($Campos_Falta);
+                  }
+                  if ($this->Campos_Mens_erro != "")
+                  {
+                      $this->NM_ajax_info['errList']['geral_cad_lodge'][] = $this->Campos_Mens_erro;
+                  }
+                  $this->NM_gera_nav_page(); 
+                  $this->NM_ajax_info['navPage'] = $this->SC_nav_page; 
+              }
+         }
+         else
+         {
+             $this->NM_commit_db();
+         }
+         if ($this->nmgp_opcao != "recarga" && $this->nmgp_opcao != "muda_form" && !$this->Apl_com_erro)
+         {
+             $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['recarga'] = $this->nmgp_opcao;
+          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_insert']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_insert'] == "ok")
+          {
+              if ($this->sc_teve_incl && empty($sc_todas_Crit))
+              {
+                  $this->NM_close_db(); 
+                  $this->nmgp_redireciona(2); 
+              }
+          }
+          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_atualiz']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_atualiz'] == "ok")
+          {
+              if ($this->sc_teve_alt && empty($sc_todas_Crit))
+              {
+                  $this->NM_close_db(); 
+                  $this->nmgp_redireciona(2); 
+              }
+              if ($this->sc_teve_excl && empty($sc_todas_Crit))
+              {
+                  $this->NM_close_db(); 
+                  $this->nmgp_redireciona(2); 
+              }
+          }
+         }
+         $this->NM_close_db();
+		if ('alterar' == $this->NM_ajax_info['param']['nmgp_opcao'] && 'ERROR' != $this->NM_ajax_info['result']) {
+			$this->NM_ajax_info['msgDisplay'] = NM_charset_to_utf8($this->Ini->Nm_lang['lang_othr_ajax_frmu']);
+		}
+		if ('incluir' == $this->NM_ajax_info['param']['nmgp_opcao'] && 'ERROR' != $this->NM_ajax_info['result']) {
+			$this->NM_ajax_info['msgDisplay'] = NM_charset_to_utf8($this->Ini->Nm_lang['lang_othr_ajax_frmi']);
+		}
+		if ('excluir' == $this->NM_ajax_info['param']['nmgp_opcao'] && 'ERROR' != $this->NM_ajax_info['result']) {
+			$this->NM_ajax_info['msgDisplay'] = NM_charset_to_utf8($this->Ini->Nm_lang['lang_othr_ajax_frmd']);
+		}
+         cad_lodge_pack_ajax_response();
+         exit;
+      }
       if ($this->NM_ajax_flag && 'validate_' == substr($this->NM_ajax_opcao, 0, 9))
       {
-          if ('validate_idlodge' == $this->NM_ajax_opcao)
+         $Campos_Crit  = "";
+         $Campos_Falta = array();
+         $Campos_Erros = array();
+          if ('validate_number_' == $this->NM_ajax_opcao)
           {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'idlodge');
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'number_');
           }
-          if ('validate_idlodgecategory' == $this->NM_ajax_opcao)
+          if ('validate_status_' == $this->NM_ajax_opcao)
           {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'idlodgecategory');
-          }
-          if ('validate_number' == $this->NM_ajax_opcao)
-          {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'number');
-          }
-          if ('validate_name' == $this->NM_ajax_opcao)
-          {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'name');
-          }
-          if ('validate_status' == $this->NM_ajax_opcao)
-          {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'status');
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'status_');
           }
           cad_lodge_pack_ajax_response();
           exit;
       }
+      while ($sc_contr_vert > $sc_seq_vert) 
+      { 
+         $Campos_Crit  = "";
+         $Campos_Falta = array();
+         $Campos_Erros = array();
+         $this->number_ = $GLOBALS["number_" . $sc_seq_vert]; 
+         $this->status_ = $GLOBALS["status_" . $sc_seq_vert]; 
+         if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'][$sc_seq_vert]))
+         {
+             $this->nmgp_dados_form = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'][$sc_seq_vert];
+             $this->idlodge_ = $this->nmgp_dados_form['idlodge_']; 
+             $this->idlodgecategory_ = $this->nmgp_dados_form['idlodgecategory_']; 
+         }
+         if (isset($this->number_)) { $this->nm_limpa_alfa($this->number_); }
+         if (isset($this->status_)) { $this->nm_limpa_alfa($this->status_); }
+         if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'])) 
+         {
+            $this->nmgp_dados_form = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'][$sc_seq_vert];
+         }
+         if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'])) 
+         {
+            $this->nmgp_dados_select = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'][$sc_seq_vert];
+         }
+         if ($this->nmgp_opcao != "recarga" && in_array($sc_seq_vert, $sc_check_excl))
+         {
+             $this->nmgp_opcao = "excluir";
+         }
+         if ($this->nmgp_opcao == "incluir" && !in_array($sc_seq_vert, $sc_check_incl))
+         { }
+         else
+         {
+             $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_disabled'] = array();
+             $this->controle_form_vert(); 
+             $this->nmgp_opcao = $sc_opc_salva; 
+             if ($this->nmgp_opcao != "recarga"  && $this->nmgp_opcao != "muda_form" && ($Campos_Crit != "" || !empty($Campos_Falta) || $this->Campos_Mens_erro != ""))
+             {
+                 $sc_todas_Crit .= (!empty($sc_todas_Crit)) ? "<br>" : ""; 
+                 $sc_todas_Crit .= "<B>" . $this->Ini->Nm_lang['lang_errm_line'] . $sc_seq_vert . "</B>: "; 
+                 $sc_todas_Crit .= $this->Formata_Erros($Campos_Crit, $Campos_Falta, $Campos_Erros, '', true, true);
+                 $this->Campos_Mens_erro = ""; 
+             }
+             if ($this->nmgp_opcao != "recarga") 
+             {
+                $this->nm_guardar_campos();
+                $this->nm_formatar_campos();
+             }
+             $this->form_vert_cad_lodge[$sc_seq_vert]['number_'] =  $this->number_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['status_'] =  $this->status_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['idlodge_'] =  $this->idlodge_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['idlodgecategory_'] =  $this->idlodgecategory_; 
+         }
+         $sc_seq_vert++; 
+      } 
+      if (!empty($sc_todas_Crit)) 
+      { 
+          $this->Erro->mensagem(__FILE__, __LINE__, "critica", $sc_todas_Crit); 
+          if ($this->nmgp_opcao == "incluir")
+          { 
+              $this->nmgp_opcao = "novo"; 
+          }
+      } 
+      elseif ($this->nmgp_opcao == "incluir")
+      { 
+          $this->nmgp_opcao = "novo"; 
+      }
+      if ($this->nmgp_opcao == 'incluir' && isset($_POST['upload_file_row']) && '' != $_POST['upload_file_row'])
+      {
+          $this->nmgp_opcao = 'igual';
+      }
+      if ($this->nmgp_opcao != "recarga" && $this->nmgp_opcao != "muda_form") 
+      { 
+          if ($this->sc_teve_incl) 
+          { 
+              $this->sc_after_all_insert = true;
+          }
+          if ($this->sc_teve_alt) 
+          { 
+              $this->sc_after_all_update = true;
+          }
+          if ($this->sc_teve_excl) 
+          { 
+              $this->sc_after_all_delete = true;
+          }
+          if (empty($sc_todas_Crit)) 
+          { 
+              $this->NM_commit_db(); 
+              $this->nm_select_banco();
+              $sc_check_excl = array(); 
+          } 
+          else
+          { 
+              $this->NM_rollback_db(); 
+          } 
+      } 
+      if ($this->nmgp_opcao == "recarga") 
+      { 
+          $this->NM_gera_nav_page(); 
+      } 
+      if ($this->NM_ajax_flag && ('navigate_form' == $this->NM_ajax_opcao || !empty($this->nmgp_refresh_fields)))
+      {
+          $this->ajax_return_values();
+          $this->ajax_add_parameters();
+          $this->NM_close_db();
+          cad_lodge_pack_ajax_response();
+          exit;
+      }
+      if ($this->NM_ajax_flag && 'table_refresh' == $this->NM_ajax_opcao)
+      {
+          $this->nm_gera_html();
+          $this->NM_ajax_info['tableRefresh'] = NM_charset_to_utf8($this->Table_refresh . $this->New_Line) . '</table>';
+          $this->NM_ajax_info['navStatus']['ret'] = $this->Nav_permite_ret ? 'S' : 'N';
+          $this->NM_ajax_info['navStatus']['ava'] = $this->Nav_permite_ava ? 'S' : 'N';
+          $this->NM_ajax_info['rsSize'] = sizeof($this->form_vert_cad_lodge);
+          $this->NM_ajax_info['fldList']['idlodge_']['keyVal'] = sc_htmlentities($this->nmgp_dados_form['idlodge_']);
+          $this->NM_close_db();
+          cad_lodge_pack_ajax_response();
+          exit;
+      }
+      if ($this->nmgp_opcao != "recarga" && $this->nmgp_opcao != "muda_form" && !$this->Apl_com_erro)
+      {
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['recarga'] = $this->nmgp_opcao;
+          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_insert']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_insert'] == "ok")
+          {
+              if ($this->sc_teve_incl && empty($sc_todas_Crit))
+              {
+                  $this->NM_close_db(); 
+                  $this->nmgp_redireciona(2); 
+              }
+          }
+          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_atualiz']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_atualiz'] == "ok")
+          {
+              if ($this->sc_teve_alt && empty($sc_todas_Crit))
+              {
+                  $this->NM_close_db(); 
+                  $this->nmgp_redireciona(2); 
+              }
+              if ($this->sc_teve_excl && empty($sc_todas_Crit))
+              {
+                  $this->NM_close_db(); 
+                  $this->nmgp_redireciona(2); 
+              }
+          }
+      }
+      $this->nm_todas_criticas = $sc_todas_Crit;
+      $this->nm_gera_html();
+      $this->NM_close_db(); 
+      if ($this->Change_Menu)
+      {
+          $apl_menu  = $_SESSION['scriptcase']['menu_atual'];
+          $Arr_rastro = array();
+          if (isset($_SESSION['scriptcase']['menu_apls'][$apl_menu][$this->sc_init_menu]) && count($_SESSION['scriptcase']['menu_apls'][$apl_menu][$this->sc_init_menu]) > 1)
+          {
+              foreach ($_SESSION['scriptcase']['menu_apls'][$apl_menu][$this->sc_init_menu] as $menu => $apls)
+              {
+                 $Arr_rastro[] = "'<a href=\"" . $apls['link'] . "?script_case_init=" . $this->sc_init_menu . "\" target=\"#NMIframe#\">" . $apls['label'] . "</a>'";
+              }
+              $ult_apl = count($Arr_rastro) - 1;
+              unset($Arr_rastro[$ult_apl]);
+              $rastro = implode(",", $Arr_rastro);
+?>
+  <script type="text/javascript">
+     link_atual = new Array (<?php echo $rastro ?>);
+     parent.writeFastMenu(link_atual);
+  </script>
+<?php
+          }
+          else
+          {
+?>
+  <script type="text/javascript">
+     parent.clearFastMenu();
+  </script>
+<?php
+          }
+      }
+   }
+   function controle_form_vert()
+   {
+     global $nm_opc_lookup,$Campos_Crit, $Campos_Falta, $Campos_Erros, 
+            $glo_senha_protect, $nm_apl_dependente, $nm_form_submit;
+
+//
+//-----> 
+//
       if (isset($this->sc_inline_call) && 'Y' == $this->sc_inline_call)
       {
           $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['inline_form_seq'] = $this->sc_seq_row;
@@ -1165,10 +1513,7 @@ class cad_lodge_apl
           }
           $this->nm_formatar_campos();
           $this->nmgp_opcao = $nm_sc_sv_opcao; 
-          $this->nm_gera_html();
-          $this->NM_close_db(); 
-          $this->nmgp_opcao = ""; 
-          exit; 
+          return; 
       }
       if ($this->nmgp_opcao == "incluir" || $this->nmgp_opcao == "alterar" || $this->nmgp_opcao == "excluir") 
       {
@@ -1180,14 +1525,6 @@ class cad_lodge_apl
           }
           if ($Campos_Crit != "" || !empty($Campos_Falta) || $this->Campos_Mens_erro != "")
           {
-              if ($this->NM_ajax_flag)
-              {
-                  cad_lodge_pack_ajax_response();
-                  exit;
-              }
-              $campos_erro = $this->Formata_Erros($Campos_Crit, $Campos_Falta, $Campos_Erros, 4);
-              $this->Campos_Mens_erro = ""; 
-              $this->Erro->mensagem(__FILE__, __LINE__, "critica", $campos_erro, '', true, true); 
               $this->nmgp_opc_ant = $this->nmgp_opcao ; 
               if ($this->nmgp_opcao == "incluir" && $nm_apl_dependente == 1) 
               { 
@@ -1218,81 +1555,6 @@ class cad_lodge_apl
            { 
               $this->nm_guardar_campos();
            }
-      }
-      if ($this->nmgp_opcao != "recarga" && $this->nmgp_opcao != "muda_form" && !$this->Apl_com_erro)
-      {
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['recarga'] = $this->nmgp_opcao;
-          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_insert']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_insert'] == "ok")
-          {
-              if ($this->sc_evento == "insert" || ($this->nmgp_opc_ant == "novo" && $this->nmgp_opcao == "novo" && $this->sc_evento == "novo"))
-              {
-                  $this->NM_close_db(); 
-                  $this->nmgp_redireciona(2); 
-              }
-          }
-          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_atualiz']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_atualiz'] == "ok")
-          {
-              if ($this->sc_evento == "update")
-              {
-                  $this->NM_close_db(); 
-                  $this->nmgp_redireciona(2); 
-              }
-              if ($this->sc_evento == "delete")
-              {
-                  $this->NM_close_db(); 
-                  $this->nmgp_redireciona(2); 
-              }
-          }
-      }
-      if ($this->NM_ajax_flag && 'navigate_form' == $this->NM_ajax_opcao)
-      {
-          $this->ajax_return_values();
-          $this->ajax_add_parameters();
-          cad_lodge_pack_ajax_response();
-          exit;
-      }
-      $this->nm_formatar_campos();
-      if ($this->NM_ajax_flag)
-      {
-          $this->NM_ajax_info['result'] = 'OK';
-          if ('alterar' == $this->NM_ajax_info['param']['nmgp_opcao'])
-          {
-              $this->NM_ajax_info['msgDisplay'] = NM_charset_to_utf8($this->Ini->Nm_lang['lang_othr_ajax_frmu']);
-          }
-          cad_lodge_pack_ajax_response();
-          exit;
-      }
-      $this->nm_gera_html();
-      $this->NM_close_db(); 
-      $this->nmgp_opcao = ""; 
-      if ($this->Change_Menu)
-      {
-          $apl_menu  = $_SESSION['scriptcase']['menu_atual'];
-          $Arr_rastro = array();
-          if (isset($_SESSION['scriptcase']['menu_apls'][$apl_menu][$this->sc_init_menu]) && count($_SESSION['scriptcase']['menu_apls'][$apl_menu][$this->sc_init_menu]) > 1)
-          {
-              foreach ($_SESSION['scriptcase']['menu_apls'][$apl_menu][$this->sc_init_menu] as $menu => $apls)
-              {
-                 $Arr_rastro[] = "'<a href=\"" . $apls['link'] . "?script_case_init=" . $this->sc_init_menu . "\" target=\"#NMIframe#\">" . $apls['label'] . "</a>'";
-              }
-              $ult_apl = count($Arr_rastro) - 1;
-              unset($Arr_rastro[$ult_apl]);
-              $rastro = implode(",", $Arr_rastro);
-?>
-  <script type="text/javascript">
-     link_atual = new Array (<?php echo $rastro ?>);
-     parent.writeFastMenu(link_atual);
-  </script>
-<?php
-          }
-          else
-          {
-?>
-  <script type="text/javascript">
-     parent.clearFastMenu();
-  </script>
-<?php
-          }
       }
    }
   function html_export_print($nm_arquivo_html, $nmgp_password)
@@ -1379,16 +1641,6 @@ class cad_lodge_apl
 <HEAD>
  <TITLE><?php echo strip_tags("" . $this->Ini->Nm_lang['lang_othr_frmu_title'] . " cad_lodge") ?></TITLE>
  <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
-<?php
-
-if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])
-{
-?>
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-<?php
-}
-
-?>
  <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>
  <META http-equiv="Last-Modified" content="<?php echo gmdate("D, d M Y H:i:s"); ?> GMT"/>
  <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate"/>
@@ -1668,20 +1920,17 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
    {
        switch($campo)
        {
-           case 'idlodge':
+           case 'number_':
+               return "Número";
+               break;
+           case 'status_':
+               return "Status";
+               break;
+           case 'idlodge_':
                return "ID";
                break;
-           case 'idlodgecategory':
+           case 'idlodgecategory_':
                return "Category";
-               break;
-           case 'number':
-               return "Number";
-               break;
-           case 'name':
-               return "Name";
-               break;
-           case 'status':
-               return "Status";
                break;
        }
 
@@ -1731,31 +1980,24 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $this->NM_ajax_info['errList']['geral_cad_lodge'][] = "CSRF: " . $this->Ini->Nm_lang['lang_errm_ajax_csrf'];
           }
      }
-      if ((!is_array($filtro) && ('' == $filtro || 'idlodge' == $filtro)) || (is_array($filtro) && in_array('idlodge', $filtro)))
-        $this->ValidateField_idlodge($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!is_array($filtro) && ('' == $filtro || 'idlodgecategory' == $filtro)) || (is_array($filtro) && in_array('idlodgecategory', $filtro)))
-        $this->ValidateField_idlodgecategory($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!is_array($filtro) && ('' == $filtro || 'number' == $filtro)) || (is_array($filtro) && in_array('number', $filtro)))
-        $this->ValidateField_number($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!is_array($filtro) && ('' == $filtro || 'name' == $filtro)) || (is_array($filtro) && in_array('name', $filtro)))
-        $this->ValidateField_name($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!is_array($filtro) && ('' == $filtro || 'status' == $filtro)) || (is_array($filtro) && in_array('status', $filtro)))
-        $this->ValidateField_status($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!is_array($filtro) && ('' == $filtro || 'number_' == $filtro)) || (is_array($filtro) && in_array('number_', $filtro)))
+        $this->ValidateField_number_($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!is_array($filtro) && ('' == $filtro || 'status_' == $filtro)) || (is_array($filtro) && in_array('status_', $filtro)))
+        $this->ValidateField_status_($Campos_Crit, $Campos_Falta, $Campos_Erros);
 
       if (!isset($this->NM_ajax_flag) || 'validate_' != substr($this->NM_ajax_opcao, 0, 9))
       {
       $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'on';
 if (isset($this->NM_ajax_flag) && $this->NM_ajax_flag)
 {
-    $original_name = $this->name;
-    $original_number = $this->number;
+    $original_number_ = $this->number_;
 }
   
-      $nm_select = "SELECT MAX(number) FROM cad_lodge WHERE idLodgeCategory = '".$this->idlodgecategory ."'"; 
+      $nm_select = "SELECT MAX(number) FROM cad_lodge WHERE idLodgeCategory = '".$this->idlodgecategory_ ."'"; 
       $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
       $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
       $this->data = array();
-     if ($this->idlodgecategory != "")
+     if ($this->idlodgecategory_ != "")
      { 
       if ($SCrx = $this->Db->Execute($nm_select)) 
       { 
@@ -1782,15 +2024,15 @@ if (isset($this->NM_ajax_flag) && $this->NM_ajax_flag)
       } 
      } 
 
-$this->number = $this->data[0][0];
-$this->number  = $this->number + 1;
+$number = $this->data[0][0];
+$this->number_  = $number + 1;
 
  
-      $nm_select = "SELECT name FROM cad_lodge_category WHERE idLodgeCategory = '".$this->idlodgecategory ."'"; 
+      $nm_select = "SELECT name FROM cad_lodge_category WHERE idLodgeCategory = '".$this->idlodgecategory_ ."'"; 
       $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
       $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
       $this->data = array();
-     if ($this->idlodgecategory != "")
+     if ($this->idlodgecategory_ != "")
      { 
       if ($SCrx = $this->Db->Execute($nm_select)) 
       { 
@@ -1814,17 +2056,15 @@ $this->number  = $this->number + 1;
       } 
      } 
 
-$this->name = $this->data[0][0];
-$this->name  = $name.' - '.$this->number;
+$name = $this->data[0][0];
+$name  = $name.' - '.$number;
 if (isset($this->NM_ajax_flag) && $this->NM_ajax_flag)
 {
-    if (($original_name != $this->name || (isset($bFlagRead_name) && $bFlagRead_name)))
+    if (($original_number_ != $this->number_ || (isset($bFlagRead_number_) && $bFlagRead_number_))&& isset($this->nmgp_refresh_row))
     {
-        $this->ajax_return_values_name(true);
-    }
-    if (($original_number != $this->number || (isset($bFlagRead_number) && $bFlagRead_number)))
-    {
-        $this->ajax_return_values_number(true);
+        $this->NM_ajax_info['fldList']['number_' . $this->nmgp_refresh_row]['type']    = 'text';
+        $this->NM_ajax_info['fldList']['number_' . $this->nmgp_refresh_row]['valList'] = array($this->number_);
+        $this->NM_ajax_changed['number_'] = true;
     }
 }
 $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off'; 
@@ -1842,213 +2082,86 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
       }
    }
 
-    function ValidateField_idlodge(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    function ValidateField_number_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
         $hasError = false;
-      if (isset($this->Field_no_validate['idlodge'])) {
-          nm_limpa_numero($this->idlodge, $this->field_config['idlodge']['symbol_grp']) ; 
+      if (isset($this->Field_no_validate['number_'])) {
+          nm_limpa_numero($this->number_, $this->field_config['number_']['symbol_grp']) ; 
           return;
       }
-      if ($this->idlodge === "" || is_null($this->idlodge))  
+      if ($this->number_ === "" || is_null($this->number_))  
       { 
-          $this->idlodge = 0;
+          $this->number_ = 0;
+          $this->sc_force_zero[] = 'number_';
       } 
-      nm_limpa_numero($this->idlodge, $this->field_config['idlodge']['symbol_grp']) ; 
-      if ($this->nmgp_opcao == "incluir")
-      { 
-          if ($this->idlodge != '')  
-          { 
-              $iTestSize = 11;
-              if (strlen($this->idlodge) > $iTestSize)  
-              { 
-                  $hasError = true;
-                  $Campos_Crit .= "ID: " . $this->Ini->Nm_lang['lang_errm_size']; 
-                  if (!isset($Campos_Erros['idlodge']))
-                  {
-                      $Campos_Erros['idlodge'] = array();
-                  }
-                  $Campos_Erros['idlodge'][] = $this->Ini->Nm_lang['lang_errm_size'];
-                  if (!isset($this->NM_ajax_info['errList']['idlodge']) || !is_array($this->NM_ajax_info['errList']['idlodge']))
-                  {
-                      $this->NM_ajax_info['errList']['idlodge'] = array();
-                  }
-                  $this->NM_ajax_info['errList']['idlodge'][] = $this->Ini->Nm_lang['lang_errm_size'];
-              } 
-              if ($teste_validade->Valor($this->idlodge, 11, 0, 0, 0, "N") == false)  
-              { 
-                  $hasError = true;
-                  $Campos_Crit .= "ID; " ; 
-                  if (!isset($Campos_Erros['idlodge']))
-                  {
-                      $Campos_Erros['idlodge'] = array();
-                  }
-                  $Campos_Erros['idlodge'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-                  if (!isset($this->NM_ajax_info['errList']['idlodge']) || !is_array($this->NM_ajax_info['errList']['idlodge']))
-                  {
-                      $this->NM_ajax_info['errList']['idlodge'] = array();
-                  }
-                  $this->NM_ajax_info['errList']['idlodge'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-              } 
-          } 
-      } 
-        if ($hasError) {
-            global $sc_seq_vert;
-            $fieldName = 'idlodge';
-            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
-                $fieldName .= $sc_seq_vert;
-            }
-            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
-        }
-    } // ValidateField_idlodge
-
-    function ValidateField_idlodgecategory(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
-    {
-        global $teste_validade;
-        $hasError = false;
-   if (isset($this->Field_no_validate['idlodgecategory'])) {
-       return;
-   }
-               if (!empty($this->idlodgecategory) && isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']) && !in_array($this->idlodgecategory, $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']))
-               {
-                   $hasError = true;
-                   $Campos_Crit .= $this->Ini->Nm_lang['lang_errm_ajax_data'];
-                   if (!isset($Campos_Erros['idlodgecategory']))
-                   {
-                       $Campos_Erros['idlodgecategory'] = array();
-                   }
-                   $Campos_Erros['idlodgecategory'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
-                   if (!isset($this->NM_ajax_info['errList']['idlodgecategory']) || !is_array($this->NM_ajax_info['errList']['idlodgecategory']))
-                   {
-                       $this->NM_ajax_info['errList']['idlodgecategory'] = array();
-                   }
-                   $this->NM_ajax_info['errList']['idlodgecategory'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
-               }
-        if ($hasError) {
-            global $sc_seq_vert;
-            $fieldName = 'idlodgecategory';
-            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
-                $fieldName .= $sc_seq_vert;
-            }
-            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
-        }
-    } // ValidateField_idlodgecategory
-
-    function ValidateField_number(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
-    {
-        global $teste_validade;
-        $hasError = false;
-      if (isset($this->Field_no_validate['number'])) {
-          nm_limpa_numero($this->number, $this->field_config['number']['symbol_grp']) ; 
-          return;
-      }
-      if ($this->number === "" || is_null($this->number))  
-      { 
-          $this->number = 0;
-          $this->sc_force_zero[] = 'number';
-      } 
-      nm_limpa_numero($this->number, $this->field_config['number']['symbol_grp']) ; 
+      nm_limpa_numero($this->number_, $this->field_config['number_']['symbol_grp']) ; 
       if ($this->nmgp_opcao != "excluir") 
       { 
-          if ($this->number != '')  
+          if ($this->number_ != '')  
           { 
               $iTestSize = 11;
-              if (strlen($this->number) > $iTestSize)  
+              if (strlen($this->number_) > $iTestSize)  
               { 
                   $hasError = true;
-                  $Campos_Crit .= "Number: " . $this->Ini->Nm_lang['lang_errm_size']; 
-                  if (!isset($Campos_Erros['number']))
+                  $Campos_Crit .= "Número: " . $this->Ini->Nm_lang['lang_errm_size']; 
+                  if (!isset($Campos_Erros['number_']))
                   {
-                      $Campos_Erros['number'] = array();
+                      $Campos_Erros['number_'] = array();
                   }
-                  $Campos_Erros['number'][] = $this->Ini->Nm_lang['lang_errm_size'];
-                  if (!isset($this->NM_ajax_info['errList']['number']) || !is_array($this->NM_ajax_info['errList']['number']))
+                  $Campos_Erros['number_'][] = $this->Ini->Nm_lang['lang_errm_size'];
+                  if (!isset($this->NM_ajax_info['errList']['number_']) || !is_array($this->NM_ajax_info['errList']['number_']))
                   {
-                      $this->NM_ajax_info['errList']['number'] = array();
+                      $this->NM_ajax_info['errList']['number_'] = array();
                   }
-                  $this->NM_ajax_info['errList']['number'][] = $this->Ini->Nm_lang['lang_errm_size'];
+                  $this->NM_ajax_info['errList']['number_'][] = $this->Ini->Nm_lang['lang_errm_size'];
               } 
-              if ($teste_validade->Valor($this->number, 11, 0, 0, 0, "N") == false)  
+              if ($teste_validade->Valor($this->number_, 11, 0, 0, 0, "N") == false)  
               { 
                   $hasError = true;
-                  $Campos_Crit .= "Number; " ; 
-                  if (!isset($Campos_Erros['number']))
+                  $Campos_Crit .= "Número; " ; 
+                  if (!isset($Campos_Erros['number_']))
                   {
-                      $Campos_Erros['number'] = array();
+                      $Campos_Erros['number_'] = array();
                   }
-                  $Campos_Erros['number'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-                  if (!isset($this->NM_ajax_info['errList']['number']) || !is_array($this->NM_ajax_info['errList']['number']))
+                  $Campos_Erros['number_'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
+                  if (!isset($this->NM_ajax_info['errList']['number_']) || !is_array($this->NM_ajax_info['errList']['number_']))
                   {
-                      $this->NM_ajax_info['errList']['number'] = array();
+                      $this->NM_ajax_info['errList']['number_'] = array();
                   }
-                  $this->NM_ajax_info['errList']['number'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
+                  $this->NM_ajax_info['errList']['number_'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
               } 
           } 
       } 
         if ($hasError) {
             global $sc_seq_vert;
-            $fieldName = 'number';
+            $fieldName = 'number_';
             if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
                 $fieldName .= $sc_seq_vert;
             }
             $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
         }
-    } // ValidateField_number
+    } // ValidateField_number_
 
-    function ValidateField_name(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    function ValidateField_status_(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
         $hasError = false;
-      if (isset($this->Field_no_validate['name'])) {
-          return;
-      }
-      if ($this->nmgp_opcao != "excluir") 
-      { 
-          if (NM_utf8_strlen($this->name) > 50) 
-          { 
-              $hasError = true;
-              $Campos_Crit .= "Name " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
-              if (!isset($Campos_Erros['name']))
-              {
-                  $Campos_Erros['name'] = array();
-              }
-              $Campos_Erros['name'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
-              if (!isset($this->NM_ajax_info['errList']['name']) || !is_array($this->NM_ajax_info['errList']['name']))
-              {
-                  $this->NM_ajax_info['errList']['name'] = array();
-              }
-              $this->NM_ajax_info['errList']['name'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
-          } 
-      } 
-        if ($hasError) {
-            global $sc_seq_vert;
-            $fieldName = 'name';
-            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
-                $fieldName .= $sc_seq_vert;
-            }
-            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
-        }
-    } // ValidateField_name
-
-    function ValidateField_status(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
-    {
-        global $teste_validade;
-        $hasError = false;
-   if (isset($this->Field_no_validate['status'])) {
+   if (isset($this->Field_no_validate['status_'])) {
        return;
    }
-      if ($this->status == "" && $this->nmgp_opcao != "excluir")
+      if ($this->status_ == "" && $this->nmgp_opcao != "excluir")
       { 
       } 
         if ($hasError) {
             global $sc_seq_vert;
-            $fieldName = 'status';
+            $fieldName = 'status_';
             if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
                 $fieldName .= $sc_seq_vert;
             }
             $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
         }
-    } // ValidateField_status
+    } // ValidateField_status_
 
     function removeDuplicateDttmError($aErrDate, &$aErrTime)
     {
@@ -2073,22 +2186,21 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
    {
     global
            $sc_seq_vert;
-    $this->nmgp_dados_form['idlodge'] = $this->idlodge;
-    $this->nmgp_dados_form['idlodgecategory'] = $this->idlodgecategory;
-    $this->nmgp_dados_form['number'] = $this->number;
-    $this->nmgp_dados_form['name'] = $this->name;
-    $this->nmgp_dados_form['status'] = $this->status;
-    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'] = $this->nmgp_dados_form;
+    $this->nmgp_dados_form['number_'] = $this->number_;
+    $this->nmgp_dados_form['status_'] = $this->status_;
+    $this->nmgp_dados_form['idlodge_'] = $this->idlodge_;
+    $this->nmgp_dados_form['idlodgecategory_'] = $this->idlodgecategory_;
+    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'][$sc_seq_vert] = $this->nmgp_dados_form;
    }
    function nm_tira_formatacao()
    {
       global $nm_form_submit;
          $this->Before_unformat = array();
          $this->formatado = false;
-      $this->Before_unformat['idlodge'] = $this->idlodge;
-      nm_limpa_numero($this->idlodge, $this->field_config['idlodge']['symbol_grp']) ; 
-      $this->Before_unformat['number'] = $this->number;
-      nm_limpa_numero($this->number, $this->field_config['number']['symbol_grp']) ; 
+      $this->Before_unformat['number_'] = $this->number_;
+      nm_limpa_numero($this->number_, $this->field_config['number_']['symbol_grp']) ; 
+      $this->Before_unformat['idlodge_'] = $this->idlodge_;
+      nm_limpa_numero($this->idlodge_, $this->field_config['idlodge_']['symbol_grp']) ; 
    }
    function sc_add_currency(&$value, $symbol, $pos)
    {
@@ -2132,30 +2244,21 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
    }
    function nm_clear_val($Nome_Campo)
    {
-      if ($Nome_Campo == "idlodge")
+      if ($Nome_Campo == "number_")
       {
-          nm_limpa_numero($this->idlodge, $this->field_config['idlodge']['symbol_grp']) ; 
+          nm_limpa_numero($this->number_, $this->field_config['number_']['symbol_grp']) ; 
       }
-      if ($Nome_Campo == "number")
+      if ($Nome_Campo == "idlodge_")
       {
-          nm_limpa_numero($this->number, $this->field_config['number']['symbol_grp']) ; 
+          nm_limpa_numero($this->idlodge_, $this->field_config['idlodge_']['symbol_grp']) ; 
       }
    }
    function nm_formatar_campos($format_fields = array())
    {
       global $nm_form_submit;
-     if (isset($this->formatado) && $this->formatado)
-     {
-         return;
-     }
-     $this->formatado = true;
-      if ('' !== $this->idlodge || (!empty($format_fields) && isset($format_fields['idlodge'])))
+      if ('' !== $this->number_ || (!empty($format_fields) && isset($format_fields['number_'])))
       {
-          nmgp_Form_Num_Val($this->idlodge, $this->field_config['idlodge']['symbol_grp'], $this->field_config['idlodge']['symbol_dec'], "0", "S", $this->field_config['idlodge']['format_neg'], "", "", "-", $this->field_config['idlodge']['symbol_fmt']) ; 
-      }
-      if ('' !== $this->number || (!empty($format_fields) && isset($format_fields['number'])))
-      {
-          nmgp_Form_Num_Val($this->number, $this->field_config['number']['symbol_grp'], $this->field_config['number']['symbol_dec'], "0", "S", $this->field_config['number']['format_neg'], "", "", "-", $this->field_config['number']['symbol_fmt']) ; 
+          nmgp_Form_Num_Val($this->number_, $this->field_config['number_']['symbol_grp'], $this->field_config['number_']['symbol_dec'], "0", "S", $this->field_config['number_']['format_neg'], "", "", "-", $this->field_config['number_']['symbol_fmt']) ; 
       }
    }
    function nm_gera_mask(&$nm_campo, $nm_mask)
@@ -2542,248 +2645,110 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
 
    function ajax_return_values()
    {
-          $this->ajax_return_values_idlodge();
-          $this->ajax_return_values_idlodgecategory();
-          $this->ajax_return_values_number();
-          $this->ajax_return_values_name();
-          $this->ajax_return_values_status();
+          $this->ajax_return_values_all_vert();
           if ('navigate_form' == $this->NM_ajax_opcao)
           {
               $this->NM_ajax_info['clearUpload']      = 'S';
               $this->NM_ajax_info['navStatus']['ret'] = $this->Nav_permite_ret ? 'S' : 'N';
               $this->NM_ajax_info['navStatus']['ava'] = $this->Nav_permite_ava ? 'S' : 'N';
-              $this->NM_ajax_info['fldList']['idlodge']['keyVal'] = cad_lodge_pack_protect_string($this->nmgp_dados_form['idlodge']);
+              $this->NM_ajax_info['fldList']['idlodge_']['keyVal'] = cad_lodge_pack_protect_string($this->nmgp_dados_form['idlodge_']);
           }
    } // ajax_return_values
-
-          //----- idlodge
-   function ajax_return_values_idlodge($bForce = false)
+   function ajax_return_values_all_vert()
    {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("idlodge", $this->nmgp_refresh_fields)) || $bForce)
+          if (isset($this->nmgp_refresh_fields) && isset($this->nmgp_refresh_row) && '' != $this->nmgp_refresh_row)
           {
-              $sTmpValue = NM_charset_to_utf8($this->idlodge);
-              $aLookup = array();
-          $aLookupOrig = $aLookup;
-          $this->NM_ajax_info['fldList']['idlodge'] = array(
-                       'row'    => '',
-               'type'    => 'label',
-               'valList' => array($sTmpValue),
-               'labList' => array($this->form_format_readonly("idlodge", $this->form_encode_input($sTmpValue))),
-              );
-          }
-   }
-
-          //----- idlodgecategory
-   function ajax_return_values_idlodgecategory($bForce = false)
-   {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("idlodgecategory", $this->nmgp_refresh_fields)) || $bForce)
-          {
-              $sTmpValue = NM_charset_to_utf8($this->idlodgecategory);
-              $aLookup = array();
-              $this->_tmp_lookup_idlodgecategory = $this->idlodgecategory;
-
- 
-$nmgp_def_dados = "" ; 
-if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']))
-{
-    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']); 
-}
-else
-{
-    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array(); 
-}
-   if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
-   { 
-       $GLOBALS["NM_ERRO_IBASE"] = 1;  
-   } 
-   $nm_nao_carga = false;
-   $nmgp_def_dados = "" ; 
-
-   $old_value_idlodge = $this->idlodge;
-   $old_value_number = $this->number;
-   $this->nm_tira_formatacao();
-
-
-   $unformatted_value_idlodge = $this->idlodge;
-   $unformatted_value_number = $this->number;
-
-   $nm_comando = "SELECT idLodgeCategory, name  FROM cad_lodge_category  ORDER BY name";
-
-   $this->idlodge = $old_value_idlodge;
-   $this->number = $old_value_number;
-
-   $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando;
-   $_SESSION['scriptcase']['sc_sql_ult_conexao'] = '';
-   if ($nm_comando != "" && $rs = $this->Db->Execute($nm_comando))
-   {
-       while (!$rs->EOF) 
-       { 
-              $rs->fields[0] = str_replace(',', '.', $rs->fields[0]);
-              $rs->fields[0] = (strpos(strtolower($rs->fields[0]), "e")) ? (float)$rs->fields[0] : $rs->fields[0];
-              $rs->fields[0] = (string)$rs->fields[0];
-              $aLookup[] = array(cad_lodge_pack_protect_string(NM_charset_to_utf8($rs->fields[0])) => str_replace('<', '&lt;', cad_lodge_pack_protect_string(NM_charset_to_utf8($rs->fields[1]))));
-              $nmgp_def_dados .= $rs->fields[1] . "?#?" ; 
-              $nmgp_def_dados .= $rs->fields[0] . "?#?N?@?" ; 
-              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'][] = $rs->fields[0];
-              $rs->MoveNext() ; 
-       } 
-       $rs->Close() ; 
-   } 
-   elseif ($GLOBALS["NM_ERRO_IBASE"] != 1 && $nm_comando != "")  
-   {  
-       $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-       exit; 
-   } 
-   $GLOBALS["NM_ERRO_IBASE"] = 0; 
-          $aLookupOrig = $aLookup;
-          $sSelComp = "name=\"idlodgecategory\"";
-          if (isset($this->NM_ajax_info['select_html']['idlodgecategory']) && !empty($this->NM_ajax_info['select_html']['idlodgecategory']))
-          {
-              $sSelComp = str_replace('{SC_100PERC_CLASS_INPUT}', $this->classes_100perc_fields['input'], $this->NM_ajax_info['select_html']['idlodgecategory']);
-          }
-          $sLookup = '';
-          if (empty($aLookup))
-          {
-              $aLookup[] = array('' => '');
-          }
-          foreach ($aLookup as $aOption)
-          {
-              foreach ($aOption as $sValue => $sLabel)
+              $this->form_vert_cad_lodge[$this->nmgp_refresh_row] = $this->NM_ajax_info['param'];
+              if ((isset($this->Embutida_ronly) && $this->Embutida_ronly) || $this->NM_ajax_force_values)
               {
-
-                  if ($this->idlodgecategory == $sValue)
+                  if (isset($this->NM_ajax_changed['number_']) && $this->NM_ajax_changed['number_'])
                   {
-                      $this->_tmp_lookup_idlodgecategory = $sLabel;
+                      $this->form_vert_cad_lodge[$this->nmgp_refresh_row]['number_'] = $this->number_;
                   }
-
-                  $sOpt     = ($sValue !== $sLabel) ? $sValue : $sLabel;
-                  $sLookup .= "<option value=\"" . $sOpt . "\">" . $sLabel . "</option>";
+                  if (isset($this->NM_ajax_changed['status_']) && $this->NM_ajax_changed['status_'])
+                  {
+                      $this->form_vert_cad_lodge[$this->nmgp_refresh_row]['status_'] = $this->status_;
+                  }
               }
           }
-          $aLookup  = $sLookup;
-          $this->NM_ajax_info['fldList']['idlodgecategory'] = array(
-                       'row'    => '',
-               'type'    => 'select',
-               'valList' => array($sTmpValue),
-               'optList' => $aLookup,
-              );
-          $aLabel     = array();
-          $aLabelTemp = array();
-          foreach ($this->NM_ajax_info['fldList']['idlodgecategory']['valList'] as $i => $v)
+          if (isset($this->nmgp_refresh_row) && '' != $this->nmgp_refresh_row)
           {
-              $this->NM_ajax_info['fldList']['idlodgecategory']['valList'][$i] = cad_lodge_pack_protect_string($v);
+              $this->form_vert_cad_lodge[$this->nmgp_refresh_row]['status_'] = $this->status_;
           }
-          foreach ($aLookupOrig as $aValData)
+          $this->NM_ajax_info['rsSize']            = sizeof($this->form_vert_cad_lodge);
+          $this->NM_ajax_info['buttonDisplayVert'] = array();
+          foreach($this->form_vert_cad_lodge as $sc_seq_vert => $aRecData)
           {
-              if (in_array(key($aValData), $this->NM_ajax_info['fldList']['idlodgecategory']['valList']))
+              $this->loadRecordState($sc_seq_vert);
+              if ('navigate_form' == $this->NM_ajax_opcao) {
+                  $this->NM_ajax_info['buttonDisplayVert'][] = array(
+                      'seq'      => $sc_seq_vert,
+                      'gridView' => false,
+                      'delete'   => $this->nmgp_botoes['delete'],
+                      'update'   => $this->nmgp_botoes['update'],
+                  );
+              }
+              if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("number_", $this->nmgp_refresh_fields)))
               {
-                  $aLabelTemp[key($aValData)] = current($aValData);
+                  $sTmpValue = NM_charset_to_utf8($aRecData['number_']);
+                  $aLookup = array();
+          $aLookupOrig = $aLookup;
+                  $this->NM_ajax_info['fldList']['number_' . $sc_seq_vert] = array(
+                       'row'    => $sc_seq_vert,
+                       'type'    => 'text',
+                       'valList' => array($sTmpValue),
+                       );
               }
-          }
-          foreach ($this->NM_ajax_info['fldList']['idlodgecategory']['valList'] as $iIndex => $sValue)
-          {
-              $aLabel[$iIndex] = (isset($aLabelTemp[$sValue])) ? $aLabelTemp[$sValue] : $sValue;
-          }
-          $this->NM_ajax_info['fldList']['idlodgecategory']['labList'] = $aLabel;
-          }
-   }
-
-          //----- number
-   function ajax_return_values_number($bForce = false)
-   {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("number", $this->nmgp_refresh_fields)) || $bForce)
-          {
-              $sTmpValue = NM_charset_to_utf8($this->number);
-              $aLookup = array();
-          $aLookupOrig = $aLookup;
-          $this->NM_ajax_info['fldList']['number'] = array(
-                       'row'    => '',
-               'type'    => 'text',
-               'valList' => array($sTmpValue),
-              );
-          }
-   }
-
-          //----- name
-   function ajax_return_values_name($bForce = false)
-   {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("name", $this->nmgp_refresh_fields)) || $bForce)
-          {
-              $sTmpValue = NM_charset_to_utf8($this->name);
-              $aLookup = array();
-          $aLookupOrig = $aLookup;
-          $this->NM_ajax_info['fldList']['name'] = array(
-                       'row'    => '',
-               'type'    => 'text',
-               'valList' => array($this->form_encode_input($sTmpValue)),
-              );
-          }
-   }
-
-          //----- status
-   function ajax_return_values_status($bForce = false)
-   {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("status", $this->nmgp_refresh_fields)) || $bForce)
-          {
-              $sTmpValue = NM_charset_to_utf8($this->status);
-              $aLookup = array();
-              $this->_tmp_lookup_status = $this->status;
-
+              if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("status_", $this->nmgp_refresh_fields)))
+              {
+                  $sTmpValue = NM_charset_to_utf8($aRecData['status_']);
+                  $aLookup = array();
 $aLookup[] = array(cad_lodge_pack_protect_string('A') => str_replace('<', '&lt;',cad_lodge_pack_protect_string("Disponivel")));
 $aLookup[] = array(cad_lodge_pack_protect_string('R') => str_replace('<', '&lt;',cad_lodge_pack_protect_string("Reservado")));
 $aLookup[] = array(cad_lodge_pack_protect_string('U') => str_replace('<', '&lt;',cad_lodge_pack_protect_string("Indisponível")));
-$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = 'A';
-$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = 'R';
-$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = 'U';
+$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'A';
+$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'R';
+$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'U';
           $aLookupOrig = $aLookup;
-          $sSelComp = "name=\"status\"";
-          if (isset($this->NM_ajax_info['select_html']['status']) && !empty($this->NM_ajax_info['select_html']['status']))
+          $sSelComp = "name=\"status_\"";
+          if (isset($this->NM_ajax_info['select_html']['status_']) && !empty($this->NM_ajax_info['select_html']['status_']))
           {
-              $sSelComp = str_replace('{SC_100PERC_CLASS_INPUT}', $this->classes_100perc_fields['input'], $this->NM_ajax_info['select_html']['status']);
+              eval("\$sSelComp = \"" . str_replace('{SC_100PERC_CLASS_INPUT}', $this->classes_100perc_fields['input'], $this->NM_ajax_info['select_html']['status_']) . "\";");
           }
           $sLookup = '';
-          if (empty($aLookup))
-          {
-              $aLookup[] = array('' => '');
-          }
           foreach ($aLookup as $aOption)
           {
               foreach ($aOption as $sValue => $sLabel)
               {
-
-                  if ($this->status == $sValue)
-                  {
-                      $this->_tmp_lookup_status = $sLabel;
-                  }
-
                   $sOpt     = ($sValue !== $sLabel) ? $sValue : $sLabel;
                   $sLookup .= "<option value=\"" . $sOpt . "\">" . $sLabel . "</option>";
               }
           }
           $aLookup  = $sLookup;
-          $this->NM_ajax_info['fldList']['status'] = array(
-                       'row'    => '',
-               'type'    => 'select',
-               'valList' => array($sTmpValue),
-              );
+                  $this->NM_ajax_info['fldList']['status_' . $sc_seq_vert] = array(
+                       'row'    => $sc_seq_vert,
+                       'type'    => 'select',
+                       'valList' => array($sTmpValue),
+                       );
           $aLabel     = array();
           $aLabelTemp = array();
-          foreach ($this->NM_ajax_info['fldList']['status']['valList'] as $i => $v)
+          foreach ($this->NM_ajax_info['fldList']['status_' . $sc_seq_vert]['valList'] as $i => $v)
           {
-              $this->NM_ajax_info['fldList']['status']['valList'][$i] = cad_lodge_pack_protect_string($v);
+              $this->NM_ajax_info['fldList']['status_' . $sc_seq_vert]['valList'][$i] = cad_lodge_pack_protect_string($v);
           }
           foreach ($aLookupOrig as $aValData)
           {
-              if (in_array(key($aValData), $this->NM_ajax_info['fldList']['status']['valList']))
+              if (in_array(key($aValData), $this->NM_ajax_info['fldList']['status_' . $sc_seq_vert]['valList']))
               {
                   $aLabelTemp[key($aValData)] = current($aValData);
               }
           }
-          foreach ($this->NM_ajax_info['fldList']['status']['valList'] as $iIndex => $sValue)
+          foreach ($this->NM_ajax_info['fldList']['status_' . $sc_seq_vert]['valList'] as $iIndex => $sValue)
           {
               $aLabel[$iIndex] = (isset($aLabelTemp[$sValue])) ? $aLabelTemp[$sValue] : $sValue;
           }
-          $this->NM_ajax_info['fldList']['status']['labList'] = $aLabel;
+          $this->NM_ajax_info['fldList']['status_' . $sc_seq_vert]['labList'] = $aLabel;
+              }
           }
    }
 
@@ -2857,6 +2822,9 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = '
    function ajax_add_parameters()
    {
    } // ajax_add_parameters
+  function nm_proc_onload_record($sc_seq_vert=0)
+  {
+  }
   function nm_proc_onload($bFormat = true)
   {
       $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Field_no_validate'] = array();
@@ -2912,7 +2880,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = '
 
    function nm_acessa_banco() 
    { 
-      global  $nm_form_submit, $teste_validade, $sc_where;
+      global $sc_seq_vert,  $nm_form_submit, $teste_validade, $sc_where;
  
       $NM_val_null = array();
       $NM_val_form = array();
@@ -2932,42 +2900,40 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = '
       $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'on';
 if (isset($this->NM_ajax_flag) && $this->NM_ajax_flag)
 {
-    $original_status = $this->status;
+    $original_status_ = $this->status_;
 }
  
 
 
 
-$this->status  = 'A'; 
+$this->status_  = 'A'; 
 
 if (isset($this->NM_ajax_flag) && $this->NM_ajax_flag)
 {
-    if (($original_status != $this->status || (isset($bFlagRead_status) && $bFlagRead_status)))
+    if (($original_status_ != $this->status_ || (isset($bFlagRead_status_) && $bFlagRead_status_))&& isset($this->nmgp_refresh_row))
     {
-        $this->ajax_return_values_status(true);
+        $this->NM_ajax_info['fldList']['status_' . $this->nmgp_refresh_row]['type']    = 'select';
+        $this->NM_ajax_info['fldList']['status_' . $this->nmgp_refresh_row]['valList'] = array($this->status_);
+        $this->NM_ajax_changed['status_'] = true;
     }
 }
 $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off'; 
     }
       if (!empty($this->Campos_Mens_erro)) 
       {
-          $this->Erro->mensagem(__FILE__, __LINE__, "critica", $this->Campos_Mens_erro); 
-          $this->Campos_Mens_erro = ""; 
-          $this->nmgp_opc_ant = $this->nmgp_opcao ; 
-          if ($this->nmgp_opcao == "incluir") 
-          { 
-              $GLOBALS["erro_incl"] = 1; 
-          }
+          return;
+      }
+      if ($this->nmgp_opcao == "alterar")
+      {
+          $this->nmgp_dados_select = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'][$sc_seq_vert];
+          if ($this->nmgp_dados_select['number_'] == $this->number_ &&
+              $this->nmgp_dados_select['status_'] == $this->status_)
+          { }
           else
-          { 
-              $this->sc_evento = ""; 
-          }
-          if ($this->nmgp_opcao == "alterar" || $this->nmgp_opcao == "incluir" || $this->nmgp_opcao == "excluir") 
           {
-              $this->nmgp_opcao = "nada"; 
-          } 
-          $this->NM_rollback_db(); 
-          $this->Campos_Mens_erro = ""; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'][$sc_seq_vert]['number_'] = $this->number_;
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'][$sc_seq_vert]['status_'] = $this->status_;
+          }
       }
       $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
       $salva_opcao = $this->nmgp_opcao; 
@@ -2979,49 +2945,37 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
       { 
           $this->Ini->sc_tem_trans_banco = $this->Db->BeginTrans(); 
       } 
-      $NM_val_form['idlodge'] = $this->idlodge;
-      $NM_val_form['idlodgecategory'] = $this->idlodgecategory;
-      $NM_val_form['number'] = $this->number;
-      $NM_val_form['name'] = $this->name;
-      $NM_val_form['status'] = $this->status;
-      if ($this->idlodge === "" || is_null($this->idlodge))  
+      $NM_val_form['number_'] = $this->number_;
+      $NM_val_form['status_'] = $this->status_;
+      $NM_val_form['idlodge_'] = $this->idlodge_;
+      $NM_val_form['idlodgecategory_'] = $this->idlodgecategory_;
+      if ($this->idlodge_ === "" || is_null($this->idlodge_))  
       { 
-          $this->idlodge = 0;
+          $this->idlodge_ = 0;
       } 
-      if ($this->idlodgecategory === "" || is_null($this->idlodgecategory))  
+      if ($this->idlodgecategory_ === "" || is_null($this->idlodgecategory_))  
       { 
-          $this->idlodgecategory = 0;
-          $this->sc_force_zero[] = 'idlodgecategory';
+          $this->idlodgecategory_ = 0;
+          $this->sc_force_zero[] = 'idlodgecategory_';
       } 
-      if ($this->number === "" || is_null($this->number))  
+      if ($this->number_ === "" || is_null($this->number_))  
       { 
-          $this->number = 0;
-          $this->sc_force_zero[] = 'number';
+          $this->number_ = 0;
+          $this->sc_force_zero[] = 'number_';
       } 
       $nm_bases_lob_geral = array_merge($this->Ini->nm_bases_ibase, $this->Ini->nm_bases_mysql, $this->Ini->nm_bases_access, $this->Ini->nm_bases_sqlite);
       if ($this->nmgp_opcao == "alterar" || $this->nmgp_opcao == "incluir") 
       {
-          $this->name_before_qstr = $this->name;
-          $this->name = substr($this->Db->qstr($this->name), 1, -1); 
+          $this->status__before_qstr = $this->status_;
+          $this->status_ = substr($this->Db->qstr($this->status_), 1, -1); 
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
           {
-              $this->name = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->name);
+              $this->status_ = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->status_);
           }
-          if ($this->name == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
+          if ($this->status_ == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
           { 
-              $this->name = "null"; 
-              $NM_val_null[] = "name";
-          } 
-          $this->status_before_qstr = $this->status;
-          $this->status = substr($this->Db->qstr($this->status), 1, -1); 
-          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
-          {
-              $this->status = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->status);
-          }
-          if ($this->status == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
-          { 
-              $this->status = "null"; 
-              $NM_val_null[] = "status";
+              $this->status_ = "null"; 
+              $NM_val_null[] = "status_";
           } 
       }
       if ($this->nmgp_opcao == "alterar") 
@@ -3040,13 +2994,13 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
           }
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
           {
-              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge ";
-              $rs1 = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge "); 
+              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ ";
+              $rs1 = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ "); 
           }  
           else  
           {
-              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge ";
-              $rs1 = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge "); 
+              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ ";
+              $rs1 = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ "); 
           }  
           if ($rs1 === false)  
           { 
@@ -3061,7 +3015,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
           $tmp_result = (int) $rs1->fields[0]; 
           if ($tmp_result != 1) 
           { 
-              $this->Erro->mensagem (__FILE__, __LINE__, "critica", $this->Ini->Nm_lang['lang_errm_nfnd']); 
+              $this->Campos_Mens_erro = $this->Ini->Nm_lang['lang_errm_nfnd']; 
               $this->nmgp_opcao = "nada"; 
               $bUpdateOk = false;
               $this->sc_evento = 'update';
@@ -3075,31 +3029,35 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "idLodgeCategory = $this->idlodgecategory, number = $this->number, name = '$this->name', status = '$this->status'"; 
+                  $SC_fields_update[] = "number = $this->number_, status = '$this->status_'"; 
               } 
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "idLodgeCategory = $this->idlodgecategory, number = $this->number, name = '$this->name', status = '$this->status'"; 
+                  $SC_fields_update[] = "number = $this->number_, status = '$this->status_'"; 
               } 
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "idLodgeCategory = $this->idlodgecategory, number = $this->number, name = '$this->name', status = '$this->status'"; 
+                  $SC_fields_update[] = "number = $this->number_, status = '$this->status_'"; 
               } 
               else 
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "idLodgeCategory = $this->idlodgecategory, number = $this->number, name = '$this->name', status = '$this->status'"; 
+                  $SC_fields_update[] = "number = $this->number_, status = '$this->status_'"; 
+              } 
+              if (isset($NM_val_form['idlodgecategory_']) && $NM_val_form['idlodgecategory_'] != $this->nmgp_dados_select['idlodgecategory_']) 
+              { 
+                  $SC_fields_update[] = "idLodgeCategory = $this->idlodgecategory_"; 
               } 
               $comando .= implode(",", $SC_fields_update);  
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               {
-                  $comando .= " WHERE idLodge = $this->idlodge ";  
+                  $comando .= " WHERE idLodge = $this->idlodge_ ";  
               }  
               else  
               {
-                  $comando .= " WHERE idLodge = $this->idlodge ";  
+                  $comando .= " WHERE idLodge = $this->idlodge_ ";  
               }  
               $comando = str_replace("N'null'", "null", $comando) ; 
               $comando = str_replace("'null'", "null", $comando) ; 
@@ -3131,8 +3089,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
                       }   
                   }   
               }   
-              $this->name = $this->name_before_qstr;
-              $this->status = $this->status_before_qstr;
+              $this->status_ = $this->status__before_qstr;
               if (in_array(strtolower($this->Ini->nm_tpbanco), $nm_bases_lob_geral))
               { 
               }   
@@ -3143,30 +3100,38 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
               {
                   $this->lig_edit_lookup_call = true;
               }
+              $this->NM_gera_nav_page(); 
+              $this->NM_ajax_info['navPage'] = $this->SC_nav_page; 
 
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['db_changed'] = true;
               if ($this->NM_ajax_flag) {
                   $this->NM_ajax_info['clearUpload'] = 'S';
               }
 
-
-              if     (isset($NM_val_form) && isset($NM_val_form['idlodge'])) { $this->idlodge = $NM_val_form['idlodge']; }
-              elseif (isset($this->idlodge)) { $this->nm_limpa_alfa($this->idlodge); }
-              if     (isset($NM_val_form) && isset($NM_val_form['idlodgecategory'])) { $this->idlodgecategory = $NM_val_form['idlodgecategory']; }
-              elseif (isset($this->idlodgecategory)) { $this->nm_limpa_alfa($this->idlodgecategory); }
-              if     (isset($NM_val_form) && isset($NM_val_form['number'])) { $this->number = $NM_val_form['number']; }
-              elseif (isset($this->number)) { $this->nm_limpa_alfa($this->number); }
-              if     (isset($NM_val_form) && isset($NM_val_form['name'])) { $this->name = $NM_val_form['name']; }
-              elseif (isset($this->name)) { $this->nm_limpa_alfa($this->name); }
-              if     (isset($NM_val_form) && isset($NM_val_form['status'])) { $this->status = $NM_val_form['status']; }
-              elseif (isset($this->status)) { $this->nm_limpa_alfa($this->status); }
+              $this->sc_teve_alt = true; 
+              if     (isset($NM_val_form) && isset($NM_val_form['number_'])) { $this->number_ = $NM_val_form['number_']; }
+              elseif (isset($this->number_)) { $this->nm_limpa_alfa($this->number_); }
+              if     (isset($NM_val_form) && isset($NM_val_form['status_'])) { $this->status_ = $NM_val_form['status_']; }
+              elseif (isset($this->status_)) { $this->nm_limpa_alfa($this->status_); }
+              $this->nm_proc_onload_record($this->nmgp_refresh_row);
 
               $this->nm_formatar_campos();
 
               $aOldRefresh               = $this->nmgp_refresh_fields;
-              $this->nmgp_refresh_fields = array_diff(array('idlodge', 'idlodgecategory', 'number', 'name', 'status'), $aDoNotUpdate);
+              $this->nmgp_refresh_fields = array_diff(array('number_', 'status_'), $aDoNotUpdate);
               $this->ajax_return_values();
               $this->nmgp_refresh_fields = $aOldRefresh;
+
+              if (isset($this->Embutida_ronly) && $this->Embutida_ronly)
+              {
+
+                  $this->NM_ajax_info['readOnly']['number_' . $this->nmgp_refresh_row] = 'on';
+
+                  $this->NM_ajax_info['readOnly']['status_' . $this->nmgp_refresh_row] = 'on';
+
+
+                  $this->NM_ajax_info['closeLine'] = $this->nmgp_refresh_row;
+              }
 
               $this->nm_tira_formatacao();
           }  
@@ -3194,41 +3159,27 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
           $bInsertOk = true;
           $aInsertOk = array(); 
           $bInsertOk = $bInsertOk && empty($aInsertOk);
-          if (!isset($_POST['nmgp_ins_valid']) || $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['insert_validation'] != $_POST['nmgp_ins_valid'])
-          {
-              $bInsertOk = false;
-              $this->Erro->mensagem(__FILE__, __LINE__, 'security', $this->Ini->Nm_lang['lang_errm_inst_vald']);
-              if (isset($_SESSION['scriptcase']['erro_handler']) && $_SESSION['scriptcase']['erro_handler'])
-              {
-                  $this->nmgp_opcao = 'refresh_insert';
-                  if ($this->NM_ajax_flag)
-                  {
-                      cad_lodge_pack_ajax_response();
-                      exit;
-                  }
-              }
-          }
           if ($bInsertOk)
           { 
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               { 
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (idLodgeCategory, number, name, status) VALUES ($this->idlodgecategory, $this->number, '$this->name', '$this->status')"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (idLodgeCategory, number, status) VALUES ($this->idlodgecategory_, $this->number_, '$this->status_')"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
               { 
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idLodgeCategory, number, name, status) VALUES (" . $NM_seq_auto . "$this->idlodgecategory, $this->number, '$this->name', '$this->status')"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idLodgeCategory, number, status) VALUES (" . $NM_seq_auto . "$this->idlodgecategory_, $this->number_, '$this->status_')"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idLodgeCategory, number, name, status) VALUES (" . $NM_seq_auto . "$this->idlodgecategory, $this->number, '$this->name', '$this->status')"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idLodgeCategory, number, status) VALUES (" . $NM_seq_auto . "$this->idlodgecategory_, $this->number_, '$this->status_')"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sqlite))
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idLodgeCategory, number, name, status) VALUES (" . $NM_seq_auto . "$this->idlodgecategory, $this->number, '$this->name', '$this->status')"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idLodgeCategory, number, status) VALUES (" . $NM_seq_auto . "$this->idlodgecategory_, $this->number_, '$this->status_')"; 
               }
               else
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idLodgeCategory, number, name, status) VALUES (" . $NM_seq_auto . "$this->idlodgecategory, $this->number, '$this->name', '$this->status')"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idLodgeCategory, number, status) VALUES (" . $NM_seq_auto . "$this->idlodgecategory_, $this->number_, '$this->status_')"; 
               }
               $comando = str_replace("N'null'", "null", $comando) ; 
               $comando = str_replace("'null'", "null", $comando) ; 
@@ -3273,7 +3224,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
                       }
                       exit; 
                   } 
-                  $this->idlodge =  $rsy->fields[0];
+                  $this->idlodge_ =  $rsy->fields[0];
                  $rsy->Close(); 
               } 
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
@@ -3285,7 +3236,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
                       $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dbas'], $this->Db->ErrorMsg()); 
                       exit; 
                   } 
-                  $this->idlodge = $rsy->fields[0];
+                  $this->idlodge_ = $rsy->fields[0];
                   $rsy->Close(); 
               } 
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_postgres))
@@ -3297,7 +3248,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
                       $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dbas'], $this->Db->ErrorMsg()); 
                       exit; 
                   } 
-                  $this->idlodge = $rsy->fields[0];
+                  $this->idlodge_ = $rsy->fields[0];
                   $rsy->Close(); 
               } 
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
@@ -3309,7 +3260,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
                       $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dbas'], $this->Db->ErrorMsg()); 
                       exit; 
                   } 
-                  $this->idlodge = $rsy->fields[0];
+                  $this->idlodge_ = $rsy->fields[0];
                   $rsy->Close(); 
               } 
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sqlite))
@@ -3321,27 +3272,129 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
                       $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dbas'], $this->Db->ErrorMsg()); 
                       exit; 
                   } 
-                  $this->idlodge = $rsy->fields[0];
+                  $this->idlodge_ = $rsy->fields[0];
                   $rsy->Close(); 
               } 
-              $this->name = $this->name_before_qstr;
-              $this->status = $this->status_before_qstr;
+              $this->status_ = $this->status__before_qstr;
               }
 
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['db_changed'] = true;
 
-              if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']))
-              {
-                  unset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']);
-              }
-
               $this->sc_evento = "insert"; 
-              $this->name = $this->name_before_qstr;
-              $this->status = $this->status_before_qstr;
-              $this->sc_insert_on = true; 
-              if (empty($this->sc_erro_insert)) {
-                  $this->record_insert_ok = true;
-              } 
+              $this->status_ = $this->status__before_qstr;
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']++; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_qtd']++; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_I_E']++; 
+              $this->NM_ajax_info['navSummary']['reg_ini'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] + 1; 
+              $this->NM_ajax_info['navSummary']['reg_qtd'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_qtd']; 
+              $this->NM_ajax_info['navSummary']['reg_tot'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total'] + 1; 
+              $this->NM_gera_nav_page(); 
+              $this->NM_ajax_info['navPage'] = $this->SC_nav_page; 
+              $this->sc_teve_incl = true; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'][$sc_seq_vert]['number_'] = $this->number_;
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'][$sc_seq_vert]['status_'] = $this->status_;
+              if (!empty($this->sc_force_zero))
+              {
+                  foreach ($this->sc_force_zero as $i_force_zero => $sc_force_zero_field)
+                  {
+                      eval('if ($this->' . $sc_force_zero_field . ' == 0) {$this->' . $sc_force_zero_field . ' = "";}');
+                  }
+              }
+              $this->sc_force_zero = array();
+              if (!empty($NM_val_null))
+              {
+                  foreach ($NM_val_null as $i_val_null => $sc_val_null_field)
+                  {
+                      eval('$this->' . $sc_val_null_field . ' = "";');
+                  }
+              }
+              if (isset($this->number_)) { $this->nm_limpa_alfa($this->number_); }
+              if (isset($this->status_)) { $this->nm_limpa_alfa($this->status_); }
+              if (isset($this->Embutida_form) && $this->Embutida_form)
+              {
+                  $this->nm_guardar_campos();
+                  $this->nm_proc_onload_record($this->nmgp_refresh_row);
+                  $this->nm_formatar_campos();
+
+                  $this->NM_ajax_info['fldList']['number_' . $this->nmgp_refresh_row]['type']    = 'text';
+                  $this->NM_ajax_info['fldList']['number_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->number_)));
+                  $this->NM_ajax_info['fldList']['number_' . $this->nmgp_refresh_row]['labList'] = array($tmpLabel_number_);
+
+                  if ((isset($this->Embutida_form) && $this->Embutida_form) && (!isset($this->Embutida_ronly) || !$this->Embutida_ronly))
+                  {
+                      if (!isset($this->NM_ajax_info['readOnly']['number_' . $this->nmgp_refresh_row]))
+                      {
+                          $this->NM_ajax_info['readOnly']['number_' . $this->nmgp_refresh_row] = "off";
+                      }
+                  }
+                  elseif (isset($this->Embutida_ronly) && $this->Embutida_ronly)
+                  {
+                      if (!isset($this->NM_ajax_info['readOnly']['number_' . $this->nmgp_refresh_row]))
+                      {
+                          $this->NM_ajax_info['readOnly']['number_' . $this->nmgp_refresh_row] = "on";
+                      }
+                  }
+
+                  $aLookup = array();
+$aLookup[] = array(cad_lodge_pack_protect_string('A') => str_replace('<', '&lt;',cad_lodge_pack_protect_string("Disponivel")));
+$aLookup[] = array(cad_lodge_pack_protect_string('R') => str_replace('<', '&lt;',cad_lodge_pack_protect_string("Reservado")));
+$aLookup[] = array(cad_lodge_pack_protect_string('U') => str_replace('<', '&lt;',cad_lodge_pack_protect_string("Indisponível")));
+$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'A';
+$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'R';
+$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'U';
+          $sLabelTemp = '';
+          foreach ($aLookup as $aValData)
+          {
+              if (key($aValData) == cad_lodge_pack_protect_string(NM_charset_to_utf8($this->status_)))
+              {
+                  $sLabelTemp = current($aValData);
+              }
+          }
+          $tmpLabel_status_ = $sLabelTemp;
+                  $this->NM_ajax_info['fldList']['status_' . $this->nmgp_refresh_row]['type']    = 'select';
+                  $this->NM_ajax_info['fldList']['status_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->status_)));
+                  $this->NM_ajax_info['fldList']['status_' . $this->nmgp_refresh_row]['labList'] = array($tmpLabel_status_);
+
+                  if ((isset($this->Embutida_form) && $this->Embutida_form) && (!isset($this->Embutida_ronly) || !$this->Embutida_ronly))
+                  {
+                      if (!isset($this->NM_ajax_info['readOnly']['status_' . $this->nmgp_refresh_row]))
+                      {
+                          $this->NM_ajax_info['readOnly']['status_' . $this->nmgp_refresh_row] = "off";
+                      }
+                  }
+                  elseif (isset($this->Embutida_ronly) && $this->Embutida_ronly)
+                  {
+                      if (!isset($this->NM_ajax_info['readOnly']['status_' . $this->nmgp_refresh_row]))
+                      {
+                          $this->NM_ajax_info['readOnly']['status_' . $this->nmgp_refresh_row] = "on";
+                      }
+                  }
+
+                  $tmpLabel_idlodge_ = $this->idlodge_;
+                  $this->NM_ajax_info['fldList']['idlodge_' . $this->nmgp_refresh_row]['type']    = 'label';
+                  $this->NM_ajax_info['fldList']['idlodge_' . $this->nmgp_refresh_row]['valList'] = array($this->form_encode_input(NM_charset_to_utf8($this->idlodge_)));
+                  $this->NM_ajax_info['fldList']['idlodge_' . $this->nmgp_refresh_row]['labList'] = array($tmpLabel_idlodge_);
+
+                  if ((isset($this->Embutida_form) && $this->Embutida_form) && (!isset($this->Embutida_ronly) || !$this->Embutida_ronly))
+                  {
+                      if (!isset($this->NM_ajax_info['readOnly']['idlodge_' . $this->nmgp_refresh_row]))
+                      {
+                          $this->NM_ajax_info['readOnly']['idlodge_' . $this->nmgp_refresh_row] = "on";
+                      }
+                  }
+                  elseif (isset($this->Embutida_ronly) && $this->Embutida_ronly)
+                  {
+                      if (!isset($this->NM_ajax_info['readOnly']['idlodge_' . $this->nmgp_refresh_row]))
+                      {
+                          $this->NM_ajax_info['readOnly']['idlodge_' . $this->nmgp_refresh_row] = "on";
+                      }
+                  }
+
+
+                  $this->nm_tira_formatacao();
+
+                  $this->NM_ajax_info['closeLine'] = $this->nmgp_refresh_row;
+              }
               if ('refresh_insert' != $this->nmgp_opcao && (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_insert']) || $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_insert'] != "S"))
               {
               $this->nmgp_opcao = "novo"; 
@@ -3359,7 +3412,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
       } 
       if ($this->nmgp_opcao == "excluir") 
       { 
-          $this->idlodge = substr($this->Db->qstr($this->idlodge), 1, -1); 
+          $this->idlodge_ = substr($this->Db->qstr($this->idlodge_), 1, -1); 
 
           $bDelecaoOk = true;
           $sMsgErro   = '';
@@ -3369,13 +3422,13 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
 
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
           {
-              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge"; 
-              $rs1 = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge "); 
+              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_"; 
+              $rs1 = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ "); 
           }  
           else  
           {
-              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge"; 
-              $rs1 = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge "); 
+              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_"; 
+              $rs1 = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ "); 
           }  
           if ($rs1 === false)  
           { 
@@ -3390,7 +3443,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
           $tmp_result = (int) $rs1->fields[0]; 
           if ($tmp_result != 1) 
           { 
-              $this->Erro->mensagem (__FILE__, __LINE__, "critica", $this->Ini->Nm_lang['lang_errm_dele_nfnd']); 
+              $this->Campos_Mens_erro = $this->Ini->Nm_lang['lang_errm_dele_nfnd']; 
               $this->nmgp_opcao = "nada"; 
               $this->sc_evento = 'delete';
           } 
@@ -3399,13 +3452,13 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
               $rs1->Close(); 
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               {
-                  $_SESSION['scriptcase']['sc_sql_ult_comando'] = "DELETE FROM " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge "; 
-                  $rs = $this->Db->Execute("DELETE FROM " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge "); 
+                  $_SESSION['scriptcase']['sc_sql_ult_comando'] = "DELETE FROM " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ "; 
+                  $rs = $this->Db->Execute("DELETE FROM " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ "); 
               }  
               else  
               {
-                  $_SESSION['scriptcase']['sc_sql_ult_comando'] = "DELETE FROM " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge "; 
-                  $rs = $this->Db->Execute("DELETE FROM " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge "); 
+                  $_SESSION['scriptcase']['sc_sql_ult_comando'] = "DELETE FROM " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ "; 
+                  $rs = $this->Db->Execute("DELETE FROM " . $this->Ini->nm_tabela . " where idLodge = $this->idlodge_ "); 
               }  
               if ($rs === false) 
               { 
@@ -3422,9 +3475,7 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
                   } 
               } 
               $this->sc_evento = "delete"; 
-              if (empty($this->sc_erro_delete)) {
-                  $this->record_delete_ok = true;
-              }
+              $this->nm_proc_onload_record($sc_seq_vert);
               $this->nmgp_opcao = "avanca"; 
               $this->nm_flag_iframe = true;
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']--; 
@@ -3435,11 +3486,15 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
 
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['db_changed'] = true;
 
-              if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']))
-              {
-                  unset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']);
-              }
-
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_qtd']--; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']--; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_I_E']--; 
+              $this->NM_ajax_info['navSummary']['reg_ini'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] + 1; 
+              $this->NM_ajax_info['navSummary']['reg_qtd'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_qtd']; 
+              $this->NM_ajax_info['navSummary']['reg_tot'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total'] + 1; 
+              $this->NM_gera_nav_page(); 
+              $this->NM_ajax_info['navPage'] = $this->SC_nav_page; 
+              $this->sc_teve_excl = true; 
               if ($this->lig_edit_lookup)
               {
                   $this->lig_edit_lookup_call = true;
@@ -3472,13 +3527,54 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
       }
       if ($salva_opcao == "incluir" && $GLOBALS["erro_incl"] != 1) 
       { 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms'] = "idlodge?#?$this->idlodge?@?"; 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms'] = "idlodge_?#?$this->idlodge_?@?"; 
       }
-      $this->NM_commit_db(); 
       if ($this->sc_evento != "insert" && $this->sc_evento != "update" && $this->sc_evento != "delete")
       { 
-          $this->idlodge = null === $this->idlodge ? null : substr($this->Db->qstr($this->idlodge), 1, -1); 
+          $this->idlodge_ = null === $this->idlodge_ ? null : substr($this->Db->qstr($this->idlodge_), 1, -1); 
       } 
+   }
+//---------- 
+   function nm_select_banco() 
+   { 
+      global $nm_form_submit, $sc_seq_vert, $sc_check_incl, $teste_validade, $sc_where;
+ 
+      if (isset($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['rows']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['rows']))
+      {
+          $this->sc_max_reg = $_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['rows'];
+      } 
+      if (isset($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['rows_ins']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['rows_ins']))
+      {
+          $this->sc_max_reg_incl = $_SESSION['scriptcase']['sc_apl_conf']['cad_lodge']['rows_ins'];
+      } 
+      if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['embutida_liga_qtd_reg']) && '' != $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['embutida_liga_qtd_reg'])
+      {
+          $this->sc_max_reg = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['embutida_liga_qtd_reg'];
+      }
+      if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_max_reg']) && ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_max_reg'] > 0 || strtolower($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_max_reg']) == "all"))
+      {
+          $this->sc_max_reg = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_max_reg'];
+      } 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $GLOBALS["NM_ERRO_IBASE"] = 0;  
+      $this->form_vert_cad_lodge = array();
+      if ($this->nmgp_opcao != "novo") 
+      { 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms'] = ""; 
+      } 
+      if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+      { 
+          $GLOBALS["NM_ERRO_IBASE"] = 1;  
+      } 
+      if ($this->sc_teve_excl)
+      {
+          $this->nmgp_opcao = "avanca";
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] -= $this->sc_max_reg;
+      }
+      if (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']) || empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']))
+      {
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = 0;
+      }
       if (isset($this->NM_where_filter))
       {
           $this->NM_where_filter = str_replace("@percent@", "%", $this->NM_where_filter);
@@ -3504,85 +3600,67 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
               $sc_where_filter .= " and (" . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['where_filter'] . ")";
           }
       }
-//------------ 
-      if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "F" || $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "R")
-      {
-          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['iframe_evento']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['iframe_evento'] == "insert") 
-          { 
-               $this->nmgp_opcao = "novo"; 
-               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['select'] = "";
-          } 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['iframe_evento'] = $this->sc_evento; 
-      } 
-      if (!isset($this->nmgp_opcao) || empty($this->nmgp_opcao)) 
-      { 
-          if (empty($this->idlodge)) 
-          { 
-              $this->nmgp_opcao = "inicio"; 
-          } 
-          else 
-          { 
-              $this->nmgp_opcao = "igual"; 
-          } 
-      } 
-      if (isset($_POST['master_nav']) && 'on' == $_POST['master_nav']) 
-      { 
-          $this->nmgp_opcao = "inicio";
-      } 
-      if ($this->nmgp_opcao != "nada" && (trim($this->idlodge) == "")) 
-      { 
-          if ($this->nmgp_opcao == "avanca")  
-          { 
-              $this->nmgp_opcao = "final"; 
-          } 
-          elseif ($this->nmgp_opcao != "novo")
-          { 
-              $this->nmgp_opcao = "inicio"; 
-          } 
-      } 
-      if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
-      { 
-          $GLOBALS["NM_ERRO_IBASE"] = 1;  
-      } 
-      if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "F" && $this->sc_evento == "insert")
-      {
-          $this->nmgp_opcao = "final";
-      }
-      $sc_where = trim("");
-      if (substr(strtolower($sc_where), 0, 5) == "where")
-      {
-          $sc_where  = substr($sc_where , 5);
-      }
-      if (!empty($sc_where))
-      {
-          $sc_where = " where " . $sc_where . " ";
-      }
+      $sc_where = "";
       if ('' != $sc_where_filter)
       {
-          $sc_where = ('' != $sc_where) ? $sc_where . ' and (' . $sc_where_filter . ')' : ' where ' . $sc_where_filter;
+          $sc_where = (isset($sc_where) && '' != $sc_where) ? $sc_where . ' and (' . $sc_where_filter . ')' : ' where ' . $sc_where_filter;
       }
-      if (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']))
+      if (((isset($this->NM_ajax_opcao) && 'backup_line' == $this->NM_ajax_opcao) || (isset($this->NM_btn_navega) && 'N' == $this->NM_btn_navega)) && !$this->has_where_params && 'novo' != $this->nmgp_opcao)
+      {
+          $aNewWhereCond = array();
+          if (null != $this->idlodge_)
+          {
+              $aNewWhereCond[] = "idLodge = " . $this->idlodge_;
+          }
+          if (!$this->NM_ajax_flag)
+          {
+              $this->NM_btn_navega = "S";
+          }
+          elseif (!empty($aNewWhereCond))
+          {
+              if ('' == $sc_where)
+              {
+                  $sc_where = " where (";
+              }
+              else
+              {
+                  $sc_where .= " and (";
+              }
+              $sc_where .= implode(" and ", $aNewWhereCond) . ")";
+          }
+      }
+      if ('total' != $this->form_paginacao)
+      {
+          if ($this->app_is_initializing || $this->sc_teve_excl || $this->sc_teve_incl || (isset($_POST['master_nav']) && 'on' == $_POST['master_nav']) || !isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']))
+          {
+              $nmgp_select = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela . $sc_where;
+              $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nmgp_select;
+              $rt = $this->Db->Execute($nmgp_select);
+              if ($rt === false && !$rt->EOF && $GLOBALS["NM_ERRO_IBASE"] != 1)
+              {
+                  $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
+                  exit;
+              }
+              $qt_geral_reg_cad_lodge = isset($rt->fields[0]) ? $rt->fields[0] - 1 : 0;
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total'] = $qt_geral_reg_cad_lodge;
+              $rt->Close();
+          }
+      if ((isset($_POST['master_nav']) && 'on' == $_POST['master_nav']) || !isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total']))
       { 
-          $nmgp_select = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela . $sc_where; 
-          $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nmgp_select; 
-          $rt = $this->Db->Execute($nmgp_select) ; 
-          if ($rt === false && !$rt->EOF && $GLOBALS["NM_ERRO_IBASE"] != 1) 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_I_E'] = 0; 
+          if (!$this->sc_teve_excl && !$this->sc_teve_incl) 
           { 
-              $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-              exit ; 
-          }  
-          $qt_geral_reg_cad_lodge = isset($rt->fields[0]) ? $rt->fields[0] - 1 : 0; 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total'] = $qt_geral_reg_cad_lodge;
-          $rt->Close(); 
-          if ($this->nmgp_opcao == "igual" && isset($this->NM_btn_navega) && 'S' == $this->NM_btn_navega && !empty($this->idlodge))
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = 0; 
+          } 
+          if ($this->nmgp_opcao == "igual" && isset($this->NM_btn_navega) && 'S' == $this->NM_btn_navega && !empty($this->idlodge_))
           {
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               {
-                  $Key_Where = "idLodge < $this->idlodge "; 
+                  $Key_Where = "idLodge < $this->idlodge_ "; 
               }  
               else  
               {
-                  $Key_Where = "idLodge < $this->idlodge "; 
+                  $Key_Where = "idLodge < $this->idlodge_ "; 
               }
               $Where_Start = (empty($sc_where)) ? " where " . $Key_Where :  $sc_where . " and (" . $Key_Where . ")";
               $nmgp_select = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela . $Where_Start; 
@@ -3601,21 +3679,29 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
       { 
           $qt_geral_reg_cad_lodge = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total'];
       } 
-      if ($this->nmgp_opcao == "inicio") 
+      if ($this->nmgp_opcao == "inicio" || $this->nmgp_opcao == "ordem") 
       { 
           $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = 0; 
       } 
+      if ($this->nmgp_opcao == "navpage" && ($this->nmgp_ordem - 1) <= $qt_geral_reg_cad_lodge) 
+      { 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = $this->nmgp_ordem - 1; 
+      } 
       if ($this->nmgp_opcao == "avanca")  
       { 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']++; 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] += ($this->sc_max_reg + $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_I_E']); 
           if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] > $qt_geral_reg_cad_lodge)
           {
-              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = $qt_geral_reg_cad_lodge; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = $qt_geral_reg_cad_lodge - $this->sc_max_reg; 
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] < 0)
+              {
+                  $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = 0; 
+              }
           }
       } 
       if ($this->nmgp_opcao == "retorna") 
       { 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']--; 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] -= $this->sc_max_reg; 
           if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] < 0)
           {
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = 0; 
@@ -3623,104 +3709,104 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
       } 
       if ($this->nmgp_opcao == "final") 
       { 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = $qt_geral_reg_cad_lodge; 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = ($qt_geral_reg_cad_lodge + 1) - $this->sc_max_reg; 
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] < 0)
+          {
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = 0; 
+          }
       } 
-      if ($this->nmgp_opcao == "navpage" && ($this->nmgp_ordem - 1) <= $qt_geral_reg_cad_lodge) 
-      { 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = $this->nmgp_ordem - 1; 
-      } 
-      if (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']) || empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']))
-      {
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] = 0;
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_I_E'] = 0; 
       }
-      $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_qtd'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] + 1;
-      $this->NM_ajax_info['navSummary']['reg_ini'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] + 1; 
-      $this->NM_ajax_info['navSummary']['reg_qtd'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_qtd']; 
-      $this->NM_ajax_info['navSummary']['reg_tot'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total'] + 1; 
-      $this->NM_gera_nav_page(); 
-      $this->NM_ajax_info['navPage'] = $this->SC_nav_page; 
-      $GLOBALS["NM_ERRO_IBASE"] = 0;  
-//---------- 
-      if ($this->nmgp_opcao != "novo" && $this->nmgp_opcao != "nada" && $this->nmgp_opcao != "refresh_insert") 
+      $Cmps_ord_def = array();
+      $Cmps_ord_def[] = "number";
+      $Cmps_ord_def[] = "status";
+      $sc_order_by  = "";
+      $sc_order_by = "idLodge";
+      $sc_order_by = str_replace("order by ", "", $sc_order_by);
+      $sc_order_by = str_replace("ORDER BY ", "", trim($sc_order_by));
+      if (!empty($sc_order_by))
+      {
+          $sc_order_by = " order by $sc_order_by "; 
+      }
+      if ($this->nmgp_opcao == "ordem" && in_array($this->nmgp_ordem, $Cmps_ord_def)) 
       { 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms'] = ""; 
-          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_cmp'] != $this->nmgp_ordem)
+          {
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_cmp'] = $this->nmgp_ordem; 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord'] = ' asc'; 
+              switch ($this->nmgp_ordem) {
+                  case "number":
+                      $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord'] = ' desc';
+                      break;
+                  case "idLodge":
+                      $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord'] = ' desc';
+                      break;
+                  case "idLodgeCategory":
+                      $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord'] = ' desc';
+                      break;
+                  default:
+                      $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord'] = ' asc';
+                      break;
+              }
+          }
+          elseif ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord'] == ' asc')
+          {
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord'] = ' desc'; 
+          }
+          else
+          {
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord'] = ' asc'; 
+          }
+      } 
+      if (!empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_cmp'])) 
+      { 
+          $sc_order_by = " order by " . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_cmp'] . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['ordem_ord']; 
+      } 
+      if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
+      { 
+          $nmgp_select = "SELECT idLodge, idLodgeCategory, number, status from " . $this->Ini->nm_tabela . $sc_where . $sc_order_by; 
+      } 
+      else 
+      { 
+          $nmgp_select = "SELECT idLodge, idLodgeCategory, number, status from " . $this->Ini->nm_tabela . $sc_where . $sc_order_by; 
+      } 
+      if ($this->nmgp_opcao != "novo") 
+      { 
+      if (isset($this->NM_ajax_opcao) && 'backup_line' == $this->NM_ajax_opcao)
+      {
+          $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nmgp_select;
+          $rs = $this->Db->Execute($nmgp_select) ;
+      }
+      elseif ('total' == $this->form_paginacao)
+      {
+          $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nmgp_select; 
+          $rs = $this->Db->Execute($nmgp_select) ; 
+      }
+      else
+      {
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "F" || $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "R")
           { 
-              $GLOBALS["NM_ERRO_IBASE"] = 1;  
-          } 
-          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
-          { 
-              $nmgp_select = "SELECT idLodge, idLodgeCategory, number, name, status from " . $this->Ini->nm_tabela ; 
+              $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nmgp_select; 
+              $rs = $this->Db->Execute($nmgp_select) ; 
           } 
           else 
           { 
-              $nmgp_select = "SELECT idLodge, idLodgeCategory, number, name, status from " . $this->Ini->nm_tabela ; 
-          } 
-          $aWhere = array();
-          $aWhere[] = $sc_where_filter;
-          if ($this->nmgp_opcao == "igual" || (($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "F" || $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "R") && ($this->sc_evento == "insert" || $this->sc_evento == "update")) )
-          { 
-              if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
-              {
-                  $aWhere[] = "idLodge = $this->idlodge"; 
-              }  
+              if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql) || in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_postgres) || in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+              { 
+                  $_SESSION['scriptcase']['sc_sql_ult_comando'] = "SelectLimit($nmgp_select, $this->sc_max_reg, " . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] . ")" ; 
+                  $rs = $this->Db->SelectLimit($nmgp_select, $this->sc_max_reg, $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']) ; 
+              } 
               else  
-              {
-                  $aWhere[] = "idLodge = $this->idlodge"; 
-              }  
-              if (!empty($sc_where_filter))  
-              {
-                  $teste_select = $nmgp_select . $this->returnWhere($aWhere);
-                  $_SESSION['scriptcase']['sc_sql_ult_comando'] = $teste_select; 
-                  $rs = $this->Db->Execute($teste_select); 
-                  if ($rs->EOF)
-                  {
-                     $aWhere = array($sc_where_filter);
-                  }  
-                  $rs->Close(); 
-              }  
-          } 
-          $nmgp_select .= $this->returnWhere($aWhere) . ' ';
-          $sc_order_by = "";
-          $sc_order_by = "idLodge";
-          $sc_order_by = str_replace("order by ", "", $sc_order_by);
-          $sc_order_by = str_replace("ORDER BY ", "", trim($sc_order_by));
-          if (!empty($sc_order_by))
-          {
-              $nmgp_select .= " order by $sc_order_by "; 
-          }
-          if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "F" || $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "R")
-          {
-              if ($this->sc_evento == "update")
-              {
-                  $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['select'] = $nmgp_select;
-                  $this->nm_gera_html();
-              } 
-              elseif (!empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['select']))
               { 
-                  $nmgp_select = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['select'];
-                  $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['select'] = ""; 
+                  $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nmgp_select; 
+                  $rs = $this->Db->Execute($nmgp_select) ; 
+                  if (!$rs === false && !$rs->EOF) 
+                  { 
+                      $rs->Move($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']) ;  
+                  } 
               } 
           } 
-          if ($this->nmgp_opcao == "igual") 
-          { 
-              $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nmgp_select; 
-              $rs = $this->Db->Execute($nmgp_select) ; 
-          } 
-          elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql) || in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_postgres) || in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
-          { 
-              $_SESSION['scriptcase']['sc_sql_ult_comando'] = "SelectLimit($nmgp_select, 1, " . $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] . ")" ; 
-              $rs = $this->Db->SelectLimit($nmgp_select, 1, $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']) ; 
-          } 
-          else  
-          { 
-              $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nmgp_select; 
-              $rs = $this->Db->Execute($nmgp_select) ; 
-              if (!$rs === false && !$rs->EOF) 
-              { 
-                  $rs->Move($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start']) ;  
-              } 
-          } 
+      }
           if ($rs === false && !$rs->EOF && $GLOBALS["NM_ERRO_IBASE"] != 1) 
           { 
               $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
@@ -3732,294 +3818,182 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
               $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_nfnd_extr'], $this->Db->ErrorMsg()); 
               exit ; 
           }  
-          if ($rs->EOF) 
+          if ($rs->EOF && !$this->proc_fast_search && (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['empty_filter']) || !$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['empty_filter'])) 
           { 
-              if (!empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['where_filter']))
-              {
-                  $this->nmgp_form_empty        = true;
-                  $this->NM_ajax_info['buttonDisplay']['first']   = $this->nmgp_botoes['first']   = "off";
-                  $this->NM_ajax_info['buttonDisplay']['back']    = $this->nmgp_botoes['back']    = "off";
-                  $this->NM_ajax_info['buttonDisplay']['forward'] = $this->nmgp_botoes['forward'] = "off";
-                  $this->NM_ajax_info['buttonDisplay']['last']    = $this->nmgp_botoes['last']    = "off";
-                  $this->NM_ajax_info['buttonDisplay']['update']  = $this->nmgp_botoes['update']  = "off";
-                  $this->NM_ajax_info['buttonDisplay']['delete']  = $this->nmgp_botoes['delete']  = "off";
-                  $this->NM_ajax_info['buttonDisplay']['first']   = $this->nmgp_botoes['insert']  = "off";
-                  $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['empty_filter'] = true;
-                  return; 
-              }
-              if ($this->nmgp_botoes['insert'] != "on")
-              {
-                  $this->nmgp_form_empty        = true;
-                  $this->NM_ajax_info['buttonDisplay']['first']   = $this->nmgp_botoes['first']   = "off";
-                  $this->NM_ajax_info['buttonDisplay']['back']    = $this->nmgp_botoes['back']    = "off";
-                  $this->NM_ajax_info['buttonDisplay']['forward'] = $this->nmgp_botoes['forward'] = "off";
-                  $this->NM_ajax_info['buttonDisplay']['last']    = $this->nmgp_botoes['last']    = "off";
-              }
-              $this->nmgp_opcao = "novo"; 
               $this->nm_flag_saida_novo = "S"; 
-              $rs->Close(); 
+              $this->nmgp_opcao = "novo"; 
+              $this->sc_evento  = "novo"; 
               if ($this->aba_iframe)
               {
-                  $this->NM_ajax_info['buttonDisplay']['exit'] = $this->nmgp_botoes['exit'] = 'off';
+                  $this->nmgp_botoes['exit'] = 'off';
               }
           } 
-          if ($rs === false && $GLOBALS["NM_ERRO_IBASE"] == 1) 
-          { 
-              $GLOBALS["NM_ERRO_IBASE"] = 0; 
-              $this->Erro->mensagem (__FILE__, __LINE__, "critica", $this->Ini->Nm_lang['lang_errm_nfnd_extr']); 
-              $this->nmgp_opcao = "novo"; 
-          }  
-          if ($this->nmgp_opcao != "novo") 
-          { 
-              $this->idlodge = $rs->fields[0] ; 
-              $this->nmgp_dados_select['idlodge'] = $this->idlodge;
-              $this->idlodgecategory = $rs->fields[1] ; 
-              $this->nmgp_dados_select['idlodgecategory'] = $this->idlodgecategory;
-              $this->number = $rs->fields[2] ; 
-              $this->nmgp_dados_select['number'] = $this->number;
-              $this->name = $rs->fields[3] ; 
-              $this->nmgp_dados_select['name'] = $this->name;
-              $this->status = $rs->fields[4] ; 
-              $this->nmgp_dados_select['status'] = $this->status;
-          $GLOBALS["NM_ERRO_IBASE"] = 0; 
-              $this->idlodge = (string)$this->idlodge; 
-              $this->idlodgecategory = (string)$this->idlodgecategory; 
-              $this->number = (string)$this->number; 
-              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms'] = "idlodge?#?$this->idlodge?@?";
-          } 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'] = $this->nmgp_dados_select;
-          if (!$this->NM_ajax_flag || 'backup_line' != $this->NM_ajax_opcao)
+          if ($rs->EOF && $this->nmgp_botoes['new'] != "on" && !$this->proc_fast_search)
           {
-              $this->Nav_permite_ret = 0 != $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'];
-              $this->Nav_permite_ava = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] < $qt_geral_reg_cad_lodge;
-              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['opcao']   = '';
+              $this->nmgp_form_empty = true;
           }
-      } 
-      if ($this->nmgp_opcao == "novo" || $this->nmgp_opcao == "refresh_insert") 
-      { 
-          $this->sc_evento_old = $this->sc_evento;
-          $this->sc_evento = "novo";
-          if ('refresh_insert' == $this->nmgp_opcao)
+          if ($rs->EOF)
           {
-              $this->nmgp_opcao = 'novo';
+              $sc_seq_vert = 0; 
+              if (!empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['where_filter']))
+              {
+                  $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['empty_filter'] = true;
+              }
           }
           else
           {
-              $this->nm_formatar_campos();
-              $this->idlodge = "";  
-              $this->nmgp_dados_form["idlodge"] = $this->idlodge;
-              $this->idlodgecategory = "";  
-              $this->nmgp_dados_form["idlodgecategory"] = $this->idlodgecategory;
-              $this->number = "";  
-              $this->nmgp_dados_form["number"] = $this->number;
-              $this->name = "";  
-              $this->nmgp_dados_form["name"] = $this->name;
-              $this->status = "";  
-              $this->nmgp_dados_form["status"] = $this->status;
-              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_form'] = $this->nmgp_dados_form;
-              $this->formatado = false;
+              $sc_seq_vert = 1; 
           }
-          if (($this->Embutida_form || $this->Embutida_multi) && isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['foreign_key']) && !empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['foreign_key']))
+          if ('total' == $this->form_paginacao)
           {
-              foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['foreign_key'] as $sFKName => $sFKValue)
-              {
-                   if (isset($this->sc_conv_var[$sFKName]))
-                   {
-                       $sFKName = $this->sc_conv_var[$sFKName];
-                   }
-                  eval("\$this->" . $sFKName . " = \"" . $sFKValue . "\";");
-              }
+              $bPagTest = true;
+              $this->sc_max_reg = 0;
           }
-      }  
-//
+          else
+          {
+              $bPagTest = $sc_seq_vert <= $this->sc_max_reg;
+          }
+          while (!$rs->EOF && $bPagTest)
+          { 
+              if ('total' == $this->form_paginacao)
+              {
+                  $this->sc_max_reg++;
+              }
+              if (isset($this->NM_ajax_opcao) && 'backup_line' == $this->NM_ajax_opcao)
+              {
+                  $guard_seq_vert = $sc_seq_vert;
+                  $sc_seq_vert    = $this->nmgp_refresh_row;
+              }
+              if ('total' != $this->form_paginacao)
+              {
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "F" || $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_iframe'] == "R")
+              { 
+                  $this->sc_max_reg++;
+              } 
+              }
+              $this->idlodge_ = $rs->fields[0] ; 
+              $this->nmgp_dados_select['idlodge_'] = $this->idlodge_;
+              $this->idlodgecategory_ = $rs->fields[1] ; 
+              $this->nmgp_dados_select['idlodgecategory_'] = $this->idlodgecategory_;
+              $this->number_ = $rs->fields[2] ; 
+              $this->nmgp_dados_select['number_'] = $this->number_;
+              $this->status_ = $rs->fields[3] ; 
+              $this->nmgp_dados_select['status_'] = $this->status_;
+              $GLOBALS["NM_ERRO_IBASE"] = 0; 
+              $this->idlodge_ = (string)$this->idlodge_; 
+              $this->idlodgecategory_ = (string)$this->idlodgecategory_; 
+              $this->number_ = (string)$this->number_; 
+              if (empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms'])) 
+              { 
+                  $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms'] = "idlodge_?#?$this->idlodge_?@?";
+              } 
+              $this->nm_proc_onload_record($sc_seq_vert);
+              $this->storeRecordState($sc_seq_vert);
 //
 //-- 
-      if ($this->nmgp_opcao != "novo") 
-      {
-      }
-      if (!isset($this->nmgp_refresh_fields)) 
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dados_select'][$sc_seq_vert] = $this->nmgp_dados_select;
+              $this->nm_guardar_campos();
+              $this->nm_formatar_campos();
+             $this->form_vert_cad_lodge[$sc_seq_vert]['number_'] =  $this->number_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['status_'] =  $this->status_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['idlodge_'] =  $this->idlodge_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['idlodgecategory_'] =  $this->idlodgecategory_; 
+              $sc_seq_vert++; 
+              $rs->MoveNext() ; 
+              if (isset($this->NM_ajax_opcao) && 'backup_line' == $this->NM_ajax_opcao)
+              {
+                  $sc_seq_vert = $guard_seq_vert;
+              }
+              if ('total' != $this->form_paginacao)
+              {
+                  $bPagTest = $sc_seq_vert <= $this->sc_max_reg;
+              }
+          } 
+          ksort ($this->form_vert_cad_lodge); 
+          $rs->Close(); 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_qtd'] = $sc_seq_vert + $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] - 1;
+          if ('total' == $this->form_paginacao)
+          {
+              $this->NM_ajax_info['navSummary']['reg_ini'] = 1; 
+              $this->NM_ajax_info['navSummary']['reg_qtd'] = $this->sc_max_reg; 
+              $this->NM_ajax_info['navSummary']['reg_tot'] = $this->sc_max_reg; 
+          }
+          else
+          {
+              $this->NM_ajax_info['navSummary']['reg_ini'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] + 1; 
+              $this->NM_ajax_info['navSummary']['reg_qtd'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_qtd']; 
+              $this->NM_ajax_info['navSummary']['reg_tot'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total'] + 1; 
+          }
+          if ($this->form_paginacao == "total")
+          {
+              $this->SC_nav_page = "";
+          }
+          else
+          {
+              $this->NM_gera_nav_page(); 
+          }
+          $this->NM_ajax_info['navPage'] = $this->SC_nav_page; 
+          if (!$this->NM_ajax_flag || 'backup_line' != $this->NM_ajax_opcao)
+          {
+              $this->Nav_permite_ret = 0 != $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'];
+              $this->Nav_permite_ava = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] < (($qt_geral_reg_cad_lodge + 1) - $this->sc_max_reg);
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['opcao'] = '';
+          }
+      } 
+      if ($this->nmgp_opcao == "novo") 
       { 
-          $this->nm_proc_onload();
-      }
+          $sc_seq_vert = 1; 
+          $sc_check_incl = array(); 
+          if ($this->NM_ajax_flag && 'add_new_line' == $this->NM_ajax_opcao) 
+          { 
+              $sc_seq_vert = $this->sc_seq_vert; 
+              $this->sc_evento = "novo"; 
+              $this->sc_max_reg_incl = $this->sc_seq_vert; 
+          } 
+          elseif (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['embutida_multi']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['embutida_multi']) 
+          { 
+          } 
+          else 
+          { 
+              $this->sc_max_reg_incl = 0; 
+          } 
+          while ($sc_seq_vert <= $this->sc_max_reg_incl) 
+          { 
+              $this->number_ = "";  
+              $this->status_ = "";  
+              $this->nm_proc_onload_record($sc_seq_vert);
+              if (($this->Embutida_form || $this->Embutida_multi) && isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['foreign_key']) && !empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['foreign_key']))
+              {
+                  foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['foreign_key'] as $sFKName => $sFKValue)
+                  {
+                      if (isset($this->sc_conv_var[$sFKName]))
+                      {
+                          $sFKName = $this->sc_conv_var[$sFKName];
+                      }
+                      eval("\$this->" . $sFKName . " = \"" . $sFKValue . "\";");
+                  }
+              }
+              $this->nm_guardar_campos();
+              $this->nm_formatar_campos();
+             $this->form_vert_cad_lodge[$sc_seq_vert]['number_'] =  $this->number_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['status_'] =  $this->status_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['idlodge_'] =  $this->idlodge_; 
+             $this->form_vert_cad_lodge[$sc_seq_vert]['idlodgecategory_'] =  $this->idlodgecategory_; 
+              $sc_seq_vert++; 
+          } 
+      }  
   }
-// 
-//-- 
-   function nm_db_retorna($str_where_param = '') 
-   {  
-     $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
-     $str_where_filter = ('' != $str_where_param) ? ' and ' . $str_where_param : '';
-     if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
-     {
-         $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select max(idLodge) from " . $this->Ini->nm_tabela . " where idLodge < $this->idlodge" . $str_where_filter; 
-         $rs = $this->Db->Execute("select max(idLodge) from " . $this->Ini->nm_tabela . " where idLodge < $this->idlodge" . $str_where_filter); 
-     }  
-     else  
-     {
-         $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select max(idLodge) from " . $this->Ini->nm_tabela . " where idLodge < $this->idlodge" . $str_where_filter; 
-         $rs = $this->Db->Execute("select max(idLodge) from " . $this->Ini->nm_tabela . " where idLodge < $this->idlodge" . $str_where_filter); 
-     }  
-     if ($rs === false && !$rs->EOF && $GLOBALS["NM_ERRO_IBASE"] != 1) 
-     { 
-         $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-         exit ; 
-     }  
-     if (isset($rs->fields[0]) && $rs->fields[0] != "") 
-     { 
-         $this->idlodge = substr($this->Db->qstr($rs->fields[0]), 1, -1); 
-         $rs->Close();  
-         $this->nmgp_opcao = "igual";  
-         return ;  
-     } 
-     else 
-     { 
-        $this->nmgp_opcao = "inicio";  
-        $rs->Close();  
-        return ; 
-     } 
-   } 
-// 
-//-- 
-   function nm_db_avanca($str_where_param = '') 
-   {  
-     $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
-     $str_where_filter = ('' != $str_where_param) ? ' and ' . $str_where_param : '';
-     if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
-     {
-         $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select min(idLodge) from " . $this->Ini->nm_tabela . " where idLodge > $this->idlodge" . $str_where_filter; 
-         $rs = $this->Db->Execute("select min(idLodge) from " . $this->Ini->nm_tabela . " where idLodge > $this->idlodge" . $str_where_filter); 
-     }  
-     else  
-     {
-         $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select min(idLodge) from " . $this->Ini->nm_tabela . " where idLodge > $this->idlodge" . $str_where_filter; 
-         $rs = $this->Db->Execute("select min(idLodge) from " . $this->Ini->nm_tabela . " where idLodge > $this->idlodge" . $str_where_filter); 
-     }  
-     if ($rs === false && !$rs->EOF && $GLOBALS["NM_ERRO_IBASE"] != 1) 
-     { 
-         $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-         exit ; 
-     }  
-     if (isset($rs->fields[0]) && $rs->fields[0] != "") 
-     { 
-         $this->idlodge = substr($this->Db->qstr($rs->fields[0]), 1, -1); 
-         $rs->Close();  
-         $this->nmgp_opcao = "igual";  
-         return ;  
-     } 
-     else 
-     { 
-        $this->nmgp_opcao = "final";  
-        $rs->Close();  
-        return ; 
-     } 
-   } 
-// 
-//-- 
-   function nm_db_inicio($str_where_param = '') 
-   {   
-     $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
-     $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select count(*) AS countTest from " . $this->Ini->nm_tabela; 
-     $rs = $this->Db->Execute("select count(*) AS countTest from " . $this->Ini->nm_tabela);
-     if ($rs === false && !$rs->EOF && $GLOBALS["NM_ERRO_IBASE"] != 1) 
-     { 
-         $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-         exit ; 
-     }  
-     if ($rs->fields[0] == 0) 
-     { 
-         $this->nmgp_opcao = "novo"; 
-         $this->nm_flag_saida_novo = "S"; 
-         $rs->Close(); 
-         if ($this->aba_iframe)
-         {
-             $this->nmgp_botoes['exit'] = 'off';
-         }
-         return;
-     }
-     $str_where_filter = ('' != $str_where_param) ? ' where ' . $str_where_param : '';
-     if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
-     {
-         $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select min(idLodge) from " . $this->Ini->nm_tabela . " " . $str_where_filter; 
-         $rs = $this->Db->Execute("select min(idLodge) from " . $this->Ini->nm_tabela . " " . $str_where_filter); 
-     }  
-     else  
-     {
-         $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select min(idLodge) from " . $this->Ini->nm_tabela . " " . $str_where_filter; 
-         $rs = $this->Db->Execute("select min(idLodge) from " . $this->Ini->nm_tabela . " " . $str_where_filter); 
-     }  
-     if ($rs === false && !$rs->EOF && $GLOBALS["NM_ERRO_IBASE"] != 1) 
-     { 
-         $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-         exit ; 
-     }  
-     if (!isset($rs->fields[0]) || $rs->EOF) 
-     { 
-         if (!empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['where_filter']))
-         { 
-             $rs->Close();  
-             return ; 
-         } 
-         $this->nm_flag_saida_novo = "S"; 
-         $this->nmgp_opcao = "novo";  
-         $rs->Close();  
-         if ($this->aba_iframe)
-         {
-             $this->nmgp_botoes['exit'] = 'off';
-         }
-         return ; 
-     } 
-     $this->idlodge = substr($this->Db->qstr($rs->fields[0]), 1, -1); 
-     $rs->Close();  
-     $this->nmgp_opcao = "igual";  
-     return ;  
-   } 
-// 
-//-- 
-   function nm_db_final($str_where_param = '') 
-   { 
-     $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
-     $str_where_filter = ('' != $str_where_param) ? ' where ' . $str_where_param : '';
-     if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
-     {
-         $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select max(idLodge) from " . $this->Ini->nm_tabela . " " . $str_where_filter; 
-         $rs = $this->Db->Execute("select max(idLodge) from " . $this->Ini->nm_tabela . " " . $str_where_filter); 
-     }  
-     else  
-     {
-         $_SESSION['scriptcase']['sc_sql_ult_comando'] = "select max(idLodge) from " . $this->Ini->nm_tabela . " " . $str_where_filter; 
-         $rs = $this->Db->Execute("select max(idLodge) from " . $this->Ini->nm_tabela . " " . $str_where_filter); 
-     }  
-     if ($rs === false && !$rs->EOF && $GLOBALS["NM_ERRO_IBASE"] != 1) 
-     { 
-         $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-         exit ; 
-     }  
-     if (!isset($rs->fields[0]) || $rs->EOF) 
-     { 
-         $this->nm_flag_saida_novo = "S"; 
-         $this->nmgp_opcao = "novo";  
-         $rs->Close();  
-         if ($this->aba_iframe)
-         {
-             $this->nmgp_botoes['exit'] = 'off';
-         }
-         return ; 
-     } 
-     $this->idlodge = substr($this->Db->qstr($rs->fields[0]), 1, -1); 
-     $rs->Close();  
-     $this->nmgp_opcao = "igual";  
-     return ;  
-   } 
    function NM_gera_nav_page() 
    {
        $this->SC_nav_page = "";
        $Arr_result        = array();
        $Ind_result        = 0;
-       $Reg_Page   = 1;
+       $Reg_Page   = $this->sc_max_reg;
        $Max_link   = 5;
        $Mid_link   = ceil($Max_link / 2);
        $Corr_link  = (($Max_link % 2) == 0) ? 0 : 1;
        $rec_tot    = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['total'] + 1;
-       $rec_fim    = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] + 1;
+       $rec_fim    = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['reg_start'] + $this->sc_max_reg;
        $rec_fim    = ($rec_fim > $rec_tot) ? $rec_tot : $rec_fim;
        if ($rec_tot == 0)
        {
@@ -4203,7 +4177,23 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
          exit;
      }
         $this->initFormPages();
-    include_once("cad_lodge_form0.php");
+   if ($this->NM_ajax_flag && 'add_new_line' == $this->NM_ajax_opcao)
+   {
+        $this->Form_Corpo(true);
+   }
+   elseif ($this->NM_ajax_flag && 'table_refresh' == $this->NM_ajax_opcao)
+   {
+        $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['table_refresh'] = true;
+        $this->Form_Table(true);
+        $this->Form_Corpo(false, true);
+   }
+   else
+   {
+        $this->Form_Init();
+        $this->Form_Table();
+        $this->Form_Corpo();
+        $this->Form_Fim();
+   }
         $this->hideFormPages();
  }
 
@@ -4232,10 +4222,10 @@ $_SESSION['scriptcase']['cad_lodge']['contr_erro'] = 'off';
     function form_highlight_search_quicksearch(&$result, $field, $value)
     {
         $searchOk = false;
-        if ('SC_all_Cmp' == $this->nmgp_fast_search && in_array($field, array("idlodge", "idlodgecategory", "number", "name", "status"))) {
+        if ('SC_all_Cmp' == $this->nmgp_fast_search && in_array($field, array("number_", "status_"))) {
             $searchOk = true;
         }
-        elseif ($field == $this->nmgp_fast_search && in_array($field, array("idlodge", "idlodgecategory", "number", "name", "status"))) {
+        elseif ($field == $this->nmgp_fast_search && in_array($field, array("number_", "status_"))) {
             $searchOk = true;
         }
 
@@ -4568,73 +4558,7 @@ function sc_file_size($file, $format = false)
      }
  } // new_date_format
 
-   function Form_lookup_idlodgecategory()
-   {
-$nmgp_def_dados = "" ; 
-if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']))
-{
-    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']); 
-}
-else
-{
-    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array(); 
-}
-   if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
-   { 
-       $GLOBALS["NM_ERRO_IBASE"] = 1;  
-   } 
-   $nm_nao_carga = false;
-   $nmgp_def_dados = "" ; 
-   if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']))
-   {
-       $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']); 
-   }
-   else
-   {
-       $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array(); 
-    }
-
-   $old_value_idlodge = $this->idlodge;
-   $old_value_number = $this->number;
-   $this->nm_tira_formatacao();
-
-
-   $unformatted_value_idlodge = $this->idlodge;
-   $unformatted_value_number = $this->number;
-
-   $nm_comando = "SELECT idLodgeCategory, name  FROM cad_lodge_category  ORDER BY name";
-
-   $this->idlodge = $old_value_idlodge;
-   $this->number = $old_value_number;
-
-   $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando;
-   $_SESSION['scriptcase']['sc_sql_ult_conexao'] = '';
-   if ($nm_comando != "" && $rs = $this->Db->Execute($nm_comando))
-   {
-       while (!$rs->EOF) 
-       { 
-              $rs->fields[0] = str_replace(',', '.', $rs->fields[0]);
-              $rs->fields[0] = (strpos(strtolower($rs->fields[0]), "e")) ? (float)$rs->fields[0] : $rs->fields[0];
-              $rs->fields[0] = (string)$rs->fields[0];
-              $nmgp_def_dados .= $rs->fields[1] . "?#?" ; 
-              $nmgp_def_dados .= $rs->fields[0] . "?#?N?@?" ; 
-              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'][] = $rs->fields[0];
-              $rs->MoveNext() ; 
-       } 
-       $rs->Close() ; 
-   } 
-   elseif ($GLOBALS["NM_ERRO_IBASE"] != 1 && $nm_comando != "")  
-   {  
-       $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-       exit; 
-   } 
-   $GLOBALS["NM_ERRO_IBASE"] = 0; 
-   $todox = str_replace("?#?@?#?", "?#?@ ?#?", trim($nmgp_def_dados)) ; 
-   $todo  = explode("?@?", $todox) ; 
-   return $todo;
-
-   }
-   function Form_lookup_status()
+   function Form_lookup_status_()
    {
        $nmgp_def_dados  = "";
        $nmgp_def_dados .= "Disponivel?#?A?#?N?@?";
@@ -4673,29 +4597,13 @@ else
       }
       $sv_data = $data_search;
       foreach ($fields as $field) {
-          if ($field == "SC_all_Cmp" || $field == "idlodge") 
-          {
-              $this->SC_monta_condicao($comando, "idLodge", $arg_search, str_replace(",", ".", $data_search), "INT", false);
-          }
-          if ($field == "SC_all_Cmp" || $field == "idlodgecategory") 
-          {
-              $data_lookup = $this->SC_lookup_idlodgecategory($arg_search, $data_search);
-              if (is_array($data_lookup) && !empty($data_lookup)) 
-              {
-                  $this->SC_monta_condicao($comando, "idLodgeCategory", $arg_search, $data_lookup, "INT", false);
-              }
-          }
-          if ($field == "SC_all_Cmp" || $field == "number") 
+          if ($field == "SC_all_Cmp" || $field == "number_") 
           {
               $this->SC_monta_condicao($comando, "number", $arg_search, str_replace(",", ".", $data_search), "INT", false);
           }
-          if ($field == "SC_all_Cmp" || $field == "name") 
+          if ($field == "SC_all_Cmp" || $field == "status_") 
           {
-              $this->SC_monta_condicao($comando, "name", $arg_search, $data_search, "VARCHAR", false);
-          }
-          if ($field == "SC_all_Cmp" || $field == "status") 
-          {
-              $data_lookup = $this->SC_lookup_status($arg_search, $data_search);
+              $data_lookup = $this->SC_lookup_status_($arg_search, $data_search);
               if (is_array($data_lookup) && !empty($data_lookup)) 
               {
                   $this->SC_monta_condicao($comando, "status", $arg_search, $data_lookup, "VARCHAR", false);
@@ -4880,97 +4788,7 @@ else
             break;
          }
    }
-   function SC_lookup_idlodgecategory($condicao, $campo)
-   {
-       $result = array();
-       $campo_orig = $campo;
-       $campo  = substr($this->Db->qstr($campo), 1, -1);
-       $nm_comando = "SELECT name, idLodgeCategory FROM cad_lodge_category WHERE (#cmp_iname#cmp_f#cmp_apos LIKE '%#arg_i" . $campo . "#arg_f%'#arg_apos)" ; 
-       if ($condicao == "ii")
-       {
-           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "LIKE '#arg_i" . $campo . "#arg_f%'", $nm_comando);
-       }
-       if ($condicao == "np")
-       {
-           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "NOT LIKE '%#arg_i" . $campo . "#arg_f%'", $nm_comando);
-       }
-       if ($condicao == "df")
-       {
-           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "<> '#arg_i" . $campo . "#arg_f'", $nm_comando);
-       }
-       if ($condicao == "gt")
-       {
-           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "> '#arg_i" . $campo . "#arg_f'", $nm_comando);
-       }
-       if ($condicao == "ge")
-       {
-           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", ">= '#arg_i" . $campo . "#arg_f'", $nm_comando);
-       }
-       if ($condicao == "lt")
-       {
-           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "< '#arg_i" . $campo . "#arg_f'", $nm_comando);
-       }
-       if ($condicao == "le")
-       {
-           $nm_comando = str_replace("LIKE '%#arg_i" . $campo . "#arg_f%'", "<= '#arg_i" . $campo . "#arg_f'", $nm_comando);
-       }
-       $nm_comando = str_replace(array('#cmp_i','#cmp_f','#cmp_apos','#arg_i','#arg_f','#arg_apos'), array('','','','','',''), $nm_comando); 
-       $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando; 
-       $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
-       if ($rx = $this->Db->Execute($nm_comando)) 
-       { 
-           $campo = $campo_orig;
-           while (!$rx->EOF) 
-           { 
-               $chave = $rx->fields[1];
-               $label = $rx->fields[0];
-               if ($condicao == "eq" && $campo == $label)
-               {
-                   $result[] = $chave;
-               }
-               if ($condicao == "ii" && $campo == substr($label, 0, strlen($campo)))
-               {
-                   $result[] = $chave;
-               }
-               if ($condicao == "qp" && strstr($label, $campo))
-               {
-                   $result[] = $chave;
-               }
-               if ($condicao == "np" && !strstr($label, $campo))
-               {
-                   $result[] = $chave;
-               }
-               if ($condicao == "df" && $campo != $label)
-               {
-                   $result[] = $chave;
-               }
-               if ($condicao == "gt" && $label > $campo )
-               {
-                   $result[] = $chave;
-               }
-               if ($condicao == "ge" && $label >= $campo)
-               {
-                   $result[] = $chave;
-               }
-               if ($condicao == "lt" && $label < $campo)
-               {
-                   $result[] = $chave;
-               }
-               if ($condicao == "le" && $label <= $campo)
-               {
-                   $result[] = $chave;
-               }
-               $rx->MoveNext() ;
-           }  
-           return $result;
-       }  
-       elseif ($GLOBALS["NM_ERRO_IBASE"] != 1)  
-       { 
-           $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-           exit; 
-       } 
-   }
-   function SC_lookup_status($condicao, $campo)
+   function SC_lookup_status_($condicao, $campo)
    {
        $data_look = array();
        $campo  = substr($this->Db->qstr($campo), 1, -1);
@@ -5079,16 +4897,6 @@ function nmgp_redireciona($tipo=0)
    <HTML>
    <HEAD>
     <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
-<?php
-
-   if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])
-   {
-?>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-<?php
-   }
-
-?>
     <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>
     <META http-equiv="Last-Modified" content="<?php echo gmdate("D, d M Y H:i:s"); ?> GMT"/>
     <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate"/>
@@ -5179,19 +4987,16 @@ if (parent && parent.scAjaxDetailValue)
     function getButtonIds($buttonName) {
         switch ($buttonName) {
             case "new":
-                return array("sc_b_new_t.sc-unique-btn-1");
+                return array("sc_b_new_t.sc-unique-btn-1", "sc_b_new_t.sc-unique-btn-2");
                 break;
             case "insert":
-                return array("sc_b_ins_t.sc-unique-btn-2");
+                return array("sc_b_ins_t.sc-unique-btn-3");
                 break;
             case "bcancelar":
-                return array("sc_b_sai_t.sc-unique-btn-3");
+                return array("sc_b_sai_t.sc-unique-btn-4");
                 break;
             case "update":
-                return array("sc_b_upd_t.sc-unique-btn-4");
-                break;
-            case "delete":
-                return array("sc_b_del_t.sc-unique-btn-5");
+                return array("sc_b_upd_t.sc-unique-btn-5");
                 break;
             case "breload":
                 return array("sc_b_reload_t.sc-unique-btn-6");
@@ -5327,9 +5132,9 @@ if (parent && parent.scAjaxDetailValue)
     function scIsFieldNumeric($fieldName)
     {
         switch ($fieldName) {
-            case "idLodge":
-                return true;
             case "number":
+                return true;
+            case "idLodge":
                 return true;
             default:
                 return false;
@@ -5340,11 +5145,11 @@ if (parent && parent.scAjaxDetailValue)
     function scGetDefaultFieldOrder($fieldName)
     {
         switch ($fieldName) {
+            case "number":
+                return 'desc';
             case "idLodge":
                 return 'desc';
             case "idLodgeCategory":
-                return 'desc';
-            case "number":
                 return 'desc';
             default:
                 return 'asc';

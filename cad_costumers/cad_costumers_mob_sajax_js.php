@@ -2980,6 +2980,43 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
 
   }
 
+  // ---------- Validate facephoto
+  function do_ajax_cad_costumers_mob_validate_facephoto()
+  {
+    var nomeCampo_facephoto = "facephoto";
+    var var_facephoto = scAjaxGetFieldText(nomeCampo_facephoto);
+    var var_script_case_init = document.F1.script_case_init.value;
+    x_ajax_cad_costumers_mob_validate_facephoto(var_facephoto, var_script_case_init, do_ajax_cad_costumers_mob_validate_facephoto_cb);
+  } // do_ajax_cad_costumers_mob_validate_facephoto
+
+  function do_ajax_cad_costumers_mob_validate_facephoto_cb(sResp)
+  {
+    oResp = scAjaxResponse(sResp);
+    scAjaxRedir();
+    sFieldValid = "facephoto";
+    scEventControl_onBlur(sFieldValid);
+    scAjaxUpdateFieldErrors(sFieldValid, "valid");
+    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
+    if ("" == sFieldErrors)
+    {
+      var sImgStatus = sc_img_status_ok;
+      scAjaxHideErrorDisplay(sFieldValid);
+    }
+    else
+    {
+      var sImgStatus = sc_img_status_err;
+      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+    }
+    var $oImg = $('#id_sc_status_' + sFieldValid);
+    if (0 < $oImg.length)
+    {
+      $oImg.attr('src', sImgStatus).css('display', '');
+    }
+    scAjaxShowDebug();
+    scAjaxSetMaster();
+    scAjaxSetFocus();
+  } // do_ajax_cad_costumers_mob_validate_facephoto_cb
+
   // ---------- Validate docnumber
   function do_ajax_cad_costumers_mob_validate_docnumber()
   {
@@ -3053,6 +3090,43 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxSetMaster();
     scAjaxSetFocus();
   } // do_ajax_cad_costumers_mob_validate_name_cb
+
+  // ---------- Validate frequencytype
+  function do_ajax_cad_costumers_mob_validate_frequencytype()
+  {
+    var nomeCampo_frequencytype = "frequencytype";
+    var var_frequencytype = scAjaxGetFieldRadio(nomeCampo_frequencytype);
+    var var_script_case_init = document.F1.script_case_init.value;
+    x_ajax_cad_costumers_mob_validate_frequencytype(var_frequencytype, var_script_case_init, do_ajax_cad_costumers_mob_validate_frequencytype_cb);
+  } // do_ajax_cad_costumers_mob_validate_frequencytype
+
+  function do_ajax_cad_costumers_mob_validate_frequencytype_cb(sResp)
+  {
+    oResp = scAjaxResponse(sResp);
+    scAjaxRedir();
+    sFieldValid = "frequencytype";
+    scEventControl_onBlur(sFieldValid);
+    scAjaxUpdateFieldErrors(sFieldValid, "valid");
+    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
+    if ("" == sFieldErrors)
+    {
+      var sImgStatus = sc_img_status_ok;
+      scAjaxHideErrorDisplay(sFieldValid);
+    }
+    else
+    {
+      var sImgStatus = sc_img_status_err;
+      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+    }
+    var $oImg = $('#id_sc_status_' + sFieldValid);
+    if (0 < $oImg.length)
+    {
+      $oImg.attr('src', sImgStatus).css('display', '');
+    }
+    scAjaxShowDebug();
+    scAjaxSetMaster();
+    scAjaxSetFocus();
+  } // do_ajax_cad_costumers_mob_validate_frequencytype_cb
 
   // ---------- Validate rg
   function do_ajax_cad_costumers_mob_validate_rg()
@@ -3128,43 +3202,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxSetFocus();
   } // do_ajax_cad_costumers_mob_validate_nationality_cb
 
-  // ---------- Validate frequencytype
-  function do_ajax_cad_costumers_mob_validate_frequencytype()
-  {
-    var nomeCampo_frequencytype = "frequencytype";
-    var var_frequencytype = scAjaxGetFieldRadio(nomeCampo_frequencytype);
-    var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_cad_costumers_mob_validate_frequencytype(var_frequencytype, var_script_case_init, do_ajax_cad_costumers_mob_validate_frequencytype_cb);
-  } // do_ajax_cad_costumers_mob_validate_frequencytype
-
-  function do_ajax_cad_costumers_mob_validate_frequencytype_cb(sResp)
-  {
-    oResp = scAjaxResponse(sResp);
-    scAjaxRedir();
-    sFieldValid = "frequencytype";
-    scEventControl_onBlur(sFieldValid);
-    scAjaxUpdateFieldErrors(sFieldValid, "valid");
-    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
-    if ("" == sFieldErrors)
-    {
-      var sImgStatus = sc_img_status_ok;
-      scAjaxHideErrorDisplay(sFieldValid);
-    }
-    else
-    {
-      var sImgStatus = sc_img_status_err;
-      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
-    }
-    var $oImg = $('#id_sc_status_' + sFieldValid);
-    if (0 < $oImg.length)
-    {
-      $oImg.attr('src', sImgStatus).css('display', '');
-    }
-    scAjaxShowDebug();
-    scAjaxSetMaster();
-    scAjaxSetFocus();
-  } // do_ajax_cad_costumers_mob_validate_frequencytype_cb
-
   // ---------- Validate holdertype
   function do_ajax_cad_costumers_mob_validate_holdertype()
   {
@@ -3201,43 +3238,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxSetMaster();
     scAjaxSetFocus();
   } // do_ajax_cad_costumers_mob_validate_holdertype_cb
-
-  // ---------- Validate aggregate
-  function do_ajax_cad_costumers_mob_validate_aggregate()
-  {
-    var nomeCampo_aggregate = "aggregate";
-    var var_aggregate = scAjaxGetFieldText(nomeCampo_aggregate);
-    var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_cad_costumers_mob_validate_aggregate(var_aggregate, var_script_case_init, do_ajax_cad_costumers_mob_validate_aggregate_cb);
-  } // do_ajax_cad_costumers_mob_validate_aggregate
-
-  function do_ajax_cad_costumers_mob_validate_aggregate_cb(sResp)
-  {
-    oResp = scAjaxResponse(sResp);
-    scAjaxRedir();
-    sFieldValid = "aggregate";
-    scEventControl_onBlur(sFieldValid);
-    scAjaxUpdateFieldErrors(sFieldValid, "valid");
-    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
-    if ("" == sFieldErrors)
-    {
-      var sImgStatus = sc_img_status_ok;
-      scAjaxHideErrorDisplay(sFieldValid);
-    }
-    else
-    {
-      var sImgStatus = sc_img_status_err;
-      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
-    }
-    var $oImg = $('#id_sc_status_' + sFieldValid);
-    if (0 < $oImg.length)
-    {
-      $oImg.attr('src', sImgStatus).css('display', '');
-    }
-    scAjaxShowDebug();
-    scAjaxSetMaster();
-    scAjaxSetFocus();
-  } // do_ajax_cad_costumers_mob_validate_aggregate_cb
 
   // ---------- Validate phonenumber
   function do_ajax_cad_costumers_mob_validate_phonenumber()
@@ -3312,6 +3312,43 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxSetMaster();
     scAjaxSetFocus();
   } // do_ajax_cad_costumers_mob_validate_email_cb
+
+  // ---------- Validate mobilephone
+  function do_ajax_cad_costumers_mob_validate_mobilephone()
+  {
+    var nomeCampo_mobilephone = "mobilephone";
+    var var_mobilephone = scAjaxGetFieldText(nomeCampo_mobilephone);
+    var var_script_case_init = document.F1.script_case_init.value;
+    x_ajax_cad_costumers_mob_validate_mobilephone(var_mobilephone, var_script_case_init, do_ajax_cad_costumers_mob_validate_mobilephone_cb);
+  } // do_ajax_cad_costumers_mob_validate_mobilephone
+
+  function do_ajax_cad_costumers_mob_validate_mobilephone_cb(sResp)
+  {
+    oResp = scAjaxResponse(sResp);
+    scAjaxRedir();
+    sFieldValid = "mobilephone";
+    scEventControl_onBlur(sFieldValid);
+    scAjaxUpdateFieldErrors(sFieldValid, "valid");
+    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
+    if ("" == sFieldErrors)
+    {
+      var sImgStatus = sc_img_status_ok;
+      scAjaxHideErrorDisplay(sFieldValid);
+    }
+    else
+    {
+      var sImgStatus = sc_img_status_err;
+      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+    }
+    var $oImg = $('#id_sc_status_' + sFieldValid);
+    if (0 < $oImg.length)
+    {
+      $oImg.attr('src', sImgStatus).css('display', '');
+    }
+    scAjaxShowDebug();
+    scAjaxSetMaster();
+    scAjaxSetFocus();
+  } // do_ajax_cad_costumers_mob_validate_mobilephone_cb
 
   // ---------- Validate zipcode
   function do_ajax_cad_costumers_mob_validate_zipcode()
@@ -3534,6 +3571,43 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxSetMaster();
     scAjaxSetFocus();
   } // do_ajax_cad_costumers_mob_validate_zipnumber_cb
+
+  // ---------- Validate aggregate
+  function do_ajax_cad_costumers_mob_validate_aggregate()
+  {
+    var nomeCampo_aggregate = "aggregate";
+    var var_aggregate = scAjaxGetFieldText(nomeCampo_aggregate);
+    var var_script_case_init = document.F1.script_case_init.value;
+    x_ajax_cad_costumers_mob_validate_aggregate(var_aggregate, var_script_case_init, do_ajax_cad_costumers_mob_validate_aggregate_cb);
+  } // do_ajax_cad_costumers_mob_validate_aggregate
+
+  function do_ajax_cad_costumers_mob_validate_aggregate_cb(sResp)
+  {
+    oResp = scAjaxResponse(sResp);
+    scAjaxRedir();
+    sFieldValid = "aggregate";
+    scEventControl_onBlur(sFieldValid);
+    scAjaxUpdateFieldErrors(sFieldValid, "valid");
+    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
+    if ("" == sFieldErrors)
+    {
+      var sImgStatus = sc_img_status_ok;
+      scAjaxHideErrorDisplay(sFieldValid);
+    }
+    else
+    {
+      var sImgStatus = sc_img_status_err;
+      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+    }
+    var $oImg = $('#id_sc_status_' + sFieldValid);
+    if (0 < $oImg.length)
+    {
+      $oImg.attr('src', sImgStatus).css('display', '');
+    }
+    scAjaxShowDebug();
+    scAjaxSetMaster();
+    scAjaxSetFocus();
+  } // do_ajax_cad_costumers_mob_validate_aggregate_cb
 
   // ---------- Validate observation
   function do_ajax_cad_costumers_mob_validate_observation()
@@ -3888,14 +3962,16 @@ function scJs_sweetalert_params(params) {
       return;
     }
     scAjaxHideMessage();
+    var var_facephoto = scAjaxGetFieldText("facephoto");
     var var_docnumber = scAjaxGetFieldText("docnumber");
     var var_name = scAjaxGetFieldText("name");
+    var var_frequencytype = scAjaxGetFieldRadio("frequencytype");
     var var_rg = scAjaxGetFieldText("rg");
     var var_nationality = scAjaxGetFieldText("nationality");
-    var var_frequencytype = scAjaxGetFieldRadio("frequencytype");
     var var_holdertype = scAjaxGetFieldRadio("holdertype");
     var var_phonenumber = scAjaxGetFieldText("phonenumber");
     var var_email = scAjaxGetFieldText("email");
+    var var_mobilephone = scAjaxGetFieldText("mobilephone");
     var var_zipcode = scAjaxGetFieldText("zipcode");
     var var_zipcity = scAjaxGetFieldText("zipcity");
     var var_zipstate = scAjaxGetFieldText("zipstate");
@@ -3904,6 +3980,9 @@ function scJs_sweetalert_params(params) {
     var var_zipnumber = scAjaxGetFieldText("zipnumber");
     var var_observation = scAjaxGetFieldText("observation");
     var var_idcostumer = scAjaxGetFieldText("idcostumer");
+    var var_facephoto_ul_name = scAjaxSpecCharProtect(document.F1.facephoto_ul_name.value);//.replace(/[+]/g, "__NM_PLUS__");
+    var var_facephoto_ul_type = document.F1.facephoto_ul_type.value;
+    var var_facephoto_limpa = document.F1.facephoto_limpa.checked ? "S" : "N";
     var var_nm_form_submit = document.F1.nm_form_submit.value;
     var var_nmgp_url_saida = document.F1.nmgp_url_saida.value;
     var var_nmgp_opcao = document.F1.nmgp_opcao.value;
@@ -3913,7 +3992,7 @@ function scJs_sweetalert_params(params) {
     var var_script_case_init = document.F1.script_case_init.value;
     var var_csrf_token = scAjaxGetFieldText("csrf_token");
     scAjaxProcOn();
-    x_ajax_cad_costumers_mob_submit_form(var_docnumber, var_name, var_rg, var_nationality, var_frequencytype, var_holdertype, var_phonenumber, var_email, var_zipcode, var_zipcity, var_zipstate, var_zipdistrict, var_zipstreet, var_zipnumber, var_observation, var_idcostumer, var_nm_form_submit, var_nmgp_url_saida, var_nmgp_opcao, var_nmgp_ancora, var_nmgp_num_form, var_nmgp_parms, var_script_case_init, var_csrf_token, do_ajax_cad_costumers_mob_submit_form_cb);
+    x_ajax_cad_costumers_mob_submit_form(var_facephoto, var_docnumber, var_name, var_frequencytype, var_rg, var_nationality, var_holdertype, var_phonenumber, var_email, var_mobilephone, var_zipcode, var_zipcity, var_zipstate, var_zipdistrict, var_zipstreet, var_zipnumber, var_observation, var_idcostumer, var_facephoto_ul_name, var_facephoto_ul_type, var_facephoto_limpa, var_nm_form_submit, var_nmgp_url_saida, var_nmgp_opcao, var_nmgp_ancora, var_nmgp_num_form, var_nmgp_parms, var_script_case_init, var_csrf_token, do_ajax_cad_costumers_mob_submit_form_cb);
   } // do_ajax_cad_costumers_mob_submit_form
 
   function do_ajax_cad_costumers_mob_submit_form_cb(sResp)
@@ -3937,21 +4016,23 @@ function scJs_sweetalert_params(params) {
       scResetFormChanges();
       scAjaxShowMessage("success");
       scAjaxHideErrorDisplay("table");
+      scAjaxHideErrorDisplay("facephoto");
       scAjaxHideErrorDisplay("docnumber");
       scAjaxHideErrorDisplay("name");
+      scAjaxHideErrorDisplay("frequencytype");
       scAjaxHideErrorDisplay("rg");
       scAjaxHideErrorDisplay("nationality");
-      scAjaxHideErrorDisplay("frequencytype");
       scAjaxHideErrorDisplay("holdertype");
-      scAjaxHideErrorDisplay("aggregate");
       scAjaxHideErrorDisplay("phonenumber");
       scAjaxHideErrorDisplay("email");
+      scAjaxHideErrorDisplay("mobilephone");
       scAjaxHideErrorDisplay("zipcode");
       scAjaxHideErrorDisplay("zipcity");
       scAjaxHideErrorDisplay("zipstate");
       scAjaxHideErrorDisplay("zipdistrict");
       scAjaxHideErrorDisplay("zipstreet");
       scAjaxHideErrorDisplay("zipnumber");
+      scAjaxHideErrorDisplay("aggregate");
       scAjaxHideErrorDisplay("observation");
       scLigEditLookupCall();
 <?php
@@ -3976,6 +4057,13 @@ if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['das
         self.parent.tb_remove();
         return;
       }
+      if (document.F1.facephoto_limpa && document.F1.facephoto_limpa.checked)
+      {
+        var oImgTemp = {0: {"value" : ""}};
+        scAjaxSetFieldImage("facephoto", oImgTemp, "", "", "", "N");
+      }
+    document.F1.facephoto_ul_name.value = '';
+    document.F1.facephoto_ul_type.value = '';
     }
     scAjaxShowDebug();
     scAjaxSetDisplay();
@@ -4016,21 +4104,23 @@ if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers_mob']['das
     }
     scAjaxHideMessage();
     scAjaxHideErrorDisplay("table");
+    scAjaxHideErrorDisplay("facephoto");
     scAjaxHideErrorDisplay("docnumber");
     scAjaxHideErrorDisplay("name");
+    scAjaxHideErrorDisplay("frequencytype");
     scAjaxHideErrorDisplay("rg");
     scAjaxHideErrorDisplay("nationality");
-    scAjaxHideErrorDisplay("frequencytype");
     scAjaxHideErrorDisplay("holdertype");
-    scAjaxHideErrorDisplay("aggregate");
     scAjaxHideErrorDisplay("phonenumber");
     scAjaxHideErrorDisplay("email");
+    scAjaxHideErrorDisplay("mobilephone");
     scAjaxHideErrorDisplay("zipcode");
     scAjaxHideErrorDisplay("zipcity");
     scAjaxHideErrorDisplay("zipstate");
     scAjaxHideErrorDisplay("zipdistrict");
     scAjaxHideErrorDisplay("zipstreet");
     scAjaxHideErrorDisplay("zipnumber");
+    scAjaxHideErrorDisplay("aggregate");
     scAjaxHideErrorDisplay("observation");
     var var_idcostumer = document.F2.idcostumer.value;
     var var_nm_form_submit = document.F2.nm_form_submit.value;
@@ -4095,6 +4185,8 @@ foreach ($this->Ini->sc_lig_iframe as $tmp_i => $tmp_v)
         document.getElementById('nmsc_iframe_liga_sub_aggregate_mob').style.height = "1";
         document.getElementById('nmsc_iframe_liga_sub_aggregate_mob').style.display = "none";
     }
+    document.F1.facephoto_ul_name.value = '';
+    document.F1.facephoto_ul_type.value = '';
     scAjaxSetBtnVars();
     $('.sc-js-ui-statusimg').css('display', 'none');
     scAjaxAlert(do_ajax_cad_costumers_mob_navigate_form_cb_after_alert);
@@ -4175,46 +4267,49 @@ if ($this->Embutida_form)
 
   var ajax_field_list = new Array();
   var ajax_field_Dt_Hr = new Array();
-  ajax_field_list[0] = "docnumber";
-  ajax_field_list[1] = "name";
-  ajax_field_list[2] = "rg";
-  ajax_field_list[3] = "nationality";
-  ajax_field_list[4] = "frequencytype";
-  ajax_field_list[5] = "holdertype";
-  ajax_field_list[6] = "aggregate";
+  ajax_field_list[0] = "facephoto";
+  ajax_field_list[1] = "docnumber";
+  ajax_field_list[2] = "name";
+  ajax_field_list[3] = "frequencytype";
+  ajax_field_list[4] = "rg";
+  ajax_field_list[5] = "nationality";
+  ajax_field_list[6] = "holdertype";
   ajax_field_list[7] = "phonenumber";
   ajax_field_list[8] = "email";
-  ajax_field_list[9] = "zipcode";
-  ajax_field_list[10] = "zipcity";
-  ajax_field_list[11] = "zipstate";
-  ajax_field_list[12] = "zipdistrict";
-  ajax_field_list[13] = "zipstreet";
-  ajax_field_list[14] = "zipnumber";
-  ajax_field_list[15] = "observation";
+  ajax_field_list[9] = "mobilephone";
+  ajax_field_list[10] = "zipcode";
+  ajax_field_list[11] = "zipcity";
+  ajax_field_list[12] = "zipstate";
+  ajax_field_list[13] = "zipdistrict";
+  ajax_field_list[14] = "zipstreet";
+  ajax_field_list[15] = "zipnumber";
+  ajax_field_list[16] = "aggregate";
+  ajax_field_list[17] = "observation";
 
   var ajax_block_list = new Array();
   ajax_block_list[0] = "0";
   ajax_block_list[1] = "1";
   ajax_block_list[2] = "2";
   ajax_block_list[3] = "3";
-  ajax_block_list[4] = "4";
 
   var ajax_error_list = {
+    "facephoto": {"label": "Foto", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "docnumber": {"label": "CPF", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "name": {"label": "Nome", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
+    "frequencytype": {"label": "Mensalista", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "rg": {"label": "RG", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "nationality": {"label": "Nacionalidade", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "frequencytype": {"label": "Mensalista", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "holdertype": {"label": "Titular", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "aggregate": {"label": "Agregado", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "phonenumber": {"label": "Telefone", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "email": {"label": "Email", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
+    "mobilephone": {"label": "Celular", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "zipcode": {"label": "CEP", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "zipcity": {"label": "Cidade", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "zipstate": {"label": "Estado", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "zipdistrict": {"label": "Bairro", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "zipstreet": {"label": "Logradouro", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "zipnumber": {"label": "Número", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
+    "aggregate": {"label": "Agregado", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
     "observation": {"label": "Observação", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0}
   };
   var ajax_error_timeout = 0;
@@ -4223,88 +4318,94 @@ if ($this->Embutida_form)
     "0": "hidden_bloco_0",
     "1": "hidden_bloco_1",
     "2": "hidden_bloco_2",
-    "3": "hidden_bloco_3",
-    "4": "hidden_bloco_4"
+    "3": "hidden_bloco_3"
   };
 
   var ajax_block_tab = {
     "hidden_bloco_0": "",
     "hidden_bloco_1": "",
     "hidden_bloco_2": "",
-    "hidden_bloco_3": "",
-    "hidden_bloco_4": ""
+    "hidden_bloco_3": ""
   };
 
   var ajax_field_mult = {
+    "facephoto": new Array(),
     "docnumber": new Array(),
     "name": new Array(),
+    "frequencytype": new Array(),
     "rg": new Array(),
     "nationality": new Array(),
-    "frequencytype": new Array(),
     "holdertype": new Array(),
-    "aggregate": new Array(),
     "phonenumber": new Array(),
     "email": new Array(),
+    "mobilephone": new Array(),
     "zipcode": new Array(),
     "zipcity": new Array(),
     "zipstate": new Array(),
     "zipdistrict": new Array(),
     "zipstreet": new Array(),
     "zipnumber": new Array(),
+    "aggregate": new Array(),
     "observation": new Array()
   };
+  ajax_field_mult["facephoto"][1] = "facephoto";
   ajax_field_mult["docnumber"][1] = "docnumber";
   ajax_field_mult["name"][1] = "name";
+  ajax_field_mult["frequencytype"][1] = "frequencytype";
   ajax_field_mult["rg"][1] = "rg";
   ajax_field_mult["nationality"][1] = "nationality";
-  ajax_field_mult["frequencytype"][1] = "frequencytype";
   ajax_field_mult["holdertype"][1] = "holdertype";
-  ajax_field_mult["aggregate"][1] = "aggregate";
   ajax_field_mult["phonenumber"][1] = "phonenumber";
   ajax_field_mult["email"][1] = "email";
+  ajax_field_mult["mobilephone"][1] = "mobilephone";
   ajax_field_mult["zipcode"][1] = "zipcode";
   ajax_field_mult["zipcity"][1] = "zipcity";
   ajax_field_mult["zipstate"][1] = "zipstate";
   ajax_field_mult["zipdistrict"][1] = "zipdistrict";
   ajax_field_mult["zipstreet"][1] = "zipstreet";
   ajax_field_mult["zipnumber"][1] = "zipnumber";
+  ajax_field_mult["aggregate"][1] = "aggregate";
   ajax_field_mult["observation"][1] = "observation";
 
   var ajax_field_id = {
+    "facephoto": new Array("hidden_field_label_facephoto", "hidden_field_data_facephoto"),
     "docnumber": new Array("hidden_field_label_docnumber", "hidden_field_data_docnumber"),
     "name": new Array("hidden_field_label_name", "hidden_field_data_name"),
+    "frequencytype": new Array("hidden_field_label_frequencytype", "hidden_field_data_frequencytype"),
     "rg": new Array("hidden_field_label_rg", "hidden_field_data_rg"),
     "nationality": new Array("hidden_field_label_nationality", "hidden_field_data_nationality"),
-    "frequencytype": new Array("hidden_field_label_frequencytype", "hidden_field_data_frequencytype"),
     "holdertype": new Array("hidden_field_label_holdertype", "hidden_field_data_holdertype"),
-    "aggregate": new Array("hidden_field_label_aggregate", "hidden_field_data_aggregate"),
     "phonenumber": new Array("hidden_field_label_phonenumber", "hidden_field_data_phonenumber"),
     "email": new Array("hidden_field_label_email", "hidden_field_data_email"),
+    "mobilephone": new Array("hidden_field_label_mobilephone", "hidden_field_data_mobilephone"),
     "zipcode": new Array("hidden_field_label_zipcode", "hidden_field_data_zipcode"),
     "zipcity": new Array("hidden_field_label_zipcity", "hidden_field_data_zipcity"),
     "zipstate": new Array("hidden_field_label_zipstate", "hidden_field_data_zipstate"),
     "zipdistrict": new Array("hidden_field_label_zipdistrict", "hidden_field_data_zipdistrict"),
     "zipstreet": new Array("hidden_field_label_zipstreet", "hidden_field_data_zipstreet"),
     "zipnumber": new Array("hidden_field_label_zipnumber", "hidden_field_data_zipnumber"),
+    "aggregate": new Array("hidden_field_label_aggregate", "hidden_field_data_aggregate"),
     "observation": new Array("hidden_field_label_observation", "hidden_field_data_observation")
   };
 
   var ajax_read_only = {
+    "facephoto": "off",
     "docnumber": "off",
     "name": "off",
+    "frequencytype": "off",
     "rg": "off",
     "nationality": "off",
-    "frequencytype": "off",
     "holdertype": "off",
-    "aggregate": "off",
     "phonenumber": "off",
     "email": "off",
+    "mobilephone": "off",
     "zipcode": "off",
     "zipcity": "off",
     "zipstate": "off",
     "zipdistrict": "off",
     "zipstreet": "off",
     "zipnumber": "off",
+    "aggregate": "off",
     "observation": "off"
   };
   var bRefreshTable = false;
@@ -4317,6 +4418,22 @@ if ($this->Embutida_form)
   {
     var aValue = new Array();
     aValue[0] = {"value" : sValue};
+    if ("facephoto" == sIndex)
+    {
+      updateHeaderFooter(sIndex, aValue);
+
+      if ($("#id_sc_field_" + sIndex).length) {
+          $("#id_sc_field_" + sIndex).change();
+      }
+      else if (document.F1.elements[sIndex]) {
+          $(document.F1.elements[sIndex]).change();
+      }
+      else if (document.F1.elements[sFieldName + "[]"]) {
+          $(document.F1.elements[sFieldName + "[]"]).change();
+      }
+
+      return;
+    }
     if ("docnumber" == sIndex)
     {
       scAjaxSetFieldText(sIndex, aValue, "", "", true);
@@ -4337,6 +4454,23 @@ if ($this->Embutida_form)
     if ("name" == sIndex)
     {
       scAjaxSetFieldText(sIndex, aValue, "", "", true);
+      updateHeaderFooter(sIndex, aValue);
+
+      if ($("#id_sc_field_" + sIndex).length) {
+          $("#id_sc_field_" + sIndex).change();
+      }
+      else if (document.F1.elements[sIndex]) {
+          $(document.F1.elements[sIndex]).change();
+      }
+      else if (document.F1.elements[sFieldName + "[]"]) {
+          $(document.F1.elements[sFieldName + "[]"]).change();
+      }
+
+      return;
+    }
+    if ("frequencytype" == sIndex)
+    {
+      scAjaxSetFieldRadio(sIndex, aValue, null, 1, null, "", false, true);
       updateHeaderFooter(sIndex, aValue);
 
       if ($("#id_sc_field_" + sIndex).length) {
@@ -4385,43 +4519,9 @@ if ($this->Embutida_form)
 
       return;
     }
-    if ("frequencytype" == sIndex)
-    {
-      scAjaxSetFieldRadio(sIndex, aValue, null, 1, null, "", false, true);
-      updateHeaderFooter(sIndex, aValue);
-
-      if ($("#id_sc_field_" + sIndex).length) {
-          $("#id_sc_field_" + sIndex).change();
-      }
-      else if (document.F1.elements[sIndex]) {
-          $(document.F1.elements[sIndex]).change();
-      }
-      else if (document.F1.elements[sFieldName + "[]"]) {
-          $(document.F1.elements[sFieldName + "[]"]).change();
-      }
-
-      return;
-    }
     if ("holdertype" == sIndex)
     {
       scAjaxSetFieldRadio(sIndex, aValue, null, 1, null, "", false, true);
-      updateHeaderFooter(sIndex, aValue);
-
-      if ($("#id_sc_field_" + sIndex).length) {
-          $("#id_sc_field_" + sIndex).change();
-      }
-      else if (document.F1.elements[sIndex]) {
-          $(document.F1.elements[sIndex]).change();
-      }
-      else if (document.F1.elements[sFieldName + "[]"]) {
-          $(document.F1.elements[sFieldName + "[]"]).change();
-      }
-
-      return;
-    }
-    if ("aggregate" == sIndex)
-    {
-      scAjaxSetFieldText(sIndex, aValue, "", "", true);
       updateHeaderFooter(sIndex, aValue);
 
       if ($("#id_sc_field_" + sIndex).length) {
@@ -4454,6 +4554,23 @@ if ($this->Embutida_form)
       return;
     }
     if ("email" == sIndex)
+    {
+      scAjaxSetFieldText(sIndex, aValue, "", "", true);
+      updateHeaderFooter(sIndex, aValue);
+
+      if ($("#id_sc_field_" + sIndex).length) {
+          $("#id_sc_field_" + sIndex).change();
+      }
+      else if (document.F1.elements[sIndex]) {
+          $(document.F1.elements[sIndex]).change();
+      }
+      else if (document.F1.elements[sFieldName + "[]"]) {
+          $(document.F1.elements[sFieldName + "[]"]).change();
+      }
+
+      return;
+    }
+    if ("mobilephone" == sIndex)
     {
       scAjaxSetFieldText(sIndex, aValue, "", "", true);
       updateHeaderFooter(sIndex, aValue);
@@ -4556,6 +4673,23 @@ if ($this->Embutida_form)
       return;
     }
     if ("zipnumber" == sIndex)
+    {
+      scAjaxSetFieldText(sIndex, aValue, "", "", true);
+      updateHeaderFooter(sIndex, aValue);
+
+      if ($("#id_sc_field_" + sIndex).length) {
+          $("#id_sc_field_" + sIndex).change();
+      }
+      else if (document.F1.elements[sIndex]) {
+          $(document.F1.elements[sIndex]).change();
+      }
+      else if (document.F1.elements[sFieldName + "[]"]) {
+          $(document.F1.elements[sFieldName + "[]"]).change();
+      }
+
+      return;
+    }
+    if ("aggregate" == sIndex)
     {
       scAjaxSetFieldText(sIndex, aValue, "", "", true);
       updateHeaderFooter(sIndex, aValue);

@@ -519,8 +519,7 @@ $_SESSION['scriptcase']['sec_form_add_users']['contr_erro'] = 'off';
           include_once($this->Ini->path_lib_php . "nm_gp_config_btn.php");
       }
       include("../_lib/css/" . $this->Ini->str_schema_all . "_form.php");
-      $this->Ini->Str_btn_form = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
-      $_SESSION['scriptcase']['str_button_all'] = $this->Ini->Str_btn_form;
+      $this->Ini->Str_btn_form    = trim($str_button);
       include($this->Ini->path_btn . $this->Ini->Str_btn_form . '/' . $this->Ini->Str_btn_form . $_SESSION['scriptcase']['reg_conf']['css_dir'] . '.php');
       $_SESSION['scriptcase']['css_form_help'] = '../_lib/css/' . $this->Ini->str_schema_all . "_form.css";
       $_SESSION['scriptcase']['css_form_help_dir'] = '../_lib/css/' . $this->Ini->str_schema_all . "_form" . $_SESSION['scriptcase']['reg_conf']['css_dir'] . ".css";
@@ -1997,20 +1996,20 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               }
               $this->NM_ajax_info['errList']['pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 32 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
-          if (NM_utf8_strlen($this->pswd) < 5) 
+          if (NM_utf8_strlen($this->pswd) < 4) 
           { 
               $hasError = true;
-              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd'] . " " . $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd'] . " " . $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['pswd']))
               {
                   $Campos_Erros['pswd'] = array();
               }
-              $Campos_Erros['pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $Campos_Erros['pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr'];
               if (!isset($this->NM_ajax_info['errList']['pswd']) || !is_array($this->NM_ajax_info['errList']['pswd']))
               {
                   $this->NM_ajax_info['errList']['pswd'] = array();
               }
-              $this->NM_ajax_info['errList']['pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
       } 
         if ($hasError) {
@@ -2050,35 +2049,35 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       } 
       if ($this->nmgp_opcao == "incluir")
       { 
-          if (NM_utf8_strlen($this->confirm_pswd) > 50) 
+          if (NM_utf8_strlen($this->confirm_pswd) > 32) 
           { 
               $hasError = true;
-              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd_confirm'] . " " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd_confirm'] . " " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 32 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['confirm_pswd']))
               {
                   $Campos_Erros['confirm_pswd'] = array();
               }
-              $Campos_Erros['confirm_pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $Campos_Erros['confirm_pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 32 " . $this->Ini->Nm_lang['lang_errm_nchr'];
               if (!isset($this->NM_ajax_info['errList']['confirm_pswd']) || !is_array($this->NM_ajax_info['errList']['confirm_pswd']))
               {
                   $this->NM_ajax_info['errList']['confirm_pswd'] = array();
               }
-              $this->NM_ajax_info['errList']['confirm_pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['confirm_pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 32 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
-          if (NM_utf8_strlen($this->confirm_pswd) < 5) 
+          if (NM_utf8_strlen($this->confirm_pswd) < 4) 
           { 
               $hasError = true;
-              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd_confirm'] . " " . $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd_confirm'] . " " . $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['confirm_pswd']))
               {
                   $Campos_Erros['confirm_pswd'] = array();
               }
-              $Campos_Erros['confirm_pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $Campos_Erros['confirm_pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr'];
               if (!isset($this->NM_ajax_info['errList']['confirm_pswd']) || !is_array($this->NM_ajax_info['errList']['confirm_pswd']))
               {
                   $this->NM_ajax_info['errList']['confirm_pswd'] = array();
               }
-              $this->NM_ajax_info['errList']['confirm_pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['confirm_pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
       } 
         if ($hasError) {
@@ -4450,10 +4449,10 @@ sc_send_mail_api(array(
 				'gateway'       => 'smtp',
 				'smtp_server'   => 'email-ssl.com.br',
 				'smtp_port'     => '465',
-				'smtp_user'     => 'noreply@tsadobrasil.com.br',
-				'smtp_password' => 'tsa110noreply',
-				'from_email'    => 'tsadobrasil.com.br',
-				'from_name'    => 'noreply@tsadobrasil.com.br',
+				'smtp_user'     => 'noreply@fanchini.com.br',
+				'smtp_password' => 'rjfq7324NEW@$',
+				'from_email'    => 'noreply@fanchini.com.br',
+				'from_name'    => 'noreply@fanchini.com.br',
 		],
     'message' => [
 			'html'          => sprintf( $this->Ini->Nm_lang['lang_new_user_sign_in'] , $this->name , $this->email , $this->email ),
@@ -4505,10 +4504,10 @@ sc_send_mail_api(array(
 				'gateway'       => 'smtp',
 				'smtp_server'   => 'email-ssl.com.br',
 				'smtp_port'     => '465',
-				'smtp_user'     => 'noreply@tsadobrasil.com.br',
-				'smtp_password' => 'tsa110noreply',
-				'from_email'    => 'tsadobrasil.com.br',
-				'from_name'    => 'noreply@tsadobrasil.com.br',
+				'smtp_user'     => 'noreply@fanchini.com.br',
+				'smtp_password' => 'rjfq7324NEW@$',
+				'from_email'    => 'noreply@fanchini.com.br',
+				'from_name'    => 'noreply@fanchini.com.br',
 		],
     'message' => [
 			'html'          => sprintf( $this->Ini->Nm_lang['lang_send_actcode_newuser'] , $message),
@@ -5691,22 +5690,12 @@ setTimeout(function() { document.Fredir.submit(); }, 250);
 ?>
     <tr><td class="sc-app-header">
 <style>
-#lin1_col1 { padding-left:9px; padding-top:7px;  height:27px; overflow:hidden; text-align:left;}			 
-#lin1_col2 { padding-right:9px; padding-top:7px; height:27px; text-align:right; overflow:hidden;   font-size:12px; font-weight:normal;}
+    .scMenuTHeaderFont img, .scGridHeaderFont img , .scFormHeaderFont img , .scTabHeaderFont img , .scContainerHeaderFont img , .scFilterHeaderFont img { height:23px;}
 </style>
-
-<div style="width: 100%">
- <div class="scFormHeader" style="height:11px; display: block; border-width:0px; "></div>
- <div style="height:37px; border-width:0px 0px 1px 0px;  border-style: dashed; border-color:#ddd; display: block">
- 	<table style="width:100%; border-collapse:collapse; padding:0;">
-    	<tr>
-        	<td id="lin1_col1" class="scFormHeaderFont"><span></span></td>
-            <td id="lin1_col2" class="scFormHeaderFont"><span></span></td>
-        </tr>
-    </table>		 
- </div>
+<div class="scFormHeader" style="height: 54px; padding: 17px 15px; box-sizing: border-box;margin: -1px 0px 0px 0px;width: 100%;">
+    <div class="scFormHeaderFont" style="float: left; text-transform: uppercase;"><?php if ($this->nmgp_opcao == "novo") { echo "" . $this->Ini->Nm_lang['lang_list_users'] . ""; } else { echo "" . $this->Ini->Nm_lang['lang_list_users'] . ""; } ?></div>
+    <div class="scFormHeaderFont" style="float: right;"><?php echo date($this->dateDefaultFormat()); ?></div>
 </div>
-
     </td></tr>
 <?php
     }

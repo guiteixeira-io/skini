@@ -346,15 +346,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
@@ -387,11 +387,13 @@ function actionBar_getStateHide($buttonName)
          $this->docnumber = $rs->fields[1] ;  
          $this->phonenumber = $rs->fields[2] ;  
          $this->phonenumber = (string)$this->phonenumber;
-         $this->email = $rs->fields[3] ;  
+         $this->mobilephone = $rs->fields[3] ;  
+         $this->mobilephone = (string)$this->mobilephone;
+         $this->email = $rs->fields[4] ;  
          $this->email = (string)$this->email;
-         $this->holdertype = $rs->fields[4] ;  
-         $this->frequencytype = $rs->fields[5] ;  
-         $this->idcostumer = $rs->fields[6] ;  
+         $this->holdertype = $rs->fields[5] ;  
+         $this->frequencytype = $rs->fields[6] ;  
+         $this->idcostumer = $rs->fields[7] ;  
          $this->idcostumer = (string)$this->idcostumer;
      if ($this->groupby_show == "S") {
          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'])
@@ -684,6 +686,34 @@ function actionBar_getStateHide($buttonName)
               }
               $this->Xls_col++;
           }
+          $SC_Label = (isset($this->New_label['mobilephone'])) ? $this->New_label['mobilephone'] : "Celular"; 
+          if ($Cada_col == "mobilephone" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $this->count_span++;
+              $current_cell_ref = $this->calc_cell($this->Xls_col);
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'])
+              { 
+                  $this->arr_export['label'][$this->Xls_col]['data']     = $SC_Label;
+                  $this->arr_export['label'][$this->Xls_col]['align']    = "right";
+                  $this->arr_export['label'][$this->Xls_col]['autosize'] = "s";
+                  $this->arr_export['label'][$this->Xls_col]['bold']     = "s";
+              }
+              else
+              { 
+                  if ($this->Use_phpspreadsheet) {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                  }
+                  else {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, PHPExcel_Cell_DataType::TYPE_STRING);
+                  }
+                  $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getFont()->setBold(true);
+                  $this->Nm_ActiveSheet->getColumnDimension($current_cell_ref)->setAutoSize(true);
+              }
+              $this->Xls_col++;
+          }
           $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email"; 
           if ($Cada_col == "email" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
@@ -834,7 +864,7 @@ function actionBar_getStateHide($buttonName)
       if (!empty($this->phonenumber))
       {
              $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
-             $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+             $this->nm_gera_mask($this->phonenumber, "(xx) xxxx-xxxx"); 
       }
          $this->phonenumber = NM_charset_to_utf8($this->phonenumber);
          if ($this->Use_phpspreadsheet) {
@@ -842,6 +872,29 @@ function actionBar_getStateHide($buttonName)
          }
          else {
              $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->phonenumber, PHPExcel_Cell_DataType::TYPE_STRING);
+         }
+         $this->Xls_col++;
+   }
+   //----- mobilephone
+   function NM_export_mobilephone()
+   {
+         $current_cell_ref = $this->calc_cell($this->Xls_col);
+         if (!isset($this->NM_ctrl_style[$current_cell_ref])) {
+             $this->NM_ctrl_style[$current_cell_ref]['ini'] = $this->Xls_row;
+             $this->NM_ctrl_style[$current_cell_ref]['align'] = "RIGHT"; 
+         }
+         $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
+      if (!empty($this->mobilephone))
+      {
+             $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+             $this->nm_gera_mask($this->mobilephone, "(xx) x xxxx-xxxx"); 
+      }
+         $this->mobilephone = NM_charset_to_utf8($this->mobilephone);
+         if ($this->Use_phpspreadsheet) {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->mobilephone, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+         }
+         else {
+             $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $this->mobilephone, PHPExcel_Cell_DataType::TYPE_STRING);
          }
          $this->Xls_col++;
    }
@@ -943,10 +996,25 @@ function actionBar_getStateHide($buttonName)
       if (!empty($this->phonenumber))
       {
          $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
-         $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+         $this->nm_gera_mask($this->phonenumber, "(xx) xxxx-xxxx"); 
       }
          $this->phonenumber = NM_charset_to_utf8($this->phonenumber);
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->phonenumber;
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "right";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "char";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "";
+         $this->Xls_col++;
+   }
+   //----- mobilephone
+   function NM_sub_cons_mobilephone()
+   {
+      if (!empty($this->mobilephone))
+      {
+         $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+         $this->nm_gera_mask($this->mobilephone, "(xx) x xxxx-xxxx"); 
+      }
+         $this->mobilephone = NM_charset_to_utf8($this->mobilephone);
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->mobilephone;
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "right";
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "char";
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "";

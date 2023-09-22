@@ -291,8 +291,8 @@ class sub_aggregate_ini
       $this->nm_dt_criacao   = "20230625"; 
       $this->nm_hr_criacao   = "173305"; 
       $this->nm_autor_alt    = "admin"; 
-      $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "125228"; 
+      $this->nm_dt_ult_alt   = "20230920"; 
+      $this->nm_hr_ult_alt   = "130920"; 
       list($NM_usec, $NM_sec) = explode(" ", microtime()); 
       $this->nm_timestamp    = (float) $NM_sec; 
       $this->nm_app_version  = "1.0.0"; 
@@ -1089,7 +1089,7 @@ class sub_aggregate_ini
       $this->nm_bases_odbc       = array("odbc");
       $this->nm_bases_progress   = array("progress", "pdo_progress_odbc");
       $this->nm_bases_all        = array_merge($this->nm_bases_access, $this->nm_bases_ibase, $this->nm_bases_mysql, $this->nm_bases_postgres, $this->nm_bases_sqlite, $this->nm_bases_sybase, $this->nm_bases_vfp, $this->nm_bases_odbc, $this->nm_bases_progress);
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1D9XsDQFUHINaVWBODMvOZSJqH5FqVEBiHQNmZ1BOHANOHQF7DMBYHArCDWF/VoBiDcJUZSX7Z1BYHuFaDMvOVIBsDWXCDoJsDcBwH9B/Z1rYHQJwHgBeHEJGDuJeZuJeD9NwDQJsHIvsV5BOHgrKVcB/DWF/VEX7DcFYZSB/HAN7HQJsHgNKHArCDWFqHIJsD9XsZ9JeD1BeD5F7DMvmVcrsDWXCDoraDcNwH9B/HAN7D5XGDEBOZSXeV5XCZuJsDcBwDuFaHAveD5NUHgNKDkBOV5FYHMBiHQFYH9FaD1rwZMFaDMBYVkJqV5FaDoraDcBwZSX7HIrwV5BOHgrKVcBODuX7VoB/D9BiZ1F7D1zGV5FUDErKHEFiDuJeDoBOHQJKDQJsZ1vCV5FGHuNOV9FeDWXCVoX7HQXGZSB/HArYD5rqHgNOVkXeHEXCDoraDcBwDQFGHIrwHQFaHgrwDkB/HEFYDoXGHQJmZ1F7Z1vmD5rqDEBOHArCDWF/HMBqHQJeH9BiZ1BYHuX7HgvOVIBsV5FYHMraHQFYZkFGD1rKD5JwHgBOHArCV5B3ZuJeHQXGDuFaHIBeHuBODMvsVcXKHEF/HMF7HQFYZkFGD1zGZMBqDMveHArsDWFqDoJsDcJUZSX7HIBeD5BqHgvsZSJ3H5FqHMBOHQBqZSBODSNOHQNUHgBeVkJqH5FYHIFUHQXGDuBqD1BeHuX7DMvmVIBsV5F/VoBiHQFYZ1BODSrYHuX7HgveVkJqH5F/HMBqHQXGDuFaZ1BYHQrqDMBYVIBsDuFqHMB/DcBwH9B/HIrwV5JeDMBYDkBsH5FYHIF7HQJeH9FUHIrKHuJeDMBYV9FeDuX7HIrqHQFYZ1BOHArKHuJsHgNOZSJqDuJeHIrqHQXGDQFUD1BOVWBqDMvODkB/HEFYHMJeHQFYZkBiD1rKHuBOHgNOHErCV5FqHIXGDcJUZSX7HIBeD5BqHgvsZSJ3H5FqVoFGDcBqH9BOZ1BeD5BqDMBYHEJGH5F/VoJeDcXOZSBiD1BOVWFaDMrwDkB/DWXCVoX7D9BsH9B/HIBeD5XGDMBYHEXeV5B7DoNUHQXsH9X7DSBYD5rqHgrKVcFCH5B7VoraHQBiZSB/HArYZMB/HgvsHEXeDWX7VoJwDcBwDuBOZ1rwVWJeDMvsV9FiV5FYVorqD9JmZ1rqHAvsZMXGHgveHAFKV5FaZuBqD9NmZSFGHIrwV5BOHuNODkBOV5X7VENUHQFYH9FaD1rwD5rqDErKVkXeHEFqDoBOD9NmDQJsD1BeV5FUHuzGDkBOH5XKVoraDcBwH9B/HIrwV5JeDMBYDkBsH5FYDoXGDcJeZSFUZ1rwD5BOHuNODkFCH5FqVENUDcNwH9BqHIrwHQJsHgNOHENiH5F/HMXGHQFYDQBOZ1BYHuFUHgrwV9FeHEFYHMBiD9BsVIraD1rwV5X7HgBeHErsDWrGDoBOHQBiZ9XGD1BOV5JeDMvsV9BUDWXKVoFGHQJmZ1F7Z1vmD5rqDEBOHArCDWF/HIX7D9NwZ9F7HAvOVWBODMvmVcFCDWFaDoJsHQNmZSBOHIBeD5XGDMvCZSXeDWXCZuB/D9JKDQJwHABYHuJwDMvmVcFKV5BmVoBqD9BsZkFGHArKHQraHgBeHArCV5XCHIFGHQNwDQFaDSBYHQBODMzGV9FiDWXCHIJsHQXOZkFGHArKV5FUDMrYZSXeV5FqHIJsHQJeDuBOZ1vCV5Je";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1DcBwDQX7Z1N7V5FGHuBOVcBOH5B3VoX7DcNmZkFGDSrYD5XGHgBeHEFiV5B3DoF7D9XsDuFaHANKV5XGDMBYV9BUHEF/HIF7HQXOZ1X7DSNOHuBODMvCHAFKV5FqHIBiDcBiH9BiHABYHQBODMvsVcFiV5FYHIrqDcNmZ1BiHIveD5JwDMvCDkBsV5FqHIFUHQXOH9FUDSzGVWJwHgvOZSrCH5FqDoJeD9JmZ1B/D1NaD5rqHgrKHErsHEXCDoJsHQXsZSBiHANOHQF7DMNOV9FiV5X/VoFGHQXOZ1FGHAN7HuXGDMveDkFeV5FqHIXGHQFYZ9F7HANOHQNUDMBYV9FiV5FYHIF7HQXGZSBqZ1NOHuBqHgBODkBsH5FYVoX7D9JKDQX7D1BOV5FGDMzGV9BUHEF/HMX7DcFYZSBqZ1rYHQNUHgvsHEFKV5FqHMJsHQFYDQFUD1BeHuBODMzGVcFiV5FYHIXGHQBqZkBiD1rwHQJeHgBeDkFeV5B7ZuFaHQNmDQFUHAveHQXGHgvOV9FiH5FqDoJeD9JmZ1B/D1NaD5rqDErKZSXeH5FYDoFUD9NwDQJsHArYVWJsHuvmVcXKV5X7HMXGHQBqVIraZ1BeHuJwDErKVkXeV5FaVoBqD9NwH9X7HArYD5F7HgNKVcFeDWF/DoFGD9BsZ1F7HArYD5JeHgvCZSJ3V5XCVoB/D9NmDQFaZ1BYV5FUHuvmDkBOH5XKVoraD9BiVINUDSvOV5X7DErKHEFiDuJeDoBOHQJeDQBqHAvOV5JwHuBYDkFCDuX7VEF7D9XOZSB/Z1BeD5FaDEvsHEFKV5FaDoXGDcJeZSFGHANOD5BqHuzGVcrsH5XCVoBqDcBqZ1FaD1rwV5FaHgvCDkBsH5FYVoX7D9JKDQX7D1BOV5FGHuzGDkBOH5FqVoJwD9JmZ1F7Z1BeD5JeDEvsHENiV5FaHMBOHQJKDQFUHAveHQNUDMBYDkB/DWB3DoXGHQBsH9BOHArYHQrqHgBeHEFiV5B3DoF7D9XsDuFaHAveHQBqDMNOZSNiH5XCVoF7D9JmVIJsHArKV5BODEBOZSJ3HEXCHIJsD9XsZ9JeD1BeD5F7DMvmVcFiV5X7VoFGD9BiZ1B/HAN7D5BiDMBYHEXeDuFaVoBqD9NwH9X7HABYD5XGHgvsVcFCH5XCDoraHQFYZSFaHArKV5XGDErKHErCDWF/VoBiDcJUZSX7Z1BYHuFaDMvmVcFKV5BmVoBqD9BsZkFGHArKZMBODMvCHArCDWX7HMBOHQFYZ9XGHArYHuF7HuBYZSNiDWFYHMBiD9BsVIraD1rwV5X7HgBeHEBUDWF/VoB/DcXOZSX7HANOV5BOHuNODkBOV5F/VEBiDcJUZkFGHArKV5FUDMrYZSXeV5FqHIJsHQBiZ9XGHANKV5BODMvOZSJqDWB3VEFGHQNmVINUHAN7HQJwDEBODkFeH5FYVoFGHQJKDQFaHArYHuB/HgrwVcFCHEF/VoraHQBiZ1rqD1rwV5BqDEvsDkXKDWXCHMJsHQXOZSBiHAveD5NUHgNKDkBOV5FYHMBiHQBsZSBqHABYHuXGHgBeZSJ3DuJeHIF7HQNmH9BiDSzGV5BiHgrwVcFeHEFYHMBiD9BsVIraD1rwV5X7HgBeHErsHEB7VoBiHQBiDQNUZ1rKVWFU";
       $this->prep_conect();
       if (!isset($_SESSION['sc_session'][$this->sc_page]['sub_aggregate']['ordem_cmp'])) { 
           $_SESSION['sc_session'][$this->sc_page]['sub_aggregate']['ordem_cmp'] = ""; 
@@ -2306,6 +2306,33 @@ ob_start();
     if (!isset($nm_apl_dependente)) {
         $nm_apl_dependente = 0;
     }
+    $STR_lang    = (isset($_SESSION['scriptcase']['str_lang']) && !empty($_SESSION['scriptcase']['str_lang'])) ? $_SESSION['scriptcase']['str_lang'] : "pt_br";
+    if (isset($_SESSION['scriptcase']['sub_aggregate']['session_timeout']['lang'])) {
+        $STR_lang = $_SESSION['scriptcase']['sub_aggregate']['session_timeout']['lang'];
+    }
+      $STR_schema_all = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
+    $NM_arq_lang = "../_lib/lang/" . $STR_lang . ".lang.php";
+    $Nm_lang = array();
+    if (is_file($NM_arq_lang))
+    {
+        $Lixo = file($NM_arq_lang);
+        foreach ($Lixo as $Cada_lin) 
+        {
+            if (strpos($Cada_lin, "array()") === false && (trim($Cada_lin) != "<?php")  && (trim($Cada_lin) != "?" . ">"))
+            {
+                eval (str_replace("\$this->", "\$", $Cada_lin));
+            }
+        }
+    }
+    $_SESSION['scriptcase']['charset'] = "UTF-8";
+    ini_set('default_charset', $_SESSION['scriptcase']['charset']);
+    foreach ($Nm_lang as $ind => $dados)
+    {
+       if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($dados))
+       {
+           $Nm_lang[$ind] = sc_convert_encoding($dados, $_SESSION['scriptcase']['charset'], "UTF-8");
+       }
+    }
 
     if (!isset($_SESSION['sc_session'][$script_case_init]['sub_aggregate']['initialize']))
     {
@@ -2495,6 +2522,97 @@ ob_start();
         $nm_apl_dependente = 0;
     }
     $GLOBALS["NM_ERRO_IBASE"] = 0;  
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['sub_aggregate'] = "on";
+    } 
+    if (!isset($_SESSION['scriptcase']['sub_aggregate']['session_timeout']['redir']) && (!isset($_SESSION['scriptcase']['sc_apl_seg']['sub_aggregate']) || $_SESSION['scriptcase']['sc_apl_seg']['sub_aggregate'] != "on"))
+    { 
+        $NM_Mens_Erro = $Nm_lang['lang_errm_unth_user'];
+        $nm_botao_ok = ($_SESSION['sc_session'][$script_case_init]['sub_aggregate']['iframe_menu']) ? false : true;
+        if (isset($_SESSION['scriptcase']['sc_aba_iframe']))
+        {
+            foreach ($_SESSION['scriptcase']['sc_aba_iframe'] as $aba => $apls_aba)
+            {
+                if (in_array("sub_aggregate", $apls_aba))
+                {
+                    $nm_botao_ok = false;
+                     break;
+                }
+            }
+        }
+      $str_schema_app = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
+       $str_button_app = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
+       $_SESSION['scriptcase']['str_button_all'] = $str_button_app;
+    header("X-XSS-Protection: 1; mode=block");
+    header("X-Frame-Options: SAMEORIGIN");
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+            "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+
+        <HTML>
+         <HEAD>
+          <TITLE></TITLE>
+          <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
+          <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT" />
+          <META http-equiv="Last-Modified" content="<?php echo gmdate('D, d M Y H:i:s') ?> GMT" />
+          <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+          <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+          <META http-equiv="Pragma" content="no-cache" />
+          <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>          <META http-equiv="Pragma" content="no-cache"/>
+          <link rel="shortcut icon" href="../_lib/img/grp__NM__ico__NM__barraca-de-acampamento.ico">
+          <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_app ?>_form.css" />
+          <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_app ?>_form<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" />
+          <link rel="stylesheet" type="text/css" href="../_lib/buttons/<?php echo $str_button_app . '/' . $str_button_app ?>.css" />
+         </HEAD>
+         <body class="scFormPage">
+          <div class="scFormBorder">
+          <table align="center" style="width: 100%" class="scFormTable"><tr><td class="scFormDataOdd" style="padding: 15px 30px; text-align: center">
+           <?php echo $NM_Mens_Erro; ?>
+<?php
+        if ($nm_botao_ok)
+        {
+?>
+          <br />
+          <form name="Fseg" method="post" 
+                              action="<?php echo $nm_url_saida; ?>" 
+                              target="_self"> 
+           <input type="hidden" name="script_case_init" value="<?php echo $script_case_init; ?>"/> 
+           <input type="submit" name="sc_sai_seg" value="OK" class="" > 
+          </form> 
+          <script type="text/javascript">
+            function nm_move()
+            { }
+            function nm_atualiza()
+            { }
+          </script> 
+<?php
+        }
+?>
+          </td></tr></table>
+          </div>
+<?php
+       if (isset($_SESSION['scriptcase']['nm_sc_retorno']) && !empty($_SESSION['scriptcase']['nm_sc_retorno']))
+       {
+?>
+<br /><br /><br />
+<div class="scFormBorder">
+ <table align="center" style="width: 450px" class="scFormTable">
+  <tr>
+   <td class="scFormDataOdd" style="padding: 15px 30px">
+    <?php echo $Nm_lang['lang_errm_unth_hwto']; ?>
+   </td>
+  </tr>
+ </table>
+</div>
+<?php
+       }
+?>
+         </body>
+        </HTML>
+<?php
+        exit;
+    } 
     $inicial_sub_aggregate = new sub_aggregate_edit();
     $inicial_sub_aggregate->inicializa();
 

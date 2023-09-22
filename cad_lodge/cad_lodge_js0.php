@@ -1,7 +1,7 @@
 <form name="F2" method=post 
                action="./" 
                target="_self"> 
-<input type="hidden" name="idlodge" value="<?php echo $this->form_encode_input($this->nmgp_dados_form['idlodge']); ?>">
+<input type="hidden" name="idlodge_" value="<?php echo $this->form_encode_input($this->nmgp_dados_form['idlodge_']); ?>">
 <input type="hidden" name="nm_form_submit" value="1">
 <input type="hidden" name="nmgp_opcao" value="">
 <input type="hidden" name="master_nav" value="off">
@@ -18,13 +18,20 @@
 <form name="F5" method="post" 
                   action="./" 
                   target="_self"> 
-  <input type="hidden" name="nmgp_opcao" value="<?php if ($this->nm_Start_new) {echo "ini";} elseif ($this->sc_insert_on) {echo "final";} else {echo "igual";}?>"/>
-  <input type="hidden" name="nmgp_parms" value="<?php if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms'])) {echo $this->form_encode_input($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['parms']);} ?>"/>
+  <input type="hidden" name="nmgp_opcao" value="<?php if ($this->nm_Start_new) {echo "ini";} else {echo "igual";}?>"/>
+  <input type="hidden" name="nmgp_parms" value=""/>
   <input type="hidden" name="script_case_init" value="<?php echo $this->form_encode_input($this->Ini->sc_page); ?>"/> 
 </form> 
 <form name="F6" method="post" 
                   action="./" 
                   target="_self"> 
+  <input type="hidden" name="script_case_init" value="<?php echo $this->form_encode_input($this->Ini->sc_page); ?>"/> 
+</form> 
+<form name="F7" method="post" 
+                  action="./" 
+                  target="_self"> 
+  <input type="hidden" name="nmgp_opcao" value="change_qtd_line"/>
+  <input type="hidden" name="nmgp_max_line" value=""/>
   <input type="hidden" name="script_case_init" value="<?php echo $this->form_encode_input($this->Ini->sc_page); ?>"/> 
 </form> 
 <form name="FCAP" action="" method="post" target="_blank"> 
@@ -35,97 +42,9 @@
 </form> 
 <div id="id_div_process" style="display: none; margin: 10px; whitespace: nowrap" class="scFormProcessFixed"><span class="scFormProcess"><img border="0" src="<?php echo $this->Ini->path_icones; ?>/scriptcase__NM__ajax_load.gif" align="absmiddle" />&nbsp;<?php echo $this->Ini->Nm_lang['lang_othr_prcs']; ?>...</span></div>
 <div id="id_div_process_block" style="display: none; margin: 10px; whitespace: nowrap"><span class="scFormProcess"><img border="0" src="<?php echo $this->Ini->path_icones; ?>/scriptcase__NM__ajax_load.gif" align="absmiddle" />&nbsp;<?php echo $this->Ini->Nm_lang['lang_othr_prcs']; ?>...</span></div>
-<div id="id_fatal_error" class="scFormLabelOdd" style="display: none; position: absolute"></div>
+<div id="id_fatal_error" class="" style="display: none; position: absolute"></div>
 <script type="text/javascript"> 
  NM_tp_critica(1);
-function nm_gp_submit(apl_lig, apl_saida, parms, opc, target, modal_h, modal_w, apl_name) 
-{ 
-   if (target == 'modal') 
-   {
-       par_modal = '?script_case_init=<?php echo $this->form_encode_input($this->Ini->sc_page) ?>&script_case_session=<?php echo $this->form_encode_input(session_id()) ?>&nmgp_outra_jan=true&nmgp_url_saida=modal';
-       if (opc != null && opc != '') 
-       {
-           par_modal += '&nmgp_opcao=grid';
-       }
-       if (parms != null && parms != '') 
-       {
-           par_modal += '&nmgp_parms=' + parms;
-       }
-<?php
-  if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['where_detal']))
-  {
-?>  
-       parent.tb_show('', apl_lig + par_modal + '&TB_iframe=true&modal=true&height=' + modal_h + '&width=' + modal_w, '');
-<?php
-  }
-  else
-  {
-?>  
-       tb_show('', apl_lig + par_modal + '&TB_iframe=true&modal=true&height=' + modal_h + '&width=' + modal_w, '');
-<?php
-  }
-?>  
-       return;
-   }
-   document.F3.target               = "_self"; 
-   document.F3.action               = apl_lig  ;
-   document.F3.nmgp_outra_jan.value = "";
-   if (opc != null && opc != "") 
-   {
-       document.F3.nmgp_opcao.value = "grid" ;
-   }
-   else
-   {
-       document.F3.nmgp_opcao.value = "" ;
-   }
-   if (target != null && target == '_blank') 
-   {
-       document.F3.nmgp_outra_jan.value = "true" ;
-       window.open('','jan_sc','location=no,menubar=no,resizable,scrollbars,status=no,toolbar=no');
-       document.F3.target = "jan_sc";
-   }
-   if (target != null && target == 'new_tab') 
-   {
-       document.F3.nmgp_outra_jan.value = "true";
-       window.open('','jan_sc','');
-       document.F3.target = "jan_sc";
-   }
-   document.F3.nmgp_url_saida.value = apl_saida ;
-   document.F3.nmgp_parms.value     = parms ;
-   document.F3.submit() ;
-} 
-
-function sc_inline_form(seqRow, keyParams, width, height)
-{
-  var callParams = "", i, listParams = keyParams.split(",");
-  for (i = 0; i < listParams.length; i++)
-  {
-    callParams += listParams[i] + "*scin" + $("#id_sc_field_" + listParams[i] + seqRow).val() + "*scout";
-  }
-  nm_gp_submit('<?php echo $this->Ini->link_cad_lodge_inline ?>', '<?php echo $this->nm_location ?>', 'NM_btn_insert*scinN*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinN*scoutNM_btn_navega*scinN*scoutNMSC_modal*scinok*scoutsc_redir_atualiz*scinok*scoutsc_inline_call*scinY*scoutsc_seq_row*scin' + seqRow + '*scout' + callParams, '', 'modal', height, width);
-}
-
-function sc_inline_form_add(width, height)
-{
-  nm_gp_submit('<?php echo $this->Ini->link_cad_lodge_inline ?>', '<?php echo $this->nm_location ?>', 'NM_btn_insert*scinY*scoutNM_btn_update*scinN*scoutNM_btn_delete*scinN*scoutNM_btn_navega*scinN*scoutNMSC_modal*scinok*scoutsc_redir_atualiz*scinok*scoutsc_inline_call*scinY*scoutnmgp_opcao*scinnovo*scout', '', 'modal', height, width);
-}
-
-function scInlineFormReceive(oResponse, iLine)
-{
-  var i;
-  oResp = oResponse;
-  if (oResp["fldList"])
-  {
-    for (i = 0; i < oResp["fldList"].length; i++)
-    {
-      oResp["fldList"][i].fldName += iLine;
-    }
-  }
-  scAjaxSetFields(false);
-  scAjaxSetVariables();
-  scAjaxRedir();
-}
-
 
 function scInlineFormSend()
 {
@@ -134,6 +53,10 @@ function scInlineFormSend()
 
 function nm_navpage(x, op) 
 { 
+    if (op == "P") 
+    { 
+        x = ((x * <?php echo $this->sc_max_reg . ") - ". $this->sc_max_reg?>) + 1; 
+    } 
     nm_move('navpage', x);
 } 
 function nm_move(x, y, z) 
@@ -224,6 +147,10 @@ function nm_move(x, y, z)
     {
         do_ajax_cad_lodge_navigate_form();
     }
+    if ("ordem" == x)
+    {
+        scSetOrderColumn(y);
+    }
 } 
 var sc_mupload_ok = true;
 var Nm_submit_ok = true; 
@@ -283,9 +210,9 @@ function nm_atualiza(x, y)
     { 
        document.F1.nmgp_num_form.value = y; 
     } 
-    if (x == "excluir") 
+    if (x == "excluir" && sc_quant_excl > 0) 
     { 
-       if (confirm ("<?php echo html_entity_decode($this->Ini->Nm_lang['lang_errm_remv'], ENT_COMPAT, $_SESSION['scriptcase']['charset']); ?>"))  
+       if (confirm ("<?php echo html_entity_decode($this->Ini->Nm_lang['lang_errm_cfrm_remv'], ENT_COMPAT, $_SESSION['scriptcase']['charset']); ?>"))  
        { 
            scAjaxProcOn();
            document.F1.nmgp_opcao.value = x; 
@@ -298,18 +225,9 @@ function nm_atualiza(x, y)
     } 
     else 
     { 
+       scAjaxProcOn();
        document.F1.nmgp_opcao.value = x; 
-       if ("incluir" == x || "muda_form" == x || "recarga" == x || "recarga_mobile" == x)
-       {
-           scAjaxProcOn();
-           Nm_Proc_Atualiz = true;
-           document.F1.submit();
-       }
-       else
-       {
-           Nm_Proc_Atualiz = true;
-           do_ajax_cad_lodge_submit_form();
-       }
+       document.F1.submit(); 
     } 
     if (Nm_submit_ok)
     { 
@@ -335,49 +253,28 @@ function scForm_update(x, y) {
 
 function scForm_delete(x, y) {
 	if (!scForm_initSubmit(x, y)) { return; }
-	scForm_checkMultiUpload(function() { scForm_delete_prepare(x, y); }, scForm_cancel);
+	scForm_checkMultiUpload(function() { scForm_general_submit(x, y); }, scForm_cancel);
 } // scForm_delete
 
 function scForm_refreshMobile(x, y) {
 	if (!scForm_initSubmit(x, y)) { return; }
-	scForm_checkMultiUpload(function() { scForm_refreshMobile_prepare(x, y); }, scForm_cancel);
+	scForm_checkMultiUpload(function() { scForm_general_submit(x, y); }, scForm_cancel);
 } // scForm_refreshMobile
 
 function scForm_changeForm(x, y) {
 	if (!scForm_initSubmit(x, y)) { return; }
-	scForm_checkMultiUpload(function() { scForm_changeForm_prepare(x, y); }, scForm_cancel);
+	scForm_checkMultiUpload(function() { scForm_general_submit(x, y); }, scForm_cancel);
 } // scForm_changeForm
 
 function scForm_insert_prepare(x, y) {
 	scForm_general_prepare(x, y);
-	scForm_confirmInsert_single(function() { scForm_submit_single(x); }, scForm_cancel);
+	scForm_confirmInsert_multi(function() { scForm_submit_multi(x); }, scForm_cancel);
 } // scForm_insert_prepare
 
 function scForm_update_prepare(x, y) {
 	scForm_general_prepare(x, y);
-	scForm_confirmUpdate_single(function() { scForm_submit_single(x); }, scForm_cancel);
+	scForm_confirmUpdate_multi(function() { scForm_submit_multi(x); }, scForm_cancel);
 } // scForm_update_prepare
-
-function scForm_delete_prepare(x, y) {
-	scForm_general_prepare(x, y);
-	scForm_confirmDelete(function() { scForm_delete_submit(x); }, scForm_cancel);
-} // scForm_delete_prepare
-
-function scForm_refreshMobile_prepare(x, y) {
-	scForm_general_prepare(x, y);
-	scForm_submit_single(x);
-} // scForm_refreshMobile_prepare
-
-function scForm_changeForm_prepare(x, y) {
-	scForm_general_prepare(x, y);
-	scForm_submit_single(x);
-} // scForm_changeForm_prepare
-
-function scForm_delete_submit(x) {
-    scAjaxProcOn();
-	document.F1.nmgp_opcao.value = x;
-	document.F1.submit();
-}
 
 function scForm_general_prepare(x, y) {
 	sc_mupload_ok = true;
@@ -385,8 +282,40 @@ function scForm_general_prepare(x, y) {
 		return;
 	}
 	scForm_setFormValues(x, y);
-	scForm_packMultiSelect_single();
+	scForm_packMultiSelect_multi();
+	scForm_packSignature_multi();
 } // scForm_general_prepare
+
+function scForm_general_submit(x, y) {
+	scForm_general_prepare(x, y);
+	scForm_submit_multi(x);
+} // scForm_general_submit
+
+function scForm_confirmInsert_multi(callbackOk, callbackCancel) {
+	callbackOk();
+} // scForm_confirmInsert_multi
+
+function scForm_confirmUpdate_multi(callbackOk, callbackCancel) {
+	callbackOk();
+} // scForm_confirmUpdate_multi
+
+function scForm_submit_multi(x) {
+	if (x == "excluir" && sc_quant_excl > 0) {
+		scJs_confirm("<?php echo html_entity_decode($this->Ini->Nm_lang['lang_errm_cfrm_remv'], ENT_COMPAT, $_SESSION['scriptcase']['charset']); ?>", function() { scForm_submit_multi_after(x); }, scForm_cancel);
+	}
+	else {
+		scForm_submit_multi_after(x);
+	}
+} // scForm_submit_multi
+
+function scForm_submit_multi_after(x) {
+    scAjaxProcOn();
+	document.F1.nmgp_opcao.value = x;
+	document.F1.submit();
+	if (Nm_submit_ok) {
+		Nm_Proc_Atualiz = true;
+	}
+} // scForm_submit_multi_after
 
 function scForm_initSubmit(x, y) {
 <?php
@@ -483,6 +412,54 @@ function scForm_submit_single(x) {
 	}
 } // scForm_submit_single
 
+<?php
+if ($this->Embutida_form)
+{
+?>
+function nm_atualiza_line(x, y) 
+{ 
+    if (Nm_Proc_Atualiz)
+    {
+        return;
+    }
+    var_num_lin_process = y;;
+    z = document.getElementById("idVertRow" + y).rowIndex;
+    document.F1.nmgp_parms.value = "";
+    document.F1.target = "_self";
+    document.F1.nmgp_opcao.value = x; 
+    if (x == "incluir")
+    {
+      scForm_inline_confirmInsert(function() { scForm_inline_submit(y, z); }, scForm_cancel)
+    }
+    if (x == "alterar")
+    {
+      scForm_inline_confirmUpdate(function() { scForm_inline_submit(y, z); }, scForm_cancel)
+    }
+    if (x == "excluir")
+    {
+      scForm_inline_confirmDelete(function() { scForm_inline_submit(y, z); }, scForm_cancel)
+    }
+} 
+<?php
+}
+?>
+function scForm_inline_submit(y, z) {
+	Nm_Proc_Atualiz = true;
+	do_ajax_cad_lodge_submit_form(y, z);
+} // scForm_inline_submit
+
+function scForm_inline_confirmInsert(callbackOk, callbackCancel) {
+	callbackOk();
+} // scForm_inline_confirmInsert
+
+function scForm_inline_confirmUpdate(callbackOk, callbackCancel) {
+	callbackOk();
+} // scForm_inline_confirmUpdate
+
+function scForm_inline_confirmDelete(callbackOk, callbackCancel) {
+	scJs_confirm("<?php echo html_entity_decode($this->Ini->Nm_lang['lang_errm_remv'], ENT_COMPAT, $_SESSION['scriptcase']['charset']); ?>", callbackOk, callbackCancel);
+} // scForm_inline_confirmDelete
+
 function nm_mostra_img(imagem, altura, largura)
 {
     var image = new Image();
@@ -524,40 +501,35 @@ function sc_rtrim(str, chars) {
         chars = chars || "\\s";
         return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
 }
+function nm_check_insert(iLine)
+{
+   if (document.F1.elements['sc_check_vert[' + iLine + ']'])
+      document.F1.elements['sc_check_vert[' + iLine + ']'].checked = true;
+}
+function nm_uncheck_delete()
+{
+   if (!document.F1.sc_contr_vert)
+      return;
+   for (iLine = 1; iLine < document.F1.sc_contr_vert.value; iLine++)
+      if (document.F1.elements['sc_check_vert[' + iLine + ']'])
+         document.F1.elements['sc_check_vert[' + iLine + ']'].checked = false;
+}
 var hasJsFormOnload = false;
 
-function scCssFocus(oHtmlObj)
+function scCssFocus(oHtmlObj, iSeqVert)
 {
   if (navigator.userAgent && 0 < navigator.userAgent.indexOf("MSIE") && "select" == oHtmlObj.type.substr(0, 6))
     return;
-  if ($(oHtmlObj).hasClass('sc-ui-pwd-toggle')) {
-    $(oHtmlObj).addClass('scFormObjectFocusOddPwdInput')
-               .addClass('scFormObjectFocusOddPwdText')
-               .removeClass('scFormObjectOddPwdInput')
-               .removeClass('scFormObjectOddPwdText');
-    $(oHtmlObj).parent().addClass('scFormObjectFocusOddPwdBox')
-                        .removeClass('scFormObjectOddPwdBox');
-  } else {
-    $(oHtmlObj).addClass('scFormObjectFocusOdd')
-               .removeClass('scFormObjectOdd');
-  }
+  $(oHtmlObj).addClass('scFormObjectFocusOddMult')
+             .removeClass('scFormObjectOddMult');
 }
 
-function scCssBlur(oHtmlObj)
+function scCssBlur(oHtmlObj, iSeqVert)
 {
   if (navigator.userAgent && 0 < navigator.userAgent.indexOf("MSIE") && "select" == oHtmlObj.type.substr(0, 6))
     return;
-  if ($(oHtmlObj).hasClass('sc-ui-pwd-toggle')) {
-    $(oHtmlObj).addClass('scFormObjectOddPwdInput')
-               .addClass('scFormObjectOddPwdText')
-               .removeClass('scFormObjectFocusOddPwdInput')
-               .removeClass('scFormObjectFocusOddPwdText');
-    $(oHtmlObj).parent().addClass('scFormObjectOddPwdBox')
-                        .removeClass('scFormObjectFocusOddPwdBox');
-  } else {
-    $(oHtmlObj).addClass('scFormObjectOdd')
-               .removeClass('scFormObjectFocusOdd');
-  }
+  $(oHtmlObj).addClass('scFormObjectOddMult')
+             .removeClass('scFormObjectFocusOddMult');
 }
 
  function nm_submit_cap(apl_dest, parms)

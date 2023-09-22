@@ -232,8 +232,8 @@ class que_lodge_category_ini
       $this->nm_dt_criacao   = "20230609"; 
       $this->nm_hr_criacao   = "002202"; 
       $this->nm_autor_alt    = "admin"; 
-      $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "090240"; 
+      $this->nm_dt_ult_alt   = "20230920"; 
+      $this->nm_hr_ult_alt   = "130920"; 
       $this->Apl_paginacao   = "PARCIAL"; 
       $temp_bug_list         = explode(" ", microtime()); 
       list($NM_usec, $NM_sec) = $temp_bug_list; 
@@ -1134,7 +1134,7 @@ class que_lodge_category_ini
       $this->nm_ttf_chi  = array("zh_cn", "zh_hk", "ko");
       $_SESSION['sc_session'][$this->sc_page]['que_lodge_category']['seq_dir'] = 0; 
       $_SESSION['sc_session'][$this->sc_page]['que_lodge_category']['sub_dir'] = array(); 
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1HQJKH9FUHIrwHuF7HuNOV9FeDuB7DoXGD9BsH9FaHAN7ZMB/DMvCVkJGDWXCDoBOD9JKDQFaD1veHuFaHuNOZSrCH5FqDoXGHQJmZ1BiHABYHuBOHgBYVkJ3V5FqHIrqDcBiH9BiZ1BYHuJwDMrwV9FeH5XCVoBiHQBsZkFGZ1vmZMXGHgvCHArCDuFYHIJeHQJeDQB/DSN7HuXGDMrwV9FeH5XKVErqDcNmZkBiHArYD5JwDMrYZSXeDuFYVoXGDcJeZ9rqD1BeHuX7DMvsVIB/HEF/HMB/HQJmZSBOD1rwHQBiHgvCHArsH5FYHIrqHQJKH9BiZ1N7V5FaDMrwVcB/HEFYHIXGHQNmZSBOD1rKHuBOHgvCHArCV5FqHMX7HQNmH9BiHIBeHuFUHgNKDkBODuFqDoFGDcBqVIJwD1rwHQrqHgBYVkJqDuJeHIBOHQNmDuFaHIrwHQJeDMrwVcB/DWXCHIFUHQXGH9BOHIveHQF7HgvCHEJqH5X/ZuXGHQBiZSFUDSBYHurqDMrwV9BUH5XCHIF7HQXGZ1FGZ1rYHQJeDMrYZSXeDuFYVoXGDcJeZ9rqD1BeV5BqHgvsDkB/V5X7VorqDcBqZ1FaD1rKV5XGDMNKZSJ3H5X/ZuJsHQXGZSFUHAveV5BOHuNODkBODuX7VoX7DcBqZ1B/Z1vOD5raHgBOVkXeHEFqVoX7DcBwDQFGD1BOV5JwDMBYVIBODWFYVENUHQBiZ1B/HABYV5JsDMzGHAFKV5FaZuBOHQJeDuBOZ1BYV5JeHuvmVcrsDWB3VEX7HQNmZkFUZ1BeZMBODEvsZSJGDuFaDoJeD9XsZSX7Z1rwVWJsDMrwDkFCH5FqVoBqD9XOZSB/DSrYD5BqDEvsHEFiH5FYDoraD9NwZSX7D1vOV5JwHgNKDkBODuFqDoFGDcBqVIJwD1rwD5JeDMBYZSJqV5FaVoJeD9XsZSFGD1BeVWJsHgrYDkBsDuFqHMFUHQXGZ1X7D1rKHuJeHgNOHEFKV5FqHIraDcXGDuFaDSBYHuFaHuNOZSrCH5FqDoXGHQJmZ1X7DSNOHQBOHgNKVkJGH5F/DoJeDcXGZSX7HIBeV5X7HuBYZSNiDWFYVENUDcBqH9BOHIBOZMBqHgrKZSJ3V5XCHIJsD9XsZ9JeD1BeD5F7DMvmVcFiV5X7VoF7D9BiZ1B/HArYD5BiDEBOHEFiV5FaVoFaDcBwZSX7HABYV5raHgvsDkBODWFaVENUDcJUZ1B/HIBeD5FaDErKVkJGHEB7VoBiD9NwDQJsHIrKV5JeDMvmVcFKV5BmVoBqD9BsZkFGHArKHQJwDEBODkFeH5FYVoFGHQJKDQJsD1BeV5BqHuNOV9FeDuFqHMF7DcNwH9BOHArKHuX7DMzGZSJ3HEFqDoraDcBwDuBqHANOHuFaHuNOZSrCH5FqDoXGHQJmZ1rqHArKV5FaDMNKZSXeDWr/DoJeD9XsZSX7Z1N7VWFaHgrKV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgveDkXKDWBmDoJeHQBiZ9F7HANKVWBqDMvOV9BUH5FqHMBiD9BsVIraD1rwV5X7HgBeHErsDuFaHIX7DcBwDQJwD1BeV5BODMBOVcFKHEFGVoX7HQXGZ1B/D1rwV5X7DErKHArCDWX7ZuB/HQJKDQJsZ1vCV5FGHuNOV9FeDWXCHMFaHQJmZkFGZ1NOHQX7HgrKHErCHEFqHMJeHQNwDuBOHAveHQNUDMzGV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgBYHAFKV5B3DoBO";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1DcJeDQFGHINaVWBqHuzGVcFKH5XCDoNUHQBqZ1BiHIBOZMBODEBeVkJ3HEB7ZuFaHQXOH9BiZ1rwD5BOHuBYV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgveVkJ3DWF/VoBiDcJUZSX7Z1BYHuFaHuBOVcrsHEFYVENUD9XGZ1rqD1rKHuB/DEBeDkB/DWB3VoFGHQXsH9FGHArYVWBOHuvmDkBsDWXCDoJsDcBwH9B/Z1rYHQJwDErKHEFiDWFqDoFUDcJeH9FGHANOV5JwHuNOVIFCHEF/DoraHQJmZ1F7Z1vmD5rqDEBOHArCDWBmDoB/D9NwDQFGHABYD5JwHgrYDkBODuFqVoraDcJUZ1F7HIBeV5FaDMNKZSXeH5FYDoraD9NmDQJsHABYD5XGHuNODkFCDWJeVEFGHQFYZSFaHArKV5XGDErKHErCDWF/VoBiDcJUZSX7Z1BYHuFaDMNOVcFKV5FGVEraHQXGZSB/Z1BeHuBOHgBYHArsDWFqZuXGD9FYDQX7HArYHuXGHuBOVcFCDWF/HMFUHQBsZkFGHArKV5FUDMrYZSXeV5FqHIJsHQNmDuBqDSN7HQXGDMzGVcXKHEF/HIF7DcFYZkFUZ1rYHQFUDMveVkJ3DWFqHMJeHQJeDQBOZ1BYHQJeHgvOVcBUDur/VoBiDcFYVIJwZ1rYHQBiHgNKVkJqHEB7ZuB/DcBiZ9JeD1BeD5rqHuvmVcBOH5B7VoBqHQXOZ1BiDSNOD5JwHgBOZSJ3DWr/HMFGHQXsDuBOZ1zGV5BqDMzGVcFeDWJeHIX7DcNmVIraZ1rYHQJeHgNODkB/DWr/HMBiHQNmDuBOZ1BYHQXGDMBOVIBsV5F/HIrqHQBsVIJwD1rwV5FGDEBeHEXeH5X/DoF7HQNwDuBqDSN7HuBOHgrwVIBsV5FYHMB/HQBiZ1FUZ1rYHuJwHgNOHEJqH5FYHIJeHQNwDQBOZ1BYHQF7DMvsV9BUH5FqHMFGHQJmVIraZ1vOZMB/HgvsHEJqDWF/HMBqDcBiDuBOD1BeD5rqHuvmVcBOH5B7VoBqD9XOH9B/D1rwD5BiDErKHEFiDWX7ZuFaD9JKDQB/Z1rwHuF7DMvsZSrCV5X7HIBiD9XOZSB/Z1BeV5BODErKVkXeDWX7VoFGDcJUDQFaHAN7D5BqHuNOVcFKDWFYVoFGHQFYH9BqZ1NOV5FaDEvsHErCV5FqDoraD9JKZSX7D1vOV5JwHuBYZSNiHEX/DoXGD9XOZ1F7HIveD5BqHgBYHErsDWFGDoB/D9NmZSFGHIrwVWXGHuzGVIBOV5X7VoraD9BiZ1FUZ1BeD5JeDMBYZSJGDWr/VoXGD9NwDQJwD1veV5FGHgvsVcFCH5FqDoraHQFYVIJwD1rwV5FGDEBeHEXeH5X/DoF7D9NwZSX7D1BeV5raHuvmVcFKV5X7VoFGD9BiZ1X7Z1BeHuBqHgBeHEJqDWF/HMBiHQNmZSFUHANKD5F7DMNODkB/DWFYHMBqHQJmZ1F7Z1vmD5rqDEBOHArCDWBmDoJeHQBiDQBqHAvmV5BqDMvOVcBUHEX/VoX7HQNmZSBqHArKV5FUDMrYZSXeV5FqHIJsHQXsH9BiHIrKHuBqHgvOVcFeDuFqHMB/HQJmH9BqZ1vmD5JeHgBOVkJ3DWF/VoBiDcJUZSX7Z1BYHuFaDMNOVIBsDWFaHIX7HQJmH9BqHIveHQrqHgvsVkJ3HEB7DoNUDcXGDQFaDSBYHuFaHuNOZSrCH5FqDoXGHQJmZ1BiDSvOV5FUHgveHEBOV5JeZura";
       $this->prep_conect();
       $this->conectDB();
       if (!in_array(strtolower($this->nm_tpbanco), $this->nm_bases_all))
@@ -2851,14 +2851,15 @@ class que_lodge_category_apl
       } 
       if (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order']))
       { 
-          $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'][] = "idlodgecategory";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'][] = "name";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'][] = "capacity";
+          $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'][] = "idlodgecategory";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order_orig'] = $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'];
           if (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['usr_cmp_sel']))
           { 
               $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['usr_cmp_sel'] = array();
           } 
+          $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['usr_cmp_sel']['idlodgecategory'] = "off";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['usr_cmp_sel_orig'] = $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['usr_cmp_sel'];
       } 
       if (isset($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['exit']) && $_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['exit'] != '')
@@ -4150,10 +4151,6 @@ if (window.parent && typeof window.parent.updateGeneratedPdfFile === "function")
       }
       $sv_data = $data_search;
       foreach ($fields as $field) {
-          if ($field == "SC_all_Cmp" || $field == "idlodgecategory") 
-          {
-              $this->SC_monta_condicao($comando, "idLodgeCategory", $arg_search, str_replace(",", ".", $data_search));
-          }
           if ($field == "SC_all_Cmp" || $field == "name") 
           {
               $this->SC_monta_condicao($comando, "name", $arg_search, $data_search, "VARCHAR", false);
@@ -4161,6 +4158,10 @@ if (window.parent && typeof window.parent.updateGeneratedPdfFile === "function")
           if ($field == "SC_all_Cmp" || $field == "capacity") 
           {
               $this->SC_monta_condicao($comando, "capacity", $arg_search, str_replace(",", ".", $data_search));
+          }
+          if ($field == "SC_all_Cmp" || $field == "idlodgecategory") 
+          {
+              $this->SC_monta_condicao($comando, "idLodgeCategory", $arg_search, str_replace(",", ".", $data_search));
           }
       }
       if (empty($comando)) 
@@ -5488,6 +5489,33 @@ if ($_SESSION['scriptcase']['proc_mobile'])
    {
        $_SESSION['sc_session'][$script_case_init]['que_lodge_category']['b_sair'] = true;
    }
+   $STR_lang    = (isset($_SESSION['scriptcase']['str_lang']) && !empty($_SESSION['scriptcase']['str_lang'])) ? $_SESSION['scriptcase']['str_lang'] : "pt_br";
+   if (isset($_SESSION['scriptcase']['que_lodge_category']['session_timeout']['lang'])) {
+       $STR_lang = $_SESSION['scriptcase']['que_lodge_category']['session_timeout']['lang'];
+   }
+   $STR_schema_all = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
+   $NM_arq_lang = "../_lib/lang/" . $STR_lang . ".lang.php";
+   $Nm_lang = array();
+   if (is_file($NM_arq_lang))
+   {
+       $Lixo = file($NM_arq_lang);
+       foreach ($Lixo as $Cada_lin) 
+       {
+           if (strpos($Cada_lin, "array()") === false && (trim($Cada_lin) != "<?php")  && (trim($Cada_lin) != "?" . ">"))
+           {
+               eval (str_replace("\$this->", "\$", $Cada_lin));
+           }
+       }
+   }
+   $_SESSION['scriptcase']['charset'] = "UTF-8";
+   ini_set('default_charset', $_SESSION['scriptcase']['charset']);
+   foreach ($Nm_lang as $ind => $dados)
+   {
+      if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($dados))
+      {
+          $Nm_lang[$ind] = sc_convert_encoding($dados, $_SESSION['scriptcase']['charset'], "UTF-8");
+      }
+   }
    if (isset($_SESSION['scriptcase']['sc_outra_jan']) && $_SESSION['scriptcase']['sc_outra_jan'] == 'que_lodge_category')
    {
        $_SESSION['sc_session'][$script_case_init]['que_lodge_category']['sc_outra_jan'] = true;
@@ -5681,6 +5709,105 @@ if ($_SESSION['scriptcase']['proc_mobile'])
            $_SESSION['scriptcase']['sc_url_saida'][$script_case_init] = $salva_url_saida;
        } 
        $GLOBALS["NM_ERRO_IBASE"] = 0;  
+       if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+       { 
+           $_SESSION['scriptcase']['sc_apl_seg']['que_lodge_category'] = "on";
+       } 
+       if (isset($_GET['SC_Link_View']) && !empty($_GET['SC_Link_View']) && is_numeric($_GET['SC_Link_View']))
+       { 
+           $_SESSION['scriptcase']['sc_apl_seg']['que_lodge_category'] = "on";
+       } 
+       if (!$_SESSION['sc_session'][$script_case_init]['que_lodge_category']['opc_psq'] && !isset($_SESSION['scriptcase']['que_lodge_category']['session_timeout']['redir'])) 
+       { 
+          if (!isset($_SESSION['scriptcase']['sc_apl_seg']['que_lodge_category']) || $_SESSION['scriptcase']['sc_apl_seg']['que_lodge_category'] != "on")
+          { 
+              $NM_Mens_Erro = $Nm_lang['lang_errm_unth_user'];
+              $nm_botao_ok = ($_SESSION['sc_session'][$script_case_init]['que_lodge_category']['iframe_menu']) ? false : true;
+              if (isset($_SESSION['scriptcase']['sc_aba_iframe']))
+              {
+                  foreach ($_SESSION['scriptcase']['sc_aba_iframe'] as $aba => $apls_aba)
+                  {
+                      if (in_array("que_lodge_category", $apls_aba))
+                      {
+                          $nm_botao_ok = false;
+                           break;
+                      }
+                  }
+              }
+              if ((isset($_SESSION['sc_session'][$script_case_init]['que_lodge_category']['embutida']) && $_SESSION['sc_session'][$script_case_init]['que_lodge_category']['embutida']) || (isset($_SESSION['sc_session'][$script_case_init]['que_lodge_category']['embutida_form']) && $_SESSION['sc_session'][$script_case_init]['que_lodge_category']['embutida_form']))
+              {
+                   $nm_botao_ok = false;
+              }
+       header("X-XSS-Protection: 1; mode=block");
+       header("X-Frame-Options: SAMEORIGIN");
+?>
+             <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+            "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+              <HTML>
+               <HEAD>
+                <TITLE>=)</TITLE>
+               <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
+<?php
+if ($_SESSION['scriptcase']['proc_mobile'])
+{
+?>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<?php
+}
+?>
+ <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT" />
+ <META http-equiv="Last-Modified" content="<?php echo gmdate('D, d M Y H:i:s') ?> GMT" />
+ <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+ <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+ <META http-equiv="Pragma" content="no-cache" />
+                <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>                <META http-equiv="Pragma" content="no-cache"/>
+                <link rel="shortcut icon" href="../_lib/img/grp__NM__ico__NM__barraca-de-acampamento.ico">
+                <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $STR_schema_all ?>_grid.css" /> 
+                <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $STR_schema_all ?>_grid<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" /> 
+               </HEAD>
+               <body class="scGridPage">
+                <table align="center"><tr><td style="padding: 0"><div class="scGridBorder">
+                <table class="scGridTabela" width='100%' cellspacing=0 cellpadding=0><tr class="scGridFieldOdd"><td class="scGridFieldOddFont" style="padding: 15px 30px; text-align: center">
+                 <?php echo $NM_Mens_Erro; ?>
+<?php
+              if ($nm_botao_ok)
+              {
+?>
+                <br />
+                <form name="Fseg" method="post" 
+                                    action="<?php echo $nm_url_saida; ?>" 
+                                    target="_self"> 
+                 <input type="hidden" name="script_case_init" value="<?php echo NM_encode_input($script_case_init) ?>"/> 
+                 <input type="submit" name="sc_sai_seg" value="OK"> 
+                </form> 
+<?php
+              }
+?>
+                </td></tr></table>
+                </div></td></tr></table>
+<?php
+              if (isset($_SESSION['scriptcase']['nm_sc_retorno']) && !empty($_SESSION['scriptcase']['nm_sc_retorno']))
+              {
+?>
+<br /><br /><br />
+<table align="center" style="width: 450px"><tr><td style="padding: 0"><div class="scGridBorder">
+ <table style="width: 100%" class="scGridTabela">
+  <tr class="scGridFieldOdd">
+   <td class="scGridFieldOddFont" style="padding: 15px 30px">
+    <?php echo $Nm_lang['lang_errm_unth_hwto']; ?>
+   </td>
+  </tr>
+ </table>
+</div></td></tr></table>
+<?php
+              }
+?>
+               </body>
+              </HTML>
+<?php
+              exit;
+          } 
+       } 
        if (isset($_SESSION['sc_session'][$script_case_init]['que_lodge_category']['sc_outra_jan']) && $_SESSION['sc_session'][$script_case_init]['que_lodge_category']['sc_outra_jan'])
        {
            $nm_apl_dependente = 0;

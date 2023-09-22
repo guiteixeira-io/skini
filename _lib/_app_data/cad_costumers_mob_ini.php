@@ -8,7 +8,7 @@
     $arr_data['initial'] = "cad_costumers_mob.php";
     $arr_data['group'] = "skini";
     $arr_data['apl'] = "cad_costumers_mob";
-    $arr_data['status'] = "NAO";
+    $arr_data['status'] = "SIM";
     $arr_data['type'] = "form";
     $arr_data['friendly_url'] = "cad_costumers";
     $arr_data['md5'] = "LigMd5";

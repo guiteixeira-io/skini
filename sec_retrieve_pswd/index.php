@@ -52,7 +52,7 @@
    $_SESSION['scriptcase']['sec_retrieve_pswd']['glo_nm_path_imagens']    = "/scriptcase/file/img";
    $_SESSION['scriptcase']['sec_retrieve_pswd']['glo_nm_path_imag_temp']  = "/scriptcase/tmp";
    $_SESSION['scriptcase']['sec_retrieve_pswd']['glo_nm_path_cache']  = "C:/Program Files/NetMake/v9-php81/wwwroot/scriptcase/file/cache";
-   $_SESSION['scriptcase']['sec_retrieve_pswd']['glo_nm_path_doc']        = "C:/Program Files/NetMake/v9-php81/wwwrootC:\inetpub\wwwroot\oficial\_lib\file\doc";
+   $_SESSION['scriptcase']['sec_retrieve_pswd']['glo_nm_path_doc']        = "C:/Program Files/NetMake/v9-php81/wwwrootC:/Program Files/NetMake/v9-php81/wwwroot/scriptcase/file/doc";
    $_SESSION['scriptcase']['sec_retrieve_pswd']['glo_nm_conexao']         = "skini";
    $NM_dir_atual = getcwd();
    if (empty($NM_dir_atual))
@@ -292,16 +292,16 @@ class sec_retrieve_pswd_ini
       $this->nm_seguranca    = ""; 
       $this->nm_grupo        = "skini"; 
       $this->nm_grupo_versao = "1"; 
-      $this->nm_autor        = "guilherme"; 
+      $this->nm_autor        = "admin"; 
       $this->nm_script_by    = "netmake"; 
       $this->nm_script_type  = "PHP"; 
       $this->nm_versao_sc    = "v9"; 
       $this->nm_tp_lic_sc    = "pe_bronze"; 
-      $this->nm_dt_criacao   = "20230530"; 
-      $this->nm_hr_criacao   = "215427"; 
+      $this->nm_dt_criacao   = "20230920"; 
+      $this->nm_hr_criacao   = "123213"; 
       $this->nm_autor_alt    = "admin"; 
-      $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "090240"; 
+      $this->nm_dt_ult_alt   = "20230920"; 
+      $this->nm_hr_ult_alt   = "123232"; 
       list($NM_usec, $NM_sec) = explode(" ", microtime()); 
       $this->nm_timestamp    = (float) $NM_sec; 
       $this->nm_app_version  = "1.0.0"; 
@@ -1099,7 +1099,7 @@ class sec_retrieve_pswd_ini
       $this->nm_bases_odbc       = array("odbc");
       $this->nm_bases_progress   = array("progress", "pdo_progress_odbc");
       $this->nm_bases_all        = array_merge($this->nm_bases_access, $this->nm_bases_ibase, $this->nm_bases_mysql, $this->nm_bases_postgres, $this->nm_bases_sqlite, $this->nm_bases_sybase, $this->nm_bases_vfp, $this->nm_bases_odbc, $this->nm_bases_progress);
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1D9FYH9BiZ1N7HQB/HgvOV9BUDWXCHMXGHQNmZ1rqDSNOHuXGDErKDkB/H5BmDoBOHQNwDuFaHABYVWBOHgvsDkBsDWXCDoJsDcBwH9B/Z1rYHQJwHgveHArCV5B7ZuJsHQNmDuFaHIrKV5FaDMBYVcB/H5XKDoXGHQBsZ1X7DSNOHQBiHgvsDkXKDurmVoFGHQNmDQB/HIvsVWBOHgvOVIB/DuFGDoXGHQBsZkBiHANOHQJeHgNKHEJqHEB3DoF7D9XsDQJsDSBYV5FGHgNKDkBsDurGVEBiDcNmZSBqHIBeHQFGHgNOZSJ3H5FGVoFGHQBiZSBiHIrKHurqDMBYVIB/HEBmDoXGDcNmZ1BOD1NaD5XGDMvCHErCV5B7VoFGHQNmDQFUHANOHQBODMBYVcFeDuFGVoBqD9BsZ1F7DSrYD5rqDMrYZSJ3HEB7ZuJsDcBiDQB/HAN7HQXGDMNODkBsDuB7DoXGHQXGZ1X7HABYHuX7DMveHErCDurmVoFGHQFYZ9F7DSzGV5BqHgvOV9FeDWrmDoXGHQNwZ1FGZ1rYHuJwHgvsHEJqHEB7DoF7D9XsDQJsDSBYV5FGHgNKDkFCH5FqVoBqDcNwH9FaHArKD5NUDEvsHEFiDuJeDoFUHQJKZ9F7DSvCV5JwDMBOVcrsDWJeVoraDcJUH9FaHAN7D5NUDEBOHAFKDWF/HINUD9JKDQX7HIBeD5JwHuzGZSJ3V5X7HIX7DcJUZ1FaD1rKHuBODMBYHEXeHEFaVoB/HQXGZSFGHAvCVWBqDMrwVcFCDWXCDoX7D9XOZ1BiHINKD5BOHgvCZSJGDuFaZuBqD9NmZSFGHANOV5JwHuNODkFCH5B3VoraD9XOH9B/D1rwD5XGDEBeHEJGDWF/ZuFaDcJeZSX7HArYV5BqHgrKV9FiV5FGVoBqD9BsZ1F7DSrYD5rqDMrYZSJGH5FYDoF7DcXOZSX7HIrKV5JwHuzGDkFCH5XCVoJwHQBiZ1FGHABYHuJwDMvCHErCV5FaHMJsHQXGDuFaHIrwHuJwDMzGV9FeDWXCDoJsDcBwH9B/Z1rYHQJwDMzGHErCDWFqHMB/HQNmDuFaHIBeVWJeHuBOVcXKDuX7HMBiD9BsVIraD1rwV5X7HgBeHEFKV5FaDoXGDcBwDQX7D1BeV5raHuzGVIBODWFYVENUD9XOZSB/DSrYV5FaDEvsVkXeDWFqDoFUD9NwDQJwD1BeVWXGHgrKVcFiV5F/VorqD9JmZ1rqHArKHQJwDEBODkFeH5FYVoFGHQJKDQFaHAveD5NUHgNKDkBOV5FYHMBiHQBqZ1F7DSBeD5BqHgveHEJGDuJeVoJsHQBiZSX7HIBeD5JeHuzGVcBUDWB3VErqD9JmVIJsHAN7HQJwDEBODkFeH5FYVoFGHQJKDQJwHAveD5JwHgrYDkBODWJeVoX7D9BsH9B/Z1NOZMJwDMzGHArCDWF/VoBiDcJUZSX7Z1BYHuFaDMvOZSNiDWB3VoX7HQNmVIJsHAvsZMJeHgveHArsH5FYHIJsD9XsZ9JeD1BeD5F7DMvmVcFeDWFaHIXGD9BiZSBOHANOHuJsDErKZSXeV5XCHIJwDcJeZSBiHAveD5NUHgNKDkBOV5FYHMBiHQBsZSBqHABYHuXGHgBeZSJ3DuJeHIF7HQNmH9BiDSzGV5BiHgrwVcFeHEFYHMBiD9BsVIraD1rwV5X7HgBeHErsHEB7VoBiHQBiDQNUZ1rKVWFU";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1DcXGZ9XGHAveD5JeDMBYVcFeDWJeVoBqHQXOZSBqHABYD5BOHgBOZSJ3HEFqHIrqD9NwZ9XGHAveVWXGDMBOV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgveHArCV5B7ZuJsHQNmDuFaHIrKV5FaDMBYVcB/H5XKDoXGHQBsZ1X7DSNOHQBiHgvsDkXKDurmVoFGHQNmDQB/HIvsVWBOHgvOVIB/DuFGDoXGHQBsZkBiHANOHQJeHgNKHEJqHEB3DoF7D9XsDQJsDSBYV5FGHgNKDkBsDurGVEBiDcNmZSBqHIBeHQFGHgNOZSJ3H5FGVoFGHQBiZSBiHIrKHurqDMBYVIB/HEBmDoXGDcNmZ1BOD1NaD5XGDMvCHErCV5B7VoFGHQNmDQFUHANOHQBODMBYVcFeDuFGVoBqD9BsZ1F7DSrYD5rqDMrYZSJ3HEB7ZuJsDcBiDQB/HAN7HQXGDMNODkBsDuB7DoXGHQXGZ1X7HABYHuX7DMveHErCDurmVoFGHQFYZ9F7DSzGV5BqHgvOV9FeDWrmDoXGHQNwZ1FGZ1rYHuJwHgvsHEJqHEB7DoF7D9XsDQJsDSBYV5FGHgNKDkFCH5FqVoBqDcNwH9FaHArKD5NUDEvsHEFiDuJeDoFUHQJKZ9F7DSvCV5JwDMBOVcrsDWJeVoraDcJUH9FaHAN7D5NUDEBOHAFKDWF/HINUD9JKDQX7HIBeD5JwHuzGZSJ3V5X7HIX7DcJUZ1FaD1rKHuBODMBYHEXeHEFaVoB/HQXGZSFGHAvCVWBqDMrwVcFCDWXCDoX7D9XOZ1BiHINKD5BOHgvCZSJGDuFaZuBqD9NmZSFGHANOV5JwHuNODkFCH5B3VoraD9XOH9B/D1rwD5XGDEBeHEJGDWF/ZuFaDcJeZSX7HArYV5BqHgrKV9FiV5FGVoBqD9BsZ1F7DSrYD5rqDMrYZSJGH5FYDoF7DcXOZSX7HIrKV5JwHuzGDkFCH5XCVoJwHQBiZ1FGHABYHuJwDMvCHErCV5FaHMJsHQXGDuFaHIrwHuJwDMzGV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgrKHEJGDWr/HIBOHQBiH9BiHIBOVWJwHgvsVcB/H5FqVoB/HQXOZSB/HIBeHQBOHgNOHEXeHEXCHIJsD9XsZ9JeD1BeD5F7DMvmVcFiV5X7VoFGDcJUZ1B/D1rwD5BiDErKVkXeDWFqZuFaD9NwH9X7DSBYD5JwHuBYVIBODWFYVoJwD9XOZ1rqD1rwZMBODMzGHEFKV5XCDoBOD9JKDQJwHAveHuFaHuNOZSrCH5FqDoXGHQJmZ1FGHArKV5FUDMrYZSXeV5FqHIJsDcBiDQFUHIrKHuF7HuBYZSNiH5B3VEraHQNmH9B/HABYHQJwDEBODkFeH5FYVoFGHQJKDQJwHAveD5JwHgrYDkBODWJeVoX7D9BsH9B/Z1NOZMJwDMzGHArCDWF/VoBiDcJUZSX7Z1BYHuFaDMvOZSNiDWB3VoX7HQNmVIJsHAvsZMJeHgveDkXKDWr/HIJsD9XsZ9JeD1BeD5F7DMvmVcFKH5XCVoB/HQBiZ1FaHIveHuBOHgrKHErsDuFaHIraHQNmDQFGHABYD5XGDMvmVIBOH5FqDorqDcJUZ1F7DSBeHQJwDEBODkFeH5FYVoFGHQJKDQFaHAN7HuB/DMBYVIBsH5FqHMBOHQXOZkFGZ1NOHQrqDMrYHENiH5F/HIF7HQJKDQJsZ1vCV5FGHuNOV9FeDWB3VEFGHQFYVINUHAvsZMNU";
       $this->prep_conect();
       $this->conectDB();
       if (!in_array(strtolower($this->nm_tpbanco), $this->nm_bases_all))
@@ -2275,33 +2275,6 @@ ob_start();
     if (!isset($nm_apl_dependente)) {
         $nm_apl_dependente = 0;
     }
-    $STR_lang    = (isset($_SESSION['scriptcase']['str_lang']) && !empty($_SESSION['scriptcase']['str_lang'])) ? $_SESSION['scriptcase']['str_lang'] : "pt_br";
-    if (isset($_SESSION['scriptcase']['sec_retrieve_pswd']['session_timeout']['lang'])) {
-        $STR_lang = $_SESSION['scriptcase']['sec_retrieve_pswd']['session_timeout']['lang'];
-    }
-      $STR_schema_all = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
-    $NM_arq_lang = "../_lib/lang/" . $STR_lang . ".lang.php";
-    $Nm_lang = array();
-    if (is_file($NM_arq_lang))
-    {
-        $Lixo = file($NM_arq_lang);
-        foreach ($Lixo as $Cada_lin) 
-        {
-            if (strpos($Cada_lin, "array()") === false && (trim($Cada_lin) != "<?php")  && (trim($Cada_lin) != "?" . ">"))
-            {
-                eval (str_replace("\$this->", "\$", $Cada_lin));
-            }
-        }
-    }
-    $_SESSION['scriptcase']['charset'] = "UTF-8";
-    ini_set('default_charset', $_SESSION['scriptcase']['charset']);
-    foreach ($Nm_lang as $ind => $dados)
-    {
-       if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($dados))
-       {
-           $Nm_lang[$ind] = sc_convert_encoding($dados, $_SESSION['scriptcase']['charset'], "UTF-8");
-       }
-    }
 
     if (!isset($_SESSION['sc_session'][$script_case_init]['sec_retrieve_pswd']['initialize']))
     {
@@ -2511,118 +2484,6 @@ ob_start();
         $nm_apl_dependente = 0;
     }
     $GLOBALS["NM_ERRO_IBASE"] = 0;  
-    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
-    { 
-        $_SESSION['scriptcase']['sc_apl_seg']['sec_retrieve_pswd'] = "on";
-    } 
-    if (!isset($_SESSION['scriptcase']['sec_retrieve_pswd']['session_timeout']['redir']) && (!isset($_SESSION['scriptcase']['sc_apl_seg']['sec_retrieve_pswd']) || $_SESSION['scriptcase']['sc_apl_seg']['sec_retrieve_pswd'] != "on"))
-    { 
-        $NM_Mens_Erro = $Nm_lang['lang_errm_unth_user'];
-        $nm_botao_ok = ($_SESSION['sc_session'][$script_case_init]['sec_retrieve_pswd']['iframe_menu']) ? false : true;
-        if (isset($_SESSION['scriptcase']['sc_aba_iframe']))
-        {
-            foreach ($_SESSION['scriptcase']['sc_aba_iframe'] as $aba => $apls_aba)
-            {
-                if (in_array("sec_retrieve_pswd", $apls_aba))
-                {
-                    $nm_botao_ok = false;
-                     break;
-                }
-            }
-        }
-      $str_schema_app = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
-       $str_button_app = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
-       $_SESSION['scriptcase']['str_button_all'] = $str_button_app;
-    header("X-XSS-Protection: 1; mode=block");
-    header("X-Frame-Options: SAMEORIGIN");
-    header("X-Content-Type-Options: nosniff");
-    header("Referrer-Policy: same-origin");
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-            "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
-
-        <HTML>
-         <HEAD>
-          <TITLE></TITLE>
-          <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
-<?php
-
-        if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])
-        {
-?>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-<?php
-        }
-
-?>
-          <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT" />
-          <META http-equiv="Last-Modified" content="<?php echo gmdate('D, d M Y H:i:s') ?> GMT" />
-          <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
-          <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
-          <META http-equiv="Pragma" content="no-cache" />
-          <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>          <META http-equiv="Pragma" content="no-cache"/>
-          <link rel="shortcut icon" href="../_lib/img/grp__NM__ico__NM__barraca-de-acampamento.ico">
-          <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_app ?>_form.css" />
-          <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_app ?>_form<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" />
-          <link rel="stylesheet" type="text/css" href="../_lib/buttons/<?php echo $str_button_app . '/' . $str_button_app ?>.css" />
-         </HEAD>
-         <body class="scFormPage">
-          <div class="scFormBorder">
-          <table align="center" style="width: 100%" class="scFormTable"><tr><td class="scFormDataOdd" style="padding: 15px 30px; text-align: center">
-           <?php echo $NM_Mens_Erro; ?>
-<?php
-        if ($nm_botao_ok)
-        {
-            $trab_path             = explode("/", $_SERVER['PHP_SELF']);
-            $trab_count_path       = count($trab_path);
-            $path_retorno_aplicacao  = "";
-            for ($ix = 0; $ix + 2 < $trab_count_path; $ix++)
-            {
-                 $path_retorno_aplicacao .=  $trab_path[$ix] . "/";
-            }
-            $path_retorno_aplicacao .=  "" . SC_dir_app_name('sec_Login') . "/";
-            $nm_redirect = $path_retorno_aplicacao;
-?>
-          <br />
-          <form name="Fseg" method="post" 
-                              action="<?php echo $nm_redirect; ?>" 
-                              target="_self"> 
-           <input type="hidden" name="script_case_init" value="<?php echo $script_case_init; ?>"/> 
-           <input type="submit" name="sc_sai_seg" value="OK" class="" > 
-          </form> 
-          <script type="text/javascript">
-            function nm_move()
-            { }
-            function nm_atualiza()
-            { }
-          </script> 
-<?php
-        }
-?>
-          </td></tr></table>
-          </div>
-<?php
-       if (isset($_SESSION['scriptcase']['nm_sc_retorno']) && !empty($_SESSION['scriptcase']['nm_sc_retorno']))
-       {
-?>
-<br /><br /><br />
-<div class="scFormBorder">
- <table align="center" style="width: 450px" class="scFormTable">
-  <tr>
-   <td class="scFormDataOdd" style="padding: 15px 30px">
-    <?php echo $Nm_lang['lang_errm_unth_hwto']; ?>
-   </td>
-  </tr>
- </table>
-</div>
-<?php
-       }
-?>
-         </body>
-        </HTML>
-<?php
-        exit;
-    } 
     $inicial_sec_retrieve_pswd = new sec_retrieve_pswd_edit();
     $inicial_sec_retrieve_pswd->inicializa();
 

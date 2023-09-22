@@ -431,8 +431,7 @@ class sec_sync_apps_apl
           include_once($this->Ini->path_lib_php . "nm_gp_config_btn.php");
       }
       include("../_lib/css/" . $this->Ini->str_schema_all . "_form.php");
-      $this->Ini->Str_btn_form = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
-      $_SESSION['scriptcase']['str_button_all'] = $this->Ini->Str_btn_form;
+      $this->Ini->Str_btn_form    = trim($str_button);
       include($this->Ini->path_btn . $this->Ini->Str_btn_form . '/' . $this->Ini->Str_btn_form . $_SESSION['scriptcase']['reg_conf']['css_dir'] . '.php');
       $_SESSION['scriptcase']['css_form_help'] = '../_lib/css/' . $this->Ini->str_schema_all . "_form.css";
       $_SESSION['scriptcase']['css_form_help_dir'] = '../_lib/css/' . $this->Ini->str_schema_all . "_form" . $_SESSION['scriptcase']['reg_conf']['css_dir'] . ".css";
@@ -1709,24 +1708,30 @@ if (isset($this->NM_ajax_flag) && $this->NM_ajax_flag)
 {
     $original_check_deleted = $this->check_deleted;
 }
- $arr_apps = array_diff(scandir($this->Ini->path_aplicacao . "../_lib/friendly_url/"), array('.','..', 'index.php', 'index.html'));
-foreach($arr_apps as $k => $v)
+ $arr_apps  = array();
+$_arr_apps = array_diff(scandir($this->Ini->path_aplicacao . "../_lib/_app_data/"), array('.','..', 'index.php', 'index.html'));
+foreach($_arr_apps as $k => $v)
 {
-	$arr_apps[$k] = substr($v, 0, -8);
+	if(substr($v, -12) != "_mob_ini.php")
+	{
+		$arr_apps[] = substr($v, 0, -8);
+	}
 }
+
 if($this->check_deleted  == 'Y')
 {
     foreach($arr_apps as $k => $app)
     {
-    	if( !is_dir($this->Ini->path_aplicacao . "../".$app) )
+		require($this->Ini->path_aplicacao . "../_lib/_app_data/". $app . '_ini.php');
+		
+		$app = (isset($arr_data['friendly_url']) && !empty($arr_data['friendly_url']))?$arr_data['friendly_url']:$app;
+		
+    	if( !is_dir($this->Ini->path_aplicacao . "../" . $app) )
         {
             unset($arr_apps[$k]);
         }
     }
 }
-$arr_apps_without_friendly = array_diff(scandir($this->Ini->path_aplicacao . "../"), array('.','..', 'index.php', 'index.html', '_lib'),$arr_apps);
-
-$arr_apps = array_merge($arr_apps, $arr_apps_without_friendly);
 
  
       $nm_select = "SELECT app_name FROM sec_apps"; 
@@ -1772,29 +1777,8 @@ $this->rs->Close();
 
 foreach($arr_apps as $k => $app)
 {
-	$app_type = '';
-	$friendly_name = $app;
-	
-	if(substr($app, -4) == '_mob' && file_exists($this->Ini->path_aplicacao . "../_lib/friendly_url/". substr($app, 0, -4) . "_ini.txt"))
-	{
-		unset($arr_apps[$k]);
-		continue;
-	}
-	
-	if(is_file($this->Ini->path_aplicacao . "../_lib/friendly_url/". $app . '_ini.txt'))
-	{
-		$friendly_name = trim(file_get_contents($this->Ini->path_aplicacao . "../_lib/friendly_url/". $app . '_ini.txt'));
-	}
-	
-    $file_ini = $this->Ini->path_aplicacao. "../".$friendly_name . "/".$app ."_ini.txt";
-    if(is_dir($this->Ini->path_aplicacao. "../".$friendly_name ) && is_file($file_ini))
-    {
-		$_app_type = file($file_ini);
-		if(isset($_app_type[4]))
-		{
-			$app_type = trim($_app_type[4]);
-		}
-    }
+	require($this->Ini->path_aplicacao . "../_lib/_app_data/". $app . '_ini.php');
+	$app_type = isset($arr_data['type'])?$arr_data['type']:'';
     
 	$sql = "SELECT count(*) FROM sec_apps WHERE app_name = '". $app ."' ";
 	 
@@ -3623,22 +3607,12 @@ setTimeout(function() { document.Fredir.submit(); }, 250);
 ?>
     <tr><td class="sc-app-header">
 <style>
-#lin1_col1 { padding-left:9px; padding-top:7px;  height:27px; overflow:hidden; text-align:left;}			 
-#lin1_col2 { padding-right:9px; padding-top:7px; height:27px; text-align:right; overflow:hidden;   font-size:12px; font-weight:normal;}
+    .scMenuTHeaderFont img, .scGridHeaderFont img , .scFormHeaderFont img , .scTabHeaderFont img , .scContainerHeaderFont img , .scFilterHeaderFont img { height:23px;}
 </style>
-
-<div style="width: 100%">
- <div class="scFormHeader" style="height:11px; display: block; border-width:0px; "></div>
- <div style="height:37px; border-width:0px 0px 1px 0px;  border-style: dashed; border-color:#ddd; display: block">
- 	<table style="width:100%; border-collapse:collapse; padding:0;">
-    	<tr>
-        	<td id="lin1_col1" class="scFormHeaderFont"><span></span></td>
-            <td id="lin1_col2" class="scFormHeaderFont"><span></span></td>
-        </tr>
-    </table>		 
- </div>
+<div class="scFormHeader" style="height: 54px; padding: 17px 15px; box-sizing: border-box;margin: -1px 0px 0px 0px;width: 100%;">
+    <div class="scFormHeaderFont" style="float: left; text-transform: uppercase;"><?php if ($this->nmgp_opcao == "novo") { echo "" . $this->Ini->Nm_lang['lang_sync_apps_title'] . ""; } else { echo "" . $this->Ini->Nm_lang['lang_sync_apps_title'] . ""; } ?></div>
+    <div class="scFormHeaderFont" style="float: right;"><?php echo date($this->dateDefaultFormat()); ?></div>
 </div>
-
     </td></tr>
 <?php
     }

@@ -230,8 +230,8 @@ class que_costumers_ini
       $this->nm_dt_criacao   = "20230607"; 
       $this->nm_hr_criacao   = "205600"; 
       $this->nm_autor_alt    = "admin"; 
-      $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "123152"; 
+      $this->nm_dt_ult_alt   = "20230920"; 
+      $this->nm_hr_ult_alt   = "130920"; 
       $this->Apl_paginacao   = "PARCIAL"; 
       $temp_bug_list         = explode(" ", microtime()); 
       list($NM_usec, $NM_sec) = $temp_bug_list; 
@@ -1115,7 +1115,7 @@ class que_costumers_ini
       $this->nm_ttf_chi  = array("zh_cn", "zh_hk", "ko");
       $_SESSION['sc_session'][$this->sc_page]['que_costumers']['seq_dir'] = 0; 
       $_SESSION['sc_session'][$this->sc_page]['que_costumers']['sub_dir'] = array(); 
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1HQXODQX7D1BeHQrqHuvmZSNiDWFYVENUD9XOZ1BOHAvCZMBODMvCHErsH5F/ZuFaHQJKDQJsZ1vCV5FGHuNOV9FeDWB3VoX7HQJmZ1F7Z1vmD5rqDEBOHArCDWBmZuBOD9NmDuFaHAvOVWJwHgrKVIBsHEX7HIFGHQXGZSBqDSNOHQBqHgBOHEXeDuJeHIFGHQBiDQJwDSBYHuFaHuNOZSrCH5FqDoXGHQJmZ1rqHArKV5FaDMNKZSXeDWr/DoJeD9XsZSX7Z1N7VWFaHgrKV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgvCZSJGDWX7ZuB/DcBwDQFUZ1rwV5FGHuNODkFCH5FqVENUD9BiZ1B/Z1rYV5FaDErKVkJGH5X/VoBiD9NwDQJsHIrKV5JeDMvmVcFKV5BmVoBqD9BsZkFGHArKD5F7HgvsHEJqDWF/ZuBOHQXODuBqHIrKD5JwDMvOVcFCHEX/VEraD9JmH9B/HArYHuX7HgBYHEFiV5XCHIJsD9XsZ9JeD1BeD5F7DMvmVcFeV5X/VEBiHQBiZkFGHIveD5JwHgvsHEJqH5FGVoFGHQXsDQB/DSN7HuraDMBYZSNiDurGDoXGHQBiZ1X7HINKZMXGDMveVkJqDuXKVoFGHQXsDuBqHAN7HuBqDMrYVcB/HEBmVoBqD9BsZ1F7DSrYD5rqDMrYZSJ3DurmZuJsDcBiH9BiHIrwHurqDMBODkBsH5XKDoXGHQNmH9BqHIveHQFGHgvsVkJqHEB3VoFGDcBiDQFUD1BOV5BOHgrwVcFeV5X/DoXGHQBiZ1BOHAN7HuXGHgvsHErCDuXKDoF7D9XsDQJsDSBYV5FGHgNKDkBsHEX/VEBiDcNmZ1X7HANOHuBOHgBOZSJ3DuX/VoFGHQFYDQB/HArYHQF7HgvOVcFeDurGDoXGHQXGVIJsDSvOD5JeDMveHArCDWrGVoFGHQXODQFaZ1BYHQFaDMBYVcB/HEX/VoBqD9BsZ1F7DSrYD5rqDMrYZSJGH5FYDoF7DcXOZSFGHAveV5FUHuBYVcFKDur/VoJwHQJmVIJsDSvmD5FaHgNOHEBUDWr/DoB/DcBwZSFGHANOV5FUHuNOV9FiDWXCHMFaD9JmZ1B/HIrwV5FaDErKDkBsV5FaHMJeDcBwDQFGD1veHQXGHgvsVcBOHEX7DoraHQFYH9FaHAvmZMJeHgvCHEJGDWF/VoJeD9NwDQBqHIvsV5XGDMrwDkFCDuX7VEF7D9BiH9FaHAN7D5FaDEBOZSJGH5BmDoB/D9NwZSX7D1BeV5BOHuvmVcFCDWXCVENUDcBqH9B/HABYD5JeDMzGHAFKV5XKDoF7D9XsDQJsDSBYV5FGHgNKDkFCH5FqVoBqDcNwH9B/HIveD5FaDErKZSJGH5F/DoFUHQNmDQFaHArYHQFaHgrwVcFeV5X7HIBiHQFYZkFGHIBeHQFaHgrKHArCDWF/VoBiDcJUZSX7Z1BYHuFaDMvOZSNiDWB3VoX7HQNmVIJsHAvsZMJeHgveHArsH5FYHIJsD9XsZ9JeD1BeD5F7DMvmVcrsH5FqVEraHQXGVIraZ1rYV5BOHgrKHErsH5FYVoJwD9XsDQJsHIrKHuJwDMvsVcFeDWXCDoJsDcBwH9B/Z1rYHQJwHgBOVkJ3DWX7HMJeHQJKZSBiHIrKHuFGDMBYVIBsHEX/VoFaDcFYZ1FGDSrYHQJwDEBODkFeH5FYVoFGHQJKDQBqDSzGD5NUDMvOVcXeV5r/VEB/";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1HQJKZ9rqZ1zGVWJeDMBYVIFCDWFaHIFGHQNwZSBqHANOD5NUDENOHErCDWX7VoJeHQJKDQJsZ1vCV5FGHuNOV9FeDWB3VoF7HQBiZkBiDSNOHuBOHgrKHENiHEXCHMBqDcXGDuBOZ1BYHuNUHgvOVIBsDWFYHIX7HQBqZ1FUZ1rYHuBqDMveHErsDuJeDoJsDcXGZ9rqZ1BYHuraDMrYVIB/HEX/VEraDcNmVIraD1rwV5FGDEBeHEXeH5X/DoF7HQNwDQBqDSN7V5FaDMNODkBsDWJeHIXGHQBsZkFUZ1vOD5JeHgrKHErCDWr/HMJeDcBiZ9JeZ1BYHuBqDMBOZSJqDWJeHIJsHQBiZkFUZ1rYHuBOHgNOVkJ3V5XCHMBOHQXsZ9rqD1BeD5rqHuvmVcBOH5B7VoBqHQXOZkBiDSNOHQXGDMvCVkJ3V5FqHIraHQNmDQBOZ1BYHQFaDMBOVcB/H5FqHMX7HQXOZ1FUZ1rYHuX7HgBYHArsH5FYHIXGHQJKZ9JeZ1zGVWJsDMBYVcB/DWXCHIF7DcNmZkFUD1rwV5FGDEBeHEXeH5X/DoF7D9NwZSX7D1BeV5raHuzGVcFKDWFaVENUD9JmZ1X7Z1BeHQX7HgBYDkFeV5FaHMJsD9NwH9X7Z1rwD5XGHuzGVIBODWFaDoXGDcBwZ1FGHANOV5JeDEBOHEFiDWFqDoXGHQXGZSBiZ1N7D5JwHuBYVcFeV5FYVoB/D9JmH9B/D1zGD5FaDEvsDkXKHEB7VoFGD9NwDQJsHIrKV5JeDMvsVcBUDWXKVoraD9BiH9FaHIBeZMBODErKVkXeV5FaDoB/D9NmDQBOZ1rwV5BqHgvsDkFCDWJeDoFGD9XOZ1rqD1rKD5rqDMBYHEJGH5FYVoB/HQXGZ9rqD1BeD5rqHuvmVcBOH5B7VoBqD9XOH9B/D1rwD5BiDEBeHEFiV5FaDoXGD9NmDQB/Z1rwHQJeDMvmVcB/DWXCHIJsHQBiH9BOHAvsV5X7HgBOZSJqDWFqHIF7HQJKDQJsZ1vCV5FGHuNOV9FeDWXCVoB/HQXOZ1BiD1rwV5FGDEBOHEJGDWFqHINUHQNmDQJsZ1N7VWJeDMBYVIBsV5X7DoNUD9XOZ1B/Z1rYHuBOHgBeHEFiV5B3DoF7D9XsDuFaHANKV5JwHuzGVcFCDWFYDoraDcNwH9B/D1rwD5FaDErKZSJGH5F/ZuB/D9XsDQX7HABYV5BOHuzGZSJ3V5F/VorqD9JmZ1rqHArKHQJwDEBODkFeH5FYVoFGHQJKDQFaHAveD5NUHgNKDkBOV5FYHMBiHQBqZ1rqHANOD5BODMNKZSXeV5B7DoBqD9NmDQX7HABYHuXGHuvmVcBODuX7VoBODcJUH9B/HIBeHQJwDEBODkFeH5FYVoFGHQJKDQJwHAveD5JwHgrYDkBODWJeVoX7D9BsH9B/Z1NOZMJwDMzGHArCDWF/VoBiDcJUZSX7Z1BYHuFaDMvOZSNiDWB3VoX7HQNmVIJsHAvsZMJeHgveDkXKDWr/HIJsD9XsZ9JeD1BeD5F7DMvmVcXKHEFYVoBqD9BsH9BqDSrYD5JwDErKZSXeDWX7DoBOHQXOZ9F7D1BeVWJsDMNOVcFeHEX7HMBiD9BsVIraD1rwV5X7HgBeHErCDWXCHIJwHQNmH9BiD1BeHuX7DMzGV9FeV5F/HMBqDcBwZ1X7D1rKHQrqHgBeHEFiV5B3DoF7D9XsDuFaHANKVWBqDMrwZSNiDWB3VEB/";
       $this->prep_conect();
       $this->conectDB();
       if (!in_array(strtolower($this->nm_tpbanco), $this->nm_bases_all))
@@ -2756,6 +2756,7 @@ class que_costumers_apl
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "name";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "docnumber";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "phonenumber";
+          $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "mobilephone";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "email";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "holdertype";
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['field_order'][] = "frequencytype";
@@ -3840,6 +3841,10 @@ if (window.parent && typeof window.parent.updateGeneratedPdfFile === "function")
           {
               $this->SC_monta_condicao($comando, "phoneNumber", $arg_search, str_replace(",", ".", $data_search));
           }
+          if ($field == "SC_all_Cmp" || $field == "mobilephone") 
+          {
+              $this->SC_monta_condicao($comando, "mobilePhone", $arg_search, str_replace(",", ".", $data_search));
+          }
           if ($field == "SC_all_Cmp" || $field == "email") 
           {
               $this->SC_monta_condicao($comando, "email", $arg_search, str_replace(",", ".", $data_search));
@@ -3909,7 +3914,7 @@ if (window.parent && typeof window.parent.updateGeneratedPdfFile === "function")
       if ($tp_unaccent) {
           $Nm_accent = $this->Ini->Nm_accent_yes;
       }
-      $nm_numeric[] = "idcostumer";$nm_numeric[] = "phonenumber";$nm_numeric[] = "email";$nm_numeric[] = "zipcode";$nm_numeric[] = "idholder";
+      $nm_numeric[] = "idcostumer";$nm_numeric[] = "phonenumber";$nm_numeric[] = "mobilephone";$nm_numeric[] = "email";$nm_numeric[] = "zipcode";$nm_numeric[] = "idholder";
       if (in_array($campo_join, $nm_numeric))
       {
          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'] == ".")
@@ -4908,6 +4913,33 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers'][$path_doc_md5][1] 
    {
        $_SESSION['sc_session'][$script_case_init]['que_costumers']['b_sair'] = true;
    }
+   $STR_lang    = (isset($_SESSION['scriptcase']['str_lang']) && !empty($_SESSION['scriptcase']['str_lang'])) ? $_SESSION['scriptcase']['str_lang'] : "pt_br";
+   if (isset($_SESSION['scriptcase']['que_costumers']['session_timeout']['lang'])) {
+       $STR_lang = $_SESSION['scriptcase']['que_costumers']['session_timeout']['lang'];
+   }
+   $STR_schema_all = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
+   $NM_arq_lang = "../_lib/lang/" . $STR_lang . ".lang.php";
+   $Nm_lang = array();
+   if (is_file($NM_arq_lang))
+   {
+       $Lixo = file($NM_arq_lang);
+       foreach ($Lixo as $Cada_lin) 
+       {
+           if (strpos($Cada_lin, "array()") === false && (trim($Cada_lin) != "<?php")  && (trim($Cada_lin) != "?" . ">"))
+           {
+               eval (str_replace("\$this->", "\$", $Cada_lin));
+           }
+       }
+   }
+   $_SESSION['scriptcase']['charset'] = "UTF-8";
+   ini_set('default_charset', $_SESSION['scriptcase']['charset']);
+   foreach ($Nm_lang as $ind => $dados)
+   {
+      if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($dados))
+      {
+          $Nm_lang[$ind] = sc_convert_encoding($dados, $_SESSION['scriptcase']['charset'], "UTF-8");
+      }
+   }
    if (isset($_SESSION['scriptcase']['sc_outra_jan']) && $_SESSION['scriptcase']['sc_outra_jan'] == 'que_costumers')
    {
        $_SESSION['sc_session'][$script_case_init]['que_costumers']['sc_outra_jan'] = true;
@@ -5092,6 +5124,105 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers'][$path_doc_md5][1] 
            $_SESSION['scriptcase']['sc_url_saida'][$script_case_init] = $salva_url_saida;
        } 
        $GLOBALS["NM_ERRO_IBASE"] = 0;  
+       if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+       { 
+           $_SESSION['scriptcase']['sc_apl_seg']['que_costumers'] = "on";
+       } 
+       if (isset($_GET['SC_Link_View']) && !empty($_GET['SC_Link_View']) && is_numeric($_GET['SC_Link_View']))
+       { 
+           $_SESSION['scriptcase']['sc_apl_seg']['que_costumers'] = "on";
+       } 
+       if (!$_SESSION['sc_session'][$script_case_init]['que_costumers']['opc_psq'] && !isset($_SESSION['scriptcase']['que_costumers']['session_timeout']['redir'])) 
+       { 
+          if (!isset($_SESSION['scriptcase']['sc_apl_seg']['que_costumers']) || $_SESSION['scriptcase']['sc_apl_seg']['que_costumers'] != "on")
+          { 
+              $NM_Mens_Erro = $Nm_lang['lang_errm_unth_user'];
+              $nm_botao_ok = ($_SESSION['sc_session'][$script_case_init]['que_costumers']['iframe_menu']) ? false : true;
+              if (isset($_SESSION['scriptcase']['sc_aba_iframe']))
+              {
+                  foreach ($_SESSION['scriptcase']['sc_aba_iframe'] as $aba => $apls_aba)
+                  {
+                      if (in_array("que_costumers", $apls_aba))
+                      {
+                          $nm_botao_ok = false;
+                           break;
+                      }
+                  }
+              }
+              if ((isset($_SESSION['sc_session'][$script_case_init]['que_costumers']['embutida']) && $_SESSION['sc_session'][$script_case_init]['que_costumers']['embutida']) || (isset($_SESSION['sc_session'][$script_case_init]['que_costumers']['embutida_form']) && $_SESSION['sc_session'][$script_case_init]['que_costumers']['embutida_form']))
+              {
+                   $nm_botao_ok = false;
+              }
+       header("X-XSS-Protection: 1; mode=block");
+       header("X-Frame-Options: SAMEORIGIN");
+?>
+             <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+            "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+              <HTML>
+               <HEAD>
+                <TITLE>=)</TITLE>
+               <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
+<?php
+if ($_SESSION['scriptcase']['proc_mobile'])
+{
+?>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<?php
+}
+?>
+ <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT" />
+ <META http-equiv="Last-Modified" content="<?php echo gmdate('D, d M Y H:i:s') ?> GMT" />
+ <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+ <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+ <META http-equiv="Pragma" content="no-cache" />
+                <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>                <META http-equiv="Pragma" content="no-cache"/>
+                <link rel="shortcut icon" href="../_lib/img/grp__NM__ico__NM__barraca-de-acampamento.ico">
+                <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $STR_schema_all ?>_grid.css" /> 
+                <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $STR_schema_all ?>_grid<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" /> 
+               </HEAD>
+               <body class="scGridPage">
+                <table align="center"><tr><td style="padding: 0"><div class="scGridBorder">
+                <table class="scGridTabela" width='100%' cellspacing=0 cellpadding=0><tr class="scGridFieldOdd"><td class="scGridFieldOddFont" style="padding: 15px 30px; text-align: center">
+                 <?php echo $NM_Mens_Erro; ?>
+<?php
+              if ($nm_botao_ok)
+              {
+?>
+                <br />
+                <form name="Fseg" method="post" 
+                                    action="<?php echo $nm_url_saida; ?>" 
+                                    target="_self"> 
+                 <input type="hidden" name="script_case_init" value="<?php echo NM_encode_input($script_case_init) ?>"/> 
+                 <input type="submit" name="sc_sai_seg" value="OK"> 
+                </form> 
+<?php
+              }
+?>
+                </td></tr></table>
+                </div></td></tr></table>
+<?php
+              if (isset($_SESSION['scriptcase']['nm_sc_retorno']) && !empty($_SESSION['scriptcase']['nm_sc_retorno']))
+              {
+?>
+<br /><br /><br />
+<table align="center" style="width: 450px"><tr><td style="padding: 0"><div class="scGridBorder">
+ <table style="width: 100%" class="scGridTabela">
+  <tr class="scGridFieldOdd">
+   <td class="scGridFieldOddFont" style="padding: 15px 30px">
+    <?php echo $Nm_lang['lang_errm_unth_hwto']; ?>
+   </td>
+  </tr>
+ </table>
+</div></td></tr></table>
+<?php
+              }
+?>
+               </body>
+              </HTML>
+<?php
+              exit;
+          } 
+       } 
        if (isset($_SESSION['sc_session'][$script_case_init]['que_costumers']['sc_outra_jan']) && $_SESSION['sc_session'][$script_case_init]['que_costumers']['sc_outra_jan'])
        {
            $nm_apl_dependente = 0;
@@ -5153,6 +5284,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers'][$path_doc_md5][1] 
        $Nm_numeric = array();
        $Nm_numeric[] = "idcostumer";
        $Nm_numeric[] = "phonenumber";
+       $Nm_numeric[] = "mobilephone";
        $Nm_numeric[] = "email";
        $Nm_numeric[] = "zipcode";
        $Nm_numeric[] = "idholder";

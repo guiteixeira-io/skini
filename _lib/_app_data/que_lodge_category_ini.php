@@ -8,7 +8,7 @@
     $arr_data['initial'] = "index.php";
     $arr_data['group'] = "skini";
     $arr_data['apl'] = "que_lodge_category";
-    $arr_data['status'] = "NAO";
+    $arr_data['status'] = "SIM";
     $arr_data['type'] = "cons";
     $arr_data['friendly_url'] = "que_lodge_category";
     $arr_data['md5'] = "LigMd5";

@@ -53,10 +53,20 @@ class cad_costumers_apl
    var $Erro;
    var $Db;
    var $idcostumer;
+   var $facephoto;
+   var $facephoto_scfile_name;
+   var $facephoto_ul_name;
+   var $facephoto_scfile_type;
+   var $facephoto_ul_type;
+   var $facephoto_limpa;
+   var $facephoto_salva;
+   var $out_facephoto;
+   var $out1_facephoto;
    var $docnumber;
    var $rg;
    var $name;
    var $phonenumber;
+   var $mobilephone;
    var $email;
    var $zipcode;
    var $zipstate;
@@ -70,6 +80,7 @@ class cad_costumers_apl
    var $holdertype;
    var $idholder;
    var $idholder_1;
+   var $locate;
    var $aggregate;
    var $nm_data;
    var $nmgp_opcao;
@@ -133,6 +144,22 @@ class cad_costumers_apl
           {
               $this->email = $this->NM_ajax_info['param']['email'];
           }
+          if (isset($this->NM_ajax_info['param']['facephoto']))
+          {
+              $this->facephoto = $this->NM_ajax_info['param']['facephoto'];
+          }
+          if (isset($this->NM_ajax_info['param']['facephoto_limpa']))
+          {
+              $this->facephoto_limpa = $this->NM_ajax_info['param']['facephoto_limpa'];
+          }
+          if (isset($this->NM_ajax_info['param']['facephoto_ul_name']))
+          {
+              $this->facephoto_ul_name = $this->NM_ajax_info['param']['facephoto_ul_name'];
+          }
+          if (isset($this->NM_ajax_info['param']['facephoto_ul_type']))
+          {
+              $this->facephoto_ul_type = $this->NM_ajax_info['param']['facephoto_ul_type'];
+          }
           if (isset($this->NM_ajax_info['param']['frequencytype']))
           {
               $this->frequencytype = $this->NM_ajax_info['param']['frequencytype'];
@@ -144,6 +171,10 @@ class cad_costumers_apl
           if (isset($this->NM_ajax_info['param']['idcostumer']))
           {
               $this->idcostumer = $this->NM_ajax_info['param']['idcostumer'];
+          }
+          if (isset($this->NM_ajax_info['param']['mobilephone']))
+          {
+              $this->mobilephone = $this->NM_ajax_info['param']['mobilephone'];
           }
           if (isset($this->NM_ajax_info['param']['name']))
           {
@@ -478,6 +509,20 @@ class cad_costumers_apl
       } 
       $_SESSION['sc_session'][$script_case_init]['cad_costumers']['upload_field_info'] = array();
 
+      $_SESSION['sc_session'][$script_case_init]['cad_costumers']['upload_field_info']['facephoto'] = array(
+          'app_dir'            => $this->Ini->path_aplicacao,
+          'app_name'           => 'cad_costumers',
+          'upload_dir'         => $this->Ini->root . $this->Ini->path_imag_temp . '/',
+          'upload_url'         => $this->Ini->path_imag_temp . '/',
+          'upload_type'        => 'single',
+          'upload_allowed_type'  => '/.+$/i',
+          'upload_max_size'  => null,
+          'upload_file_height' => '300',
+          'upload_file_width'  => '300',
+          'upload_file_aspect' => 'S',
+          'upload_file_type'   => 'I',
+      );
+
       unset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['masterValue']);
       $this->Change_Menu = false;
       $run_iframe = (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['run_iframe']) && ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['run_iframe'] == "F" || $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['run_iframe'] == "R")) ? true : false;
@@ -629,6 +674,29 @@ class cad_costumers_apl
       $this->nmgp_form_empty = false;
       $this->Ini->sc_Include($this->Ini->path_lib_php . "/nm_valida.php", "C", "NM_Valida") ; 
       $teste_validade = new NM_Valida ;
+
+      if (isset($this->NM_ajax_info['param']['facephoto_ul_name']) && '' != $this->NM_ajax_info['param']['facephoto_ul_name'])
+      {
+          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['upload_field_ul_name'][$this->facephoto_ul_name]))
+          {
+              $this->NM_ajax_info['param']['facephoto_ul_name'] = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['upload_field_ul_name'][$this->facephoto_ul_name];
+          }
+          $this->facephoto = $this->Ini->root . $this->Ini->path_imag_temp . '/' . $this->NM_ajax_info['param']['facephoto_ul_name'];
+          $this->facephoto_scfile_name = substr($this->NM_ajax_info['param']['facephoto_ul_name'], 12);
+          $this->facephoto_scfile_type = $this->NM_ajax_info['param']['facephoto_ul_type'];
+          $this->facephoto_ul_name = $this->NM_ajax_info['param']['facephoto_ul_name'];
+          $this->facephoto_ul_type = $this->NM_ajax_info['param']['facephoto_ul_type'];
+      }
+      elseif (isset($this->facephoto_ul_name) && '' != $this->facephoto_ul_name)
+      {
+          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['upload_field_ul_name'][$this->facephoto_ul_name]))
+          {
+              $this->facephoto_ul_name = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['upload_field_ul_name'][$this->facephoto_ul_name];
+          }
+          $this->facephoto = $this->Ini->root . $this->Ini->path_imag_temp . '/' . $this->facephoto_ul_name;
+          $this->facephoto_scfile_name = substr($this->facephoto_ul_name, 12);
+          $this->facephoto_scfile_type = $this->facephoto_ul_type;
+      }
 
       $this->loadFieldConfig();
 
@@ -901,6 +969,7 @@ class cad_costumers_apl
           $this->nmgp_dados_form = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['dados_form'];
           if (!isset($this->idcostumer)){$this->idcostumer = $this->nmgp_dados_form['idcostumer'];} 
           if (!isset($this->idholder)){$this->idholder = $this->nmgp_dados_form['idholder'];} 
+          if (!isset($this->locate)){$this->locate = $this->nmgp_dados_form['locate'];} 
       }
       $glo_senha_protect = (isset($_SESSION['scriptcase']['glo_senha_protect'])) ? $_SESSION['scriptcase']['glo_senha_protect'] : "S";
       $this->aba_iframe = false;
@@ -1128,6 +1197,7 @@ class cad_costumers_apl
       if (isset($this->rg)) { $this->nm_limpa_alfa($this->rg); }
       if (isset($this->name)) { $this->nm_limpa_alfa($this->name); }
       if (isset($this->phonenumber)) { $this->nm_limpa_alfa($this->phonenumber); }
+      if (isset($this->mobilephone)) { $this->nm_limpa_alfa($this->mobilephone); }
       if (isset($this->email)) { $this->nm_limpa_alfa($this->email); }
       if (isset($this->zipcode)) { $this->nm_limpa_alfa($this->zipcode); }
       if (isset($this->zipstate)) { $this->nm_limpa_alfa($this->zipstate); }
@@ -1165,6 +1235,13 @@ class cad_costumers_apl
       $this->field_config['phonenumber']['symbol_dec'] = '';
       $this->field_config['phonenumber']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
       $this->field_config['phonenumber']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
+      //-- mobilephone
+      $this->field_config['mobilephone']               = array();
+      $this->field_config['mobilephone']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
+      $this->field_config['mobilephone']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
+      $this->field_config['mobilephone']['symbol_dec'] = '';
+      $this->field_config['mobilephone']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
+      $this->field_config['mobilephone']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
       //-- idcostumer
       $this->field_config['idcostumer']               = array();
       $this->field_config['idcostumer']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
@@ -1212,6 +1289,10 @@ class cad_costumers_apl
 //
       if ($this->NM_ajax_flag && 'validate_' == substr($this->NM_ajax_opcao, 0, 9))
       {
+          if ('validate_facephoto' == $this->NM_ajax_opcao)
+          {
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'facephoto');
+          }
           if ('validate_docnumber' == $this->NM_ajax_opcao)
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'docnumber');
@@ -1219,6 +1300,10 @@ class cad_costumers_apl
           if ('validate_name' == $this->NM_ajax_opcao)
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'name');
+          }
+          if ('validate_frequencytype' == $this->NM_ajax_opcao)
+          {
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'frequencytype');
           }
           if ('validate_rg' == $this->NM_ajax_opcao)
           {
@@ -1228,17 +1313,9 @@ class cad_costumers_apl
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'nationality');
           }
-          if ('validate_frequencytype' == $this->NM_ajax_opcao)
-          {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'frequencytype');
-          }
           if ('validate_holdertype' == $this->NM_ajax_opcao)
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'holdertype');
-          }
-          if ('validate_aggregate' == $this->NM_ajax_opcao)
-          {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'aggregate');
           }
           if ('validate_phonenumber' == $this->NM_ajax_opcao)
           {
@@ -1247,6 +1324,10 @@ class cad_costumers_apl
           if ('validate_email' == $this->NM_ajax_opcao)
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'email');
+          }
+          if ('validate_mobilephone' == $this->NM_ajax_opcao)
+          {
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'mobilephone');
           }
           if ('validate_zipcode' == $this->NM_ajax_opcao)
           {
@@ -1272,6 +1353,10 @@ class cad_costumers_apl
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'zipnumber');
           }
+          if ('validate_aggregate' == $this->NM_ajax_opcao)
+          {
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'aggregate');
+          }
           if ('validate_observation' == $this->NM_ajax_opcao)
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'observation');
@@ -1286,6 +1371,7 @@ class cad_costumers_apl
       }
       if ($this->nmgp_opcao == "recarga" || $this->nmgp_opcao == "recarga_mobile" || $this->nmgp_opcao == "muda_form") 
       {
+          $this->upload_img_doc($Campos_Crit, $Campos_Falta, $Campos_Erros) ; 
           $this->nm_tira_formatacao();
           $nm_sc_sv_opcao = $this->nmgp_opcao; 
           $this->nmgp_opcao = "nada"; 
@@ -1805,11 +1891,17 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
    {
        switch($campo)
        {
+           case 'facephoto':
+               return "Foto";
+               break;
            case 'docnumber':
                return "CPF";
                break;
            case 'name':
                return "Nome";
+               break;
+           case 'frequencytype':
+               return "Mensalista";
                break;
            case 'rg':
                return "RG";
@@ -1817,20 +1909,17 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
            case 'nationality':
                return "Nacionalidade";
                break;
-           case 'frequencytype':
-               return "Mensalista";
-               break;
            case 'holdertype':
                return "Titular";
-               break;
-           case 'aggregate':
-               return "Agregado";
                break;
            case 'phonenumber':
                return "Telefone";
                break;
            case 'email':
                return "Email";
+               break;
+           case 'mobilephone':
+               return "Celular";
                break;
            case 'zipcode':
                return "CEP";
@@ -1850,6 +1939,9 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
            case 'zipnumber':
                return "Número";
                break;
+           case 'aggregate':
+               return "Agregado";
+               break;
            case 'observation':
                return "Observação";
                break;
@@ -1858,6 +1950,9 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
                break;
            case 'idholder':
                return "Holder";
+               break;
+           case 'locate':
+               return "Localização";
                break;
        }
 
@@ -1908,6 +2003,11 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $this->NM_ajax_info['errList']['geral_cad_costumers'][] = "CSRF: " . $this->Ini->Nm_lang['lang_errm_ajax_csrf'];
           }
      }
+      if ((!is_array($filtro) && ('' == $filtro || 'facephoto' == $filtro)) || (is_array($filtro) && in_array('facephoto', $filtro)))
+        $this->ValidateField_facephoto($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
+          $this->scFormFocusErrorName = "facephoto";
+
       if ((!is_array($filtro) && ('' == $filtro || 'docnumber' == $filtro)) || (is_array($filtro) && in_array('docnumber', $filtro)))
         $this->ValidateField_docnumber($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
@@ -1917,6 +2017,11 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
         $this->ValidateField_name($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
           $this->scFormFocusErrorName = "name";
+
+      if ((!is_array($filtro) && ('' == $filtro || 'frequencytype' == $filtro)) || (is_array($filtro) && in_array('frequencytype', $filtro)))
+        $this->ValidateField_frequencytype($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
+          $this->scFormFocusErrorName = "frequencytype";
 
       if ((!is_array($filtro) && ('' == $filtro || 'rg' == $filtro)) || (is_array($filtro) && in_array('rg', $filtro)))
         $this->ValidateField_rg($Campos_Crit, $Campos_Falta, $Campos_Erros);
@@ -1928,20 +2033,10 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
           $this->scFormFocusErrorName = "nationality";
 
-      if ((!is_array($filtro) && ('' == $filtro || 'frequencytype' == $filtro)) || (is_array($filtro) && in_array('frequencytype', $filtro)))
-        $this->ValidateField_frequencytype($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
-          $this->scFormFocusErrorName = "frequencytype";
-
       if ((!is_array($filtro) && ('' == $filtro || 'holdertype' == $filtro)) || (is_array($filtro) && in_array('holdertype', $filtro)))
         $this->ValidateField_holdertype($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
           $this->scFormFocusErrorName = "holdertype";
-
-      if ((!is_array($filtro) && ('' == $filtro || 'aggregate' == $filtro)) || (is_array($filtro) && in_array('aggregate', $filtro)))
-        $this->ValidateField_aggregate($Campos_Crit, $Campos_Falta, $Campos_Erros);
-      if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
-          $this->scFormFocusErrorName = "aggregate";
 
       if ((!is_array($filtro) && ('' == $filtro || 'phonenumber' == $filtro)) || (is_array($filtro) && in_array('phonenumber', $filtro)))
         $this->ValidateField_phonenumber($Campos_Crit, $Campos_Falta, $Campos_Erros);
@@ -1952,6 +2047,11 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
         $this->ValidateField_email($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
           $this->scFormFocusErrorName = "email";
+
+      if ((!is_array($filtro) && ('' == $filtro || 'mobilephone' == $filtro)) || (is_array($filtro) && in_array('mobilephone', $filtro)))
+        $this->ValidateField_mobilephone($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
+          $this->scFormFocusErrorName = "mobilephone";
 
       if ((!is_array($filtro) && ('' == $filtro || 'zipcode' == $filtro)) || (is_array($filtro) && in_array('zipcode', $filtro)))
         $this->ValidateField_zipcode($Campos_Crit, $Campos_Falta, $Campos_Erros);
@@ -1983,11 +2083,17 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
           $this->scFormFocusErrorName = "zipnumber";
 
+      if ((!is_array($filtro) && ('' == $filtro || 'aggregate' == $filtro)) || (is_array($filtro) && in_array('aggregate', $filtro)))
+        $this->ValidateField_aggregate($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
+          $this->scFormFocusErrorName = "aggregate";
+
       if ((!is_array($filtro) && ('' == $filtro || 'observation' == $filtro)) || (is_array($filtro) && in_array('observation', $filtro)))
         $this->ValidateField_observation($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!isset($this->scFormFocusErrorName) || '' == $this->scFormFocusErrorName) && ( !empty($Campos_Crit) || !empty($Campos_Falta) ))
           $this->scFormFocusErrorName = "observation";
 
+      $this->upload_img_doc($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if (!empty($Campos_Crit) || !empty($Campos_Falta) || !empty($this->Campos_Mens_erro))
       {
           if (!empty($this->sc_force_zero))
@@ -2000,6 +2106,42 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
           }
       }
    }
+
+    function ValidateField_facephoto(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    {
+        global $teste_validade;
+        $hasError = false;
+      if (isset($this->Field_no_validate['facephoto'])) {
+          return;
+      }
+        if ($this->nmgp_opcao != "excluir")
+        {
+            $sTestFile = $this->facephoto;
+            if ("" != $this->facephoto && "S" != $this->facephoto_limpa && !$teste_validade->ArqExtensao($this->facephoto, array()))
+            {
+                $hasError = true;
+                $Campos_Crit .= "Foto: " . $this->Ini->Nm_lang['lang_errm_file_invl']; 
+                if (!isset($Campos_Erros['facephoto']))
+                {
+                    $Campos_Erros['facephoto'] = array();
+                }
+                $Campos_Erros['facephoto'][] = $this->Ini->Nm_lang['lang_errm_file_invl'];
+                if (!isset($this->NM_ajax_info['errList']['facephoto']) || !is_array($this->NM_ajax_info['errList']['facephoto']))
+                {
+                    $this->NM_ajax_info['errList']['facephoto'] = array();
+                }
+                $this->NM_ajax_info['errList']['facephoto'][] = $this->Ini->Nm_lang['lang_errm_file_invl'];
+            }
+        }
+        if ($hasError) {
+            global $sc_seq_vert;
+            $fieldName = 'facephoto';
+            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
+                $fieldName .= $sc_seq_vert;
+            }
+            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
+        }
+    } // ValidateField_facephoto
 
     function ValidateField_docnumber(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
@@ -2075,6 +2217,44 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
         }
     } // ValidateField_name
 
+    function ValidateField_frequencytype(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    {
+        global $teste_validade;
+        $hasError = false;
+   if (isset($this->Field_no_validate['frequencytype'])) {
+       return;
+   }
+      if ($this->frequencytype == "" && $this->nmgp_opcao != "excluir")
+      { 
+      } 
+      if ($this->frequencytype != "" && !in_array("frequencytype", $this->sc_force_zero))
+      { 
+          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencytype']) && !in_array($this->frequencytype, $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencytype']))
+          {
+              $hasError = true;
+              $Campos_Crit .= $this->Ini->Nm_lang['lang_errm_ajax_data'];
+              if (!isset($Campos_Erros['frequencytype']))
+              {
+                  $Campos_Erros['frequencytype'] = array();
+              }
+              $Campos_Erros['frequencytype'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
+              if (!isset($this->NM_ajax_info['errList']['frequencytype']) || !is_array($this->NM_ajax_info['errList']['frequencytype']))
+              {
+                  $this->NM_ajax_info['errList']['frequencytype'] = array();
+              }
+              $this->NM_ajax_info['errList']['frequencytype'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
+          }
+      }
+        if ($hasError) {
+            global $sc_seq_vert;
+            $fieldName = 'frequencytype';
+            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
+                $fieldName .= $sc_seq_vert;
+            }
+            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
+        }
+    } // ValidateField_frequencytype
+
     function ValidateField_rg(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
@@ -2146,44 +2326,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
         }
     } // ValidateField_nationality
 
-    function ValidateField_frequencytype(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
-    {
-        global $teste_validade;
-        $hasError = false;
-   if (isset($this->Field_no_validate['frequencytype'])) {
-       return;
-   }
-      if ($this->frequencytype == "" && $this->nmgp_opcao != "excluir")
-      { 
-      } 
-      if ($this->frequencytype != "" && !in_array("frequencytype", $this->sc_force_zero))
-      { 
-          if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencytype']) && !in_array($this->frequencytype, $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencytype']))
-          {
-              $hasError = true;
-              $Campos_Crit .= $this->Ini->Nm_lang['lang_errm_ajax_data'];
-              if (!isset($Campos_Erros['frequencytype']))
-              {
-                  $Campos_Erros['frequencytype'] = array();
-              }
-              $Campos_Erros['frequencytype'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
-              if (!isset($this->NM_ajax_info['errList']['frequencytype']) || !is_array($this->NM_ajax_info['errList']['frequencytype']))
-              {
-                  $this->NM_ajax_info['errList']['frequencytype'] = array();
-              }
-              $this->NM_ajax_info['errList']['frequencytype'][] = $this->Ini->Nm_lang['lang_errm_ajax_data'];
-          }
-      }
-        if ($hasError) {
-            global $sc_seq_vert;
-            $fieldName = 'frequencytype';
-            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
-                $fieldName .= $sc_seq_vert;
-            }
-            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
-        }
-    } // ValidateField_frequencytype
-
     function ValidateField_holdertype(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
@@ -2222,35 +2364,12 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
         }
     } // ValidateField_holdertype
 
-    function ValidateField_aggregate(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
-    {
-        global $teste_validade;
-        $hasError = false;
-      if (isset($this->Field_no_validate['aggregate'])) {
-          return;
-      }
-      if ($this->nmgp_opcao != "excluir") 
-      { 
-          if (trim($this->aggregate) != "")  
-          { 
-          } 
-      } 
-        if ($hasError) {
-            global $sc_seq_vert;
-            $fieldName = 'aggregate';
-            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
-                $fieldName .= $sc_seq_vert;
-            }
-            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
-        }
-    } // ValidateField_aggregate
-
     function ValidateField_phonenumber(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
         $hasError = false;
       if (isset($this->Field_no_validate['phonenumber'])) {
-      $this->nm_tira_mask($this->phonenumber, "(99) 99999-9999", "(){}[].,;:-+/ "); 
+      $this->nm_tira_mask($this->phonenumber, "(99) 9999-9999", "(){}[].,;:-+/ "); 
           nm_limpa_numero($this->phonenumber, $this->field_config['phonenumber']['symbol_grp']) ; 
           return;
       }
@@ -2259,7 +2378,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
           $this->phonenumber = 0;
           $this->sc_force_zero[] = 'phonenumber';
       } 
-      $this->nm_tira_mask($this->phonenumber, "(99) 99999-9999", "(){}[].,;:-+/ "); 
+      $this->nm_tira_mask($this->phonenumber, "(99) 9999-9999", "(){}[].,;:-+/ "); 
       nm_limpa_numero($this->phonenumber, $this->field_config['phonenumber']['symbol_grp']) ; 
       if ($this->nmgp_opcao != "excluir") 
       { 
@@ -2345,6 +2464,69 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
             $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
         }
     } // ValidateField_email
+
+    function ValidateField_mobilephone(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    {
+        global $teste_validade;
+        $hasError = false;
+      if (isset($this->Field_no_validate['mobilephone'])) {
+      $this->nm_tira_mask($this->mobilephone, "(99) 9 9999-9999", "(){}[].,;:-+/ "); 
+          nm_limpa_numero($this->mobilephone, $this->field_config['mobilephone']['symbol_grp']) ; 
+          return;
+      }
+      if ($this->mobilephone === "" || is_null($this->mobilephone))  
+      { 
+          $this->mobilephone = 0;
+          $this->sc_force_zero[] = 'mobilephone';
+      } 
+      $this->nm_tira_mask($this->mobilephone, "(99) 9 9999-9999", "(){}[].,;:-+/ "); 
+      nm_limpa_numero($this->mobilephone, $this->field_config['mobilephone']['symbol_grp']) ; 
+      if ($this->nmgp_opcao != "excluir") 
+      { 
+          if ($this->mobilephone != '')  
+          { 
+              $iTestSize = 20;
+              if (strlen($this->mobilephone) > $iTestSize)  
+              { 
+                  $hasError = true;
+                  $Campos_Crit .= "Celular: " . $this->Ini->Nm_lang['lang_errm_size']; 
+                  if (!isset($Campos_Erros['mobilephone']))
+                  {
+                      $Campos_Erros['mobilephone'] = array();
+                  }
+                  $Campos_Erros['mobilephone'][] = $this->Ini->Nm_lang['lang_errm_size'];
+                  if (!isset($this->NM_ajax_info['errList']['mobilephone']) || !is_array($this->NM_ajax_info['errList']['mobilephone']))
+                  {
+                      $this->NM_ajax_info['errList']['mobilephone'] = array();
+                  }
+                  $this->NM_ajax_info['errList']['mobilephone'][] = $this->Ini->Nm_lang['lang_errm_size'];
+              } 
+              if ($teste_validade->Valor($this->mobilephone, 20, 0, 0, 0, "N") == false)  
+              { 
+                  $hasError = true;
+                  $Campos_Crit .= "Celular; " ; 
+                  if (!isset($Campos_Erros['mobilephone']))
+                  {
+                      $Campos_Erros['mobilephone'] = array();
+                  }
+                  $Campos_Erros['mobilephone'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
+                  if (!isset($this->NM_ajax_info['errList']['mobilephone']) || !is_array($this->NM_ajax_info['errList']['mobilephone']))
+                  {
+                      $this->NM_ajax_info['errList']['mobilephone'] = array();
+                  }
+                  $this->NM_ajax_info['errList']['mobilephone'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
+              } 
+          } 
+      } 
+        if ($hasError) {
+            global $sc_seq_vert;
+            $fieldName = 'mobilephone';
+            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
+                $fieldName .= $sc_seq_vert;
+            }
+            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
+        }
+    } // ValidateField_mobilephone
 
     function ValidateField_zipcode(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
@@ -2565,6 +2747,29 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
         }
     } // ValidateField_zipnumber
 
+    function ValidateField_aggregate(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    {
+        global $teste_validade;
+        $hasError = false;
+      if (isset($this->Field_no_validate['aggregate'])) {
+          return;
+      }
+      if ($this->nmgp_opcao != "excluir") 
+      { 
+          if (trim($this->aggregate) != "")  
+          { 
+          } 
+      } 
+        if ($hasError) {
+            global $sc_seq_vert;
+            $fieldName = 'aggregate';
+            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
+                $fieldName .= $sc_seq_vert;
+            }
+            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
+        }
+    } // ValidateField_aggregate
+
     function ValidateField_observation(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
@@ -2599,6 +2804,94 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
             $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
         }
     } // ValidateField_observation
+//
+//--------------------------------------------------------------------------------------
+   function upload_img_doc(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros, $filtro = '') 
+   {
+     global $nm_browser;
+     if (!empty($Campos_Crit) || !empty($Campos_Falta))
+     {
+          return;
+     }
+      if ($this->nmgp_opcao != "excluir") 
+      { 
+          if ($this->facephoto == "none") 
+          { 
+              $this->facephoto = ""; 
+          } 
+          if ($this->facephoto != "") 
+          { 
+              if (!function_exists('sc_upload_unprotect_chars'))
+              {
+                  include_once 'cad_costumers_doc_name.php';
+              }
+              $this->facephoto = sc_upload_unprotect_chars($this->facephoto, true);
+              $this->facephoto_scfile_name = sc_upload_unprotect_chars($this->facephoto_scfile_name, true);
+              if ($nm_browser == "Opera")  
+              { 
+                  $this->facephoto_scfile_type = substr($this->facephoto_scfile_type, 0, strpos($this->facephoto_scfile_type, ";")) ; 
+              } 
+              if ($this->facephoto_scfile_type == "image/pjpeg" || $this->facephoto_scfile_type == "image/jpeg" || $this->facephoto_scfile_type == "image/gif" ||  
+                  $this->facephoto_scfile_type == "image/png" || $this->facephoto_scfile_type == "image/x-png" || $this->facephoto_scfile_type == "image/bmp")  
+              { 
+                  if (!is_file($this->facephoto) && isset($_SESSION['scriptcase']['charset']) && $_SESSION['scriptcase']['charset'] != 'UTF-8') {
+                      $mbConvertFileName = mb_convert_encoding($this->facephoto, $_SESSION['scriptcase']['charset'], 'UTF-8');
+                      $mbConvertScFileName = mb_convert_encoding($this->facephoto_scfile_name, $_SESSION['scriptcase']['charset'], 'UTF-8');
+                      if (is_file($mbConvertFileName)) {
+                          $this->facephoto = $mbConvertFileName;
+                          $this->facephoto_scfile_name = $mbConvertScFileName;
+                      }
+                  }
+                  if (is_file($this->facephoto))  
+                  { 
+                      $this->NM_size_docs[$this->facephoto_scfile_name] = $this->sc_file_size($this->facephoto);
+                      $reg_facephoto = file_get_contents($this->facephoto); 
+                      $this->facephoto = $reg_facephoto; 
+                  } 
+                  else 
+                  { 
+                      $Campos_Crit .= "Foto " . $this->Ini->Nm_lang['lang_errm_upld']; 
+                      $this->facephoto = "";
+                      if (!isset($Campos_Erros['facephoto']))
+                      {
+                          $Campos_Erros['facephoto'] = array();
+                      }
+                      $Campos_Erros['facephoto'][] = $this->Ini->Nm_lang['lang_errm_upld'];
+                      if (!isset($this->NM_ajax_info['errList']['facephoto']) || !is_array($this->NM_ajax_info['errList']['facephoto']))
+                      {
+                          $this->NM_ajax_info['errList']['facephoto'] = array();
+                      }
+                      $this->NM_ajax_info['errList']['facephoto'][] = $this->Ini->Nm_lang['lang_errm_upld'];
+                  } 
+              } 
+              else 
+              { 
+                  if ($nm_browser == "Konqueror")  
+                  { 
+                      $this->facephoto = "" ; 
+                  } 
+                  else 
+                  { 
+                     $Campos_Crit .= "Foto " . $this->Ini->Nm_lang['lang_errm_ivtp'];  
+                      if (!isset($Campos_Erros['facephoto']))
+                      {
+                          $Campos_Erros['facephoto'] = array();
+                      }
+                      $Campos_Erros['facephoto'][] = $this->Ini->Nm_lang['lang_errm_ivtp'];
+                      if (!isset($this->NM_ajax_info['errList']['facephoto']) || !is_array($this->NM_ajax_info['errList']['facephoto']))
+                      {
+                          $this->NM_ajax_info['errList']['facephoto'] = array();
+                      }
+                      $this->NM_ajax_info['errList']['facephoto'][] = $this->Ini->Nm_lang['lang_errm_ivtp'];
+                  } 
+              } 
+          } 
+          elseif (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['dados_form']['facephoto']) && $this->facephoto_limpa != "S")
+          {
+              $this->facephoto = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['dados_form']['facephoto'];
+          }
+      } 
+   }
 
     function removeDuplicateDttmError($aErrDate, &$aErrTime)
     {
@@ -2623,24 +2916,32 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
    {
     global
            $sc_seq_vert;
+    if (empty($this->facephoto))
+    {
+        $this->facephoto = $this->nmgp_dados_form['facephoto'];
+    }
+    $this->nmgp_dados_form['facephoto'] = $this->facephoto;
+    $this->nmgp_dados_form['facephoto_limpa'] = $this->facephoto_limpa;
     $this->nmgp_dados_form['docnumber'] = $this->docnumber;
     $this->nmgp_dados_form['name'] = $this->name;
+    $this->nmgp_dados_form['frequencytype'] = $this->frequencytype;
     $this->nmgp_dados_form['rg'] = $this->rg;
     $this->nmgp_dados_form['nationality'] = $this->nationality;
-    $this->nmgp_dados_form['frequencytype'] = $this->frequencytype;
     $this->nmgp_dados_form['holdertype'] = $this->holdertype;
-    $this->nmgp_dados_form['aggregate'] = $this->aggregate;
     $this->nmgp_dados_form['phonenumber'] = $this->phonenumber;
     $this->nmgp_dados_form['email'] = $this->email;
+    $this->nmgp_dados_form['mobilephone'] = $this->mobilephone;
     $this->nmgp_dados_form['zipcode'] = $this->zipcode;
     $this->nmgp_dados_form['zipcity'] = $this->zipcity;
     $this->nmgp_dados_form['zipstate'] = $this->zipstate;
     $this->nmgp_dados_form['zipdistrict'] = $this->zipdistrict;
     $this->nmgp_dados_form['zipstreet'] = $this->zipstreet;
     $this->nmgp_dados_form['zipnumber'] = $this->zipnumber;
+    $this->nmgp_dados_form['aggregate'] = $this->aggregate;
     $this->nmgp_dados_form['observation'] = $this->observation;
     $this->nmgp_dados_form['idcostumer'] = $this->idcostumer;
     $this->nmgp_dados_form['idholder'] = $this->idholder;
+    $this->nmgp_dados_form['locate'] = $this->locate;
     $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['dados_form'] = $this->nmgp_dados_form;
    }
    function nm_tira_formatacao()
@@ -2654,8 +2955,12 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       $this->nm_tira_mask($this->rg, "99.999.999-9", "(){}[].,;:-+/ "); 
       $this->Before_unformat['phonenumber'] = $this->phonenumber;
       $this->Before_unformat['phonenumber'] = $this->phonenumber;
-      $this->nm_tira_mask($this->phonenumber, "(99) 99999-9999", "(){}[].,;:-+/ "); 
+      $this->nm_tira_mask($this->phonenumber, "(99) 9999-9999", "(){}[].,;:-+/ "); 
       nm_limpa_numero($this->phonenumber, $this->field_config['phonenumber']['symbol_grp']) ; 
+      $this->Before_unformat['mobilephone'] = $this->mobilephone;
+      $this->Before_unformat['mobilephone'] = $this->mobilephone;
+      $this->nm_tira_mask($this->mobilephone, "(99) 9 9999-9999", "(){}[].,;:-+/ "); 
+      nm_limpa_numero($this->mobilephone, $this->field_config['mobilephone']['symbol_grp']) ; 
       $this->Before_unformat['zipcode'] = $this->zipcode;
       nm_limpa_cep($this->zipcode) ; 
       $this->Before_unformat['idcostumer'] = $this->idcostumer;
@@ -2713,8 +3018,13 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       }
       if ($Nome_Campo == "phonenumber")
       {
-          $this->nm_tira_mask($this->phonenumber, "(99) 99999-9999", "(){}[].,;:-+/ "); 
+          $this->nm_tira_mask($this->phonenumber, "(99) 9999-9999", "(){}[].,;:-+/ "); 
           nm_limpa_numero($this->phonenumber, $this->field_config['phonenumber']['symbol_grp']) ; 
+      }
+      if ($Nome_Campo == "mobilephone")
+      {
+          $this->nm_tira_mask($this->mobilephone, "(99) 9 9999-9999", "(){}[].,;:-+/ "); 
+          nm_limpa_numero($this->mobilephone, $this->field_config['mobilephone']['symbol_grp']) ; 
       }
       if ($Nome_Campo == "zipcode")
       {
@@ -2743,7 +3053,11 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       }
       if ('' !== $this->phonenumber || (!empty($format_fields) && isset($format_fields['phonenumber'])))
       {
-          $this->nm_gera_mask($this->phonenumber, "(99) 99999-9999"); 
+          $this->nm_gera_mask($this->phonenumber, "(99) 9999-9999"); 
+      }
+      if ('' !== $this->mobilephone || (!empty($format_fields) && isset($format_fields['mobilephone'])))
+      {
+          $this->nm_gera_mask($this->mobilephone, "(99) 9 9999-9999"); 
       }
       if (!empty($this->zipcode) || (!empty($format_fields) && isset($format_fields['zipcode'])))
       {
@@ -3134,21 +3448,23 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
 
    function ajax_return_values()
    {
+          $this->ajax_return_values_facephoto();
           $this->ajax_return_values_docnumber();
           $this->ajax_return_values_name();
+          $this->ajax_return_values_frequencytype();
           $this->ajax_return_values_rg();
           $this->ajax_return_values_nationality();
-          $this->ajax_return_values_frequencytype();
           $this->ajax_return_values_holdertype();
-          $this->ajax_return_values_aggregate();
           $this->ajax_return_values_phonenumber();
           $this->ajax_return_values_email();
+          $this->ajax_return_values_mobilephone();
           $this->ajax_return_values_zipcode();
           $this->ajax_return_values_zipcity();
           $this->ajax_return_values_zipstate();
           $this->ajax_return_values_zipdistrict();
           $this->ajax_return_values_zipstreet();
           $this->ajax_return_values_zipnumber();
+          $this->ajax_return_values_aggregate();
           $this->ajax_return_values_observation();
           if ('navigate_form' == $this->NM_ajax_opcao)
           {
@@ -3167,6 +3483,72 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               unset($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['sub_aggregate_script_case_init'] ]['sub_aggregate']['total']);
           }
    } // ajax_return_values
+
+          //----- facephoto
+   function ajax_return_values_facephoto($bForce = false)
+   {
+          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("facephoto", $this->nmgp_refresh_fields)) || $bForce)
+          {
+              $sTmpValue = NM_charset_to_utf8($this->facephoto);
+              $aLookup = array();
+   $out_facephoto = '';
+   $out1_facephoto = '';
+   if ($this->facephoto != "" && $this->facephoto != "none")   
+   { 
+       $out_facephoto = $this->Ini->path_imag_temp . "/sc_facephoto_" . $_SESSION['scriptcase']['sc_num_img'] . session_id() . ".gif" ;  
+       $out1_facephoto = $out_facephoto; 
+       $arq_facephoto = fopen($this->Ini->root . $out_facephoto, "w") ;  
+       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access)) 
+       { 
+           $nm_tmp = nm_conv_img_access(substr($this->facephoto, 0, 12));
+           if (is_string($this->facephoto) && substr($this->facephoto, 0, 4) != "*nm*" && is_string($nm_tmp) && substr($nm_tmp, 0, 4) == "*nm*") 
+           { 
+               $this->facephoto = nm_conv_img_access($this->facephoto);
+           } 
+       } 
+       if (is_string($this->facephoto) && substr($this->facephoto, 0, 4) == "*nm*") 
+       { 
+           $this->facephoto = substr($this->facephoto, 4) ; 
+           $this->facephoto = base64_decode($this->facephoto) ; 
+       } 
+       $img_pos_bm = (is_string($this->facephoto)) ? strpos($this->facephoto, "BM") : false; 
+       if (!$img_pos_bm === FALSE && $img_pos_bm == 78) 
+       { 
+           $this->facephoto = substr($this->facephoto, $img_pos_bm) ; 
+       } 
+       fwrite($arq_facephoto, (string)$this->facephoto) ;  
+       fclose($arq_facephoto) ;  
+       $sc_obj_img = new nm_trata_img($this->Ini->root . $out_facephoto, true);
+       $this->nmgp_return_img['facephoto'][0] = $sc_obj_img->getHeight();
+       $this->nmgp_return_img['facephoto'][1] = $sc_obj_img->getWidth();
+       $_SESSION['scriptcase']['sc_num_img']++ ; 
+       $out_facephoto = $this->Ini->path_imag_temp . "/sc_" . "facephoto_" . $_SESSION['scriptcase']['sc_num_img'] . session_id() . ".gif" ; 
+       $_SESSION['scriptcase']['sc_num_img']++ ; 
+       if (!$this->Ini->Gd_missing)
+       { 
+           $sc_obj_img = new nm_trata_img($this->Ini->root . $out1_facephoto, true);
+           $sc_obj_img->setWidth(300);
+           $sc_obj_img->setHeight(300);
+           $sc_obj_img->setManterAspecto(true);
+           $sc_obj_img->createImg($this->Ini->root . $out_facephoto);
+       } 
+       else 
+       { 
+           $out_facephoto = $out1_facephoto;
+       } 
+       $_SESSION['scriptcase']['sc_num_img']++ ; 
+   } 
+          $aLookupOrig = $aLookup;
+          $this->NM_ajax_info['fldList']['facephoto'] = array(
+                       'row'    => '',
+               'type'    => 'imagem',
+               'valList' => array($this->Ini->Nm_lang['lang_othr_show_imgg']),
+               'imgFile' => $out_facephoto,
+               'imgOrig' => $out1_facephoto,
+               'keepImg' => $sKeepImage,
+              );
+          }
+   }
 
           //----- docnumber
    function ajax_return_values_docnumber($bForce = false)
@@ -3193,38 +3575,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $aLookup = array();
           $aLookupOrig = $aLookup;
           $this->NM_ajax_info['fldList']['name'] = array(
-                       'row'    => '',
-               'type'    => 'text',
-               'valList' => array($this->form_encode_input($sTmpValue)),
-              );
-          }
-   }
-
-          //----- rg
-   function ajax_return_values_rg($bForce = false)
-   {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("rg", $this->nmgp_refresh_fields)) || $bForce)
-          {
-              $sTmpValue = NM_charset_to_utf8($this->rg);
-              $aLookup = array();
-          $aLookupOrig = $aLookup;
-          $this->NM_ajax_info['fldList']['rg'] = array(
-                       'row'    => '',
-               'type'    => 'text',
-               'valList' => array($this->form_encode_input($sTmpValue)),
-              );
-          }
-   }
-
-          //----- nationality
-   function ajax_return_values_nationality($bForce = false)
-   {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("nationality", $this->nmgp_refresh_fields)) || $bForce)
-          {
-              $sTmpValue = NM_charset_to_utf8($this->nationality);
-              $aLookup = array();
-          $aLookupOrig = $aLookup;
-          $this->NM_ajax_info['fldList']['nationality'] = array(
                        'row'    => '',
                'type'    => 'text',
                'valList' => array($this->form_encode_input($sTmpValue)),
@@ -3280,6 +3630,38 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_frequencyt
           }
    }
 
+          //----- rg
+   function ajax_return_values_rg($bForce = false)
+   {
+          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("rg", $this->nmgp_refresh_fields)) || $bForce)
+          {
+              $sTmpValue = NM_charset_to_utf8($this->rg);
+              $aLookup = array();
+          $aLookupOrig = $aLookup;
+          $this->NM_ajax_info['fldList']['rg'] = array(
+                       'row'    => '',
+               'type'    => 'text',
+               'valList' => array($this->form_encode_input($sTmpValue)),
+              );
+          }
+   }
+
+          //----- nationality
+   function ajax_return_values_nationality($bForce = false)
+   {
+          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("nationality", $this->nmgp_refresh_fields)) || $bForce)
+          {
+              $sTmpValue = NM_charset_to_utf8($this->nationality);
+              $aLookup = array();
+          $aLookupOrig = $aLookup;
+          $this->NM_ajax_info['fldList']['nationality'] = array(
+                       'row'    => '',
+               'type'    => 'text',
+               'valList' => array($this->form_encode_input($sTmpValue)),
+              );
+          }
+   }
+
           //----- holdertype
    function ajax_return_values_holdertype($bForce = false)
    {
@@ -3328,22 +3710,6 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
           }
    }
 
-          //----- aggregate
-   function ajax_return_values_aggregate($bForce = false)
-   {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("aggregate", $this->nmgp_refresh_fields)) || $bForce)
-          {
-              $sTmpValue = NM_charset_to_utf8($this->aggregate);
-              $aLookup = array();
-          $aLookupOrig = $aLookup;
-          $this->NM_ajax_info['fldList']['aggregate'] = array(
-                       'row'    => '',
-               'type'    => 'text',
-               'valList' => array($sTmpValue),
-              );
-          }
-   }
-
           //----- phonenumber
    function ajax_return_values_phonenumber($bForce = false)
    {
@@ -3369,6 +3735,22 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $aLookup = array();
           $aLookupOrig = $aLookup;
           $this->NM_ajax_info['fldList']['email'] = array(
+                       'row'    => '',
+               'type'    => 'text',
+               'valList' => array($sTmpValue),
+              );
+          }
+   }
+
+          //----- mobilephone
+   function ajax_return_values_mobilephone($bForce = false)
+   {
+          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("mobilephone", $this->nmgp_refresh_fields)) || $bForce)
+          {
+              $sTmpValue = NM_charset_to_utf8($this->mobilephone);
+              $aLookup = array();
+          $aLookupOrig = $aLookup;
+          $this->NM_ajax_info['fldList']['mobilephone'] = array(
                        'row'    => '',
                'type'    => 'text',
                'valList' => array($sTmpValue),
@@ -3468,6 +3850,22 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
                        'row'    => '',
                'type'    => 'text',
                'valList' => array($this->form_encode_input($sTmpValue)),
+              );
+          }
+   }
+
+          //----- aggregate
+   function ajax_return_values_aggregate($bForce = false)
+   {
+          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("aggregate", $this->nmgp_refresh_fields)) || $bForce)
+          {
+              $sTmpValue = NM_charset_to_utf8($this->aggregate);
+              $aLookup = array();
+          $aLookupOrig = $aLookup;
+          $this->NM_ajax_info['fldList']['aggregate'] = array(
+                       'row'    => '',
+               'type'    => 'text',
+               'valList' => array($sTmpValue),
               );
           }
    }
@@ -3628,6 +4026,32 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
           }
       }
       $this->sc_force_zero = array();
+    if ("incluir" == $this->nmgp_opcao) {
+      $this->sc_evento = $this->nmgp_opcao;
+      $_SESSION['scriptcase']['cad_costumers']['contr_erro'] = 'on';
+ $this->locate  = 'out';
+$_SESSION['scriptcase']['cad_costumers']['contr_erro'] = 'off'; 
+    }
+      if (!empty($this->Campos_Mens_erro)) 
+      {
+          $this->Erro->mensagem(__FILE__, __LINE__, "critica", $this->Campos_Mens_erro); 
+          $this->Campos_Mens_erro = ""; 
+          $this->nmgp_opc_ant = $this->nmgp_opcao ; 
+          if ($this->nmgp_opcao == "incluir") 
+          { 
+              $GLOBALS["erro_incl"] = 1; 
+          }
+          else
+          { 
+              $this->sc_evento = ""; 
+          }
+          if ($this->nmgp_opcao == "alterar" || $this->nmgp_opcao == "incluir" || $this->nmgp_opcao == "excluir") 
+          {
+              $this->nmgp_opcao = "nada"; 
+          } 
+          $this->NM_rollback_db(); 
+          $this->Campos_Mens_erro = ""; 
+      }
       $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
       $salva_opcao = $this->nmgp_opcao; 
       if ($this->sc_evento != "novo" && $this->sc_evento != "incluir") 
@@ -3638,24 +4062,27 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
       { 
           $this->Ini->sc_tem_trans_banco = $this->Db->BeginTrans(); 
       } 
+      $NM_val_form['facephoto'] = $this->facephoto;
       $NM_val_form['docnumber'] = $this->docnumber;
       $NM_val_form['name'] = $this->name;
+      $NM_val_form['frequencytype'] = $this->frequencytype;
       $NM_val_form['rg'] = $this->rg;
       $NM_val_form['nationality'] = $this->nationality;
-      $NM_val_form['frequencytype'] = $this->frequencytype;
       $NM_val_form['holdertype'] = $this->holdertype;
-      $NM_val_form['aggregate'] = $this->aggregate;
       $NM_val_form['phonenumber'] = $this->phonenumber;
       $NM_val_form['email'] = $this->email;
+      $NM_val_form['mobilephone'] = $this->mobilephone;
       $NM_val_form['zipcode'] = $this->zipcode;
       $NM_val_form['zipcity'] = $this->zipcity;
       $NM_val_form['zipstate'] = $this->zipstate;
       $NM_val_form['zipdistrict'] = $this->zipdistrict;
       $NM_val_form['zipstreet'] = $this->zipstreet;
       $NM_val_form['zipnumber'] = $this->zipnumber;
+      $NM_val_form['aggregate'] = $this->aggregate;
       $NM_val_form['observation'] = $this->observation;
       $NM_val_form['idcostumer'] = $this->idcostumer;
       $NM_val_form['idholder'] = $this->idholder;
+      $NM_val_form['locate'] = $this->locate;
       if ($this->idcostumer === "" || is_null($this->idcostumer))  
       { 
           $this->idcostumer = 0;
@@ -3665,10 +4092,10 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
           $this->phonenumber = 0;
           $this->sc_force_zero[] = 'phonenumber';
       } 
-      if ($this->email === "" || is_null($this->email))  
+      if ($this->mobilephone === "" || is_null($this->mobilephone))  
       { 
-          $this->email = 0;
-          $this->sc_force_zero[] = 'email';
+          $this->mobilephone = 0;
+          $this->sc_force_zero[] = 'mobilephone';
       } 
       if ($this->zipcode === "" || is_null($this->zipcode))  
       { 
@@ -3683,6 +4110,36 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
       $nm_bases_lob_geral = array_merge($this->Ini->nm_bases_ibase, $this->Ini->nm_bases_mysql, $this->Ini->nm_bases_access, $this->Ini->nm_bases_sqlite);
       if ($this->nmgp_opcao == "alterar" || $this->nmgp_opcao == "incluir") 
       {
+          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
+          { 
+              $nm_tmp = nm_conv_img_access(substr($this->facephoto, 0, 12));
+              if (is_string($this->facephoto) && substr($this->facephoto, 0, 4) != "*nm*" && is_string($nm_tmp) && substr($nm_tmp, 0, 4) == "*nm*") 
+              { 
+                  $this->facephoto = nm_conv_img_access($this->facephoto);
+              } 
+              if (!empty($this->facephoto) && $this->facephoto != 'null' && substr($this->facephoto, 0, 4) != "*nm*") 
+              { 
+                  $this->facephoto = "*nm*" . base64_encode($this->facephoto) ; 
+              } 
+          } 
+          elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
+          { 
+          } 
+          elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+          { }
+          elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
+          { }
+          elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sqlite))
+          { }
+          else
+          { 
+              $this->facephoto =  substr($this->Db->qstr($this->facephoto), 1, -1);
+          } 
+          if ($this->facephoto == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
+          { 
+              $this->facephoto = "null"; 
+              $NM_val_null[] = "facephoto";
+          } 
           $this->docnumber_before_qstr = $this->docnumber;
           $this->docnumber = substr($this->Db->qstr($this->docnumber), 1, -1); 
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
@@ -3715,6 +4172,17 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
           { 
               $this->name = "null"; 
               $NM_val_null[] = "name";
+          } 
+          $this->email_before_qstr = $this->email;
+          $this->email = substr($this->Db->qstr($this->email), 1, -1); 
+          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
+          {
+              $this->email = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->email);
+          }
+          if ($this->email == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
+          { 
+              $this->email = "null"; 
+              $NM_val_null[] = "email";
           } 
           $this->zipstate_before_qstr = $this->zipstate;
           $this->zipstate = substr($this->Db->qstr($this->zipstate), 1, -1); 
@@ -3815,6 +4283,17 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->holdertype = "null"; 
               $NM_val_null[] = "holdertype";
           } 
+          $this->locate_before_qstr = $this->locate;
+          $this->locate = substr($this->Db->qstr($this->locate), 1, -1); 
+          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
+          {
+              $this->locate = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->locate);
+          }
+          if ($this->locate == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
+          { 
+              $this->locate = "null"; 
+              $NM_val_null[] = "locate";
+          } 
           $this->aggregate_before_qstr = $this->aggregate;
           $this->aggregate = substr($this->Db->qstr($this->aggregate), 1, -1); 
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
@@ -3910,26 +4389,91 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "docNumber = '$this->docnumber', rg = '$this->rg', name = '$this->name', phoneNumber = $this->phonenumber, email = $this->email, zipCode = $this->zipcode, zipState = '$this->zipstate', zipCity = '$this->zipcity', zipDistrict = '$this->zipdistrict', zipStreet = '$this->zipstreet', zipNumber = '$this->zipnumber', nationality = '$this->nationality', observation = '$this->observation', frequencyType = '$this->frequencytype', holderType = '$this->holdertype'"; 
+                  $SC_fields_update[] = "docNumber = '$this->docnumber', rg = '$this->rg', name = '$this->name', phoneNumber = $this->phonenumber, mobilePhone = $this->mobilephone, email = '$this->email', zipCode = $this->zipcode, zipState = '$this->zipstate', zipCity = '$this->zipcity', zipDistrict = '$this->zipdistrict', zipStreet = '$this->zipstreet', zipNumber = '$this->zipnumber', nationality = '$this->nationality', observation = '$this->observation', frequencyType = '$this->frequencytype', holderType = '$this->holdertype'"; 
               } 
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "docNumber = '$this->docnumber', rg = '$this->rg', name = '$this->name', phoneNumber = $this->phonenumber, email = $this->email, zipCode = $this->zipcode, zipState = '$this->zipstate', zipCity = '$this->zipcity', zipDistrict = '$this->zipdistrict', zipStreet = '$this->zipstreet', zipNumber = '$this->zipnumber', nationality = '$this->nationality', observation = '$this->observation', frequencyType = '$this->frequencytype', holderType = '$this->holdertype'"; 
+                  $SC_fields_update[] = "docNumber = '$this->docnumber', rg = '$this->rg', name = '$this->name', phoneNumber = $this->phonenumber, mobilePhone = $this->mobilephone, email = '$this->email', zipCode = $this->zipcode, zipState = '$this->zipstate', zipCity = '$this->zipcity', zipDistrict = '$this->zipdistrict', zipStreet = '$this->zipstreet', zipNumber = '$this->zipnumber', nationality = '$this->nationality', observation = '$this->observation', frequencyType = '$this->frequencytype', holderType = '$this->holdertype'"; 
               } 
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "docNumber = '$this->docnumber', rg = '$this->rg', name = '$this->name', phoneNumber = $this->phonenumber, email = $this->email, zipCode = $this->zipcode, zipState = '$this->zipstate', zipCity = '$this->zipcity', zipDistrict = '$this->zipdistrict', zipStreet = '$this->zipstreet', zipNumber = '$this->zipnumber', nationality = '$this->nationality', observation = '$this->observation', frequencyType = '$this->frequencytype', holderType = '$this->holdertype'"; 
+                  $SC_fields_update[] = "docNumber = '$this->docnumber', rg = '$this->rg', name = '$this->name', phoneNumber = $this->phonenumber, mobilePhone = $this->mobilephone, email = '$this->email', zipCode = $this->zipcode, zipState = '$this->zipstate', zipCity = '$this->zipcity', zipDistrict = '$this->zipdistrict', zipStreet = '$this->zipstreet', zipNumber = '$this->zipnumber', nationality = '$this->nationality', observation = '$this->observation', frequencyType = '$this->frequencytype', holderType = '$this->holdertype'"; 
               } 
               else 
               { 
                   $comando = "UPDATE " . $this->Ini->nm_tabela . " SET ";  
-                  $SC_fields_update[] = "docNumber = '$this->docnumber', rg = '$this->rg', name = '$this->name', phoneNumber = $this->phonenumber, email = $this->email, zipCode = $this->zipcode, zipState = '$this->zipstate', zipCity = '$this->zipcity', zipDistrict = '$this->zipdistrict', zipStreet = '$this->zipstreet', zipNumber = '$this->zipnumber', nationality = '$this->nationality', observation = '$this->observation', frequencyType = '$this->frequencytype', holderType = '$this->holdertype'"; 
+                  $SC_fields_update[] = "docNumber = '$this->docnumber', rg = '$this->rg', name = '$this->name', phoneNumber = $this->phonenumber, mobilePhone = $this->mobilephone, email = '$this->email', zipCode = $this->zipcode, zipState = '$this->zipstate', zipCity = '$this->zipcity', zipDistrict = '$this->zipdistrict', zipStreet = '$this->zipstreet', zipNumber = '$this->zipnumber', nationality = '$this->nationality', observation = '$this->observation', frequencyType = '$this->frequencytype', holderType = '$this->holdertype'"; 
               } 
               if (isset($NM_val_form['idholder']) && $NM_val_form['idholder'] != $this->nmgp_dados_select['idholder']) 
               { 
                   $SC_fields_update[] = "idHolder = $this->idholder"; 
+              } 
+              if (isset($NM_val_form['locate']) && $NM_val_form['locate'] != $this->nmgp_dados_select['locate']) 
+              { 
+                  $SC_fields_update[] = "locate = '$this->locate'"; 
+              } 
+              $temp_cmd_sql = "";
+              if ($this->facephoto_limpa == "S")
+              {
+                  if ($this->facephoto != "null")
+                  {
+                      $this->facephoto = '';
+                  }
+                  if (in_array(strtolower($this->Ini->nm_tpbanco), $nm_bases_lob_geral))
+                  {
+                  }
+                  else
+                  {
+                      $temp_cmd_sql = "facePhoto = '" . $this->facephoto . "'";
+                  }
+                  $this->facephoto = "";
+              }
+              else
+              {
+                  if ($this->facephoto != "none" && $this->facephoto != "")
+                  {
+                      $NM_conteudo =  $this->facephoto;
+                      if (in_array(strtolower($this->Ini->nm_tpbanco), $nm_bases_lob_geral))
+                      {
+                      }
+                      else
+                      {
+                          $temp_cmd_sql .= " facePhoto = '$NM_conteudo'";
+                      }
+                  }
+                  else
+                  {
+                      $aDoNotUpdate[] = "facephoto";
+                  }
+              }
+              if (!empty($temp_cmd_sql))
+              {
+                  $SC_fields_update[] = $temp_cmd_sql;
+              }
+              if ($this->facephoto_limpa == "S" || ($this->facephoto != "none" && $this->facephoto != "" && in_array(strtolower($this->Ini->nm_tpbanco), $nm_bases_lob_geral))) 
+              { 
+                  if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase)) 
+                  { 
+                      $SC_fields_update[] = "facePhoto = ''"; 
+                  } 
+                  elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql)) 
+                  { 
+                      $SC_fields_update[] = "facePhoto = ''"; 
+                  } 
+                  elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access)) 
+                  { 
+                      $SC_fields_update[] = "facePhoto = ''"; 
+                  } 
+                  elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sqlite)) 
+                  { 
+                      $SC_fields_update[] = "facePhoto = ''"; 
+                  } 
+                  else 
+                  { 
+                      $SC_fields_update[] = "facePhoto = empty_blob()"; 
+                  } 
               } 
               $comando .= implode(",", $SC_fields_update);  
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
@@ -3973,6 +4517,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->docnumber = $this->docnumber_before_qstr;
               $this->rg = $this->rg_before_qstr;
               $this->name = $this->name_before_qstr;
+              $this->email = $this->email_before_qstr;
               $this->zipstate = $this->zipstate_before_qstr;
               $this->zipcity = $this->zipcity_before_qstr;
               $this->zipdistrict = $this->zipdistrict_before_qstr;
@@ -3982,10 +4527,42 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->observation = $this->observation_before_qstr;
               $this->frequencytype = $this->frequencytype_before_qstr;
               $this->holdertype = $this->holdertype_before_qstr;
+              $this->locate = $this->locate_before_qstr;
               $this->aggregate = $this->aggregate_before_qstr;
               if (in_array(strtolower($this->Ini->nm_tpbanco), $nm_bases_lob_geral))
               { 
+                  if ($this->facephoto_limpa == "S" && (!isset($this->Ini->nm_bases_oracle) || !in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_oracle)) && (!isset($this->Ini->nm_bases_informix) || !in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_informix))) 
+                  { 
+                      $_SESSION['scriptcase']['sc_sql_ult_comando'] = "UpdateBlob(" . $this->Ini->nm_tabela . ", \"facePhoto\", \"\",  \"idCostumer = $this->idcostumer\")"; 
+                      $rs = $this->Db->UpdateBlob($this->Ini->nm_tabela, "facePhoto", "",  "idCostumer = $this->idcostumer"); 
+                  } 
+                  else 
+                  { 
+                      if ($this->facephoto != "none" && $this->facephoto != "") 
+                      { 
+                          $_SESSION['scriptcase']['sc_sql_ult_comando'] = "UpdateBlob(" . $this->Ini->nm_tabela . ", \"facePhoto\", $this->facephoto,  \"idCostumer = $this->idcostumer\")"; 
+                          $rs = $this->Db->UpdateBlob($this->Ini->nm_tabela, "facePhoto", $this->facephoto,  "idCostumer = $this->idcostumer"); 
+                      } 
+                  } 
+                  if ($rs === false) 
+                  { 
+                      $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_updt'], $this->Db->ErrorMsg()); 
+                      $this->NM_rollback_db(); 
+                      if ($this->NM_ajax_flag)
+                      {
+                          cad_costumers_pack_ajax_response();
+                      }
+                      exit;  
+                  }   
               }   
+              if ($this->facephoto_limpa == "S")
+              {
+                  $this->NM_ajax_info['fldList']['facephoto_salva'] = array(
+                      'row'     => '',
+                      'type'    => 'text',
+                      'valList' => array(''),
+                  );
+              }
               $this->sc_evento = "update"; 
               $this->nmgp_opcao = "igual"; 
               $this->nm_flag_iframe = true;
@@ -3997,6 +4574,11 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['db_changed'] = true;
               if ($this->NM_ajax_flag) {
                   $this->NM_ajax_info['clearUpload'] = 'S';
+                  $this->NM_ajax_info['fldList']['facephoto_salva'] = array(
+                      'row'     => '',
+                      'type'    => 'text',
+                      'valList' => array(''),
+                  );
               }
 
 
@@ -4008,6 +4590,8 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               elseif (isset($this->name)) { $this->nm_limpa_alfa($this->name); }
               if     (isset($NM_val_form) && isset($NM_val_form['phonenumber'])) { $this->phonenumber = $NM_val_form['phonenumber']; }
               elseif (isset($this->phonenumber)) { $this->nm_limpa_alfa($this->phonenumber); }
+              if     (isset($NM_val_form) && isset($NM_val_form['mobilephone'])) { $this->mobilephone = $NM_val_form['mobilephone']; }
+              elseif (isset($this->mobilephone)) { $this->nm_limpa_alfa($this->mobilephone); }
               if     (isset($NM_val_form) && isset($NM_val_form['email'])) { $this->email = $NM_val_form['email']; }
               elseif (isset($this->email)) { $this->nm_limpa_alfa($this->email); }
               if     (isset($NM_val_form) && isset($NM_val_form['zipcode'])) { $this->zipcode = $NM_val_form['zipcode']; }
@@ -4036,7 +4620,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->nm_formatar_campos();
 
               $aOldRefresh               = $this->nmgp_refresh_fields;
-              $this->nmgp_refresh_fields = array_diff(array('docnumber', 'name', 'rg', 'nationality', 'frequencytype', 'holdertype', 'aggregate', 'phonenumber', 'email', 'zipcode', 'zipcity', 'zipstate', 'zipdistrict', 'zipstreet', 'zipnumber', 'observation'), $aDoNotUpdate);
+              $this->nmgp_refresh_fields = array_diff(array('docnumber', 'name', 'frequencytype', 'rg', 'nationality', 'holdertype', 'phonenumber', 'email', 'mobilephone', 'zipcode', 'zipcity', 'zipstate', 'zipdistrict', 'zipstreet', 'zipnumber', 'aggregate', 'observation'), $aDoNotUpdate);
               $this->ajax_return_values();
               $this->nmgp_refresh_fields = $aOldRefresh;
 
@@ -4138,25 +4722,35 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
           }
           if ($bInsertOk)
           { 
+              $_test_file = $this->fetchUniqueUploadName($this->facephoto_scfile_name, $dir_file, "facephoto");
+              if (trim($this->facephoto_scfile_name) != $_test_file)
+              {
+                  $this->facephoto_scfile_name = $_test_file;
+                  $this->facephoto = $_test_file;
+              }
               if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
               { 
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (idCostumer, docNumber, rg, name, phoneNumber, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder) VALUES ($this->idcostumer, '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->email, $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (idCostumer, facePhoto, docNumber, rg, name, phoneNumber, mobilePhone, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder, locate) VALUES ($this->idcostumer, '$this->facephoto', '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->mobilephone, '$this->email', $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder, '$this->locate')"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
               { 
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, docNumber, rg, name, phoneNumber, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder) VALUES (" . $NM_seq_auto . "$this->idcostumer, '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->email, $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (idCostumer, facePhoto, docNumber, rg, name, phoneNumber, mobilePhone, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder, locate) VALUES ($this->idcostumer, '$this->facephoto', '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->mobilephone, '$this->email', $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder, '$this->locate')"; 
+              }
+              elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+              {
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, facePhoto, docNumber, rg, name, phoneNumber, mobilePhone, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder, locate) VALUES (" . $NM_seq_auto . "$this->idcostumer, '', '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->mobilephone, '$this->email', $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder, '$this->locate')"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, docNumber, rg, name, phoneNumber, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder) VALUES (" . $NM_seq_auto . "$this->idcostumer, '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->email, $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, facePhoto, docNumber, rg, name, phoneNumber, mobilePhone, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder, locate) VALUES (" . $NM_seq_auto . "$this->idcostumer, '', '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->mobilephone, '$this->email', $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder, '$this->locate')"; 
               }
               elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sqlite))
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, docNumber, rg, name, phoneNumber, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder) VALUES (" . $NM_seq_auto . "$this->idcostumer, '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->email, $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, facePhoto, docNumber, rg, name, phoneNumber, mobilePhone, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder, locate) VALUES (" . $NM_seq_auto . "$this->idcostumer, '', '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->mobilephone, '$this->email', $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder, '$this->locate')"; 
               }
               else
               {
-                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, docNumber, rg, name, phoneNumber, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder) VALUES (" . $NM_seq_auto . "$this->idcostumer, '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->email, $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder)"; 
+                  $comando = "INSERT INTO " . $this->Ini->nm_tabela . " (" . $NM_cmp_auto . "idCostumer, facePhoto, docNumber, rg, name, phoneNumber, mobilePhone, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder, locate) VALUES (" . $NM_seq_auto . "$this->idcostumer, '$this->facephoto', '$this->docnumber', '$this->rg', '$this->name', $this->phonenumber, $this->mobilephone, '$this->email', $this->zipcode, '$this->zipstate', '$this->zipcity', '$this->zipdistrict', '$this->zipstreet', '$this->zipnumber', '$this->nationality', '$this->observation', '$this->frequencytype', '$this->holdertype', $this->idholder, '$this->locate')"; 
               }
               $comando = str_replace("N'null'", "null", $comando) ; 
               $comando = str_replace("'null'", "null", $comando) ; 
@@ -4190,6 +4784,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->docnumber = $this->docnumber_before_qstr;
               $this->rg = $this->rg_before_qstr;
               $this->name = $this->name_before_qstr;
+              $this->email = $this->email_before_qstr;
               $this->zipstate = $this->zipstate_before_qstr;
               $this->zipcity = $this->zipcity_before_qstr;
               $this->zipdistrict = $this->zipdistrict_before_qstr;
@@ -4199,7 +4794,26 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->observation = $this->observation_before_qstr;
               $this->frequencytype = $this->frequencytype_before_qstr;
               $this->holdertype = $this->holdertype_before_qstr;
+              $this->locate = $this->locate_before_qstr;
               $this->aggregate = $this->aggregate_before_qstr;
+              if (in_array(strtolower($this->Ini->nm_tpbanco), $nm_bases_lob_geral))
+              { 
+                  if (trim($this->facephoto ) != "") 
+                  { 
+                      $_SESSION['scriptcase']['sc_sql_ult_comando'] = "UpdateBlob(" . $this->Ini->nm_tabela . ",  facePhoto , $this->facephoto,  \"idCostumer = $this->idcostumer\")"; 
+                      $rs = $this->Db->UpdateBlob($this->Ini->nm_tabela, "facePhoto", $this->facephoto,  "idCostumer = $this->idcostumer"); 
+                      if ($rs === false)  
+                      { 
+                          $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_inst'], $this->Db->ErrorMsg()); 
+                          $this->NM_rollback_db(); 
+                          if ($this->NM_ajax_flag)
+                          {
+                              cad_costumers_pack_ajax_response();
+                          }
+                          exit; 
+                      }  
+                  }  
+              }  
               }
 
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['db_changed'] = true;
@@ -4213,6 +4827,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->docnumber = $this->docnumber_before_qstr;
               $this->rg = $this->rg_before_qstr;
               $this->name = $this->name_before_qstr;
+              $this->email = $this->email_before_qstr;
               $this->zipstate = $this->zipstate_before_qstr;
               $this->zipcity = $this->zipcity_before_qstr;
               $this->zipdistrict = $this->zipdistrict_before_qstr;
@@ -4222,6 +4837,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->observation = $this->observation_before_qstr;
               $this->frequencytype = $this->frequencytype_before_qstr;
               $this->holdertype = $this->holdertype_before_qstr;
+              $this->locate = $this->locate_before_qstr;
               $this->aggregate = $this->aggregate_before_qstr;
               $this->sc_insert_on = true; 
               if (empty($this->sc_erro_insert)) {
@@ -4366,6 +4982,9 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
       { 
           $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['parms'] = "idcostumer?#?$this->idcostumer?@?"; 
       }
+      $this->nmgp_dados_form['facephoto'] = ""; 
+      $this->facephoto_limpa = ""; 
+      $this->facephoto_salva = ""; 
       $this->NM_commit_db(); 
       if ($this->sc_evento != "insert" && $this->sc_evento != "update" && $this->sc_evento != "delete")
       { 
@@ -4542,11 +5161,11 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
           } 
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
           { 
-              $nmgp_select = "SELECT idCostumer, docNumber, rg, name, phoneNumber, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder from " . $this->Ini->nm_tabela ; 
+              $nmgp_select = "SELECT idCostumer, facePhoto, docNumber, rg, name, phoneNumber, mobilePhone, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder, locate from " . $this->Ini->nm_tabela ; 
           } 
           else 
           { 
-              $nmgp_select = "SELECT idCostumer, docNumber, rg, name, phoneNumber, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder from " . $this->Ini->nm_tabela ; 
+              $nmgp_select = "SELECT idCostumer, facePhoto, docNumber, rg, name, phoneNumber, mobilePhone, email, zipCode, zipState, zipCity, zipDistrict, zipStreet, zipNumber, nationality, observation, frequencyType, holderType, idHolder, locate from " . $this->Ini->nm_tabela ; 
           } 
           $aWhere = array();
           $aWhere[] = $sc_where_filter;
@@ -4665,45 +5284,59 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
           { 
               $this->idcostumer = $rs->fields[0] ; 
               $this->nmgp_dados_select['idcostumer'] = $this->idcostumer;
-              $this->docnumber = $rs->fields[1] ; 
+              if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
+              { 
+                  $this->facephoto = $this->Db->BlobDecode($rs->fields[1]) ; 
+              } 
+              else
+              { 
+                  $this->facephoto = $rs->fields[1] ; 
+              } 
+              $this->nmgp_dados_select['facephoto'] = $this->facephoto;
+              $this->docnumber = $rs->fields[2] ; 
               $this->nmgp_dados_select['docnumber'] = $this->docnumber;
-              $this->rg = $rs->fields[2] ; 
+              $this->rg = $rs->fields[3] ; 
               $this->nmgp_dados_select['rg'] = $this->rg;
-              $this->name = $rs->fields[3] ; 
+              $this->name = $rs->fields[4] ; 
               $this->nmgp_dados_select['name'] = $this->name;
-              $this->phonenumber = $rs->fields[4] ; 
+              $this->phonenumber = $rs->fields[5] ; 
               $this->nmgp_dados_select['phonenumber'] = $this->phonenumber;
-              $this->email = $rs->fields[5] ; 
+              $this->mobilephone = $rs->fields[6] ; 
+              $this->nmgp_dados_select['mobilephone'] = $this->mobilephone;
+              $this->email = $rs->fields[7] ; 
               $this->nmgp_dados_select['email'] = $this->email;
-              $this->zipcode = $rs->fields[6] ; 
+              $this->zipcode = $rs->fields[8] ; 
               $this->nmgp_dados_select['zipcode'] = $this->zipcode;
-              $this->zipstate = $rs->fields[7] ; 
+              $this->zipstate = $rs->fields[9] ; 
               $this->nmgp_dados_select['zipstate'] = $this->zipstate;
-              $this->zipcity = $rs->fields[8] ; 
+              $this->zipcity = $rs->fields[10] ; 
               $this->nmgp_dados_select['zipcity'] = $this->zipcity;
-              $this->zipdistrict = $rs->fields[9] ; 
+              $this->zipdistrict = $rs->fields[11] ; 
               $this->nmgp_dados_select['zipdistrict'] = $this->zipdistrict;
-              $this->zipstreet = $rs->fields[10] ; 
+              $this->zipstreet = $rs->fields[12] ; 
               $this->nmgp_dados_select['zipstreet'] = $this->zipstreet;
-              $this->zipnumber = $rs->fields[11] ; 
+              $this->zipnumber = $rs->fields[13] ; 
               $this->nmgp_dados_select['zipnumber'] = $this->zipnumber;
-              $this->nationality = $rs->fields[12] ; 
+              $this->nationality = $rs->fields[14] ; 
               $this->nmgp_dados_select['nationality'] = $this->nationality;
-              $this->observation = $rs->fields[13] ; 
+              $this->observation = $rs->fields[15] ; 
               $this->nmgp_dados_select['observation'] = $this->observation;
-              $this->frequencytype = $rs->fields[14] ; 
+              $this->frequencytype = $rs->fields[16] ; 
               $this->nmgp_dados_select['frequencytype'] = $this->frequencytype;
-              $this->holdertype = $rs->fields[15] ; 
+              $this->holdertype = $rs->fields[17] ; 
               $this->nmgp_dados_select['holdertype'] = $this->holdertype;
-              $this->idholder = $rs->fields[16] ; 
+              $this->idholder = $rs->fields[18] ; 
               $this->nmgp_dados_select['idholder'] = $this->idholder;
+              $this->locate = $rs->fields[19] ; 
+              $this->nmgp_dados_select['locate'] = $this->locate;
           $GLOBALS["NM_ERRO_IBASE"] = 0; 
               $this->idcostumer = (string)$this->idcostumer; 
               $this->phonenumber = (string)$this->phonenumber; 
-              $this->email = (string)$this->email; 
+              $this->mobilephone = (string)$this->mobilephone; 
               $this->zipcode = (string)$this->zipcode; 
               $this->idholder = (string)$this->idholder; 
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['parms'] = "idcostumer?#?$this->idcostumer?@?";
+              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['sub_dir'][0]  = "";
           } 
           $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['dados_select'] = $this->nmgp_dados_select;
           if (!$this->NM_ajax_flag || 'backup_line' != $this->NM_ajax_opcao)
@@ -4726,6 +5359,10 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->nm_formatar_campos();
               $this->idcostumer = "";  
               $this->nmgp_dados_form["idcostumer"] = $this->idcostumer;
+              $this->facephoto = "";  
+              $this->facephoto_ul_name = "" ;  
+              $this->facephoto_ul_type = "" ;  
+              $this->nmgp_dados_form["facephoto"] = $this->facephoto;
               $this->docnumber = "";  
               $this->nmgp_dados_form["docnumber"] = $this->docnumber;
               $this->rg = "";  
@@ -4734,6 +5371,8 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->nmgp_dados_form["name"] = $this->name;
               $this->phonenumber = "";  
               $this->nmgp_dados_form["phonenumber"] = $this->phonenumber;
+              $this->mobilephone = "";  
+              $this->nmgp_dados_form["mobilephone"] = $this->mobilephone;
               $this->email = "";  
               $this->nmgp_dados_form["email"] = $this->email;
               $this->zipcode = "";  
@@ -4758,6 +5397,8 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
               $this->nmgp_dados_form["holdertype"] = $this->holdertype;
               $this->idholder = "";  
               $this->nmgp_dados_form["idholder"] = $this->idholder;
+              $this->locate = "";  
+              $this->nmgp_dados_form["locate"] = $this->locate;
               $this->aggregate = "";  
               $this->nmgp_dados_form["aggregate"] = $this->aggregate;
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['dados_form'] = $this->nmgp_dados_form;
@@ -5147,6 +5788,77 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
 <?php
          exit;
      }
+//-- 
+   if ($this->nmgp_opcao == "novo")
+   { 
+       $out_facephoto = "";  
+   } 
+   else 
+   { 
+       $out_facephoto = $this->facephoto;  
+   } 
+   if ($this->facephoto != "" && $this->facephoto != "none")   
+   { 
+       $out_facephoto = $this->Ini->path_imag_temp . "/sc_facephoto_" . $_SESSION['scriptcase']['sc_num_img'] . session_id() . ".gif" ;  
+       $arq_facephoto = fopen($this->Ini->root . $out_facephoto, "w") ;  
+       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access)) 
+       { 
+           $nm_tmp = nm_conv_img_access(substr($this->facephoto, 0, 12));
+           if (is_string($this->facephoto) && substr($this->facephoto, 0, 4) != "*nm*" && is_string($nm_tmp) && substr($nm_tmp, 0, 4) == "*nm*") 
+           { 
+               $this->facephoto = nm_conv_img_access($this->facephoto);
+           } 
+       } 
+       if (is_string($this->facephoto) && substr($this->facephoto, 0, 4) == "*nm*") 
+       { 
+           $this->facephoto = substr($this->facephoto, 4) ; 
+           $this->facephoto = base64_decode($this->facephoto) ; 
+       } 
+       $img_pos_bm = (is_string($this->facephoto)) ? strpos($this->facephoto, "BM") : false; 
+       if (!$img_pos_bm === FALSE && $img_pos_bm == 78) 
+       { 
+           $this->facephoto = substr($this->facephoto, $img_pos_bm) ; 
+       } 
+       fwrite($arq_facephoto, (string)$this->facephoto) ;  
+       fclose($arq_facephoto) ;  
+       $sc_obj_img = new nm_trata_img($this->Ini->root . $out_facephoto, true);
+       $this->nmgp_return_img['facephoto'][0] = $sc_obj_img->getHeight();
+       $this->nmgp_return_img['facephoto'][1] = $sc_obj_img->getWidth();
+       $out1_facephoto = $out_facephoto; 
+       $_SESSION['scriptcase']['sc_num_img']++ ; 
+       $out_facephoto = $this->Ini->path_imag_temp . "/sc_" . "facephoto_" . $_SESSION['scriptcase']['sc_num_img'] . session_id() . ".gif" ; 
+       $_SESSION['scriptcase']['sc_num_img']++ ; 
+       if (!$this->Ini->Gd_missing)
+       { 
+           $sc_obj_img = new nm_trata_img($this->Ini->root . $out1_facephoto, true);
+           $sc_obj_img->setWidth(300);
+           $sc_obj_img->setHeight(300);
+           $sc_obj_img->setManterAspecto(true);
+           $sc_obj_img->createImg($this->Ini->root . $out_facephoto);
+       } 
+       else 
+       { 
+           $out_facephoto = $out1_facephoto;
+       } 
+       if ($this->Ini->Export_img_zip) {
+           $this->Ini->Img_export_zip[] = $this->Ini->root . $out_facephoto;
+           $out_facephoto = str_replace($this->Ini->path_imag_temp . "/", "", $out_facephoto);
+       } 
+       $_SESSION['scriptcase']['sc_num_img']++ ; 
+   } 
+   if (isset($_POST['nmgp_opcao']) && 'excluir' == $_POST['nmgp_opcao'] && $this->sc_evento != "delete" && (!isset($this->sc_evento_old) || 'delete' != $this->sc_evento_old))
+   {
+       global $temp_out_facephoto;
+       if (isset($temp_out_facephoto))
+       {
+           $out_facephoto = $temp_out_facephoto;
+       }
+       global $temp_out1_facephoto;
+       if (isset($temp_out1_facephoto))
+       {
+           $out1_facephoto = $temp_out1_facephoto;
+       }
+   }
         $this->initFormPages();
     include_once("cad_costumers_form0.php");
         $this->hideFormPages();
@@ -5177,10 +5889,10 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['Lookup_holdertype
     function form_highlight_search_quicksearch(&$result, $field, $value)
     {
         $searchOk = false;
-        if ('SC_all_Cmp' == $this->nmgp_fast_search && in_array($field, array("docnumber", "name", "rg", "nationality", "frequencytype", "holdertype", "aggregate", "phonenumber", "email", "zipcode", "zipcity", "zipstate", "zipdistrict", "zipstreet", "zipnumber", "observation"))) {
+        if ('SC_all_Cmp' == $this->nmgp_fast_search && in_array($field, array("facephoto", "docnumber", "name", "frequencytype", "rg", "nationality", "holdertype", "phonenumber", "email", "mobilephone", "zipcode", "zipcity", "zipstate", "zipdistrict", "zipstreet", "zipnumber", "aggregate", "observation"))) {
             $searchOk = true;
         }
-        elseif ($field == $this->nmgp_fast_search && in_array($field, array("docnumber", "name", "rg", "nationality", "frequencytype", "holdertype", "aggregate", "phonenumber", "email", "zipcode", "zipcity", "zipstate", "zipdistrict", "zipstreet", "zipnumber", "observation"))) {
+        elseif ($field == $this->nmgp_fast_search && in_array($field, array("facephoto", "docnumber", "name", "frequencytype", "rg", "nationality", "holdertype", "phonenumber", "email", "mobilephone", "zipcode", "zipcity", "zipstate", "zipdistrict", "zipstreet", "zipnumber", "aggregate", "observation"))) {
             $searchOk = true;
         }
 
@@ -5560,6 +6272,10 @@ function sc_file_size($file, $format = false)
       }
       $sv_data = $data_search;
       foreach ($fields as $field) {
+          if ($field == "SC_all_Cmp" || $field == "facephoto") 
+          {
+              $this->SC_monta_condicao($comando, "facePhoto", $arg_search, $data_search, "BLOB", false);
+          }
           if ($field == "SC_all_Cmp" || $field == "docnumber") 
           {
               $this->SC_monta_condicao($comando, "docNumber", $arg_search, $data_search, "VARCHAR", false);
@@ -5568,14 +6284,6 @@ function sc_file_size($file, $format = false)
           {
               $this->SC_monta_condicao($comando, "name", $arg_search, $data_search, "VARCHAR", false);
           }
-          if ($field == "SC_all_Cmp" || $field == "rg") 
-          {
-              $this->SC_monta_condicao($comando, "rg", $arg_search, $data_search, "VARCHAR", false);
-          }
-          if ($field == "SC_all_Cmp" || $field == "nationality") 
-          {
-              $this->SC_monta_condicao($comando, "nationality", $arg_search, $data_search, "VARCHAR", false);
-          }
           if ($field == "SC_all_Cmp" || $field == "frequencytype") 
           {
               $data_lookup = $this->SC_lookup_frequencytype($arg_search, $data_search);
@@ -5583,6 +6291,14 @@ function sc_file_size($file, $format = false)
               {
                   $this->SC_monta_condicao($comando, "frequencyType", $arg_search, $data_lookup, "VARCHAR", false);
               }
+          }
+          if ($field == "SC_all_Cmp" || $field == "rg") 
+          {
+              $this->SC_monta_condicao($comando, "rg", $arg_search, $data_search, "VARCHAR", false);
+          }
+          if ($field == "SC_all_Cmp" || $field == "nationality") 
+          {
+              $this->SC_monta_condicao($comando, "nationality", $arg_search, $data_search, "VARCHAR", false);
           }
           if ($field == "SC_all_Cmp" || $field == "holdertype") 
           {
@@ -5594,11 +6310,15 @@ function sc_file_size($file, $format = false)
           }
           if ($field == "SC_all_Cmp" || $field == "phonenumber") 
           {
-              $this->SC_monta_condicao($comando, "phoneNumber", $arg_search, str_replace(",", ".", $data_search), "INT", false);
+              $this->SC_monta_condicao($comando, "phoneNumber", $arg_search, str_replace(",", ".", $data_search), "BIGINT", false);
           }
           if ($field == "SC_all_Cmp" || $field == "email") 
           {
-              $this->SC_monta_condicao($comando, "email", $arg_search, str_replace(",", ".", $data_search), "INT", false);
+              $this->SC_monta_condicao($comando, "email", $arg_search, $data_search, "VARCHAR", false);
+          }
+          if ($field == "SC_all_Cmp" || $field == "mobilephone") 
+          {
+              $this->SC_monta_condicao($comando, "mobilePhone", $arg_search, str_replace(",", ".", $data_search), "BIGINT", false);
           }
           if ($field == "SC_all_Cmp" || $field == "zipcode") 
           {
@@ -5689,7 +6409,7 @@ function sc_file_size($file, $format = false)
       if ($tp_unaccent) {
           $Nm_accent = $this->Ini->Nm_accent_yes;
       }
-      $nm_numeric[] = "idcostumer";$nm_numeric[] = "phonenumber";$nm_numeric[] = "email";$nm_numeric[] = "zipcode";$nm_numeric[] = "idholder";
+      $nm_numeric[] = "idcostumer";$nm_numeric[] = "phonenumber";$nm_numeric[] = "mobilephone";$nm_numeric[] = "zipcode";$nm_numeric[] = "idholder";
       if (in_array($campo_join, $nm_numeric))
       {
          if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_costumers']['decimal_db'] == ".")
@@ -6214,6 +6934,8 @@ if (parent && parent.scAjaxDetailValue)
         switch ($fieldName) {
             case "phoneNumber":
                 return true;
+            case "mobilePhone":
+                return true;
             case "idCostumer":
                 return true;
             default:
@@ -6228,6 +6950,8 @@ if (parent && parent.scAjaxDetailValue)
             case "phoneNumber":
                 return 'desc';
             case "email":
+                return 'desc';
+            case "mobilePhone":
                 return 'desc';
             case "zipCode":
                 return 'desc';

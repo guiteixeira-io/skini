@@ -52,7 +52,7 @@
    $_SESSION['scriptcase']['sec_form_sec_apps_mob']['glo_nm_path_imagens']    = "/scriptcase/file/img";
    $_SESSION['scriptcase']['sec_form_sec_apps_mob']['glo_nm_path_imag_temp']  = "/scriptcase/tmp";
    $_SESSION['scriptcase']['sec_form_sec_apps_mob']['glo_nm_path_cache']  = "C:/Program Files/NetMake/v9-php81/wwwroot/scriptcase/file/cache";
-   $_SESSION['scriptcase']['sec_form_sec_apps_mob']['glo_nm_path_doc']        = "C:/Program Files/NetMake/v9-php81/wwwrootC:\inetpub\wwwroot\oficial\_lib\file\doc";
+   $_SESSION['scriptcase']['sec_form_sec_apps_mob']['glo_nm_path_doc']        = "C:/Program Files/NetMake/v9-php81/wwwrootC:/Program Files/NetMake/v9-php81/wwwroot/scriptcase/file/doc";
    $_SESSION['scriptcase']['sec_form_sec_apps_mob']['glo_nm_conexao']         = "skini";
    $NM_dir_atual = getcwd();
    if (empty($NM_dir_atual))
@@ -291,16 +291,16 @@ class sec_form_sec_apps_mob_ini
       $this->nm_seguranca    = ""; 
       $this->nm_grupo        = "skini"; 
       $this->nm_grupo_versao = "1"; 
-      $this->nm_autor        = "guilherme"; 
+      $this->nm_autor        = "admin"; 
       $this->nm_script_by    = "netmake"; 
       $this->nm_script_type  = "PHP"; 
       $this->nm_versao_sc    = "v9"; 
       $this->nm_tp_lic_sc    = "pe_bronze"; 
-      $this->nm_dt_criacao   = "20230530"; 
-      $this->nm_hr_criacao   = "215427"; 
+      $this->nm_dt_criacao   = "20230920"; 
+      $this->nm_hr_criacao   = "123213"; 
       $this->nm_autor_alt    = "admin"; 
-      $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "090240"; 
+      $this->nm_dt_ult_alt   = "20230920"; 
+      $this->nm_hr_ult_alt   = "123232"; 
       list($NM_usec, $NM_sec) = explode(" ", microtime()); 
       $this->nm_timestamp    = (float) $NM_sec; 
       $this->nm_app_version  = "1.0.0"; 
@@ -1097,7 +1097,7 @@ class sec_form_sec_apps_mob_ini
       $this->nm_bases_odbc       = array("odbc");
       $this->nm_bases_progress   = array("progress", "pdo_progress_odbc");
       $this->nm_bases_all        = array_merge($this->nm_bases_access, $this->nm_bases_ibase, $this->nm_bases_mysql, $this->nm_bases_postgres, $this->nm_bases_sqlite, $this->nm_bases_sybase, $this->nm_bases_vfp, $this->nm_bases_odbc, $this->nm_bases_progress);
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1DcBwH9BiHIBeD5F7HgrKDkBOHEX7HMBOD9XOZ1B/HIrwHQJwDEBODkFeH5FYVoFGHQJKDQBqHANOHuFaHuNOZSrCH5FqDoXGHQJmZ1FGZ1rYD5rqHgrKHEJqHEB3ZuJeDcBiDuFaZ1BYV5FGHuNODkBsDWXCDoJsDcBwH9B/Z1rYHQJwDErKHEFiDWFqDoFUDcJeH9FGHANOV5JwHuNOVIFCHEF/DoraHQJmZ1F7Z1vmD5rqDEBOHArCDWBmDoB/D9NwZSX7HABYV5FGHgrYDkBODWF/VoraD9XOZSB/Z1rYD5BiDErKZSXeDWFqDoF7DcXOZSX7HArYV5JeHuzGVcrsH5FqVoJwD9BsZ1B/Z1BeD5F7HgvCVkJGDWF/VoJeD9NwDQFaHAveD5NUHgNKDkBOV5FYHMBiHQNmZSBqHArYHQX7DEBeHArCV5FaVoBiHQNmDQFaZ1BYVWBqHgvsDkBsDWXCDoJsDcBwH9B/Z1rYHQJwHgvsHArsHEXCHMBqHQNwDQB/DSN7HQXGHgrwV9FiV5FYHMJsDcNmZSBqHArYHuXGHgBYHEFKV5FqHMBODcBiDQBqHIrKV5FaHgrwZSJ3V5FYHMJwHQNwZSBODSvOZMFaDMveDkFeH5FYVoX7D9JKDQX7D1BOV5FGDMzGVcBUHEF/VoBiHQBsH9BqHAN7HuX7HgBOHAFKV5B7DoXGHQNwDQFaHANOHQBOHgvOZSrCV5FYHMFGHQXGVIJsHAN7HuFUHgvsHAFKV5FqHMBqHQFYH9BiZ1N7HQJeDMNOZSJ3H5FqDoJeD9JmZ1B/D1NaD5rqHgrKHArsHEXCHIJeDcXGH9BiZ1BYHuFUDMBYVcFiV5FYHIBiHQXGZ1BOD1rwHQXGHgrKHEFKV5FqHMFGHQJeDuBqD1BeHuBqDMvmZSrCV5X/VENUHQBiZ1BOHArKHuBODMveHAFKH5FYVoX7D9JKDQX7D1BOV5FGHuzGDkBOH5FqVoJwD9XOZ1F7HABYZMB/DEBeHENiV5FaHIFGHQJeZ9JeZ1rwHQFaHuzGVIBOV5X7DoF7D9XOZSB/HABYV5X7DMrYHErCDWXCVoXGD9XsDQJsHABYV5BqDMrwDkBsV5F/DoraD9BiZ1FGZ1rYD5NUDEBeZSXeH5FGDoB/D9NmZ9XGDSzGD5F7HuzGVcFKDur/VorqHQBqZ1BiHAzGD5FaDEvsZSJGDuFaZuBqD9NwH9X7Z1rwV5JwHuBYVcFiV5X7VoFGDcBqH9FaHAN7V5JeDErKHEBUH5F/DoF7DcJeDQFGD1BeD5JwDMrwZSJ3H5FqDoJeD9JmZ1B/D1NaD5rqDErKZSXeH5FYDoFUD9JKDQJsZ1rwV5BqHuBYVcXKV5X7HIrqHQJmZ1BOHArKHuFUHgvsZSJqDWBmVoFGHQXsZSFUHABYHuFGDMvmVcFKV5BmVoBqD9BsZkFGHAvsD5XGHgveHErsDWrGDoXGHQBiDQBqDSzGV5XGDMvODkBsDWXCDoJsDcBwH9B/Z1rYHQJwDEBeHArCDWrGZuXGHQNmDQBqHAveVWBqDMvOVcBOHEF/DoFUHQXOZSBqHANOD5BqHgNKHArsDWFqVoBiHQJKDQJsZ1vCV5FGHuNOV9FeDWXCHMFaHQJmZkFGZ1NOHQX7HgrKHErCHEFqHMJeHQNwDuBOHAveHQNUDMzGV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgBYHAFKV5B3DoBO";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1DcBiDQX7DSBYHuFUHuzGV9BUH5B7VEFGD9JmH9BqDSrYD5JwHgNOHEJqDuJeHIJsD9XsZ9JeD1BeD5F7DMvmVcBUDWFaHIF7HQBqZSBqZ1rYHQF7DMveVkJ3V5FqHIB/HQXGDuFaD1veV5FaDMNOV9FeV5BmVEX7HQFYZkFGHIrwHQXGHgBYHENiHEXCHIBqHQXGDuFaD1vOVWJeHgvOV9BUDWFYVoBiDcBwH9B/HIrwV5JeDMBYDkBsH5FYHIrqHQJeH9FUDSN7HuFUDMvmVIB/H5FqHMJwHQFYZkBiD1rwHQF7HgBeVkJ3V5XCDoJsHQXGDQFUDSBYHQF7DMvOVIB/H5XCHIF7HQFYZkFGZ1rYHuFGHgvsVkJ3DuFYHIraDcJUZSX7HIBeD5BqHgvsZSJ3H5FqHMBqHQBqZSBOHIveHQBqHgvsHArCDuFaHMBOHQXGDQFUHAveHQB/DMBODkB/Dur/HMBOHQFYZ1BOD1NaZMJeHgveZSJqHEFqHIX7HQXGDuBqD1veHQXGDMBOVcFeV5FYHMFGDcBwH9B/HIrwV5JeDMBYDkBsH5FYDoXGDcJeZSFUZ1rwV5JeHgvsVcFCH5XCDoX7DcNwH9BqD1NaZMJwHgvCZSJqDWF/DoJeD9XsZSX7HIrwV5BOHgvsVcBOV5X/VoFaHQBsZSB/DSrYV5FGDMzGHEJGH5X/DoB/HQNmH9X7HABYVWJsDMBYVcBODWFaDoFUDcJUZkFUZ1BeZMBqHgBYHAFKV5FqDoBOD9JKDQJwHANKVWBODMvOV9FiV5X7VEF7D9BiH9FaHIBeD5XGDEBOZSXeV5FaZuFaHQXGZSFGD1BeV5FGHuzGVIBOHEFYVorqD9BiZ1F7D1rwD5NUDErKZSXeH5FGDoB/DcJUZSX7HIBeD5BqHgvsZSJ3H5FqVoFGDcBqH9BOZ1BeV5XGDEBOZSJGH5FYZuFaDcXOZSBiHIBeHuB/DMBOVcXKH5XCHIFGHQXGZ1FUZ1rYHQNUDMvCHArCHEFqHIJsD9XsZ9JeD1BeD5F7DMvmVcFKDWJeHMX7DcFYZ1BiHIBeHQFGDMzGHEFiDWX7HIFGD9XsH9BiDSBYHuFaHuNOZSrCH5FqDoXGHQJmZ1FUZ1BeD5JeDMzGHEXeH5FYDoFUDcBwH9X7Z1rwV5BOHuNOVcB/V5X7VoFGDcJUZ1B/D1rwD5BiDMBYHEJGDWF/DoBOD9NwZSFUZ1rwD5F7HuNODkBODWrmDoJsD9XOZ1F7HIveD5BqHgBeHEFiV5B3DoF7D9XsDuFaHAveHuFaHuNOZSrCH5FqDoXGHQJmZ1BiDSrYHuJeDEvsZSXeDuFaVoJeHQNmZSBiZ1N7HuX7DMvmVcFKV5BmVoBqD9BsZkFGHArKD5BqDMzGHEJqV5FaDorqD9NwH9X7Z1rwD5NUHuBOVIBODWFYHMBiD9BsVIraD1rwV5X7HgBeHErsDWrGDoBOHQBiZ9XGD1BOV5JeDMvsV9BUDWrmVoX7HQJmZ1F7Z1vmD5rqDEBOHArCDWBmDoBOD9FYDQB/HAvmV5XGHuBOV9FeV5FYDorqD9BsZ1BOHIBeZMJwDMvCVkJ3DWF/VoBiDcJUZSX7Z1BYHuFaDMNOVIBsDWFaHIX7HQJmH9BqHIveHQrqHgvsVkJ3HEB7DoNUDcXGDQFaDSBYHuFaHuNOZSrCH5FqDoXGHQJmZ1BiDSvOV5FUHgveHEBOV5JeZura";
       $this->prep_conect();
       $this->conectDB();
       if (!in_array(strtolower($this->nm_tpbanco), $this->nm_bases_all))
@@ -2508,8 +2508,7 @@ ob_start();
             }
         }
       $str_schema_app = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
-       $str_button_app = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
-       $_SESSION['scriptcase']['str_button_all'] = $str_button_app;
+       $str_button_app = trim($str_button);
     header("X-XSS-Protection: 1; mode=block");
     header("X-Frame-Options: SAMEORIGIN");
     header("X-Content-Type-Options: nosniff");

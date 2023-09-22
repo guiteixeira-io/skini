@@ -1,0 +1,12 @@
+.css_b_datetime_label, .css_b_datetime_label:hover {text-align:center;vertical-align:middle;justify-content:center;font-weight:bold;}
+.css_b_datetime_grid_line, .css_b_datetime_grid_line:hover {vertical-align: top;text-align: center;}
+.css_b_idlodge_label, .css_b_idlodge_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
+.css_b_idlodge_grid_line, .css_b_idlodge_grid_line:hover {vertical-align: top;text-align: right;}
+.css_a_docnumber_label, .css_a_docnumber_label:hover {text-align:left;vertical-align:middle;justify-content:left;font-weight:bold;}
+.css_a_docnumber_grid_line, .css_a_docnumber_grid_line:hover {vertical-align: top;text-align: right;}
+.css_a_name_label, .css_a_name_label:hover {text-align:left;vertical-align:middle;justify-content:left;font-weight:bold;}
+.css_a_name_grid_line, .css_a_name_grid_line:hover {vertical-align: top;text-align: right;}
+.css_a_phonenumber_label, .css_a_phonenumber_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
+.css_a_phonenumber_grid_line, .css_a_phonenumber_grid_line:hover {vertical-align: top;text-align: right;}
+.css_a_mobilephone_label, .css_a_mobilephone_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
+.css_a_mobilephone_grid_line, .css_a_mobilephone_grid_line:hover {vertical-align: top;text-align: right;}

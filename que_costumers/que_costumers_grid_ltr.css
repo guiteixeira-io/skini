@@ -4,6 +4,8 @@
 .css_docnumber_grid_line, .css_docnumber_grid_line:hover {vertical-align: top;text-align: left;}
 .css_phonenumber_label, .css_phonenumber_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
 .css_phonenumber_grid_line, .css_phonenumber_grid_line:hover {vertical-align: top;text-align: right;}
+.css_mobilephone_label, .css_mobilephone_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
+.css_mobilephone_grid_line, .css_mobilephone_grid_line:hover {vertical-align: top;text-align: right;}
 .css_email_label, .css_email_label:hover {text-align:right;vertical-align:middle;justify-content:right;font-weight:bold;}
 .css_email_grid_line, .css_email_grid_line:hover {vertical-align: top;text-align: right;}
 .css_holdertype_label, .css_holdertype_label:hover {text-align:left;vertical-align:middle;justify-content:left;font-weight:bold;}

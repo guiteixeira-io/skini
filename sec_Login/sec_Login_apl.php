@@ -1057,8 +1057,7 @@ $_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
           include_once($this->Ini->path_lib_php . "nm_gp_config_btn.php");
       }
       include("../_lib/css/" . $this->Ini->str_schema_all . "_form.php");
-      $this->Ini->Str_btn_form = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
-      $_SESSION['scriptcase']['str_button_all'] = $this->Ini->Str_btn_form;
+      $this->Ini->Str_btn_form    = trim($str_button);
       include($this->Ini->path_btn . $this->Ini->Str_btn_form . '/' . $this->Ini->Str_btn_form . $_SESSION['scriptcase']['reg_conf']['css_dir'] . '.php');
       $_SESSION['scriptcase']['css_form_help'] = '../_lib/css/' . $this->Ini->str_schema_all . "_form.css";
       $_SESSION['scriptcase']['css_form_help_dir'] = '../_lib/css/' . $this->Ini->str_schema_all . "_form" . $_SESSION['scriptcase']['reg_conf']['css_dir'] . ".css";
@@ -1608,11 +1607,12 @@ if (isset($this->NM_ajax_flag) && $this->NM_ajax_flag)
     $original_remember_me = $this->remember_me;
 }
 if (!isset($this->sc_temp_sett_remember_me)) {$this->sc_temp_sett_remember_me = (isset($_SESSION['sett_remember_me'])) ? $_SESSION['sett_remember_me'] : "";}
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
 if (!isset($this->sc_temp_usr_email)) {$this->sc_temp_usr_email = (isset($_SESSION['usr_email'])) ? $_SESSION['usr_email'] : "";}
 if (!isset($this->sc_temp_usr_login)) {$this->sc_temp_usr_login = (isset($_SESSION['usr_login'])) ? $_SESSION['usr_login'] : "";}
-  
-
-
+  $this->sc_looged_check_logout();
+$date_login = (isset($this->sc_temp_logged_date_login)? $this->sc_temp_logged_date_login : '');
+$this->sc_logged_out($this->sc_temp_usr_login, $date_login);
 unset($_SESSION['scriptcase']['sc_apl_seg']);unset($_SESSION['scriptcase']['pass']);unset($_SESSION['usr_login']);
  unset($this->sc_temp_usr_login);
  unset($_SESSION['usr_email']);
@@ -1627,6 +1627,7 @@ else{
 }
 if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
 if (isset($this->sc_temp_usr_email)) { $_SESSION['usr_email'] = $this->sc_temp_usr_email;}
+if (isset($this->sc_temp_logged_date_login)) { $_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
 if (isset($this->sc_temp_sett_remember_me)) { $_SESSION['sett_remember_me'] = $this->sc_temp_sett_remember_me;}
 if (isset($this->NM_ajax_flag) && $this->NM_ajax_flag)
 {
@@ -2510,7 +2511,21 @@ if (!isset($this->sc_temp_usr_email)) {$this->sc_temp_usr_email = (isset($_SESSI
 if (!isset($this->sc_temp_usr_name)) {$this->sc_temp_usr_name = (isset($_SESSION['usr_name'])) ? $_SESSION['usr_name'] : "";}
 if (!isset($this->sc_temp_usr_priv_admin)) {$this->sc_temp_usr_priv_admin = (isset($_SESSION['usr_priv_admin'])) ? $_SESSION['usr_priv_admin'] : "";}
 if (!isset($this->sc_temp_usr_login)) {$this->sc_temp_usr_login = (isset($_SESSION['usr_login'])) ? $_SESSION['usr_login'] : "";}
-  
+if (!isset($this->sc_temp_sett_brute_force)) {$this->sc_temp_sett_brute_force = (isset($_SESSION['sett_brute_force'])) ? $_SESSION['sett_brute_force'] : "";}
+  if($this->sc_temp_sett_brute_force == 'Y' && $this->sc_logged_is_blocked()) { if (isset($this->Campos_Mens_erro) && !empty($this->Campos_Mens_erro))
+{
+ if (isset($this->sc_temp_sett_brute_force)) { $_SESSION['sett_brute_force'] = $this->sc_temp_sett_brute_force;}
+ if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
+ if (isset($this->sc_temp_usr_priv_admin)) { $_SESSION['usr_priv_admin'] = $this->sc_temp_usr_priv_admin;}
+ if (isset($this->sc_temp_usr_name)) { $_SESSION['usr_name'] = $this->sc_temp_usr_name;}
+ if (isset($this->sc_temp_usr_email)) { $_SESSION['usr_email'] = $this->sc_temp_usr_email;}
+ if (isset($this->sc_temp_remember_me)) { $_SESSION['remember_me'] = $this->sc_temp_remember_me;}
+ if (isset($this->sc_temp_sett_enable_2fa)) { $_SESSION['sett_enable_2fa'] = $this->sc_temp_sett_enable_2fa;}
+ if (isset($this->sc_temp_sett_remember_me)) { $_SESSION['sett_remember_me'] = $this->sc_temp_sett_remember_me;}
+    $_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
+    return;
+}
+}
 
 $slogin = $this->Db->qstr($this->login );
 $spswd = $this->Db->qstr(hash("md5",$this->pswd ));
@@ -2555,7 +2570,7 @@ $sql = "SELECT
 if ( ($this->rs === false) || (!is_array($this->rs) ) || (empty($this->rs)) )
 {
 	;
-	;
+	$this->sc_logged_in_fail($this->login );
 	
  if (!isset($this->Campos_Mens_erro)){$this->Campos_Mens_erro = "";}
  if (!empty($this->Campos_Mens_erro)){$this->Campos_Mens_erro .= "<br>";}$this->Campos_Mens_erro .=  $this->Ini->Nm_lang['lang_error_login'] ;
@@ -2580,7 +2595,8 @@ else if($this->rs[0][1] == 'Y')
 	$this->sc_temp_usr_email		= $this->rs[0][3];
     $this->sc_temp_remember_me = $this->remember_me ;
 	
-    if( $this->sc_temp_sett_enable_2fa == 'Y' && !empty($this->rs[0][4])){  if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
+    if( $this->sc_temp_sett_enable_2fa == 'Y' && !empty($this->rs[0][4])){  if (isset($this->sc_temp_sett_brute_force)) { $_SESSION['sett_brute_force'] = $this->sc_temp_sett_brute_force;}
+ if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
  if (isset($this->sc_temp_usr_priv_admin)) { $_SESSION['usr_priv_admin'] = $this->sc_temp_usr_priv_admin;}
  if (isset($this->sc_temp_usr_name)) { $_SESSION['usr_name'] = $this->sc_temp_usr_name;}
  if (isset($this->sc_temp_usr_email)) { $_SESSION['usr_email'] = $this->sc_temp_usr_email;}
@@ -2617,6 +2633,7 @@ else
 ;
 	if (isset($this->Campos_Mens_erro) && !empty($this->Campos_Mens_erro))
 {
+ if (isset($this->sc_temp_sett_brute_force)) { $_SESSION['sett_brute_force'] = $this->sc_temp_sett_brute_force;}
  if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
  if (isset($this->sc_temp_usr_priv_admin)) { $_SESSION['usr_priv_admin'] = $this->sc_temp_usr_priv_admin;}
  if (isset($this->sc_temp_usr_name)) { $_SESSION['usr_name'] = $this->sc_temp_usr_name;}
@@ -2628,6 +2645,7 @@ else
     return;
 }
 }
+if (isset($this->sc_temp_sett_brute_force)) { $_SESSION['sett_brute_force'] = $this->sc_temp_sett_brute_force;}
 if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
 if (isset($this->sc_temp_usr_priv_admin)) { $_SESSION['usr_priv_admin'] = $this->sc_temp_usr_priv_admin;}
 if (isset($this->sc_temp_usr_name)) { $_SESSION['usr_name'] = $this->sc_temp_usr_name;}
@@ -2685,20 +2703,20 @@ $_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
       }
       if ($this->nmgp_opcao != "excluir") 
       { 
-          if (NM_utf8_strlen($this->login) > 50) 
+          if (NM_utf8_strlen($this->login) > 255) 
           { 
               $hasError = true;
-              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_login'] . " " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_login'] . " " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 255 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['login']))
               {
                   $Campos_Erros['login'] = array();
               }
-              $Campos_Erros['login'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $Campos_Erros['login'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 255 " . $this->Ini->Nm_lang['lang_errm_nchr'];
               if (!isset($this->NM_ajax_info['errList']['login']) || !is_array($this->NM_ajax_info['errList']['login']))
               {
                   $this->NM_ajax_info['errList']['login'] = array();
               }
-              $this->NM_ajax_info['errList']['login'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['login'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 255 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
           if (NM_utf8_strlen($this->login) < 5) 
           { 
@@ -2735,35 +2753,35 @@ $_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
       }
       if ($this->nmgp_opcao != "excluir") 
       { 
-          if (NM_utf8_strlen($this->pswd) > 50) 
+          if (NM_utf8_strlen($this->pswd) > 32) 
           { 
               $hasError = true;
-              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd'] . " " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd'] . " " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 32 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['pswd']))
               {
                   $Campos_Erros['pswd'] = array();
               }
-              $Campos_Erros['pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $Campos_Erros['pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 32 " . $this->Ini->Nm_lang['lang_errm_nchr'];
               if (!isset($this->NM_ajax_info['errList']['pswd']) || !is_array($this->NM_ajax_info['errList']['pswd']))
               {
                   $this->NM_ajax_info['errList']['pswd'] = array();
               }
-              $this->NM_ajax_info['errList']['pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['pswd'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 32 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
-          if (NM_utf8_strlen($this->pswd) < 5) 
+          if (NM_utf8_strlen($this->pswd) < 4) 
           { 
               $hasError = true;
-              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd'] . " " . $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_pswd'] . " " . $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['pswd']))
               {
                   $Campos_Erros['pswd'] = array();
               }
-              $Campos_Erros['pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $Campos_Erros['pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr'];
               if (!isset($this->NM_ajax_info['errList']['pswd']) || !is_array($this->NM_ajax_info['errList']['pswd']))
               {
                   $this->NM_ajax_info['errList']['pswd'] = array();
               }
-              $this->NM_ajax_info['errList']['pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 5 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['pswd'][] = $this->Ini->Nm_lang['lang_errm_mnch'] . " 4 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
       } 
         if ($hasError) {
@@ -3641,7 +3659,7 @@ if(empty($user_id)) return;
 	{
 		
 		;
-		
+		$this->sc_logged_in_fail($user_id);
 		
  if (!isset($this->Campos_Mens_erro)){$this->Campos_Mens_erro = "";}
  if (!empty($this->Campos_Mens_erro)){$this->Campos_Mens_erro .= "<br>";}$this->Campos_Mens_erro .=  $this->Ini->Nm_lang['lang_error_login'] ;
@@ -4216,9 +4234,9 @@ else {
 	}
 		
 		
-	
+	if($this->sc_logged($this->sc_temp_usr_login)):
 		;
-		
+		$_SESSION['scriptcase']['user_logout'][] = array('V' => 'logged_user', 'U' => 'logout', 'R' => 'sec_Login', 'T' => '_top');;
         if($this->sc_temp_sett_session_expire != 'N'){
             if (is_file($_SESSION['scriptcase']['dir_temp'] . "/sc_apl_default_skini.txt")) {
     unlink($_SESSION['scriptcase']['dir_temp'] . "/sc_apl_default_skini.txt");
@@ -4237,7 +4255,7 @@ if (is_file("../_lib/_app_data/sec_Login_ini.php")) {
  {
 $this->nmgp_redireciona_form($this->Ini->path_link . "" . SC_dir_app_name('home') . "/", $this->nm_location, "", "_self", "ret_self", 440, 630);
  };	
-	
+	endif;
 }
 if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
 if (isset($this->sc_temp_sett_session_expire)) { $_SESSION['sett_session_expire'] = $this->sc_temp_sett_session_expire;}
@@ -4256,6 +4274,405 @@ $this->get_social("twitter", $this->sc_temp_twitter_user, $this->sc_temp_twitter
 if (isset($this->sc_temp_twitter_user)) { $_SESSION['twitter_user'] = $this->sc_temp_twitter_user;}
 if (isset($this->sc_temp_twitter_email)) { $_SESSION['twitter_email'] = $this->sc_temp_twitter_email;}
 if (isset($this->sc_temp_twitter_name)) { $_SESSION['twitter_name'] = $this->sc_temp_twitter_name;}
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
+}
+function sc_logged($user, $ip = '')
+	{
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'on';
+  
+		$str_sql = "SELECT date_login, ip FROM sec_logged WHERE login = ". $this->Db->qstr($user) ." AND sc_session <> ".$this->Db->qstr('_SC_FAIL_SC_');
+
+		 
+      $nm_select = $str_sql; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      if ($this->data = $this->Db->Execute($nm_select)) 
+      { }
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->data = false;
+          $this->data_erro = $this->Db->ErrorMsg();
+      } 
+
+
+    if($this->data  === FALSE || !isset($this->data->fields[0]))
+		{
+            $ip = ($ip == '') ? $_SERVER['REMOTE_ADDR'] : $ip;
+            $this->sc_logged_in($user, $ip);
+            return true;
+        }
+		else
+		{
+            if (isset($_SESSION['scriptcase']['sc_apl_conf']['sec_logged']))
+{
+unset($_SESSION['scriptcase']['sc_apl_conf']['sec_logged']);
+}
+;
+            $_SESSION['scriptcase']['sc_apl_seg']['sec_logged'] = "on";;
+			 if (!isset($this->Campos_Mens_erro) || empty($this->Campos_Mens_erro))
+ {
+$this->nmgp_redireciona_form($this->Ini->path_link . "" . SC_dir_app_name('sec_logged') . "/", $this->nm_location, "user?#?" . NM_encode_input($user) . "?@?", "modal", "ret_self", 440, 630);
+ };
+            return false;
+        }
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
+}
+function sc_verify_logged()
+{
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'on';
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
+if (!isset($this->sc_temp_logged_user)) {$this->sc_temp_logged_user = (isset($_SESSION['logged_user'])) ? $_SESSION['logged_user'] : "";}
+  
+		$str_sql = "SELECT count(*) FROM sec_logged WHERE login = ". $this->Db->qstr($this->sc_temp_logged_user) . " AND date_login = ". $this->Db->qstr($this->sc_temp_logged_date_login) ." AND sc_session <> ".$this->Db->qstr('_SC_FAIL_SC_');
+     
+      $nm_select = $str_sql; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $this->rs_logged = array();
+      if ($SCrx = $this->Db->Execute($nm_select)) 
+      { 
+          $SCy = 0; 
+          $nm_count = $SCrx->FieldCount();
+          while (!$SCrx->EOF)
+          { 
+                 for ($SCx = 0; $SCx < $nm_count; $SCx++)
+                 { 
+                      $this->rs_logged[$SCy] [$SCx] = $SCrx->fields[$SCx];
+                 }
+                 $SCy++; 
+                 $SCrx->MoveNext();
+          } 
+          $SCrx->Close();
+      } 
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->rs_logged = false;
+          $this->rs_logged_erro = $this->Db->ErrorMsg();
+      } 
+
+    if($this->rs_logged[0][0] != 1)
+		{
+			 if (isset($this->sc_temp_logged_user)) { $_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+ if (isset($this->sc_temp_logged_date_login)) { $_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+ if (!isset($this->Campos_Mens_erro) || empty($this->Campos_Mens_erro))
+ {
+$this->nmgp_redireciona_form($this->Ini->path_link . "" . SC_dir_app_name('sec_Login') . "/", $this->nm_location, "", "_parent", "ret_self", 440, 630);
+ };
+        }
+if (isset($this->sc_temp_logged_user)) { $_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+if (isset($this->sc_temp_logged_date_login)) { $_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
+}
+function sc_logged_in($user, $ip = '')
+{
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'on';
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
+if (!isset($this->sc_temp_logged_user)) {$this->sc_temp_logged_user = (isset($_SESSION['logged_user'])) ? $_SESSION['logged_user'] : "";}
+  
+    $ip = ($ip == '') ? $_SERVER['REMOTE_ADDR'] : $ip;
+    $this->sc_temp_logged_user = $user;
+    $this->sc_temp_logged_date_login = microtime(true);
+
+        $str_sql = "DELETE FROM sec_logged WHERE login = ". $this->Db->qstr($user) . " AND sc_session = ".$this->Db->qstr('_SC_FAIL_SC_')." AND ip = ".$this->Db->qstr($ip);
+    
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg());
+             $this->NM_rollback_db(); 
+             if ($this->NM_ajax_flag)
+             {
+                sec_Login_pack_ajax_response();
+             }
+             exit;
+         }
+         $rf->Close();
+      
+
+    	$str_sql = "INSERT INTO sec_logged(login, date_login, sc_session, ip) VALUES (". $this->Db->qstr($user) .", ". $this->Db->qstr($this->sc_temp_logged_date_login) .", ". $this->Db->qstr(session_id()) .", ". $this->Db->qstr($ip) .")";
+    
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg());
+             $this->NM_rollback_db(); 
+             if ($this->NM_ajax_flag)
+             {
+                sec_Login_pack_ajax_response();
+             }
+             exit;
+         }
+         $rf->Close();
+      
+if (isset($this->sc_temp_logged_user)) { $_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+if (isset($this->sc_temp_logged_date_login)) { $_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
+}
+function sc_logged_in_fail($user, $ip = '')
+{
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'on';
+  
+    $ip = ($ip == '') ? $_SERVER['REMOTE_ADDR'] : $ip;
+    $user = $this->Db->qstr($user);
+        $str_sql = "INSERT INTO sec_logged(login, date_login, sc_session, ip) VALUES (" . $this->Db->qstr($user) . ", " . $this->Db->qstr(microtime(true)) . ", ". $this->Db->qstr('_SC_FAIL_SC_').", " . $this->Db->qstr($ip) . ")";
+    
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg());
+             $this->NM_rollback_db(); 
+             if ($this->NM_ajax_flag)
+             {
+                sec_Login_pack_ajax_response();
+             }
+             exit;
+         }
+         $rf->Close();
+      
+    return true;
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
+}
+function sc_logged_is_blocked($ip = '')
+{
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'on';
+if (!isset($this->sc_temp_sett_brute_force_attempts)) {$this->sc_temp_sett_brute_force_attempts = (isset($_SESSION['sett_brute_force_attempts'])) ? $_SESSION['sett_brute_force_attempts'] : "";}
+if (!isset($this->sc_temp_sett_brute_force_time_block)) {$this->sc_temp_sett_brute_force_time_block = (isset($_SESSION['sett_brute_force_time_block'])) ? $_SESSION['sett_brute_force_time_block'] : "";}
+  
+    $ip = ($ip == '') ? $_SERVER['REMOTE_ADDR'] : $ip;
+    $minutes_ago = strtotime("-". $this->sc_temp_sett_brute_force_time_block ." minutes");
+    $str_select = "SELECT count(*) FROM sec_logged WHERE sc_session = ".$this->Db->qstr('_SC_BLOCKED_SC_')." AND ip = ".$this->Db->qstr($ip)." AND date_login > ". $this->Db->qstr($minutes_ago);
+     
+      $nm_select = $str_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $this->rs_logged = array();
+      if ($SCrx = $this->Db->Execute($nm_select)) 
+      { 
+          $SCy = 0; 
+          $nm_count = $SCrx->FieldCount();
+          while (!$SCrx->EOF)
+          { 
+                 for ($SCx = 0; $SCx < $nm_count; $SCx++)
+                 { 
+                      $this->rs_logged[$SCy] [$SCx] = $SCrx->fields[$SCx];
+                 }
+                 $SCy++; 
+                 $SCrx->MoveNext();
+          } 
+          $SCrx->Close();
+      } 
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->rs_logged = false;
+          $this->rs_logged_erro = $this->Db->ErrorMsg();
+      } 
+
+    if($this->rs_logged  !== FALSE && $this->rs_logged[0][0] == 1)
+        {
+            $message =  $this->Ini->Nm_lang['lang_user_blocked'] ;
+                $message = sprintf($message, 10);
+                
+ if (!isset($this->Campos_Mens_erro)){$this->Campos_Mens_erro = "";}
+ if (!empty($this->Campos_Mens_erro)){$this->Campos_Mens_erro .= "<br>";}$this->Campos_Mens_erro .= $message;
+ if ('submit_form' == $this->NM_ajax_opcao || 'event_' == substr($this->NM_ajax_opcao, 0, 6) || (isset($this->wizard_action) && 'change_step' == $this->wizard_action))
+ {
+  if (isset($this->wizard_action) && 'change_step' == $this->wizard_action) {
+   $sErrorIndex = 'geral_sec_Login';
+  } elseif ('submit_form' == $this->NM_ajax_opcao) {
+   $sErrorIndex = 'geral_sec_Login';
+  } else {
+   $sErrorIndex = substr(substr($this->NM_ajax_opcao, 0, strrpos($this->NM_ajax_opcao, '_')), 6);
+  }
+  $this->NM_ajax_info['errList'][$sErrorIndex][] = $message;
+ }
+;
+                return true;
+        }
+
+        $str_select = "SELECT count(*) FROM sec_logged WHERE sc_session = ".$this->Db->qstr('_SC_FAIL_SC_')." AND ip = ".$this->Db->qstr($ip)." AND date_login > ". $this->Db->qstr($minutes_ago);
+         
+      $nm_select = $str_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $this->rs_logged = array();
+      if ($SCrx = $this->Db->Execute($nm_select)) 
+      { 
+          $SCy = 0; 
+          $nm_count = $SCrx->FieldCount();
+          while (!$SCrx->EOF)
+          { 
+                 for ($SCx = 0; $SCx < $nm_count; $SCx++)
+                 { 
+                      $this->rs_logged[$SCy] [$SCx] = $SCrx->fields[$SCx];
+                 }
+                 $SCy++; 
+                 $SCrx->MoveNext();
+          } 
+          $SCrx->Close();
+      } 
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->rs_logged = false;
+          $this->rs_logged_erro = $this->Db->ErrorMsg();
+      } 
+
+
+        if($this->rs_logged  !== FALSE && $this->rs_logged[0][0] == $this->sc_temp_sett_brute_force_attempts )
+        {
+            $str_sql = "INSERT INTO sec_logged(login, date_login, sc_session, ip) VALUES (".$this->Db->qstr('blocked').", ". $this->Db->qstr(microtime(true)) .", ".$this->Db->qstr('_SC_BLOCKED_SC_'). ", ". $this->Db->qstr($ip) .")";
+            
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg());
+             $this->NM_rollback_db(); 
+             if ($this->NM_ajax_flag)
+             {
+                sec_Login_pack_ajax_response();
+             }
+             exit;
+         }
+         $rf->Close();
+      
+            $message =  $this->Ini->Nm_lang['lang_user_blocked'] ;
+                $message = sprintf($message, $this->sc_temp_sett_brute_force_time_block);
+                
+ if (!isset($this->Campos_Mens_erro)){$this->Campos_Mens_erro = "";}
+ if (!empty($this->Campos_Mens_erro)){$this->Campos_Mens_erro .= "<br>";}$this->Campos_Mens_erro .= $message;
+ if ('submit_form' == $this->NM_ajax_opcao || 'event_' == substr($this->NM_ajax_opcao, 0, 6) || (isset($this->wizard_action) && 'change_step' == $this->wizard_action))
+ {
+  if (isset($this->wizard_action) && 'change_step' == $this->wizard_action) {
+   $sErrorIndex = 'geral_sec_Login';
+  } elseif ('submit_form' == $this->NM_ajax_opcao) {
+   $sErrorIndex = 'geral_sec_Login';
+  } else {
+   $sErrorIndex = substr(substr($this->NM_ajax_opcao, 0, strrpos($this->NM_ajax_opcao, '_')), 6);
+  }
+  $this->NM_ajax_info['errList'][$sErrorIndex][] = $message;
+ }
+;
+                return true;
+        }
+        return false;
+if (isset($this->sc_temp_sett_brute_force_time_block)) { $_SESSION['sett_brute_force_time_block'] = $this->sc_temp_sett_brute_force_time_block;}
+if (isset($this->sc_temp_sett_brute_force_attempts)) { $_SESSION['sett_brute_force_attempts'] = $this->sc_temp_sett_brute_force_attempts;}
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
+}
+function sc_logged_out($user, $date_login = '')
+{
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'on';
+if (!isset($this->sc_temp_logged_user)) {$this->sc_temp_logged_user = (isset($_SESSION['logged_user'])) ? $_SESSION['logged_user'] : "";}
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
+  
+		$date_login = ($date_login == '' ? "" : " AND date_login = ". $this->Db->qstr($date_login) ."");
+
+		$str_sql = "SELECT sc_session FROM sec_logged WHERE login = ". $this->Db->qstr($user) ." ". $date_login . " AND sc_session <> ".$this->Db->qstr('_SC_FAIL_SC_');
+     
+      $nm_select = $str_sql; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $this->data = array();
+      if ($SCrx = $this->Db->Execute($nm_select)) 
+      { 
+          $SCy = 0; 
+          $nm_count = $SCrx->FieldCount();
+          while (!$SCrx->EOF)
+          { 
+                 for ($SCx = 0; $SCx < $nm_count; $SCx++)
+                 { 
+                      $this->data[$SCy] [$SCx] = $SCrx->fields[$SCx];
+                 }
+                 $SCy++; 
+                 $SCrx->MoveNext();
+          } 
+          $SCrx->Close();
+      } 
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->data = false;
+          $this->data_erro = $this->Db->ErrorMsg();
+      } 
+
+    if(isset($this->data[0][0]) && !empty($this->data[0][0]))
+        {
+            $session_bkp = $_SESSION;
+            $sessionid = session_id();
+            session_write_close();
+
+            session_id($this->data[0][0]);
+			session_start();
+			$_SESSION['logged_user'] = 'logout';
+			session_write_close();
+
+			session_id($sessionid);
+			session_start();
+			$_SESSION = $session_bkp;
+		}
+
+
+		$str_sql = "DELETE FROM sec_logged WHERE login = ". $this->Db->qstr($user) . " " . $date_login;
+		
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             $this->Erro->mensagem (__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg());
+             $this->NM_rollback_db(); 
+             if ($this->NM_ajax_flag)
+             {
+                sec_Login_pack_ajax_response();
+             }
+             exit;
+         }
+         $rf->Close();
+      
+		 unset($_SESSION['logged_date_login']);
+ unset($this->sc_temp_logged_date_login);
+ unset($_SESSION['logged_user']);
+ unset($this->sc_temp_logged_user);
+;
+if (isset($this->sc_temp_logged_date_login)) { $_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+if (isset($this->sc_temp_logged_user)) { $_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
+}
+function sc_looged_check_logout()
+    {
+$_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'on';
+if (!isset($this->sc_temp_usr_email)) {$this->sc_temp_usr_email = (isset($_SESSION['usr_email'])) ? $_SESSION['usr_email'] : "";}
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
+if (!isset($this->sc_temp_logged_user)) {$this->sc_temp_logged_user = (isset($_SESSION['logged_user'])) ? $_SESSION['logged_user'] : "";}
+if (!isset($this->sc_temp_usr_login)) {$this->sc_temp_usr_login = (isset($_SESSION['usr_login'])) ? $_SESSION['usr_login'] : "";}
+  
+        if(isset($this->sc_temp_logged_user) && ($this->sc_temp_logged_user == 'logout' || empty($this->sc_temp_logged_user)))
+        {
+             unset($_SESSION['usr_login']);
+ unset($this->sc_temp_usr_login);
+ unset($_SESSION['logged_user']);
+ unset($this->sc_temp_logged_user);
+ unset($_SESSION['logged_date_login']);
+ unset($this->sc_temp_logged_date_login);
+ unset($_SESSION['usr_email']);
+ unset($this->sc_temp_usr_email);
+;
+        }
+if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
+if (isset($this->sc_temp_logged_user)) { $_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+if (isset($this->sc_temp_logged_date_login)) { $_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+if (isset($this->sc_temp_usr_email)) { $_SESSION['usr_email'] = $this->sc_temp_usr_email;}
 $_SESSION['scriptcase']['sec_Login']['contr_erro'] = 'off';
 }
 //
@@ -5368,22 +5785,12 @@ setTimeout(function() { document.Fredir.submit(); }, 250);
 ?>
     <tr><td class="sc-app-header">
 <style>
-#lin1_col1 { padding-left:9px; padding-top:7px;  height:27px; overflow:hidden; text-align:left;}			 
-#lin1_col2 { padding-right:9px; padding-top:7px; height:27px; text-align:right; overflow:hidden;   font-size:12px; font-weight:normal;}
+    .scMenuTHeaderFont img, .scGridHeaderFont img , .scFormHeaderFont img , .scTabHeaderFont img , .scContainerHeaderFont img , .scFilterHeaderFont img { height:23px;}
 </style>
-
-<div style="width: 100%">
- <div class="scFormHeader" style="height:11px; display: block; border-width:0px; "></div>
- <div style="height:37px; border-width:0px 0px 1px 0px;  border-style: dashed; border-color:#ddd; display: block">
- 	<table style="width:100%; border-collapse:collapse; padding:0;">
-    	<tr>
-        	<td id="lin1_col1" class="scFormHeaderFont"><span></span></td>
-            <td id="lin1_col2" class="scFormHeaderFont"><span></span></td>
-        </tr>
-    </table>		 
- </div>
+<div class="scFormHeader" style="height: 54px; padding: 17px 15px; box-sizing: border-box;margin: -1px 0px 0px 0px;width: 100%;">
+    <div class="scFormHeaderFont" style="float: left; text-transform: uppercase;"><?php if ($this->nmgp_opcao == "novo") { echo ""; } else { echo "Login"; } ?></div>
+    <div class="scFormHeaderFont" style="float: right;"></div>
 </div>
-
     </td></tr>
 <?php
     }

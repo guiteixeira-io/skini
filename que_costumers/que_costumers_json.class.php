@@ -290,15 +290,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
@@ -336,11 +336,13 @@ function actionBar_getStateHide($buttonName)
          $this->docnumber = $rs->fields[1] ;  
          $this->phonenumber = $rs->fields[2] ;  
          $this->phonenumber = (string)$this->phonenumber;
-         $this->email = $rs->fields[3] ;  
+         $this->mobilephone = $rs->fields[3] ;  
+         $this->mobilephone = (string)$this->mobilephone;
+         $this->email = $rs->fields[4] ;  
          $this->email = (string)$this->email;
-         $this->holdertype = $rs->fields[4] ;  
-         $this->frequencytype = $rs->fields[5] ;  
-         $this->idcostumer = $rs->fields[6] ;  
+         $this->holdertype = $rs->fields[5] ;  
+         $this->frequencytype = $rs->fields[6] ;  
+         $this->idcostumer = $rs->fields[7] ;  
          $this->idcostumer = (string)$this->idcostumer;
          //----- lookup - holdertype
          $this->look_holdertype = $this->holdertype; 
@@ -533,7 +535,7 @@ function actionBar_getStateHide($buttonName)
          if ($this->Json_format)
          {
              $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
-             $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+             $this->nm_gera_mask($this->phonenumber, "(xx) xxxx-xxxx"); 
          }
          if ($this->Json_use_label)
          {
@@ -545,6 +547,25 @@ function actionBar_getStateHide($buttonName)
          }
          $SC_Label = NM_charset_to_utf8($SC_Label); 
          $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->phonenumber;
+   }
+   //----- mobilephone
+   function NM_export_mobilephone()
+   {
+         if ($this->Json_format)
+         {
+             $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+             $this->nm_gera_mask($this->mobilephone, "(xx) x xxxx-xxxx"); 
+         }
+         if ($this->Json_use_label)
+         {
+             $SC_Label = (isset($this->New_label['mobilephone'])) ? $this->New_label['mobilephone'] : "Celular"; 
+         }
+         else
+         {
+             $SC_Label = "mobilephone"; 
+         }
+         $SC_Label = NM_charset_to_utf8($SC_Label); 
+         $this->json_registro[$this->SC_seq_json][$SC_Label] = $this->mobilephone;
    }
    //----- email
    function NM_export_email()

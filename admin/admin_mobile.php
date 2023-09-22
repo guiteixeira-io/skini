@@ -3,7 +3,7 @@
 <html>
     <head>
         <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
-        <title>admin</title>
+        <title>Admin</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet"  href="<?php echo $_SESSION["scriptcase"]["admin"]["glo_nm_path_prod"]; ?>/third/jquery.mobile/jquery.mobile.min.css" />
         <link rel="stylesheet"  href="<?php echo $this->url_css; ?>Sc9_Lemon/Sc9_Lemon_menuMobile.css" />

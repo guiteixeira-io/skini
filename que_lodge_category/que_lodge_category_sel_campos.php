@@ -180,9 +180,9 @@ function Sel_cmp_process()
       $tab_ger_campos = array();
       $tab_blk_campos = array();
 
-      $tab_ger_campos['idlodgecategory'] = "on";
       $tab_ger_campos['name'] = "on";
       $tab_ger_campos['capacity'] = "on";
+      $tab_ger_campos['idlodgecategory'] = "on";
 
 
       if (isset($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['field_display']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['field_display']))

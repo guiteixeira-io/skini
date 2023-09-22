@@ -1,4 +1,11 @@
 <?php
+class cad_lodge_form extends cad_lodge_apl
+{
+function Form_Init()
+{
+   global $sc_seq_vert, $nm_apl_dependente, $opcao_botoes, $nm_url_saida; 
+?>
+<?php
 
 if (!isset($this->NM_ajax_info['param']['buffer_output']) || !$this->NM_ajax_info['param']['buffer_output'])
 {
@@ -23,16 +30,6 @@ header("X-Frame-Options: SAMEORIGIN");
  <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
  <META http-equiv="Pragma" content="no-cache" />
  <link rel="shortcut icon" href="../_lib/img/grp__NM__ico__NM__barraca-de-acampamento.ico">
-<?php
-
-if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])
-{
-?>
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-<?php
-}
-
-?>
             <meta name="viewport" content="minimal-ui, width=300, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="apple-mobile-web-app-capable" content="yes">
@@ -74,6 +71,20 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
   var sc_css_status = '<?php echo $this->Ini->Css_status; ?>';
   var sc_css_status_pwd_box = '<?php echo $this->Ini->Css_status_pwd_box; ?>';
   var sc_css_status_pwd_text = '<?php echo $this->Ini->Css_status_pwd_text; ?>';
+<?php
+if ($this->Embutida_form && isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_modal']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_modal'] && isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_atualiz']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['sc_redir_atualiz'] == 'ok')
+{
+?>
+  var sc_closeChange = true;
+<?php
+}
+else
+{
+?>
+  var sc_closeChange = false;
+<?php
+}
+?>
  </SCRIPT>
         <SCRIPT type="text/javascript" src="<?php echo $this->Ini->url_third; ?>jquery/js/jquery.js"></SCRIPT>
             <?php
@@ -115,6 +126,32 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
  <SCRIPT type="text/javascript" src="<?php echo $this->Ini->url_lib_js; ?>jquery.fileupload.js"></SCRIPT>
  <SCRIPT type="text/javascript" src="<?php echo $this->Ini->path_prod; ?>/third/jquery_plugin/malsup-blockui/jquery.blockUI.js"></SCRIPT>
  <SCRIPT type="text/javascript" src="<?php echo $this->Ini->path_prod; ?>/third/jquery_plugin/thickbox/thickbox-compressed.js"></SCRIPT>
+<?php
+           $fixColNotFixedVisibility = $_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'] ? 'visible' : 'hidden';
+           $fixColNotFixedOpacity = $_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'] ? '1' : '1';
+?>
+    <style type="text/css">
+        .sc-col-actions {
+            text-align: center !important;
+        }
+        .sc-op-fix-col {
+            padding: 0 2px;
+        }
+        .sc-op-fix-col:hover {
+            cursor: pointer;
+        }
+        .sc-op-fix-col-notfixed {
+            visibility: <?php echo $fixColNotFixedVisibility ?>;
+            opacity: 0.5;
+        }
+        .scFormLabelOddMult:hover .sc-op-fix-col-notfixed {
+            visibility: visible;
+            opacity: <?php echo $fixColNotFixedOpacity ?>;
+        }
+        #sc-fld-fix-col-0 {
+            display: none;
+        }
+    </style>
     <style type="text/css">
         .sc-form-order-icon {
             padding: 0 2px;
@@ -134,6 +171,12 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
             opacity: <?php echo $formOrderUnusedOpacity ?>;
         }
     </style>
+ <style type="text/css">
+   .scFormLabelOddMult a img[src$='<?php echo $this->Ini->Label_sort_desc ?>'], 
+   .scFormLabelOddMult a img[src$='<?php echo $this->Ini->Label_sort_asc ?>']{opacity:1!important;} 
+   .scFormLabelOddMult a img{opacity:0;transition:all .2s;} 
+   .scFormLabelOddMult:HOVER a img{opacity:1;transition:all .2s;} 
+ </style>
 <style type="text/css">
 .sc-button-image.disabled {
 	opacity: 0.25
@@ -344,7 +387,8 @@ function nav_desliga_img()
 }
 function summary_atualiza(reg_ini, reg_qtd, reg_tot)
 {
-    nm_sumario = "[<?php echo substr($this->Ini->Nm_lang['lang_othr_smry_info'], strpos($this->Ini->Nm_lang['lang_othr_smry_info'], "?final?")) ?>]";
+    nm_sumario = "[<?php echo $this->Ini->Nm_lang['lang_othr_smry_info']?>]";
+    nm_sumario = nm_sumario.replace("?start?", reg_ini);
     nm_sumario = nm_sumario.replace("?final?", reg_qtd);
     nm_sumario = nm_sumario.replace("?total?", reg_tot);
     if (reg_qtd < 1) {
@@ -513,7 +557,6 @@ function process_hotkeys(hotkey)
  var Dyn_Ini  = true;
  $(function() {
 
-  scJQElementsAdd('');
 
   scJQGeneralAdd();
 
@@ -525,21 +568,6 @@ function process_hotkeys(hotkey)
       e.preventDefault();
   });
 
-  var i, iTestWidth, iMaxLabelWidth = 0, $labelList = $(".scUiLabelWidthFix");
-  for (i = 0; i < $labelList.length; i++) {
-    iTestWidth = $($labelList[i]).width();
-    sTestWidth = iTestWidth + "";
-    if ("" == iTestWidth) {
-      iTestWidth = 0;
-    }
-    else if ("px" == sTestWidth.substr(sTestWidth.length - 2)) {
-      iTestWidth = parseInt(sTestWidth.substr(0, sTestWidth.length - 2));
-    }
-    iMaxLabelWidth = Math.max(iMaxLabelWidth, iTestWidth);
-  }
-  if (0 < iMaxLabelWidth) {
-    $(".scUiLabelWidthFix").css("width", iMaxLabelWidth + "px");
-  }
 <?php
 if (!$this->NM_ajax_flag && isset($this->NM_non_ajax_info['ajaxJavascript']) && !empty($this->NM_non_ajax_info['ajaxJavascript']))
 {
@@ -714,6 +742,10 @@ else
 {
     $opcao_botoes = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['recarga'];
 }
+if ('novo' == $opcao_botoes && $this->Embutida_form)
+{
+    $opcao_botoes = 'inicio';
+}
     $remove_margin = isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_info']['remove_margin']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_info']['remove_margin'] ? 'margin: 0; ' : '';
     $remove_border = isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_info']['remove_border']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_info']['remove_border'] ? 'border-width: 0; ' : '';
     if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['link_info']['remove_margin']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['link_info']['remove_margin']) {
@@ -750,6 +782,8 @@ function NM_tp_critica(TP)
  include_once("cad_lodge_js0.php");
 ?>
 <script type="text/javascript"> 
+  sc_quant_excl = <?php if (!isset($sc_check_excl)) {$sc_check_excl = array();} echo count($sc_check_excl); ?>; 
+  <?php if (!isset($sc_check_incl)) {$sc_check_incl = array();}?>; 
  function setLocale(oSel)
  {
   var sLocale = "";
@@ -784,15 +818,6 @@ $(function() {
                action="./" 
                target="_self">
 <input type="hidden" name="nmgp_url_saida" value="">
-<?php
-if ('novo' == $this->nmgp_opcao || 'incluir' == $this->nmgp_opcao)
-{
-    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['insert_validation'] = md5(time() . rand(1, 99999));
-?>
-<input type="hidden" name="nmgp_ins_valid" value="<?php echo $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['insert_validation']; ?>">
-<?php
-}
-?>
 <input type="hidden" name="nm_form_submit" value="1">
 <input type="hidden" name="nmgp_idioma_novo" value="">
 <input type="hidden" name="nmgp_schema_f" value="">
@@ -803,7 +828,6 @@ if ('novo' == $this->nmgp_opcao || 'incluir' == $this->nmgp_opcao)
 <input type="hidden" name="script_case_init" value="<?php  echo $this->form_encode_input($this->Ini->sc_page); ?>">
 <input type="hidden" name="NM_cancel_return_new" value="<?php echo $this->NM_cancel_return_new ?>">
 <input type="hidden" name="csrf_token" value="<?php echo $this->scCsrfGetToken() ?>" />
-<input type="hidden" name="_sc_force_mobile" id="sc-id-mobile-control" value="" />
 <?php
 $_SESSION['scriptcase']['error_span_title']['cad_lodge'] = $this->Ini->Error_icon_span;
 $_SESSION['scriptcase']['error_icon_title']['cad_lodge'] = '' != $this->Ini->Err_ico_title ? $this->Ini->path_icones . '/' . $this->Ini->Err_ico_title : '';
@@ -925,11 +949,8 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
           <select id='fast_search_f0_t' multiple=multiple  class="scFormToolbarInput" style="vertical-align: middle;" name="nmgp_fast_search_t" onChange="change_fast_t = 'CH';">
 <?php 
           $SC_Label_atu['SC_all_Cmp'] = $this->Ini->Nm_lang['lang_srch_all_fields']; 
-          $SC_Label_atu['idlodge'] = (isset($this->nm_new_label['idlodge'])) ? $this->nm_new_label['idlodge'] : 'ID'; 
-          $SC_Label_atu['idlodgecategory'] = (isset($this->nm_new_label['idlodgecategory'])) ? $this->nm_new_label['idlodgecategory'] : 'Category'; 
-          $SC_Label_atu['number'] = (isset($this->nm_new_label['number'])) ? $this->nm_new_label['number'] : 'Number'; 
-          $SC_Label_atu['name'] = (isset($this->nm_new_label['name'])) ? $this->nm_new_label['name'] : 'Name'; 
-          $SC_Label_atu['status'] = (isset($this->nm_new_label['status'])) ? $this->nm_new_label['status'] : 'Status'; 
+          $SC_Label_atu['number_'] = (isset($this->nm_new_label['number_'])) ? $this->nm_new_label['number_'] : 'Número'; 
+          $SC_Label_atu['status_'] = (isset($this->nm_new_label['status_'])) ? $this->nm_new_label['status_'] : 'Status'; 
           foreach ($SC_Label_atu as $CMP => $LABEL)
           {
               if($CMP == 'SC_all_Cmp')
@@ -967,7 +988,7 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
      </td> 
      <td nowrap align="center" valign="middle" width="33%" class="scFormToolbarPadding"> 
 <?php 
-    if ($opcao_botoes != "novo") {
+    if ($this->Embutida_form) {
         $sCondStyle = ($this->nmgp_botoes['new'] == "on") ? '' : 'display: none;';
 ?>
 <?php
@@ -986,11 +1007,30 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
 <?php
         $NM_btn = true;
     }
-    if (($opcao_botoes == "novo") && (!$this->Embutida_call || $this->sc_evento == "novo" || $this->sc_evento == "insert" || $this->sc_evento == "incluir")) {
-        $sCondStyle = ($this->nmgp_botoes['insert'] == "on") ? '' : 'display: none;';
+    if (($opcao_botoes != "novo") && (!isset($this->Grid_editavel) || !$this->Grid_editavel) && (!$this->Embutida_form) && (!$this->Embutida_call || $this->Embutida_multi)) {
+        $sCondStyle = ($this->nmgp_botoes['new'] == "on") ? '' : 'display: none;';
 ?>
 <?php
         $buttonMacroDisabled = 'sc-unique-btn-2';
+        $buttonMacroLabel = "";
+
+        if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['new']) && 'on' == $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['new']) {
+            $buttonMacroDisabled .= ' disabled';
+        }
+        if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_label']['new']) && '' != $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_label']['new']) {
+            $buttonMacroLabel = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_label']['new'];
+        }
+?>
+<?php echo nmButtonOutput($this->arr_buttons, "bnovo", "scBtnFn_sys_format_inc()", "scBtnFn_sys_format_inc()", "sc_b_new_t", "", "" . $buttonMacroLabel . "", "" . $sCondStyle . "", "", "", "", $this->Ini->path_botoes, "", "", "" . $buttonMacroDisabled . "", "", "");?>
+ 
+<?php
+        $NM_btn = true;
+    }
+    if (($opcao_botoes == "novo") && (!isset($this->Grid_editavel) || !$this->Grid_editavel) && (!$this->Embutida_form) && (!$this->Embutida_call || $this->Embutida_multi)) {
+        $sCondStyle = ($this->nmgp_botoes['insert'] == "on") ? '' : 'display: none;';
+?>
+<?php
+        $buttonMacroDisabled = 'sc-unique-btn-3';
         $buttonMacroLabel = "";
 
         if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['insert']) && 'on' == $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['insert']) {
@@ -1009,7 +1049,7 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
         $sCondStyle = ($this->nmgp_botoes['insert'] == "on" && $this->nmgp_botoes['cancel'] == "on") && ($this->nm_flag_saida_novo != "S" || $this->nmgp_botoes['exit'] != "on") ? '' : 'display: none;';
 ?>
 <?php
-        $buttonMacroDisabled = 'sc-unique-btn-3';
+        $buttonMacroDisabled = 'sc-unique-btn-4';
         $buttonMacroLabel = "";
 
         if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['bcancelar']) && 'on' == $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['bcancelar']) {
@@ -1024,11 +1064,11 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
 <?php
         $NM_btn = true;
     }
-    if ($opcao_botoes != "novo") {
+    if (($opcao_botoes != "novo") && (!isset($this->Grid_editavel) || !$this->Grid_editavel) && (!$this->Embutida_form) && (!$this->Embutida_call || $this->Embutida_multi)) {
         $sCondStyle = ($this->nmgp_botoes['update'] == "on") ? '' : 'display: none;';
 ?>
 <?php
-        $buttonMacroDisabled = 'sc-unique-btn-4';
+        $buttonMacroDisabled = 'sc-unique-btn-5';
         $buttonMacroLabel = "";
 
         if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['update']) && 'on' == $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['update']) {
@@ -1039,25 +1079,6 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
         }
 ?>
 <?php echo nmButtonOutput($this->arr_buttons, "balterar", "scBtnFn_sys_format_alt()", "scBtnFn_sys_format_alt()", "sc_b_upd_t", "", "" . $buttonMacroLabel . "", "" . $sCondStyle . "", "", "", "", $this->Ini->path_botoes, "", "", "" . $buttonMacroDisabled . "", "", "");?>
- 
-<?php
-        $NM_btn = true;
-    }
-    if ($opcao_botoes != "novo") {
-        $sCondStyle = ($this->nmgp_botoes['delete'] == "on") ? '' : 'display: none;';
-?>
-<?php
-        $buttonMacroDisabled = 'sc-unique-btn-5';
-        $buttonMacroLabel = "";
-
-        if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['delete']) && 'on' == $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_disabled']['delete']) {
-            $buttonMacroDisabled .= ' disabled';
-        }
-        if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_label']['delete']) && '' != $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_label']['delete']) {
-            $buttonMacroLabel = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['btn_label']['delete'];
-        }
-?>
-<?php echo nmButtonOutput($this->arr_buttons, "bexcluir", "scBtnFn_sys_format_exc()", "scBtnFn_sys_format_exc()", "sc_b_del_t", "", "" . $buttonMacroLabel . "", "" . $sCondStyle . "", "", "", "", $this->Ini->path_botoes, "", "", "" . $buttonMacroDisabled . "", "", "");?>
  
 <?php
         $NM_btn = true;
@@ -1220,442 +1241,600 @@ unset($NM_ult_sep);
 </td></tr> 
 <tr><td>
 <?php
-       echo "<div id=\"sc-ui-empty-form\" class=\"scFormPageText\" style=\"padding: 10px; font-weight: bold" . ($this->nmgp_form_empty ? '' : '; display: none') . "\">";
-       echo $this->Ini->Nm_lang['lang_errm_empt'];
-       echo "</div>";
   if ($this->nmgp_form_empty)
   {
        if (!empty($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['where_filter']))
        {
            $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['empty_filter'] = true;
        }
+       echo "<tr><td>";
   }
 ?>
 <?php $sc_hidden_no = 1; $sc_hidden_yes = 0; ?>
    <a name="bloco_0"></a>
    <table width="100%" height="100%" cellpadding="0" cellspacing=0><tr valign="top"><td width="30%" height="">
 <div id="div_hidden_bloco_0"><!-- bloco_c -->
+     <div id="SC_tab_mult_reg">
+<?php
+}
+
+function Form_Table($Table_refresh = false)
+{
+   global $sc_seq_vert, $nm_apl_dependente, $opcao_botoes, $nm_url_saida; 
+   if ($Table_refresh) 
+   { 
+       ob_start();
+   }
+   $this->form_fixed_column_no = 0;
+?>
 <?php
 ?>
 <TABLE align="center" id="hidden_bloco_0" class="scFormTable<?php echo $this->classes_100perc_fields['table'] ?>" width="100%" style="height: 100%;"><?php
-           if ('novo' != $this->nmgp_opcao && !isset($this->nmgp_cmp_readonly['idlodge']))
-           {
-               $this->nmgp_cmp_readonly['idlodge'] = 'on';
-           }
+$labelRowCount = 0;
 ?>
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
+   <tr class="sc-ui-header-row" id="sc-id-fixed-headers-row-<?php echo $labelRowCount++ ?>">
+<?php
+$orderColName = '';
+$orderColOrient = '';
+$orderColRule = '';
+?>
+    <script type="text/javascript">
+    var orderColName = "", orderColRule = "";
+    var alphaIconAsc = "fas fa-sort-alpha-down sc-form-order-icon sc-form-order-icon-unused";
+    var alphaIconDesc = "fas fa-sort-alpha-down-alt sc-form-order-icon sc-form-order-icon-unused";
+    var numericIconAsc = "fas fa-sort-numeric-down sc-form-order-icon sc-form-order-icon-unused";
+    var numericIconDesc = "fas fa-sort-numeric-down-alt sc-form-order-icon sc-form-order-icon-unused";
+    var orderFieldList = ["number", "status"];
+    function scSetOrderColumn(clickedColumn)
+    {
+        let fieldClass;
+        scResetOrderColumn();
+        if (clickedColumn != orderColName) {
+            orderColName = clickedColumn;
+            orderColRule = scGetDefaultFieldOrder(orderColName);
+        }
+        else if ("" != orderColName) {
+            orderColRule = "asc" == orderColRule ? "desc" : "asc";
+        }
+        else {
+            orderColName = "";
+            orderColRule = "";
+        }
+        if ("" != orderColName) {
+            if (scIsFieldNumeric(orderColName)) {
+                if ('desc' == orderColRule) {
+                    fieldClass = numericIconDesc;
+                } else {
+                    fieldClass = numericIconAsc;
+                }
+            } else {
+                if ('desc' == orderColRule) {
+                    fieldClass = alphaIconDesc;
+                } else {
+                    fieldClass = alphaIconAsc;
+                }
+            }
+            $("#hidden_field_label_" + orderColName + "_").find(".sc-form-order-icon").attr("class", fieldClass).removeClass("sc-form-order-icon-unused");
+        }
+    }
+    function scResetOrderColumn()
+    {
+        if ("" == orderColName) {
+            return;
+        }
+        $("#hidden_field_label_" + orderColName + "_").find(".sc-form-order-icon").attr("class", scGetDefaultFieldOrderIcon(orderColName));
+    }
+    function scIsFieldNumeric(fieldName)
+    {
+        switch (fieldName) {
+            case "number":
+                return true;
+            case "idLodge":
+                return true;
+            default:
+                return false;
+        }
+        return false;
+    }
+    function scGetDefaultFieldOrder(fieldName)
+    {
+        switch (fieldName) {
+            case "number":
+                return 'desc';
+            case "idLodge":
+                return 'desc';
+            case "idLodgeCategory":
+                return 'desc';
+            default:
+                return 'asc';
+        }
+        return 'asc';
+    }
+    function scGetDefaultFieldOrderIcon(fieldName)
+    {
+        if (scIsFieldNumeric(fieldName)) {
+            if ('desc' == scGetDefaultFieldOrder(fieldName)) {
+                fieldClass = numericIconDesc;
+            } else {
+                fieldClass = numericIconAsc;
+            }
+        } else {
+            if ('desc' == scGetDefaultFieldOrder(fieldName)) {
+                fieldClass = alphaIconDesc;
+            } else {
+                fieldClass = alphaIconAsc;
+            }
+        }
+        return fieldClass;
+    }
+    </script>
 
 
    <?php
-    if (!isset($this->nm_new_label['idlodge']))
-    {
-        $this->nm_new_label['idlodge'] = "ID";
+        $classColFld = "";
+        $classColActions = "";
+        if (!$this->Embutida_form) {
+            $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+            $classColActions = " sc-col-actions";
+        }
+?>
+
+    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult sc-col-title <?php echo $classColFld . $classColActions ?>" style="display: none;" <?php echo $Col_span ?>> <?php if (!$this->Embutida_form) { ?><span class="sc-op-fix-col sc-op-fix-col-<?php echo $this->form_fixed_column_no ?> sc-op-fix-col-notfixed" data-fixcolid="<?php echo $this->form_fixed_column_no ?>" id="sc-fld-fix-col-<?php echo $this->form_fixed_column_no ?>"><i class="fas fa-thumbtack"></i></span><?php } ?> </TD>
+   <?php 
+        if (!$this->Embutida_form) { $this->form_fixed_column_no++; }
+ ?>
+   <?php
+        if (!$this->Embutida_form) {
+            $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+            $classColActions = " sc-col-actions";
+?>
+
+    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult sc-col-title <?php echo $classColFld . $classColActions ?>" style="display: none;" > <?php if (!$this->Embutida_form) { ?><span class="sc-op-fix-col sc-op-fix-col-<?php echo $this->form_fixed_column_no ?> sc-op-fix-col-notfixed" data-fixcolid="<?php echo $this->form_fixed_column_no ?>" id="sc-fld-fix-col-<?php echo $this->form_fixed_column_no ?>"><i class="fas fa-thumbtack"></i></span><?php } ?> </TD>
+   <?php
+            $this->form_fixed_column_no++;
+        }
+?>
+
+   <?php if ($this->Embutida_form && $this->nmgp_botoes['insert'] == "on") {
+        $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+        $classColActions = " sc-col-actions";
+?>
+    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult sc-col-title <?php echo $classColFld . $classColActions ?>"  width="10"> <span class="sc-op-fix-col sc-op-fix-col-<?php echo $this->form_fixed_column_no ?> sc-op-fix-col-notfixed" data-fixcolid="<?php echo $this->form_fixed_column_no ?>" id="sc-fld-fix-col-<?php echo $this->form_fixed_column_no ?>"><i class="fas fa-thumbtack"></i></span> </TD>
+   <?php 
+        $this->form_fixed_column_no++;
+}?>
+   <?php if ($this->Embutida_form && $this->nmgp_botoes['insert'] != "on") {
+        $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+        $classColActions = " sc-col-actions";
+?>
+    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult sc-col-title <?php echo $classColFld . $classColActions ?>"  width="10"> <span class="sc-op-fix-col sc-op-fix-col-<?php echo $this->form_fixed_column_no ?> sc-op-fix-col-notfixed" data-fixcolid="<?php echo $this->form_fixed_column_no ?>" id="sc-fld-fix-col-<?php echo $this->form_fixed_column_no ?>"><i class="fas fa-thumbtack"></i></span> </TD>
+   <?php 
+        $this->form_fixed_column_no++;
+}?>
+   <?php
+    $sStyleHidden_number_ = '';
+    if (isset($this->nmgp_cmp_hidden['number_']) && $this->nmgp_cmp_hidden['number_'] == 'off') {
+        $sStyleHidden_number_ = 'display: none';
+    }
+    if (1 || !isset($this->nmgp_cmp_hidden['number_']) || $this->nmgp_cmp_hidden['number_'] == 'on') {
+        if (!isset($this->nm_new_label['number_'])) {
+            $this->nm_new_label['number_'] = "Número";
+        }
+        $SC_Label = "" . $this->nm_new_label['number_']  . "";
+        $label_fieldName = nl2br($SC_Label);
+
+        // label & order
+        $divLabelStyle = '; justify-content: left';
+        $fieldSortRule = $this->scGetColumnOrderRule("number", $orderColName, $orderColOrient, $orderColRule);
+        $fieldSortIcon = $this->scGetColumnOrderIcon("number", $fieldSortRule);
+
+        if (empty($this->Ini->Label_sort_pos)) {
+            $this->Ini->Label_sort_pos = "right_field";
+        }
+
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "\<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_move('ordem', 'number')\" class=\"scFormLabelLink scFormLabelLinkOddMult\">" . $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+
+        // controls
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->form_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->form_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->form_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+        $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+?>
+    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult css_number__label sc-col-title <?php echo $classColFld ?>" id="hidden_field_label_number_" style="<?php echo $sStyleHidden_number_; ?>" > <?php echo $label_final ?> </TD>
+   <?php
+        $this->form_fixed_column_no++;
     }
 ?>
-<?php
-   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
-   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
-   $idlodge = $this->idlodge;
-   $sStyleHidden_idlodge = '';
-   if (isset($this->nmgp_cmp_hidden['idlodge']) && $this->nmgp_cmp_hidden['idlodge'] == 'off')
-   {
-       unset($this->nmgp_cmp_hidden['idlodge']);
-       $sStyleHidden_idlodge = 'display: none;';
-   }
-   $bTestReadOnly = true;
-   $sStyleReadLab_idlodge = 'display: none;';
-   $sStyleReadInp_idlodge = '';
-   if (/*($this->nmgp_opcao != "novo" && $this->nmgp_opc_ant != "incluir") || */(isset($this->nmgp_cmp_readonly["idlodge"]) &&  $this->nmgp_cmp_readonly["idlodge"] == "on"))
-   {
-       $bTestReadOnly = false;
-       unset($this->nmgp_cmp_readonly['idlodge']);
-       $sStyleReadLab_idlodge = '';
-       $sStyleReadInp_idlodge = 'display: none;';
-   }
-?>
-<?php if (isset($this->nmgp_cmp_hidden['idlodge']) && $this->nmgp_cmp_hidden['idlodge'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="idlodge" value="<?php echo $this->form_encode_input($idlodge) . "\">"; ?>
-<?php } else { $sc_hidden_no++; ?>
-<?php if ((isset($this->Embutida_form) && $this->Embutida_form) || ($this->nmgp_opcao != "novo" && $this->nmgp_opc_ant != "incluir")) { ?>
+
+   <?php
+    $sStyleHidden_status_ = '';
+    if (isset($this->nmgp_cmp_hidden['status_']) && $this->nmgp_cmp_hidden['status_'] == 'off') {
+        $sStyleHidden_status_ = 'display: none';
+    }
+    if (1 || !isset($this->nmgp_cmp_hidden['status_']) || $this->nmgp_cmp_hidden['status_'] == 'on') {
+        if (!isset($this->nm_new_label['status_'])) {
+            $this->nm_new_label['status_'] = "Status";
+        }
+        $SC_Label = "" . $this->nm_new_label['status_']  . "";
+        $label_fieldName = nl2br($SC_Label);
 
-    <TD class="scFormLabelOdd scUiLabelWidthFix css_idlodge_label" id="hidden_field_label_idlodge" style="<?php echo $sStyleHidden_idlodge; ?>"><span id="id_label_idlodge"><?php echo $this->nm_new_label['idlodge']; ?></span></TD>
-    <TD class="scFormDataOdd css_idlodge_line" id="hidden_field_data_idlodge" style="<?php echo $sStyleHidden_idlodge; ?>"><table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_idlodge_line" style="vertical-align: top;padding: 0px"><span id="id_read_on_idlodge" class="css_idlodge_line" style="<?php echo $sStyleReadLab_idlodge; ?>"><?php echo $this->form_format_readonly("idlodge", $this->form_encode_input($this->idlodge)); ?></span><span id="id_read_off_idlodge" class="css_read_off_idlodge" style="<?php echo $sStyleReadInp_idlodge; ?>"><input type="hidden" name="idlodge" value="<?php echo $this->form_encode_input($idlodge) . "\">"?><span id="id_ajax_label_idlodge"><?php echo nl2br($idlodge); ?></span>
-</span></span></td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_idlodge_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_idlodge_text"></span></td></tr></table></td></tr></table></TD>
-   <?php }
-      else
-      {
-         $sc_hidden_no--;
-      }
+        // label & order
+        $divLabelStyle = '; justify-content: left';
+        $fieldSortRule = $this->scGetColumnOrderRule("status", $orderColName, $orderColOrient, $orderColRule);
+        $fieldSortIcon = $this->scGetColumnOrderIcon("status", $fieldSortRule);
+
+        if (empty($this->Ini->Label_sort_pos)) {
+            $this->Ini->Label_sort_pos = "right_field";
+        }
+
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "\<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_move('ordem', 'status')\" class=\"scFormLabelLink scFormLabelLinkOddMult\">" . $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+
+        // controls
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->form_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->form_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->form_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+        $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
 ?>
+    <TD class="<?php echo $this->css_inherit_bg . ' ' ?>scFormLabelOddMult css_status__label sc-col-title <?php echo $classColFld ?>" id="hidden_field_label_status_" style="<?php echo $sStyleHidden_status_; ?>" > <?php echo $label_final ?> </TD>
+   <?php
+        $this->form_fixed_column_no++;
+    }
+?>
+
+
+
+
+
+    <script type="text/javascript">
+     var orderColOrient = "<?php echo $orderColOrient ?>";
+     orderColRule = "<?php echo $orderColRule ?>";
+     scSetOrderColumn("<?php echo $orderColName ?>");
+    </script>
+   </tr>
+<?php   
+} 
+function Form_Corpo($Line_Add = false, $Table_refresh = false) 
+{ 
+   global $sc_seq_vert, $sc_check_incl, $sc_check_excl; 
+   $sc_hidden_no = 1; $sc_hidden_yes = 0;
+   if ($Line_Add) 
+   { 
+       ob_start();
+       $iStart = sizeof($this->form_vert_cad_lodge);
+       $guarda_nmgp_opcao = $this->nmgp_opcao;
+       $guarda_form_vert_cad_lodge = $this->form_vert_cad_lodge;
+       $this->nmgp_opcao = 'novo';
+   } 
+   if ($this->Embutida_form && empty($this->form_vert_cad_lodge))
+   {
+       $sc_seq_vert = 0;
+   }
+   foreach ($this->form_vert_cad_lodge as $sc_seq_vert => $sc_lixo)
+   {
+       $this->form_fixed_column_no = 0;
+       $this->loadRecordState($sc_seq_vert);
+       $this->idlodge_ = $this->form_vert_cad_lodge[$sc_seq_vert]['idlodge_'];
+       $this->idlodgecategory_ = $this->form_vert_cad_lodge[$sc_seq_vert]['idlodgecategory_'];
+       if (isset($this->Embutida_ronly) && $this->Embutida_ronly && !$Line_Add)
+       {
+           $this->nmgp_cmp_readonly['number_'] = true;
+           $this->nmgp_cmp_readonly['status_'] = true;
+       }
+       elseif ($Line_Add)
+       {
+           if (!isset($this->nmgp_cmp_readonly['number_']) || $this->nmgp_cmp_readonly['number_'] != "on") {$this->nmgp_cmp_readonly['number_'] = false;}
+           if (!isset($this->nmgp_cmp_readonly['status_']) || $this->nmgp_cmp_readonly['status_'] != "on") {$this->nmgp_cmp_readonly['status_'] = false;}
+       }
+            if (isset($this->form_vert_form_preenchimento[$sc_seq_vert])) {
+              foreach ($this->form_vert_form_preenchimento[$sc_seq_vert] as $sCmpNome => $mCmpVal)
+              {
+                  eval("\$this->" . $sCmpNome . " = \$mCmpVal;");
+              }
+            }
+        $this->number_ = $this->form_vert_cad_lodge[$sc_seq_vert]['number_']; 
+       $number_ = $this->number_; 
+       $sStyleHidden_number_ = '';
+       if (isset($sCheckRead_number_))
+       {
+           unset($sCheckRead_number_);
+       }
+       if (isset($this->nmgp_cmp_readonly['number_']))
+       {
+           $sCheckRead_number_ = $this->nmgp_cmp_readonly['number_'];
+       }
+       if (isset($this->nmgp_cmp_hidden['number_']) && $this->nmgp_cmp_hidden['number_'] == 'off')
+       {
+           unset($this->nmgp_cmp_hidden['number_']);
+           $sStyleHidden_number_ = 'display: none;';
+       }
+       $bTestReadOnly_number_ = true;
+       $sStyleReadLab_number_ = 'display: none;';
+       $sStyleReadInp_number_ = '';
+       if (isset($this->nmgp_cmp_readonly['number_']) && $this->nmgp_cmp_readonly['number_'] == 'on')
+       {
+           $bTestReadOnly_number_ = false;
+           unset($this->nmgp_cmp_readonly['number_']);
+           $sStyleReadLab_number_ = '';
+           $sStyleReadInp_number_ = 'display: none;';
+       }
+       $this->status_ = $this->form_vert_cad_lodge[$sc_seq_vert]['status_']; 
+       $status_ = $this->status_; 
+       $sStyleHidden_status_ = '';
+       if (isset($sCheckRead_status_))
+       {
+           unset($sCheckRead_status_);
+       }
+       if (isset($this->nmgp_cmp_readonly['status_']))
+       {
+           $sCheckRead_status_ = $this->nmgp_cmp_readonly['status_'];
+       }
+       if (isset($this->nmgp_cmp_hidden['status_']) && $this->nmgp_cmp_hidden['status_'] == 'off')
+       {
+           unset($this->nmgp_cmp_hidden['status_']);
+           $sStyleHidden_status_ = 'display: none;';
+       }
+       $bTestReadOnly_status_ = true;
+       $sStyleReadLab_status_ = 'display: none;';
+       $sStyleReadInp_status_ = '';
+       if (isset($this->nmgp_cmp_readonly['status_']) && $this->nmgp_cmp_readonly['status_'] == 'on')
+       {
+           $bTestReadOnly_status_ = false;
+           unset($this->nmgp_cmp_readonly['status_']);
+           $sStyleReadLab_status_ = '';
+           $sStyleReadInp_status_ = 'display: none;';
+       }
+
+       $nm_cor_fun_vert = (isset($nm_cor_fun_vert) && $nm_cor_fun_vert == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
+       $nm_img_fun_cel  = (isset($nm_img_fun_cel)  && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
+
+       $sHideNewLine = '';
+?>   
+   <tr id="idVertRow<?php echo $sc_seq_vert; ?>"<?php echo $sHideNewLine; ?> class="sc-row" data-sc-row-number="<?php echo $sc_seq_vert; ?>">
+
+
+   <?php
+        if (!$this->Embutida_form) {
+            $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+?>
+
+    <TD  class="<?php echo $this->css_inherit_bg . ' ' ?>scFormDataOddMult <?php echo $classColFld ?>"  id="hidden_field_data_sc_seq<?php echo $sc_seq_vert; ?>"  style="display: none;"> <?php echo $sc_seq_vert; ?> </TD>
+   <?php
+            $this->form_fixed_column_no++;
+        }
+?>
+
+   <?php if (!$this->Embutida_form && $this->nmgp_opcao != "novo" && $this->nmgp_botoes['delete'] == "on") {
+       $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+?>
+    <TD  class="<?php echo $this->css_inherit_bg . ' ' ?>scFormDataOddMult <?php echo $classColFld ?>" > 
+<input type="checkbox" name="sc_check_vert[<?php echo $sc_seq_vert ?>]" value="<?php echo $sc_seq_vert . "\""; if (in_array($sc_seq_vert, $sc_check_excl)) { echo " checked";} ?> onclick="if (this.checked) {sc_quant_excl++; } else {sc_quant_excl--; }" class="sc-js-input" alt="{type: 'checkbox', enterTab: false}"> </TD>
+   <?php 
+       $this->form_fixed_column_no++;
+}?>
+   <?php if (!$this->Embutida_form && $this->nmgp_opcao == "novo") {
+       $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+?>
+    <TD  class="<?php echo $this->css_inherit_bg . ' ' ?>scFormDataOddMult <?php echo $classColFld ?>" > 
+<input type="checkbox" name="sc_check_vert[<?php echo $sc_seq_vert ?>]" value="<?php echo $sc_seq_vert . "\"" ; if (in_array($sc_seq_vert, $sc_check_incl) || !empty($this->nm_todas_criticas)) { echo " checked ";} ?> class="sc-js-input" alt="{type: 'checkbox', enterTab: false}"> </TD>
+   <?php 
+       $this->form_fixed_column_no++;
+}?>
+   <?php if ($this->Embutida_form) {
+       $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+?>
+    <TD  class="<?php echo $this->css_inherit_bg . ' ' ?>scFormDataOddMult <?php echo $classColFld ?>"  id="hidden_field_data_sc_actions<?php echo $sc_seq_vert; ?>" NOWRAP> <?php if ($this->nmgp_opcao != "novo") {
+    if ($this->nmgp_botoes['delete'] == "off") {
+        $sDisplayDelete = 'display: none';
+    }
+    else {
+        $sDisplayDelete = '';
+    }
+?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_excluir", "nm_atualiza_line('excluir', " . $sc_seq_vert . ")", "nm_atualiza_line('excluir', " . $sc_seq_vert . ")", "sc_exc_line_" . $sc_seq_vert . "", "", "", "" . $sDisplayDelete. "", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php }?>
+
+<?php
+if ($this->nmgp_opcao != "novo") {
+    if ($this->nmgp_botoes['update'] == "off") {
+        $sDisplayUpdate = 'display: none';
+    }
+    else {
+        $sDisplayUpdate = '';
+    }
+    if ($this->Embutida_ronly) {
+?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_edit", "mdOpenLine(" . $sc_seq_vert . ")", "mdOpenLine(" . $sc_seq_vert . ")", "sc_open_line_" . $sc_seq_vert . "", "", "", "" . $sDisplayUpdate. "", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php
+        $sButDisp = 'display: none';
+    }
+    else
+    {
+        $sButDisp = $sDisplayUpdate;
+    }
+?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_alterar", "findPos(this); nm_atualiza_line('alterar', " . $sc_seq_vert . ")", "findPos(this); nm_atualiza_line('alterar', " . $sc_seq_vert . ")", "sc_upd_line_" . $sc_seq_vert . "", "", "", "" . $sButDisp. "", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php
+}
+?>
+
+<?php if ($this->nmgp_botoes['insert'] == "on" && $this->nmgp_opcao == "novo") {?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_incluir", "findPos(this); nm_atualiza_line('incluir', " . $sc_seq_vert . ")", "findPos(this); nm_atualiza_line('incluir', " . $sc_seq_vert . ")", "sc_ins_line_" . $sc_seq_vert . "", "", "", "display: ''", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php if ($this->nmgp_botoes['delete'] == "on") {?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_excluir", "nm_atualiza_line('excluir', " . $sc_seq_vert . ")", "nm_atualiza_line('excluir', " . $sc_seq_vert . ")", "sc_exc_line_" . $sc_seq_vert . "", "", "", "display: none", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php }?>
+
+<?php if ($Line_Add && $this->Embutida_ronly) {?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_edit", "mdOpenLine(" . $sc_seq_vert . ")", "mdOpenLine(" . $sc_seq_vert . ")", "sc_open_line_" . $sc_seq_vert . "", "", "", "display: none", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php }?>
+
+<?php if ($this->nmgp_botoes['update'] == "on") {?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_alterar", "findPos(this); nm_atualiza_line('alterar', " . $sc_seq_vert . ")", "findPos(this); nm_atualiza_line('alterar', " . $sc_seq_vert . ")", "sc_upd_line_" . $sc_seq_vert . "", "", "", "display: none", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php }?>
+<?php }?>
+<?php if ($this->nmgp_botoes['insert'] == "on") {?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_novo", "do_ajax_cad_lodge_add_new_line(" . $sc_seq_vert . ")", "do_ajax_cad_lodge_add_new_line(" . $sc_seq_vert . ")", "sc_new_line_" . $sc_seq_vert . "", "", "", "display: none", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php }?>
+<?php
+  $Style_add_line = (!$Line_Add) ? "display: none" : "";
+?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_cancelar", "do_ajax_cad_lodge_cancel_insert(" . $sc_seq_vert . ")", "do_ajax_cad_lodge_cancel_insert(" . $sc_seq_vert . ")", "sc_canceli_line_" . $sc_seq_vert . "", "", "", "" . $Style_add_line . "", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+<?php echo nmButtonOutput($this->arr_buttons, "bmd_cancelar", "do_ajax_cad_lodge_cancel_update(" . $sc_seq_vert . ")", "do_ajax_cad_lodge_cancel_update(" . $sc_seq_vert . ")", "sc_cancelu_line_" . $sc_seq_vert . "", "", "", "display: none", "", "", "", $this->Ini->path_botoes, "", "", "", "", "");?>
+ </TD>
+   <?php 
+       $this->form_fixed_column_no++;
+}?>
+   <?php if (isset($this->nmgp_cmp_hidden['number_']) && $this->nmgp_cmp_hidden['number_'] == 'off') { $sc_hidden_yes++;  ?>
+<input type="hidden" name="number_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($number_) . "\">"; ?>
+<?php } else { $sc_hidden_no++; 
+       $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
+?>
+
+    <TD class="scFormDataOddMult css_number__line <?php echo $classColFld ?>" id="hidden_field_data_number_<?php echo $sc_seq_vert; ?>" style="<?php echo $sStyleHidden_number_; ?>"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOddMult css_number__line" style="vertical-align: top;padding: 0px">
+<?php if ($bTestReadOnly_number_ && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["number_"]) &&  $this->nmgp_cmp_readonly["number_"] == "on") { 
+
+ ?>
+<input type="hidden" name="number_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($number_) . "\">" . $number_ . ""; ?>
+<?php } else { ?>
+<span id="id_read_on_number_<?php echo $sc_seq_vert ?>" class="sc-ui-readonly-number_<?php echo $sc_seq_vert ?> css_number__line" style="<?php echo $sStyleReadLab_number_; ?>"><?php echo $this->form_format_readonly("number_", $this->form_encode_input($this->number_)); ?></span><span id="id_read_off_number_<?php echo $sc_seq_vert ?>" class="css_read_off_number_<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_number_; ?>">
+ <input class="sc-js-input scFormObjectOddMult css_number__obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_number_<?php echo $sc_seq_vert ?>" type=text name="number_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($number_) ?>"
+ <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=11"; } ?> alt="{datatype: 'integer', maxLength: 11, thousandsSep: '<?php echo str_replace("'", "\'", $this->field_config['number_']['symbol_grp']); ?>', thousandsFormat: <?php echo $this->field_config['number_']['symbol_fmt']; ?>, allowNegative: false, onlyNegative: false, negativePos: <?php echo (4 == $this->field_config['number_']['format_neg'] ? "'suffix'" : "'prefix'") ?>, alignment: 'left', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddMultWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_number_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_number_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
+   <?php $this->form_fixed_column_no++; ?>
 <?php }?>
 
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 2; ?>" >&nbsp;</TD>
-<?php } 
-?> 
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
-   <?php
-   if (!isset($this->nm_new_label['idlodgecategory']))
-   {
-       $this->nm_new_label['idlodgecategory'] = "Category";
-   }
-   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
-   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
-   $idlodgecategory = $this->idlodgecategory;
-   $sStyleHidden_idlodgecategory = '';
-   if (isset($this->nmgp_cmp_hidden['idlodgecategory']) && $this->nmgp_cmp_hidden['idlodgecategory'] == 'off')
-   {
-       unset($this->nmgp_cmp_hidden['idlodgecategory']);
-       $sStyleHidden_idlodgecategory = 'display: none;';
-   }
-   $bTestReadOnly = true;
-   $sStyleReadLab_idlodgecategory = 'display: none;';
-   $sStyleReadInp_idlodgecategory = '';
-   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['idlodgecategory']) && $this->nmgp_cmp_readonly['idlodgecategory'] == 'on')
-   {
-       $bTestReadOnly = false;
-       unset($this->nmgp_cmp_readonly['idlodgecategory']);
-       $sStyleReadLab_idlodgecategory = '';
-       $sStyleReadInp_idlodgecategory = 'display: none;';
-   }
+   <?php if (isset($this->nmgp_cmp_hidden['status_']) && $this->nmgp_cmp_hidden['status_'] == 'off') { $sc_hidden_yes++; ?>
+<input type=hidden name="status_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($this->status_) . "\">"; ?>
+<?php } else { $sc_hidden_no++; 
+       $classColFld = " sc-col-fld sc-col-fld-" . $this->form_fixed_column_no;
 ?>
-<?php if (isset($this->nmgp_cmp_hidden['idlodgecategory']) && $this->nmgp_cmp_hidden['idlodgecategory'] == 'off') { $sc_hidden_yes++; ?>
-<input type=hidden name="idlodgecategory" value="<?php echo $this->form_encode_input($this->idlodgecategory) . "\">"; ?>
-<?php } else { $sc_hidden_no++; ?>
 
-    <TD class="scFormLabelOdd scUiLabelWidthFix css_idlodgecategory_label" id="hidden_field_label_idlodgecategory" style="<?php echo $sStyleHidden_idlodgecategory; ?>"><span id="id_label_idlodgecategory"><?php echo $this->nm_new_label['idlodgecategory']; ?></span></TD>
-    <TD class="scFormDataOdd css_idlodgecategory_line" id="hidden_field_data_idlodgecategory" style="<?php echo $sStyleHidden_idlodgecategory; ?>"><table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_idlodgecategory_line" style="vertical-align: top;padding: 0px">
-<?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["idlodgecategory"]) &&  $this->nmgp_cmp_readonly["idlodgecategory"] == "on") { 
- 
-$nmgp_def_dados = "" ; 
-if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']))
-{
-    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']); 
-}
-else
-{
-    $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array(); 
-}
-   if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_ibase))
-   { 
-       $GLOBALS["NM_ERRO_IBASE"] = 1;  
-   } 
-   $nm_nao_carga = false;
-   $nmgp_def_dados = "" ; 
-   if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']))
-   {
-       $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array_unique($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory']); 
-   }
-   else
-   {
-       $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'] = array(); 
-    }
+    <TD class="scFormDataOddMult css_status__line <?php echo $classColFld ?>" id="hidden_field_data_status_<?php echo $sc_seq_vert; ?>" style="<?php echo $sStyleHidden_status_; ?>"> <table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOddMult css_status__line" style="vertical-align: top;padding: 0px">
+<?php if ($bTestReadOnly_status_ && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["status_"]) &&  $this->nmgp_cmp_readonly["status_"] == "on") { 
 
-   $old_value_idlodge = $this->idlodge;
-   $old_value_number = $this->number;
-   $this->nm_tira_formatacao();
-
-
-   $unformatted_value_idlodge = $this->idlodge;
-   $unformatted_value_number = $this->number;
-
-   $nm_comando = "SELECT idLodgeCategory, name  FROM cad_lodge_category  ORDER BY name";
-
-   $this->idlodge = $old_value_idlodge;
-   $this->number = $old_value_number;
-
-   $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_comando;
-   $_SESSION['scriptcase']['sc_sql_ult_conexao'] = '';
-   if ($nm_comando != "" && $rs = $this->Db->Execute($nm_comando))
-   {
-       while (!$rs->EOF) 
-       { 
-              $rs->fields[0] = str_replace(',', '.', $rs->fields[0]);
-              $rs->fields[0] = (strpos(strtolower($rs->fields[0]), "e")) ? (float)$rs->fields[0] : $rs->fields[0];
-              $rs->fields[0] = (string)$rs->fields[0];
-              $nmgp_def_dados .= $rs->fields[1] . "?#?" ; 
-              $nmgp_def_dados .= $rs->fields[0] . "?#?N?@?" ; 
-              $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_idlodgecategory'][] = $rs->fields[0];
-              $rs->MoveNext() ; 
-       } 
-       $rs->Close() ; 
-   } 
-   elseif ($GLOBALS["NM_ERRO_IBASE"] != 1 && $nm_comando != "")  
-   {  
-       $this->Erro->mensagem(__FILE__, __LINE__, "banco", $this->Ini->Nm_lang['lang_errm_dber'], $this->Db->ErrorMsg()); 
-       exit; 
-   } 
-   $GLOBALS["NM_ERRO_IBASE"] = 0; 
-   $x = 0; 
-   $idlodgecategory_look = ""; 
-   $todox = str_replace("?#?@?#?", "?#?@ ?#?", trim($nmgp_def_dados)) ; 
-   $todo  = explode("?@?", $todox) ; 
-   while (!empty($todo[$x])) 
-   {
-          $cadaselect = explode("?#?", $todo[$x]) ; 
-          if ($cadaselect[1] == "@ ") {$cadaselect[1]= trim($cadaselect[1]); } ; 
-          if (isset($this->Embutida_ronly) && $this->Embutida_ronly && isset($this->idlodgecategory_1))
-          {
-              foreach ($this->idlodgecategory_1 as $tmp_idlodgecategory)
-              {
-                  if (trim($tmp_idlodgecategory) === trim($cadaselect[1])) {$idlodgecategory_look .= $cadaselect[0] . '__SC_BREAK_LINE__';}
-              }
-          }
-          elseif (isset($cadaselect[1]) && is_string($this->idlodgecategory) && trim($this->idlodgecategory) === trim($cadaselect[1])) {$idlodgecategory_look .= $cadaselect[0];} 
-          $x++; 
-   }
-
+$status__look = "";
+ if ($this->status_ == "A") { $status__look .= "Disponivel" ;} 
+ if ($this->status_ == "R") { $status__look .= "Reservado" ;} 
+ if ($this->status_ == "U") { $status__look .= "Indisponível" ;} 
+ if (empty($status__look)) { $status__look = $this->status_; }
 ?>
-<input type="hidden" name="idlodgecategory" value="<?php echo $this->form_encode_input($idlodgecategory) . "\">" . $idlodgecategory_look . ""; ?>
-<?php } else { ?>
-<?php
-   $todo = $this->Form_lookup_idlodgecategory();
-   $x = 0 ; 
-   $idlodgecategory_look = ""; 
-   while (!empty($todo[$x])) 
-   {
-          $cadaselect = explode("?#?", $todo[$x]) ; 
-          if ($cadaselect[1] == "@ ") {$cadaselect[1]= trim($cadaselect[1]); } ; 
-          if (isset($this->Embutida_ronly) && $this->Embutida_ronly && isset($this->idlodgecategory_1))
-          {
-              foreach ($this->idlodgecategory_1 as $tmp_idlodgecategory)
-              {
-                  if (trim($tmp_idlodgecategory) === trim($cadaselect[1])) {$idlodgecategory_look .= $cadaselect[0] . '__SC_BREAK_LINE__';}
-              }
-          }
-          elseif (isset($cadaselect[1]) && is_string($this->idlodgecategory) && trim($this->idlodgecategory) === trim($cadaselect[1])) { $idlodgecategory_look .= $cadaselect[0]; } 
-          $x++; 
-   }
-          if (empty($idlodgecategory_look))
-          {
-              $idlodgecategory_look = $this->idlodgecategory;
-          }
-   $x = 0; 
-   echo "<span id=\"id_read_on_idlodgecategory\" class=\"css_idlodgecategory_line\" style=\"" .  $sStyleReadLab_idlodgecategory . "\">" . $this->form_format_readonly("idlodgecategory", $this->form_encode_input($idlodgecategory_look)) . "</span><span id=\"id_read_off_idlodgecategory\" class=\"css_read_off_idlodgecategory" . $this->classes_100perc_fields['span_input'] . "\" style=\"white-space: nowrap; " . $sStyleReadInp_idlodgecategory . "\">";
-   echo " <span id=\"idAjaxSelect_idlodgecategory\" class=\"" . $this->classes_100perc_fields['span_select'] . "\"><select class=\"sc-js-input scFormObjectOdd css_idlodgecategory_obj" . $this->classes_100perc_fields['input'] . "\" style=\"\" id=\"id_sc_field_idlodgecategory\" name=\"idlodgecategory\" size=\"1\" alt=\"{type: 'select', enterTab: false}\">" ; 
-   echo "\r" ; 
-   while (!empty($todo[$x]) && !$nm_nao_carga) 
-   {
-          $cadaselect = explode("?#?", $todo[$x]) ; 
-          if ($cadaselect[1] == "@ ") {$cadaselect[1]= trim($cadaselect[1]); } ; 
-          echo "  <option value=\"$cadaselect[1]\"" ; 
-          if (trim($this->idlodgecategory) === trim($cadaselect[1])) 
-          {
-              echo " selected" ; 
-          }
-          if (strtoupper($cadaselect[2]) == "S") 
-          {
-              if (empty($this->idlodgecategory)) 
-              {
-                  echo " selected" ;
-              } 
-           } 
-          echo ">" . str_replace('<', '&lt;',$cadaselect[0]) . "</option>" ; 
-          echo "\r" ; 
-          $x++ ; 
-   }  ; 
-   echo " </select></span>" ; 
-   echo "\r" ; 
-   echo "</span>";
-?> 
-<?php  }?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_idlodgecategory_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_idlodgecategory_text"></span></td></tr></table></td></tr></table></TD>
-   <?php }?>
-
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 2; ?>" >&nbsp;</TD>
-<?php } 
-?> 
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
-   <?php
-    if (!isset($this->nm_new_label['number']))
-    {
-        $this->nm_new_label['number'] = "Number";
-    }
-?>
-<?php
-   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
-   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
-   $number = $this->number;
-   $sStyleHidden_number = '';
-   if (isset($this->nmgp_cmp_hidden['number']) && $this->nmgp_cmp_hidden['number'] == 'off')
-   {
-       unset($this->nmgp_cmp_hidden['number']);
-       $sStyleHidden_number = 'display: none;';
-   }
-   $bTestReadOnly = true;
-   $sStyleReadLab_number = 'display: none;';
-   $sStyleReadInp_number = '';
-   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['number']) && $this->nmgp_cmp_readonly['number'] == 'on')
-   {
-       $bTestReadOnly = false;
-       unset($this->nmgp_cmp_readonly['number']);
-       $sStyleReadLab_number = '';
-       $sStyleReadInp_number = 'display: none;';
-   }
-?>
-<?php if (isset($this->nmgp_cmp_hidden['number']) && $this->nmgp_cmp_hidden['number'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="number" value="<?php echo $this->form_encode_input($number) . "\">"; ?>
-<?php } else { $sc_hidden_no++; ?>
-
-    <TD class="scFormLabelOdd scUiLabelWidthFix css_number_label" id="hidden_field_label_number" style="<?php echo $sStyleHidden_number; ?>"><span id="id_label_number"><?php echo $this->nm_new_label['number']; ?></span></TD>
-    <TD class="scFormDataOdd css_number_line" id="hidden_field_data_number" style="<?php echo $sStyleHidden_number; ?>"><table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_number_line" style="vertical-align: top;padding: 0px">
-<?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["number"]) &&  $this->nmgp_cmp_readonly["number"] == "on") { 
-
- ?>
-<input type="hidden" name="number" value="<?php echo $this->form_encode_input($number) . "\">" . $number . ""; ?>
-<?php } else { ?>
-<span id="id_read_on_number" class="sc-ui-readonly-number css_number_line" style="<?php echo $sStyleReadLab_number; ?>"><?php echo $this->form_format_readonly("number", $this->form_encode_input($this->number)); ?></span><span id="id_read_off_number" class="css_read_off_number<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_number; ?>">
- <input class="sc-js-input scFormObjectOdd css_number_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_number" type=text name="number" value="<?php echo $this->form_encode_input($number) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=11"; } ?> alt="{datatype: 'integer', maxLength: 11, thousandsSep: '<?php echo str_replace("'", "\'", $this->field_config['number']['symbol_grp']); ?>', thousandsFormat: <?php echo $this->field_config['number']['symbol_fmt']; ?>, allowNegative: false, onlyNegative: false, negativePos: <?php echo (4 == $this->field_config['number']['format_neg'] ? "'suffix'" : "'prefix'") ?>, alignment: 'left', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_number_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_number_text"></span></td></tr></table></td></tr></table></TD>
-   <?php }?>
-
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 2; ?>" >&nbsp;</TD>
-<?php } 
-?> 
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
-   <?php
-    if (!isset($this->nm_new_label['name']))
-    {
-        $this->nm_new_label['name'] = "Name";
-    }
-?>
-<?php
-   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
-   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
-   $name = $this->name;
-   $sStyleHidden_name = '';
-   if (isset($this->nmgp_cmp_hidden['name']) && $this->nmgp_cmp_hidden['name'] == 'off')
-   {
-       unset($this->nmgp_cmp_hidden['name']);
-       $sStyleHidden_name = 'display: none;';
-   }
-   $bTestReadOnly = true;
-   $sStyleReadLab_name = 'display: none;';
-   $sStyleReadInp_name = '';
-   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['name']) && $this->nmgp_cmp_readonly['name'] == 'on')
-   {
-       $bTestReadOnly = false;
-       unset($this->nmgp_cmp_readonly['name']);
-       $sStyleReadLab_name = '';
-       $sStyleReadInp_name = 'display: none;';
-   }
-?>
-<?php if (isset($this->nmgp_cmp_hidden['name']) && $this->nmgp_cmp_hidden['name'] == 'off') { $sc_hidden_yes++;  ?>
-<input type="hidden" name="name" value="<?php echo $this->form_encode_input($name) . "\">"; ?>
-<?php } else { $sc_hidden_no++; ?>
-
-    <TD class="scFormLabelOdd scUiLabelWidthFix css_name_label" id="hidden_field_label_name" style="<?php echo $sStyleHidden_name; ?>"><span id="id_label_name"><?php echo $this->nm_new_label['name']; ?></span></TD>
-    <TD class="scFormDataOdd css_name_line" id="hidden_field_data_name" style="<?php echo $sStyleHidden_name; ?>"><table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_name_line" style="vertical-align: top;padding: 0px">
-<?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["name"]) &&  $this->nmgp_cmp_readonly["name"] == "on") { 
-
- ?>
-<input type="hidden" name="name" value="<?php echo $this->form_encode_input($name) . "\">" . $name . ""; ?>
-<?php } else { ?>
-<span id="id_read_on_name" class="sc-ui-readonly-name css_name_line" style="<?php echo $sStyleReadLab_name; ?>"><?php echo $this->form_format_readonly("name", $this->form_encode_input($this->name)); ?></span><span id="id_read_off_name" class="css_read_off_name<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap;<?php echo $sStyleReadInp_name; ?>">
- <input class="sc-js-input scFormObjectOdd css_name_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_name" type=text name="name" value="<?php echo $this->form_encode_input($name) ?>"
- <?php if ($this->classes_100perc_fields['keep_field_size']) { echo "size=50"; } ?> maxlength=50 alt="{datatype: 'text', maxLength: 50, allowedChars: '<?php echo $this->allowedCharsCharset("") ?>', lettersCase: '', enterTab: false, enterSubmit: false, autoTab: false, selectOnFocus: true, watermark: '', watermarkClass: 'scFormObjectOddWm', maskChars: '(){}[].,;:-+/ '}" ></span><?php } ?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_name_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_name_text"></span></td></tr></table></td></tr></table></TD>
-   <?php }?>
-
-<?php if ($sc_hidden_yes > 0 && $sc_hidden_no > 0) { ?>
-
-
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 2; ?>" >&nbsp;</TD>
-<?php } 
-?> 
-<?php if ($sc_hidden_no > 0) { echo "<tr>"; }; 
-      $sc_hidden_yes = 0; $sc_hidden_no = 0; ?>
-
-
-   <?php
-   if (!isset($this->nm_new_label['status']))
-   {
-       $this->nm_new_label['status'] = "Status";
-   }
-   $nm_cor_fun_cel  = (isset($nm_cor_fun_cel) && $nm_cor_fun_cel  == $this->Ini->cor_grid_impar ? $this->Ini->cor_grid_par : $this->Ini->cor_grid_impar);
-   $nm_img_fun_cel  = (isset($nm_img_fun_cel) && $nm_img_fun_cel  == $this->Ini->img_fun_imp    ? $this->Ini->img_fun_par  : $this->Ini->img_fun_imp);
-   $status = $this->status;
-   $sStyleHidden_status = '';
-   if (isset($this->nmgp_cmp_hidden['status']) && $this->nmgp_cmp_hidden['status'] == 'off')
-   {
-       unset($this->nmgp_cmp_hidden['status']);
-       $sStyleHidden_status = 'display: none;';
-   }
-   $bTestReadOnly = true;
-   $sStyleReadLab_status = 'display: none;';
-   $sStyleReadInp_status = '';
-   if (/*$this->nmgp_opcao != "novo" && */isset($this->nmgp_cmp_readonly['status']) && $this->nmgp_cmp_readonly['status'] == 'on')
-   {
-       $bTestReadOnly = false;
-       unset($this->nmgp_cmp_readonly['status']);
-       $sStyleReadLab_status = '';
-       $sStyleReadInp_status = 'display: none;';
-   }
-?>
-<?php if (isset($this->nmgp_cmp_hidden['status']) && $this->nmgp_cmp_hidden['status'] == 'off') { $sc_hidden_yes++; ?>
-<input type=hidden name="status" value="<?php echo $this->form_encode_input($this->status) . "\">"; ?>
-<?php } else { $sc_hidden_no++; ?>
-
-    <TD class="scFormLabelOdd scUiLabelWidthFix css_status_label" id="hidden_field_label_status" style="<?php echo $sStyleHidden_status; ?>"><span id="id_label_status"><?php echo $this->nm_new_label['status']; ?></span></TD>
-    <TD class="scFormDataOdd css_status_line" id="hidden_field_data_status" style="<?php echo $sStyleHidden_status; ?>"><table style="border-width: 0px; border-collapse: collapse; width: 100%"><tr><td  class="scFormDataFontOdd css_status_line" style="vertical-align: top;padding: 0px">
-<?php if ($bTestReadOnly && $this->nmgp_opcao != "novo" && isset($this->nmgp_cmp_readonly["status"]) &&  $this->nmgp_cmp_readonly["status"] == "on") { 
-
-$status_look = "";
- if ($this->status == "A") { $status_look .= "Disponivel" ;} 
- if ($this->status == "R") { $status_look .= "Reservado" ;} 
- if ($this->status == "U") { $status_look .= "Indisponível" ;} 
- if (empty($status_look)) { $status_look = $this->status; }
-?>
-<input type="hidden" name="status" value="<?php echo $this->form_encode_input($status) . "\">" . $status_look . ""; ?>
+<input type="hidden" name="status_<?php echo $sc_seq_vert ?>" value="<?php echo $this->form_encode_input($status_) . "\">" . $status__look . ""; ?>
 <?php } else { ?>
 <?php
 
-$status_look = "";
- if ($this->status == "A") { $status_look .= "Disponivel" ;} 
- if ($this->status == "R") { $status_look .= "Reservado" ;} 
- if ($this->status == "U") { $status_look .= "Indisponível" ;} 
- if (empty($status_look)) { $status_look = $this->status; }
+$status__look = "";
+ if ($this->status_ == "A") { $status__look .= "Disponivel" ;} 
+ if ($this->status_ == "R") { $status__look .= "Reservado" ;} 
+ if ($this->status_ == "U") { $status__look .= "Indisponível" ;} 
+ if (empty($status__look)) { $status__look = $this->status_; }
 ?>
-<span id="id_read_on_status" class="css_status_line"  style="<?php echo $sStyleReadLab_status; ?>"><?php echo $this->form_format_readonly("status", $this->form_encode_input($status_look)); ?></span><span id="id_read_off_status" class="css_read_off_status<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap; <?php echo $sStyleReadInp_status; ?>">
- <span id="idAjaxSelect_status" class="<?php echo $this->classes_100perc_fields['span_select'] ?>"><select class="sc-js-input scFormObjectOdd css_status_obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_status" name="status" size="1" alt="{type: 'select', enterTab: false}">
- <option  value="A" <?php  if ($this->status == "A") { echo " selected" ;} ?>>Disponivel</option>
-<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = 'A'; ?>
- <option  value="R" <?php  if ($this->status == "R") { echo " selected" ;} ?>>Reservado</option>
-<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = 'R'; ?>
- <option  value="U" <?php  if ($this->status == "U") { echo " selected" ;} ?>>Indisponível</option>
-<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status'][] = 'U'; ?>
+<span id="id_read_on_status_<?php echo $sc_seq_vert ; ?>" class="css_status__line"  style="<?php echo $sStyleReadLab_status_; ?>"><?php echo $this->form_format_readonly("status_", $this->form_encode_input($status__look)); ?></span><span id="id_read_off_status_<?php echo $sc_seq_vert ; ?>" class="css_read_off_status_<?php echo $this->classes_100perc_fields['span_input'] ?>" style="white-space: nowrap; <?php echo $sStyleReadInp_status_; ?>">
+ <span id="idAjaxSelect_status_<?php echo $sc_seq_vert ?>" class="<?php echo $this->classes_100perc_fields['span_select'] ?>"><select class="sc-js-input scFormObjectOddMult css_status__obj<?php echo $this->classes_100perc_fields['input'] ?>" style="" id="id_sc_field_status_<?php echo $sc_seq_vert ?>" name="status_<?php echo $sc_seq_vert ?>" size="1" alt="{type: 'select', enterTab: false}">
+ <option  value="A" <?php  if ($this->status_ == "A") { echo " selected" ;} ?>>Disponivel</option>
+<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'A'; ?>
+ <option  value="R" <?php  if ($this->status_ == "R") { echo " selected" ;} ?>>Reservado</option>
+<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'R'; ?>
+ <option  value="U" <?php  if ($this->status_ == "U") { echo " selected" ;} ?>>Indisponível</option>
+<?php $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['Lookup_status_'][] = 'U'; ?>
  </select></span>
 </span><?php  }?>
-</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_status_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_status_text"></span></td></tr></table></td></tr></table></TD>
-   <?php }?>
+</td></tr><tr><td style="vertical-align: top; padding: 0"><table class="scFormFieldErrorTable" style="display: none" id="id_error_display_status_<?php echo $sc_seq_vert; ?>_frame"><tr><td class="scFormFieldErrorMessage"><span id="id_error_display_status_<?php echo $sc_seq_vert; ?>_text"></span></td></tr></table></td></tr></table> </TD>
+   <?php $this->form_fixed_column_no++; ?>
+<?php }?>
 
-<?php if ($sc_hidden_yes > 0) { ?>
 
 
-    <TD class="scFormDataOdd" colspan="<?php echo $sc_hidden_yes * 2; ?>" >&nbsp;</TD>
-<?php } ?>
-   </td></tr></table>
+
+
    </tr>
+<?php   
+        if (isset($sCheckRead_number_))
+       {
+           $this->nmgp_cmp_readonly['number_'] = $sCheckRead_number_;
+       }
+       if ('display: none;' == $sStyleHidden_number_)
+       {
+           $this->nmgp_cmp_hidden['number_'] = 'off';
+       }
+       if (isset($sCheckRead_status_))
+       {
+           $this->nmgp_cmp_readonly['status_'] = $sCheckRead_status_;
+       }
+       if ('display: none;' == $sStyleHidden_status_)
+       {
+           $this->nmgp_cmp_hidden['status_'] = 'off';
+       }
+
+   }
+   if ($Line_Add) 
+   { 
+       $this->New_Line = ob_get_contents();
+       ob_end_clean();
+       $this->nmgp_opcao = $guarda_nmgp_opcao;
+       $this->form_vert_cad_lodge = $guarda_form_vert_cad_lodge;
+   } 
+   if ($Table_refresh) 
+   { 
+       $this->Table_refresh = ob_get_contents();
+       ob_end_clean();
+   } 
+}
+
+function Form_Fim() 
+{
+   global $sc_seq_vert, $opcao_botoes, $nm_url_saida; 
+?>   
 </TABLE></div><!-- bloco_f -->
+ </div>
+ <div id="sc-id-fixedheaders-placeholder" style="display: none; position: fixed; top: 0; z-index: 500"></div>
+<?php
+$iContrVert = $this->Embutida_form ? $sc_seq_vert + 1 : $sc_seq_vert + 1;
+if ($sc_seq_vert < $this->sc_max_reg)
+{
+    echo " <script type=\"text/javascript\">";
+    echo "    bRefreshTable = true;";
+    echo "</script>";
+}
+?>
+<input type="hidden" name="sc_contr_vert" value="<?php echo $this->form_encode_input($iContrVert); ?>">
+<?php
+    $sEmptyStyle = 0 == $sc_seq_vert ? '' : 'display: none;';
+?>
+</td></tr>
+<tr id="sc-ui-empty-form" style="<?php echo $sEmptyStyle; ?>"><td class="scFormPageText" style="padding: 10px; font-weight: bold">
+<?php echo $this->Ini->Nm_lang['lang_errm_empt'];
+?>
 </td></tr> 
 <tr><td>
 <?php
@@ -1696,11 +1875,31 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
    <input type="text" class="scFormToolbarInput" name="nmgp_rec_b" value="" style="width:25px;vertical-align: middle;"/> 
 <?php 
       }
+      if ($opcao_botoes != "novo" && $this->nmgp_botoes['qtline'] == "on")
+      {
+?> 
+          <span class="<?php echo $this->css_css_toolbar_obj ?>" style="border: 0px;"><?php echo $this->Ini->Nm_lang['lang_btns_rows'] ?></span>
+          <select class="scFormToolbarInput" name="nmgp_quant_linhas_b" onchange="document.F7.nmgp_max_line.value = this.value; document.F7.submit();"> 
+<?php 
+              $obj_sel = ($this->sc_max_reg == '10') ? " selected" : "";
+?> 
+           <option value="10" <?php echo $obj_sel ?>>10</option>
+<?php 
+              $obj_sel = ($this->sc_max_reg == '20') ? " selected" : "";
+?> 
+           <option value="20" <?php echo $obj_sel ?>>20</option>
+<?php 
+              $obj_sel = ($this->sc_max_reg == '50') ? " selected" : "";
+?> 
+           <option value="50" <?php echo $obj_sel ?>>50</option>
+          </select>
+<?php 
+      }
 ?> 
      </td> 
      <td nowrap align="center" valign="middle" width="33%" class="scFormToolbarPadding"> 
 <?php 
-    if ($opcao_botoes != "novo") {
+    if (($opcao_botoes != "novo") && ('total' != $this->form_paginacao)) {
         $sCondStyle = ($this->nmgp_botoes['first'] == "on") ? '' : 'display: none;';
 ?>
 <?php
@@ -1719,7 +1918,7 @@ if (($this->Embutida_form || !$this->Embutida_call || $this->Grid_editavel || $t
 <?php
         $NM_btn = true;
     }
-    if ($opcao_botoes != "novo") {
+    if (($opcao_botoes != "novo") && ('total' != $this->form_paginacao)) {
         $sCondStyle = ($this->nmgp_botoes['back'] == "on") ? '' : 'display: none;';
 ?>
 <?php
@@ -1744,7 +1943,7 @@ if ($opcao_botoes != "novo" && $this->nmgp_botoes['navpage'] == "on")
      <span nowrap id="sc_b_navpage_b" class="scFormToolbarPadding"></span> 
 <?php 
 }
-    if ($opcao_botoes != "novo") {
+    if (($opcao_botoes != "novo") && ('total' != $this->form_paginacao)) {
         $sCondStyle = ($this->nmgp_botoes['forward'] == "on") ? '' : 'display: none;';
 ?>
 <?php
@@ -1763,7 +1962,7 @@ if ($opcao_botoes != "novo" && $this->nmgp_botoes['navpage'] == "on")
 <?php
         $NM_btn = true;
     }
-    if ($opcao_botoes != "novo") {
+    if (($opcao_botoes != "novo") && ('total' != $this->form_paginacao)) {
         $sCondStyle = ($this->nmgp_botoes['last'] == "on") ? '' : 'display: none;';
 ?>
 <?php
@@ -1827,6 +2026,29 @@ unset($NM_ult_sep);
 &nbsp;&nbsp;Output</td></tr>
 <tr><td class="scFormMessageMessage" style="padding: 0px; vertical-align: top"><div style="padding: 2px; height: 200px; width: 350px; overflow: auto" id="id_debug_text"></div></td></tr>
 </table></div>
+<script>
+ var iAjaxNewLine = <?php echo $sc_seq_vert; ?>;
+<?php
+if (!isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_modal']) || !$_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['run_modal'])
+{
+?>
+ for (var iLine = 1; iLine <= iAjaxNewLine; iLine++) {
+  scJQElementsAdd(iLine);
+ }
+<?php
+}
+else
+{
+?>
+ $(function() {
+  setTimeout(function() { for (var iLine = 1; iLine <= iAjaxNewLine; iLine++) { scJQElementsAdd(iLine); } }, 250);
+ });
+<?php
+}
+?>
+</script>
+<div id="new_line_dummy" style="display: none">
+</div>
 
 </form> 
 <script> 
@@ -1846,6 +2068,7 @@ unset($NM_ult_sep);
   }
 ?>
 </script> 
+   </td></tr></table>
 <script>
 <?php
 if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['masterValue']))
@@ -2002,11 +2225,18 @@ scAjax_displayEmptyForm();
 		    if ($("#sc_b_new_t.sc-unique-btn-1").hasClass("disabled")) {
 		        return;
 		    }
+			do_ajax_cad_lodge_add_new_line(); return false;
+			 return;
+		}
+		if ($("#sc_b_new_t.sc-unique-btn-2").length && $("#sc_b_new_t.sc-unique-btn-2").is(":visible")) {
+		    if ($("#sc_b_new_t.sc-unique-btn-2").hasClass("disabled")) {
+		        return;
+		    }
 			nm_move ('novo');
 			 return;
 		}
-		if ($("#sc_b_ins_t.sc-unique-btn-2").length && $("#sc_b_ins_t.sc-unique-btn-2").is(":visible")) {
-		    if ($("#sc_b_ins_t.sc-unique-btn-2").hasClass("disabled")) {
+		if ($("#sc_b_ins_t.sc-unique-btn-3").length && $("#sc_b_ins_t.sc-unique-btn-3").is(":visible")) {
+		    if ($("#sc_b_ins_t.sc-unique-btn-3").hasClass("disabled")) {
 		        return;
 		    }
 			nm_atualiza ('incluir');
@@ -2014,8 +2244,8 @@ scAjax_displayEmptyForm();
 		}
 	}
 	function scBtnFn_sys_format_cnl() {
-		if ($("#sc_b_sai_t.sc-unique-btn-3").length && $("#sc_b_sai_t.sc-unique-btn-3").is(":visible")) {
-		    if ($("#sc_b_sai_t.sc-unique-btn-3").hasClass("disabled")) {
+		if ($("#sc_b_sai_t.sc-unique-btn-4").length && $("#sc_b_sai_t.sc-unique-btn-4").is(":visible")) {
+		    if ($("#sc_b_sai_t.sc-unique-btn-4").hasClass("disabled")) {
 		        return;
 		    }
 			<?php echo $this->NM_cancel_insert_new ?> document.F5.submit();
@@ -2023,20 +2253,11 @@ scAjax_displayEmptyForm();
 		}
 	}
 	function scBtnFn_sys_format_alt() {
-		if ($("#sc_b_upd_t.sc-unique-btn-4").length && $("#sc_b_upd_t.sc-unique-btn-4").is(":visible")) {
-		    if ($("#sc_b_upd_t.sc-unique-btn-4").hasClass("disabled")) {
+		if ($("#sc_b_upd_t.sc-unique-btn-5").length && $("#sc_b_upd_t.sc-unique-btn-5").is(":visible")) {
+		    if ($("#sc_b_upd_t.sc-unique-btn-5").hasClass("disabled")) {
 		        return;
 		    }
 			nm_atualiza ('alterar');
-			 return;
-		}
-	}
-	function scBtnFn_sys_format_exc() {
-		if ($("#sc_b_del_t.sc-unique-btn-5").length && $("#sc_b_del_t.sc-unique-btn-5").is(":visible")) {
-		    if ($("#sc_b_del_t.sc-unique-btn-5").hasClass("disabled")) {
-		        return;
-		    }
-			nm_atualiza ('excluir');
 			 return;
 		}
 	}
@@ -2141,32 +2362,6 @@ scAjax_displayEmptyForm();
 		}
 	}
 </script>
-<script type="text/javascript">
-$(function() {
- $("#sc-id-mobile-in").mouseover(function() {
-  $(this).css("cursor", "pointer");
- }).click(function() {
-  scMobileDisplayControl("in");
- });
- $("#sc-id-mobile-out").mouseover(function() {
-  $(this).css("cursor", "pointer");
- }).click(function() {
-  scMobileDisplayControl("out");
- });
-});
-function scMobileDisplayControl(sOption) {
- $("#sc-id-mobile-control").val(sOption);
- nm_atualiza("recarga_mobile");
-}
-</script>
-<?php
-       if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['device_mobile'])
-       {
-?>
-<span id="sc-id-mobile-in"><?php echo $this->Ini->Nm_lang['lang_version_mobile']; ?></span>
-<?php
-       }
-?>
 <?php
 $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['buttonStatus'] = $this->nmgp_botoes;
 ?>
@@ -2193,3 +2388,7 @@ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['buttonStatus'] = $thi
 </script>
 </body> 
 </html> 
+<?php 
+ } 
+} 
+?> 

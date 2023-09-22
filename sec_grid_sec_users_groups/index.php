@@ -10,7 +10,7 @@
    $_SESSION['scriptcase']['sec_grid_sec_users_groups']['glo_nm_path_imagens']    = "/scriptcase/file/img";
    $_SESSION['scriptcase']['sec_grid_sec_users_groups']['glo_nm_path_imag_temp']  = "/scriptcase/tmp";
    $_SESSION['scriptcase']['sec_grid_sec_users_groups']['glo_nm_path_cache']      = "C:/Program Files/NetMake/v9-php81/wwwroot/scriptcase/file/cache";
-   $_SESSION['scriptcase']['sec_grid_sec_users_groups']['glo_nm_path_doc']        = "C:/Program Files/NetMake/v9-php81/wwwrootC:\inetpub\wwwroot\oficial\_lib\file\doc";
+   $_SESSION['scriptcase']['sec_grid_sec_users_groups']['glo_nm_path_doc']        = "C:/Program Files/NetMake/v9-php81/wwwrootC:/Program Files/NetMake/v9-php81/wwwroot/scriptcase/file/doc";
    $_SESSION['scriptcase']['sec_grid_sec_users_groups']['glo_nm_conexao']         = "skini";
     //check publication with the prod
     $NM_dir_atual = getcwd();
@@ -224,16 +224,16 @@ class sec_grid_sec_users_groups_ini
       $this->nm_seguranca    = ""; 
       $this->nm_grupo        = "skini"; 
       $this->nm_grupo_versao = "1"; 
-      $this->nm_autor        = "guilherme"; 
+      $this->nm_autor        = "admin"; 
       $this->nm_script_by    = "netmake";
       $this->nm_script_type  = "PHP";
       $this->nm_versao_sc    = "v9"; 
       $this->nm_tp_lic_sc    = "pe_bronze"; 
-      $this->nm_dt_criacao   = "20230530"; 
-      $this->nm_hr_criacao   = "215427"; 
+      $this->nm_dt_criacao   = "20230920"; 
+      $this->nm_hr_criacao   = "123213"; 
       $this->nm_autor_alt    = "admin"; 
-      $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "090240"; 
+      $this->nm_dt_ult_alt   = "20230920"; 
+      $this->nm_hr_ult_alt   = "123232"; 
       $this->Apl_paginacao   = "PARCIAL"; 
       $temp_bug_list         = explode(" ", microtime()); 
       list($NM_usec, $NM_sec) = $temp_bug_list; 
@@ -991,8 +991,6 @@ class sec_grid_sec_users_groups_ini
       $this->scGridRefinedSearchExpandFAIcon    = trim($scGridRefinedSearchExpandFAIcon);
       $this->scGridRefinedSearchCollapseFAIcon    = trim($scGridRefinedSearchCollapseFAIcon);
       $this->Tree_img_type   = "kie";
-      $str_button = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
-      $_SESSION['scriptcase']['str_button_all'] = $str_button;
       perfil_lib($this->path_libs);
       if (!isset($_SESSION['sc_session'][$this->sc_page]['SC_Check_Perfil']))
       {
@@ -1118,7 +1116,7 @@ class sec_grid_sec_users_groups_ini
       $this->nm_ttf_chi  = array("zh_cn", "zh_hk", "ko");
       $_SESSION['sc_session'][$this->sc_page]['sec_grid_sec_users_groups']['seq_dir'] = 0; 
       $_SESSION['sc_session'][$this->sc_page]['sec_grid_sec_users_groups']['sub_dir'] = array(); 
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1D9NwH9FUHANOHQJsHuNOZSNiDWJeVoBqDcBqZkFGHArYHuFUDMvCHErCDWF/VoBiDcJUZSX7Z1BYHuFaDMvOV9FeV5X/VEBiHQBiZkFGHIveD5JwHgvsHEJqH5FGVoFGHQXsDQB/DSN7HuraDMBYZSNiDurGDoXGHQBiZ1X7HINKZMXGDMveVkJqDuXKVoFGHQXsDuBqHAN7HuBqDMrYVcB/HEBmVoBqD9BsZ1F7DSrYD5rqDMrYZSJ3DurmZuJsDcBiH9BiHIrwHurqDMBODkBsH5XKDoXGHQNmH9BqHIveHQFGHgvsVkJqHEB3VoFGDcBiDQFUD1BOV5BOHgrwVcFeV5X/DoXGHQBiZ1BOHAN7HuXGHgvsHErCDuXKDoF7D9XsDQJsDSBYV5FGHgNKDkBsHEX/VEBiDcNmZ1X7HANOHuBOHgBOZSJ3DuX/VoFGHQFYDQB/HArYHQF7HgvOVcFeDurGDoXGHQXGVIJsDSvOD5JeDMveHArCDWrGVoFGHQXODQFaZ1BYHQFaDMBYVcB/HEX/VoBqD9BsZ1F7DSrYD5rqDMrYZSJGH5FYDoF7DcXOZSFGHAveV5FUHuBYVcFKDur/VoJwHQJmVIJsDSvmD5FaHgNOHEBUDWr/DoB/DcBwZSFGHANOV5FUHuNOV9FiDWXCHMFaD9JmZ1B/HIrwV5FaDErKDkBsV5FaHMJeDcBwDQFGD1veHQXGHgvsVcBOHEX7DoraHQFYH9FaHAvmZMJeHgvCHEJGDWF/VoJeD9NwDQBqHIvsV5XGDMrwDkFCDuX7VEF7D9BiH9FaHAN7D5FaDEBOZSJGH5BmDoB/D9NwZSX7D1BeV5BOHuvmVcFCDWXCVENUDcBqH9B/HABYD5JeDMzGHAFKV5XKDoF7D9XsDQJsDSBYV5FGHgNKDkFCH5FqVoBqDcNwH9B/HIveD5FaDErKZSJGH5F/DoFUHQNmDQFaHArYHQFaHgrwVcFeV5X7HIBiHQFYZkFGHIBeHQFaHgrKHArCDWF/VoBiDcJUZSX7Z1BYHuFaDMzGDkBsV5FYVEFGHQXGZkFGDSrYD5BqHgveHEXeH5X/ZuJeDcBiDuBqHANKV5JeDMrYV9BUHEFYHMBiD9BsVIraD1rwV5X7HgBeHEFKV5FaDoXGDcBwDQX7D1BeV5raHgrKDkFCDWJeDoFGDcJUZ1X7Z1BeD5JeDMzGHEXeH5FYDoFUD9NmDQFGD1BeD5JwHuzGVIFCH5FqVoJwDcJUH9FaHAN7D5FaDEvsHEJGDWF/DoXGHQXGH9FGHAveD5BOHuzGVcFeDWXCDoJsDcBwH9B/Z1rYHQJwHgBeHEFiV5B3DoF7D9XsDuFaHAveD5BqDMvODkB/DWF/VEFGD9BiH9BOHAN7D5NUHgveVkXeH5F/HMFaDcBiH9FUHIrKD5B/DMvOVIBOH5FqHMBiD9BsVIraD1rwV5X7HgBeHEBUDWF/VoB/DcXOZSX7HANOV5BOHuNODkBOV5F/VEBiDcJUZkFGHArKV5FUDMrYZSXeV5FqHIJsHQBiZ9XGHANKV5BODMvOZSJqDWB3VEFGHQNmZkBiD1rwHQJwDEBODkFeH5FYVoFGHQJKDQBqHINaD5F7HuzGVcFeDWF/DoNUHQBsZ1BOHANOHQBODENOHEBUH5FGVoFGD9JKDQJsHANOHuFaHuNOZSrCH5FqDoXGHQJmZ1FGHANOHQJsHgvsVkJ3H5FYHIrqHQNwDuFaZ1N7HuFGHgNKVcXKH5XCHMBqHQJmZ1F7Z1vmD5rqDEBOHArCDWBmZuXGHQXGZ9XGHANKVWFU";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1D9NwZ9F7D1veHuFGDMvOVcBOH5FqVENUD9BiZkBiDSrYD5rqDMveHArCV5FqHIX7HQNwDuFaHAveD5NUHgNKDkBOV5FYHMBiHQNmZkFGZ1vOZMJwHgvsHArCDuJeDoJsHQNmDQFUD1vOD5F7DMNOVcXKHEF/HMJwHQBiVINUHINKV5X7HgvsHENiDurmZuJeDcBiH9FUHINaD5F7DMNOV9BUDWF/HMFGHQNwZ1BODSvmD5rqDEBOHEFiHEFqDoF7DcJUZSBiHIvsVWFaHgvOVIBsDuX7HMJeHQXGH9BqD1zGV5X7HgveZSJ3DuJeHIX7HQNmH9FUDSvCD5F7HgvOVcB/H5B7VoX7DcFYZ1FGZ1vOV5X7HgvsHEJqDWr/HMJeHQNmDQFaHINaV5FGHuNOVcFKHEFYVoBqDcBwH9BqDSvOZMJwDMveHENiDWXCHMBqHQXsZSBiHIBOD5F7DMBOVcXKDWFaHIXGDcNmZ1FGHINKV5X7HgNODkB/HEB7DoXGDcBiDuFaHAvmD5F7DMrYVcFeV5FYHIBiHQBiZ1BODSvOD5rqDEBOHEFiHEFqDoF7DcJUZSFGD1BeV5FGHgrYDkFCDWXCVoB/D9BiZ1F7HIveD5BiHgBeDkB/HEB3DoB/HQFYDQJwHANOV5JwHgrKDkFCDWJeVoB/D9BsZkFUHArKHQraDEBeHEXeDuFYVoB/D9NwZ9rqZ1rwHQBOHgrKVcFCH5XCHIF7DcBqZ1B/DSBeV5FaHgvCZSJGDWB3ZuXGHQXGDQFGHAveD5BOHuzGVcBUDurGVoF7HQFYH9FaHIBeZMBODEvsZSJGDWr/DoB/D9XsZSFGD1NKV5JwHuzGDkBOH5FqVoX7D9JmZ1FaHArKZMB/DMBYZSXeDWX7DoXGDcBwDuBOZ1NaV5FGHuNOVcFKHEFYVoBqDcBwH9FaD1rwD5rqDMNKZSXeDuJeDoB/D9NwZSFGD1veV5raDMBYVcFeDWFaHIBiDcFYZ1FGZ1BeHuJwHgvCHArCDuFaHIB/HQNwDuFaHAveD5NUHgNKDkBOV5FYHMBiHQBqZ1FGZ1BeHQrqDEBeVkXeDWr/HMBiD9JKDQJsHANOHuBiDMNODkB/HEX/VoF7HQNmZSBODSNOHQFaHgveHErCDWF/VoBiDcJUZSX7Z1BYHuFaDMrwDkFCH5FqDoraDcBqH9BOZ1BeV5BODErKVkXeHEFqVoFaDcXOZSFGD1BeD5JwHgvsDkB/V5X7VEraD9XOH9B/HArYD5XGDErKZSJqV5FaVoBqD9NwH9X7Z1rwVWJwHuzGVcrsH5B7DoJsD9XOZ1F7HIveD5BqHgBeHEFiV5B3DoF7D9XsDuFaHAveHuFaHuNOZSrCH5FqDoXGHQJmZ1F7HABYHQNUDMzGDkBsV5FqHMX7DcJeDQFGHAveHuFUDMBYVcBUHEX/DoXGHQFYZkBiHArYHuBOHgBYHArCDWF/VoBiDcJUZSX7Z1BYHuFaHuzGVcFKDWFYVoJwDcBqZSFaHAN7D5FaDEBOVkJGHEXCVoB/HQJKDQJsZ1vCV5FGHuNOV9FeDWB3VoX7HQNmZ1BiHAvCD5JeHgveHErsHEB7DoJeHQBiH9BiHAveD5NUHgNKDkBOV5FYHMBiHQJmH9FaHIveHuFaHgNKHErsDWX7HIXGD9XsDQJwD1BeHuB/DMvmVIBsDWXCDoJsDcBwH9B/Z1rYHQJwHgBOVkJ3DWX7HMJeHQJKZSBiHIrKHuFGDMBYVIBsHEX/VoFaDcFYZ1FGDSrYHQJwDEBODkFeH5FYVoFGHQJKDQBqDSzGD5NUDMvOVcXeV5r/VEB/";
       $this->prep_conect();
       $this->conectDB();
       if (!in_array(strtolower($this->nm_tpbanco), $this->nm_bases_all))
@@ -2658,8 +2656,6 @@ class sec_grid_sec_users_groups_apl
       $this->Ini->Tree_img_exp    = trim($str_tree_exp);
       $this->Ini->scGridRefinedSearchExpandFAIcon    = trim($scGridRefinedSearchExpandFAIcon);
       $this->Ini->scGridRefinedSearchCollapseFAIcon    = trim($scGridRefinedSearchCollapseFAIcon);
-      $str_button = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
-      $_SESSION['scriptcase']['str_button_all'] = $str_button;
       $this->Ini->str_chart_theme = (isset($str_chart_theme)?$str_chart_theme:'');
       $this->Ini->Str_btn_grid    = trim($str_button) . "/" . trim($str_button) . $_SESSION['scriptcase']['reg_conf']['css_dir'] . ".php";
       $this->Ini->Str_btn_css     = trim($str_button) . "/" . trim($str_button) . ".css";

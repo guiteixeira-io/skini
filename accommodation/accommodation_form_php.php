@@ -362,15 +362,44 @@ if (!isset($_SESSION['scriptcase']['accommodation']['session_timeout']['redir'])
 <?php
     exit;
 } 
+      if (is_file($path_lib_php . "/nm_functions.php"))  
+      {  
+          $this->sc_Include($path_lib_php . "/nm_functions.php", "", "") ; 
+      }  
+      if (is_file($path_lib_php . "/nm_api.php"))  
+      {  
+          $this->sc_Include($path_lib_php . "/nm_api.php", "", "") ; 
+      }  
+      if (is_file($path_lib_php . "/nm_data.class.php"))  
+      {
+          $this->sc_Include($path_lib_php . "/nm_data.class.php", "C", "nm_data") ; 
+          $this->nm_data = new nm_data("pt_br");
+      }
+      if (is_file($path_libs . "/nm_ini_lib.php"))  
+      {
+          $this->sc_Include($path_libs . "/nm_ini_lib.php", "F", "nm_dir_normaliza") ; 
+      }
       $this->tab_grupo[0] = "skini/";
       if ($_SESSION['scriptcase']['sc_usa_grupo'] != "S")
       {
           $this->tab_grupo[0] = "";
       }
+      $_SESSION['scriptcase']['accommodation']['contr_erro'] = 'on';
+if (!isset($_SESSION['tela'])) {$_SESSION['tela'] = "";}
+if (!isset($this->sc_temp_tela)) {$this->sc_temp_tela = (isset($_SESSION['tela'])) ? $_SESSION['tela'] : "";}
+ $this->sc_temp_tela = 'lodge';
+if (isset($this->sc_temp_tela)) {$_SESSION['tela'] = $this->sc_temp_tela;}
+$_SESSION['scriptcase']['accommodation']['contr_erro'] = 'off';
+      $_SESSION['scriptcase']['sc_ult_apl_menu'] = array();
+      unset($_SESSION['scriptcase']['sc_usa_grupo']);
       $link_url = false;
       $parms_session = "";
 
-      if (isset($_SESSION['scriptcase']['sc_def_menu']['accommodation']))
+      if ($_SESSION['scriptcase']['sc_item_menu'] == "accommodation")
+      {
+              $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("img_menu") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=1";
+      }
+      elseif (isset($_SESSION['scriptcase']['sc_def_menu']['accommodation']))
       {
          foreach($_SESSION['scriptcase']['sc_def_menu']['accommodation'] as $id_item => $arr_item)
          {
@@ -392,39 +421,43 @@ if (!isset($_SESSION['scriptcase']['accommodation']['session_timeout']['redir'])
          }
       }
       {
-      if ($_SESSION['scriptcase']['sc_item_menu'] == "item_4")
-      {
-          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("fil_costumer_checkin") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
-      }
       if ($_SESSION['scriptcase']['sc_item_menu'] == "item_3")
       {
-          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("fil_costumer_checkout") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
+          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("men_checkin") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
       }
-      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_12")
+      if ($_SESSION['scriptcase']['sc_item_menu'] == "item_5")
       {
-          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("accommodation") . "/?nmgp_outra_jan=true&nm_apl_menu=accommodation";
-      }
-      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_10")
-      {
-          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("que_lodge_category") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
-      }
-      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_9")
-      {
-          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("que_costumers") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
+          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("men_checkout") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
       }
       if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_1")
       {
-          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("men_home") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
+          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("home") . "/?nmgp_outra_jan=true&nm_apl_menu=accommodation";
       }
-      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_13")
+      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_12")
       {
-          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("admin") . "/?nmgp_outra_jan=true&nm_apl_menu=accommodation";
+          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("rpt_costumerCheck") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
+      }
+      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_6")
+      {
+          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("que_lodge_category") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
       }
       if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_7")
       {
+          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("que_costumers") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
+      }
+      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_10")
+      {
+          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("admin") . "/?script_case_init=" . $_SESSION['sc_session'][1]['accommodation']['init'] . "";
+      }
+      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_9")
+      {
+          $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("home") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
+      }
+      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_3")
+      {
           $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("sec_change_pswd") . "/?nm_run_menu=1&nm_apl_menu=accommodation&script_case_init=" . $this->Gera_sc_init($this->sc_menu_item) . "";
       }
-      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_8")
+      if ($_SESSION['scriptcase']['sc_item_menu'] == "btn_4")
       {
           $apl_run = $_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . SC_dir_app_name("sec_login") . "/?script_case_init=" . $_SESSION['sc_session'][1]['accommodation']['init'] . "";
       }

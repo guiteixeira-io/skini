@@ -2980,43 +2980,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
 
   }
 
-  // ---------- Validate idlodgecategory
-  function do_ajax_cad_lodge_category_validate_idlodgecategory()
-  {
-    var nomeCampo_idlodgecategory = "idlodgecategory";
-    var var_idlodgecategory = scAjaxGetFieldHidden(nomeCampo_idlodgecategory);
-    var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_cad_lodge_category_validate_idlodgecategory(var_idlodgecategory, var_script_case_init, do_ajax_cad_lodge_category_validate_idlodgecategory_cb);
-  } // do_ajax_cad_lodge_category_validate_idlodgecategory
-
-  function do_ajax_cad_lodge_category_validate_idlodgecategory_cb(sResp)
-  {
-    oResp = scAjaxResponse(sResp);
-    scAjaxRedir();
-    sFieldValid = "idlodgecategory";
-    scEventControl_onBlur(sFieldValid);
-    scAjaxUpdateFieldErrors(sFieldValid, "valid");
-    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
-    if ("" == sFieldErrors)
-    {
-      var sImgStatus = sc_img_status_ok;
-      scAjaxHideErrorDisplay(sFieldValid);
-    }
-    else
-    {
-      var sImgStatus = sc_img_status_err;
-      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
-    }
-    var $oImg = $('#id_sc_status_' + sFieldValid);
-    if (0 < $oImg.length)
-    {
-      $oImg.attr('src', sImgStatus).css('display', '');
-    }
-    scAjaxShowDebug();
-    scAjaxSetMaster();
-    scAjaxSetFocus();
-  } // do_ajax_cad_lodge_category_validate_idlodgecategory_cb
-
   // ---------- Validate name
   function do_ajax_cad_lodge_category_validate_name()
   {
@@ -3164,6 +3127,43 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxSetMaster();
     scAjaxSetFocus();
   } // do_ajax_cad_lodge_category_validate_price_cb
+
+  // ---------- Validate lodge
+  function do_ajax_cad_lodge_category_validate_lodge()
+  {
+    var nomeCampo_lodge = "lodge";
+    var var_lodge = scAjaxGetFieldText(nomeCampo_lodge);
+    var var_script_case_init = document.F1.script_case_init.value;
+    x_ajax_cad_lodge_category_validate_lodge(var_lodge, var_script_case_init, do_ajax_cad_lodge_category_validate_lodge_cb);
+  } // do_ajax_cad_lodge_category_validate_lodge
+
+  function do_ajax_cad_lodge_category_validate_lodge_cb(sResp)
+  {
+    oResp = scAjaxResponse(sResp);
+    scAjaxRedir();
+    sFieldValid = "lodge";
+    scEventControl_onBlur(sFieldValid);
+    scAjaxUpdateFieldErrors(sFieldValid, "valid");
+    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
+    if ("" == sFieldErrors)
+    {
+      var sImgStatus = sc_img_status_ok;
+      scAjaxHideErrorDisplay(sFieldValid);
+    }
+    else
+    {
+      var sImgStatus = sc_img_status_err;
+      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+    }
+    var $oImg = $('#id_sc_status_' + sFieldValid);
+    if (0 < $oImg.length)
+    {
+      $oImg.attr('src', sImgStatus).css('display', '');
+    }
+    scAjaxShowDebug();
+    scAjaxSetMaster();
+    scAjaxSetFocus();
+  } // do_ajax_cad_lodge_category_validate_lodge_cb
 function scAjaxShowErrorDisplay(sErrorId, sErrorMsg) {
 	if ("table" != sErrorId && !$("id_error_display_" + sErrorId + "_frame").hasClass('scFormToastDivFixed')) {
 		scAjaxShowErrorDisplay_default(sErrorId, sErrorMsg);
@@ -3459,7 +3459,6 @@ function scJs_sweetalert_params(params) {
       return;
     }
     scAjaxHideMessage();
-    var var_idlodgecategory = scAjaxGetFieldHidden("idlodgecategory");
     var var_name = scAjaxGetFieldText("name");
     var var_capacity = scAjaxGetFieldText("capacity");
     var var_color = scAjaxGetFieldText("color");
@@ -3472,7 +3471,7 @@ function scJs_sweetalert_params(params) {
     var var_script_case_init = document.F1.script_case_init.value;
     var var_csrf_token = scAjaxGetFieldText("csrf_token");
     scAjaxProcOn();
-    x_ajax_cad_lodge_category_submit_form(var_idlodgecategory, var_name, var_capacity, var_color, var_nm_form_submit, var_nmgp_url_saida, var_nmgp_opcao, var_nmgp_ancora, var_nmgp_num_form, var_nmgp_parms, var_script_case_init, var_csrf_token, do_ajax_cad_lodge_category_submit_form_cb);
+    x_ajax_cad_lodge_category_submit_form(var_name, var_capacity, var_color, var_nm_form_submit, var_nmgp_url_saida, var_nmgp_opcao, var_nmgp_ancora, var_nmgp_num_form, var_nmgp_parms, var_script_case_init, var_csrf_token, do_ajax_cad_lodge_category_submit_form_cb);
   } // do_ajax_cad_lodge_category_submit_form
 
   function do_ajax_cad_lodge_category_submit_form_cb(sResp)
@@ -3496,11 +3495,11 @@ function scJs_sweetalert_params(params) {
       scResetFormChanges();
       scAjaxShowMessage("success");
       scAjaxHideErrorDisplay("table");
-      scAjaxHideErrorDisplay("idlodgecategory");
       scAjaxHideErrorDisplay("name");
       scAjaxHideErrorDisplay("capacity");
       scAjaxHideErrorDisplay("color");
       scAjaxHideErrorDisplay("price");
+      scAjaxHideErrorDisplay("lodge");
       scLigEditLookupCall();
 <?php
 if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['dashboard_info']['under_dashboard']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['dashboard_info']['under_dashboard']) {
@@ -3546,6 +3545,7 @@ if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['da
 
   var scStatusDetail = {};
   scStatusDetail["sub_lodgePrice"] = "off";
+  scStatusDetail["cad_lodge"] = "off";
 
   function do_ajax_cad_lodge_category_navigate_form()
   {
@@ -3564,11 +3564,11 @@ if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['da
     }
     scAjaxHideMessage();
     scAjaxHideErrorDisplay("table");
-    scAjaxHideErrorDisplay("idlodgecategory");
     scAjaxHideErrorDisplay("name");
     scAjaxHideErrorDisplay("capacity");
     scAjaxHideErrorDisplay("color");
     scAjaxHideErrorDisplay("price");
+    scAjaxHideErrorDisplay("lodge");
     var var_idlodgecategory = document.F2.idlodgecategory.value;
     var var_nm_form_submit = document.F2.nm_form_submit.value;
     var var_nmgp_opcao = document.F2.nmgp_opcao.value;
@@ -3580,6 +3580,7 @@ if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category']['da
     var var_script_case_init = document.F2.script_case_init.value;
     scAjaxProcOn();
     scStatusDetail["sub_lodgePrice"] = "on";
+    scStatusDetail["cad_lodge"] = "on";
     x_ajax_cad_lodge_category_navigate_form(var_idlodgecategory, var_nm_form_submit, var_nmgp_opcao, var_nmgp_ordem, var_nmgp_fast_search,  var_nmgp_cond_fast_search,  var_nmgp_arg_fast_search, var_nmgp_arg_dyn_search, var_script_case_init, do_ajax_cad_lodge_category_navigate_form_cb);
   } // do_ajax_cad_lodge_category_navigate_form
 
@@ -3636,6 +3637,14 @@ foreach ($this->Ini->sc_lig_iframe as $tmp_i => $tmp_v)
         document.getElementById('nmsc_iframe_liga_sub_lodgePrice').style.height = "1";
         document.getElementById('nmsc_iframe_liga_sub_lodgePrice').style.display = "none";
     }
+    if (scMasterDetailIframe && scMasterDetailIframe["nmsc_iframe_liga_cad_lodge"] && "nmsc_iframe_liga_cad_lodge" != scMasterDetailIframe["nmsc_iframe_liga_cad_lodge"]) {
+        scMoveMasterDetail(scMasterDetailIframe["nmsc_iframe_liga_cad_lodge"]);
+    }
+    else {
+        document.getElementById('nmsc_iframe_liga_cad_lodge').contentWindow.nm_move('apl_detalhe', true);
+        document.getElementById('nmsc_iframe_liga_cad_lodge').style.height = "1";
+        document.getElementById('nmsc_iframe_liga_cad_lodge').style.display = "none";
+    }
     scAjaxSetBtnVars();
     $('.sc-js-ui-statusimg').css('display', 'none');
     scAjaxAlert(do_ajax_cad_lodge_category_navigate_form_cb_after_alert);
@@ -3690,7 +3699,7 @@ if ($this->Embutida_form)
 
   function scAjaxDetailProc()
   {
-    if ("off" == scStatusDetail["sub_lodgePrice"])
+    if ("off" == scStatusDetail["sub_lodgePrice"] && "off" == scStatusDetail["cad_lodge"])
     {
       return true;
     }
@@ -3704,62 +3713,65 @@ if ($this->Embutida_form)
 
   var ajax_field_list = new Array();
   var ajax_field_Dt_Hr = new Array();
-  ajax_field_list[0] = "idlodgecategory";
-  ajax_field_list[1] = "name";
-  ajax_field_list[2] = "capacity";
-  ajax_field_list[3] = "color";
-  ajax_field_list[4] = "price";
+  ajax_field_list[0] = "name";
+  ajax_field_list[1] = "capacity";
+  ajax_field_list[2] = "color";
+  ajax_field_list[3] = "price";
+  ajax_field_list[4] = "lodge";
 
   var ajax_block_list = new Array();
   ajax_block_list[0] = "0";
   ajax_block_list[1] = "1";
+  ajax_block_list[2] = "2";
 
   var ajax_error_list = {
-    "idlodgecategory": {"label": "ID", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "name": {"label": "Name", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "capacity": {"label": "Capacity", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "color": {"label": "Color", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "price": {"label": "Preço", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0}
+    "name": {"label": "Nome", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
+    "capacity": {"label": "Capacidade", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
+    "color": {"label": "Cor", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
+    "price": {"label": "Preço", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
+    "lodge": {"label": "Acomodação", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0}
   };
   var ajax_error_timeout = 0;
 
   var ajax_block_id = {
     "0": "hidden_bloco_0",
-    "1": "hidden_bloco_1"
+    "1": "hidden_bloco_1",
+    "2": "hidden_bloco_2"
   };
 
   var ajax_block_tab = {
     "hidden_bloco_0": "",
-    "hidden_bloco_1": ""
+    "hidden_bloco_1": "",
+    "hidden_bloco_2": ""
   };
 
   var ajax_field_mult = {
-    "idlodgecategory": new Array(),
     "name": new Array(),
     "capacity": new Array(),
     "color": new Array(),
-    "price": new Array()
+    "price": new Array(),
+    "lodge": new Array()
   };
-  ajax_field_mult["idlodgecategory"][1] = "idlodgecategory";
   ajax_field_mult["name"][1] = "name";
   ajax_field_mult["capacity"][1] = "capacity";
   ajax_field_mult["color"][1] = "color";
   ajax_field_mult["price"][1] = "price";
+  ajax_field_mult["lodge"][1] = "lodge";
 
   var ajax_field_id = {
-    "idlodgecategory": new Array("hidden_field_label_idlodgecategory", "hidden_field_data_idlodgecategory"),
     "name": new Array("hidden_field_label_name", "hidden_field_data_name"),
     "capacity": new Array("hidden_field_label_capacity", "hidden_field_data_capacity"),
     "color": new Array("hidden_field_label_color", "hidden_field_data_color"),
-    "price": new Array("hidden_field_label_price", "hidden_field_data_price")
+    "price": new Array("hidden_field_label_price", "hidden_field_data_price"),
+    "lodge": new Array("hidden_field_label_lodge", "hidden_field_data_lodge")
   };
 
   var ajax_read_only = {
-    "idlodgecategory": "on",
     "name": "off",
     "capacity": "off",
     "color": "off",
-    "price": "off"
+    "price": "off",
+    "lodge": "off"
   };
   var bRefreshTable = false;
   function scRefreshTable()
@@ -3771,23 +3783,6 @@ if ($this->Embutida_form)
   {
     var aValue = new Array();
     aValue[0] = {"value" : sValue};
-    if ("idlodgecategory" == sIndex)
-    {
-      scAjaxSetFieldLabel(sIndex, aValue);
-      updateHeaderFooter(sIndex, aValue);
-
-      if ($("#id_sc_field_" + sIndex).length) {
-          $("#id_sc_field_" + sIndex).change();
-      }
-      else if (document.F1.elements[sIndex]) {
-          $(document.F1.elements[sIndex]).change();
-      }
-      else if (document.F1.elements[sFieldName + "[]"]) {
-          $(document.F1.elements[sFieldName + "[]"]).change();
-      }
-
-      return;
-    }
     if ("name" == sIndex)
     {
       scAjaxSetFieldText(sIndex, aValue, "", "", true);
@@ -3840,6 +3835,23 @@ if ($this->Embutida_form)
       return;
     }
     if ("price" == sIndex)
+    {
+      scAjaxSetFieldText(sIndex, aValue, "", "", true);
+      updateHeaderFooter(sIndex, aValue);
+
+      if ($("#id_sc_field_" + sIndex).length) {
+          $("#id_sc_field_" + sIndex).change();
+      }
+      else if (document.F1.elements[sIndex]) {
+          $(document.F1.elements[sIndex]).change();
+      }
+      else if (document.F1.elements[sFieldName + "[]"]) {
+          $(document.F1.elements[sFieldName + "[]"]).change();
+      }
+
+      return;
+    }
+    if ("lodge" == sIndex)
     {
       scAjaxSetFieldText(sIndex, aValue, "", "", true);
       updateHeaderFooter(sIndex, aValue);

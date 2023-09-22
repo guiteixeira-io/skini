@@ -1965,20 +1965,20 @@ class sub_aggregate_apl
       }
       if ($this->nmgp_opcao != "excluir") 
       { 
-          if (NM_utf8_strlen($this->kinship_) > 50) 
+          if (NM_utf8_strlen($this->kinship_) > 30) 
           { 
               $hasError = true;
-              $Campos_Crit .= "Kinship " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "Kinship " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 30 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['kinship_']))
               {
                   $Campos_Erros['kinship_'] = array();
               }
-              $Campos_Erros['kinship_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $Campos_Erros['kinship_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 30 " . $this->Ini->Nm_lang['lang_errm_nchr'];
               if (!isset($this->NM_ajax_info['errList']['kinship_']) || !is_array($this->NM_ajax_info['errList']['kinship_']))
               {
                   $this->NM_ajax_info['errList']['kinship_'] = array();
               }
-              $this->NM_ajax_info['errList']['kinship_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['kinship_'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 30 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
       } 
         if ($hasError) {
@@ -2620,7 +2620,7 @@ class sub_aggregate_apl
                   $this->NM_ajax_info['fldList']['kinship_' . $sc_seq_vert] = array(
                        'row'    => $sc_seq_vert,
                        'type'    => 'text',
-                       'valList' => array($this->form_encode_input($sTmpValue)),
+                       'valList' => array($sTmpValue),
                        );
               }
               if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("idcostumer_", $this->nmgp_refresh_fields)))

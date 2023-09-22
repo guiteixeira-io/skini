@@ -310,6 +310,7 @@ class das_home_ini {
     var $Nm_lang_conf_region;
     var $display_as_mobile;
     var $force_db_utf8 = true;
+    var $unauthorized;
 
     function init()
     {
@@ -346,11 +347,11 @@ class das_home_ini {
         $this->nm_autor        = "admin";
         $this->nm_versao_sc    = "v9";
         $this->nm_tp_lic_sc    = "pe_bronze";
-        $this->nm_dt_criacao   = "20230906";
-        $this->nm_hr_criacao   = "132217";
+        $this->nm_dt_criacao   = "20230918";
+        $this->nm_hr_criacao   = "103938";
         $this->nm_autor_alt    = "admin";
-        $this->nm_dt_ult_alt   = "20230911";
-        $this->nm_hr_ult_alt   = "151955";
+        $this->nm_dt_ult_alt   = "20230920";
+        $this->nm_hr_ult_alt   = "130920";
         list($NM_usec, $NM_sec) = explode(" ", microtime());
         $this->nm_timestamp  = (float) $NM_sec;
 
@@ -1264,6 +1265,7 @@ class das_home_control {
     function control()
     {
         $this->init();
+        $this->checkSecurity();
         if (isset($_GET['blank']) && 'Y' == $_GET['blank'])
         {
             $this->displayBlankPage();
@@ -1301,65 +1303,20 @@ class das_home_control {
 
         $_SESSION['scriptcase']['dashboard_toolbar']['das_home'] = array();
 
-        $_SESSION['scriptcase']['dashboard_toolbar']['das_home']['cha_lodge_status'] = array(
-            'form_update'     => true,
-            'form_insert'     => true,
-            'form_delete'     => true,
-            'form_copy'       => true,
-            'form_navigate'   => true,
-            'form_navpage'    => true,
-            'form_goto'       => true,
-            'form_lineqty'    => true,
-            'form_summary'    => true,
-            'form_qsearch'    => true,
-            'form_dynsearch'  => true,
-            'form_reload'     => true,
-            'grid_navigate'   => true,
-            'grid_summary'    => true,
-            'grid_qsearch'    => true,
-            'grid_dynsearch'  => true,
-            'grid_filter'     => true,
-            'grid_sel_col'    => true,
-            'grid_sort_col'   => true,
-            'grid_goto'       => true,
-            'grid_lineqty'    => true,
-            'grid_navpage'    => true,
-            'grid_pdf'        => true,
-            'grid_xls'        => true,
-            'grid_xml'        => true,
-            'grid_csv'        => true,
-            'grid_rtf'        => true,
-            'grid_word'       => true,
-            'grid_print'      => true,
-            'grid_new'        => true,
-            'grid_reload'     => true,
-            'chart_sort'      => false,
-            'chart_custom'    => false,
-            'chart_bar'       => false,
-            'chart_line'      => false,
-            'chart_area'      => false,
-            'chart_pizza'     => false,
-            'chart_stack'     => false,
-            'chart_combo'     => false,
-            'chart_type'      => false,
-            'chart_summary'   => false,
-            'chart_pdf'       => false,
-            'chart_print'     => false,
-            'chart_word'      => false,
-            'chart_xls'       => false,
-            'chart_xml'       => false,
-            'chart_csv'       => false,
-            'chart_rtf'       => false,
-            'chart_reload'    => false,
-            'chart_imagem'    => false,
-            'chart_dynsearch' => false,
-            'chart_filter'    => false,
-            'chart_conf'      => true,
-            'chart_settings'  => true,
-            'sel_groupby'     => true,
-            'chart_detail'    => true,
-        );
     } // init
+
+    function checkSecurity()
+    {
+        if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")
+        {
+            $_SESSION['scriptcase']['sc_apl_seg']['das_home'] = "on";
+        }
+
+        if (!isset($_SESSION['scriptcase']['das_home']['session_timeout']['redir']) && (!isset($_SESSION['scriptcase']['sc_apl_seg']['das_home']) || $_SESSION['scriptcase']['sc_apl_seg']['das_home'] != "on"))
+        {
+            $this->displayAccessError();
+        }
+    } // checkSecurity
 
     function displayBlankPage()
     {
@@ -1528,13 +1485,16 @@ scIframeSCInit["<?php echo $sIframe; ?>"] = "<?php echo $iSCInit; ?>";
 
 
 <div class='grid-stack'>
-                <div  class="grid-stack-item" data-gs-x="7" data-gs-y="0" data-gs-width="5" data-gs-height="7"  data-gs-no-resize="1" data-gs-no-move="1" id="id-father-0">
+                <div  class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="12" data-gs-height="4"  data-gs-no-resize="1" data-gs-no-move="0" id="id-father-0">
                     <div  class="grid-stack-item-content scContainerWidget" id="id-div-0">
-                        <div class="widget-head" style="display:">
-                            <h3 class="scContainerTitle">Gráfico de Ocupação</h3>
+                        <div class="widget-head widget-is-moveable" style="display:">
+                            <a href="#" class="collapse">COLLAPSE</a>
+                            <a href="#" class="maximize" onclick="maximizeWidget('0');"><img src="<?php echo $this->Ini->path_icones . '/' . $this->Widget_max; ?>" style="border: 0; float: left; margin-top: 3px" class="sc-widget-maximize" alt="Widget1" /></a>
+                            <h3 class="scContainerTitle">Widget1</h3>
+                            <a href="#" class="remove">CLOSE</a>
                             <a href="#" class="remove removeModal" style="display:none">CLOSE</a>
                         </div>
-                        <div class='widget-content widget-content-title-' id="id-div-iframe-0"><iframe id="id-iframe-0" name="dbifrm_widget1" class="sc-iframe-widget" style="height: 100%; width: 100%; border: 0px" src="<?php echo $this->Ini->path_link . SC_dir_app_name('cha_lodge_status'); ?>/?script_case_init=<?php echo $_SESSION["scriptcase"]["dashboard_scinit"]["das_home"]["dbifrm_widget1"] ?>&under_dashboard=1&dashboard_app=das_home&own_widget=dbifrm_widget1&compact_mode=0&remove_margin=1&remove_border=1" alt="30"></iframe></div>
+                        <div class='widget-content widget-content-title-' id="id-div-iframe-0"><iframe id="id-iframe-0" name="dbifrm_widget1" class="sc-iframe-widget" style="height: 100%; width: 100%; border: 0px" src=""></iframe></div>
                     </div>
                 </div></div>
 <div id="myModal" class="modal fade" role="dialog" style="margin:0px !important; padding:5px !important;">

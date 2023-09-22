@@ -364,15 +364,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['where_pesq'];
@@ -401,11 +401,11 @@ function actionBar_getStateHide($buttonName)
          }
          $this->Xls_col = 0;
          $this->Xls_row++;
-         $this->idlodgecategory = $rs->fields[0] ;  
-         $this->idlodgecategory = (string)$this->idlodgecategory;
-         $this->name = $rs->fields[1] ;  
-         $this->capacity = $rs->fields[2] ;  
+         $this->name = $rs->fields[0] ;  
+         $this->capacity = $rs->fields[1] ;  
          $this->capacity = (string)$this->capacity;
+         $this->idlodgecategory = $rs->fields[2] ;  
+         $this->idlodgecategory = (string)$this->idlodgecategory;
      if ($this->groupby_show == "S") {
          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'])
          { 
@@ -605,35 +605,7 @@ function actionBar_getStateHide($buttonName)
    { 
       foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'] as $Cada_col)
       { 
-          $SC_Label = (isset($this->New_label['idlodgecategory'])) ? $this->New_label['idlodgecategory'] : "Id Lodge Category"; 
-          if ($Cada_col == "idlodgecategory" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
-          {
-              $this->count_span++;
-              $current_cell_ref = $this->calc_cell($this->Xls_col);
-              $SC_Label = NM_charset_to_utf8($SC_Label);
-              if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'])
-              { 
-                  $this->arr_export['label'][$this->Xls_col]['data']     = $SC_Label;
-                  $this->arr_export['label'][$this->Xls_col]['align']    = "right";
-                  $this->arr_export['label'][$this->Xls_col]['autosize'] = "s";
-                  $this->arr_export['label'][$this->Xls_col]['bold']     = "s";
-              }
-              else
-              { 
-                  if ($this->Use_phpspreadsheet) {
-                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
-                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
-                  }
-                  else {
-                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, PHPExcel_Cell_DataType::TYPE_STRING);
-                  }
-                  $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getFont()->setBold(true);
-                  $this->Nm_ActiveSheet->getColumnDimension($current_cell_ref)->setAutoSize(true);
-              }
-              $this->Xls_col++;
-          }
-          $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Name"; 
+          $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Acomodação"; 
           if ($Cada_col == "name" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
               $this->count_span++;
@@ -661,8 +633,36 @@ function actionBar_getStateHide($buttonName)
               }
               $this->Xls_col++;
           }
-          $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacity"; 
+          $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacidade"; 
           if ($Cada_col == "capacity" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $this->count_span++;
+              $current_cell_ref = $this->calc_cell($this->Xls_col);
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'])
+              { 
+                  $this->arr_export['label'][$this->Xls_col]['data']     = $SC_Label;
+                  $this->arr_export['label'][$this->Xls_col]['align']    = "right";
+                  $this->arr_export['label'][$this->Xls_col]['autosize'] = "s";
+                  $this->arr_export['label'][$this->Xls_col]['bold']     = "s";
+              }
+              else
+              { 
+                  if ($this->Use_phpspreadsheet) {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                  }
+                  else {
+                      $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+                      $this->Nm_ActiveSheet->setCellValueExplicit($current_cell_ref . $this->Xls_row, $SC_Label, PHPExcel_Cell_DataType::TYPE_STRING);
+                  }
+                  $this->Nm_ActiveSheet->getStyle($current_cell_ref . $this->Xls_row)->getFont()->setBold(true);
+                  $this->Nm_ActiveSheet->getColumnDimension($current_cell_ref)->setAutoSize(true);
+              }
+              $this->Xls_col++;
+          }
+          $SC_Label = (isset($this->New_label['idlodgecategory'])) ? $this->New_label['idlodgecategory'] : "Id Lodge Category"; 
+          if ($Cada_col == "idlodgecategory" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
               $this->count_span++;
               $current_cell_ref = $this->calc_cell($this->Xls_col);
@@ -693,23 +693,6 @@ function actionBar_getStateHide($buttonName)
       $this->Xls_col = 0;
       $this->Xls_row++;
    } 
-   //----- idlodgecategory
-   function NM_export_idlodgecategory()
-   {
-         $current_cell_ref = $this->calc_cell($this->Xls_col);
-         if (!isset($this->NM_ctrl_style[$current_cell_ref])) {
-             $this->NM_ctrl_style[$current_cell_ref]['ini'] = $this->Xls_row;
-             $this->NM_ctrl_style[$current_cell_ref]['align'] = "RIGHT"; 
-         }
-         $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
-         $this->idlodgecategory = NM_charset_to_utf8($this->idlodgecategory);
-         if (is_numeric($this->idlodgecategory))
-         {
-             $this->NM_ctrl_style[$current_cell_ref]['format'] = '#,##0';
-         }
-         $this->Nm_ActiveSheet->setCellValue($current_cell_ref . $this->Xls_row, $this->idlodgecategory);
-         $this->Xls_col++;
-   }
    //----- name
    function NM_export_name()
    {
@@ -748,13 +731,20 @@ function actionBar_getStateHide($buttonName)
          $this->Xls_col++;
    }
    //----- idlodgecategory
-   function NM_sub_cons_idlodgecategory()
+   function NM_export_idlodgecategory()
    {
+         $current_cell_ref = $this->calc_cell($this->Xls_col);
+         if (!isset($this->NM_ctrl_style[$current_cell_ref])) {
+             $this->NM_ctrl_style[$current_cell_ref]['ini'] = $this->Xls_row;
+             $this->NM_ctrl_style[$current_cell_ref]['align'] = "RIGHT"; 
+         }
+         $this->NM_ctrl_style[$current_cell_ref]['end'] = $this->Xls_row;
          $this->idlodgecategory = NM_charset_to_utf8($this->idlodgecategory);
-         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->idlodgecategory;
-         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "right";
-         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "num";
-         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "#,##0";
+         if (is_numeric($this->idlodgecategory))
+         {
+             $this->NM_ctrl_style[$current_cell_ref]['format'] = '#,##0';
+         }
+         $this->Nm_ActiveSheet->setCellValue($current_cell_ref . $this->Xls_row, $this->idlodgecategory);
          $this->Xls_col++;
    }
    //----- name
@@ -774,6 +764,16 @@ function actionBar_getStateHide($buttonName)
    {
          $this->capacity = NM_charset_to_utf8($this->capacity);
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->capacity;
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "right";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "num";
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "#,##0";
+         $this->Xls_col++;
+   }
+   //----- idlodgecategory
+   function NM_sub_cons_idlodgecategory()
+   {
+         $this->idlodgecategory = NM_charset_to_utf8($this->idlodgecategory);
+         $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['data']   = $this->idlodgecategory;
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['align']  = "right";
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['type']   = "num";
          $this->arr_export['lines'][$this->Xls_row][$this->Xls_col]['format'] = "#,##0";

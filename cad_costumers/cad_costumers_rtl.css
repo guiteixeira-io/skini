@@ -1,3 +1,6 @@
+.css_facephoto_label { }
+.css_facephoto_line { }
+.css_facephoto_obj { }
 .css_docnumber_label { }
 .css_docnumber_line { }
 .css_docnumber_obj { }
@@ -10,6 +13,9 @@
 .css_phonenumber_label { }
 .css_phonenumber_line { }
 .css_phonenumber_obj { }
+.css_mobilephone_label { }
+.css_mobilephone_line {text-align:left;}
+.css_mobilephone_obj {text-align:left;}
 .css_email_label { }
 .css_email_line { }
 .css_email_obj { }

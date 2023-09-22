@@ -245,15 +245,7 @@ function actionBar_getStateHide($buttonName)
       $this->Texto_tag .= "<tr>\r\n";
       foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'] as $Cada_col)
       { 
-          $SC_Label = (isset($this->New_label['idlodgecategory'])) ? $this->New_label['idlodgecategory'] : "Id Lodge Category"; 
-          if ($Cada_col == "idlodgecategory" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
-          {
-              $SC_Label = NM_charset_to_utf8($SC_Label);
-              $SC_Label = str_replace('<', '&lt;', $SC_Label);
-              $SC_Label = str_replace('>', '&gt;', $SC_Label);
-              $this->Texto_tag .= "<td>" . $SC_Label . "</td>\r\n";
-          }
-          $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Name"; 
+          $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Acomodação"; 
           if ($Cada_col == "name" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
               $SC_Label = NM_charset_to_utf8($SC_Label);
@@ -261,8 +253,16 @@ function actionBar_getStateHide($buttonName)
               $SC_Label = str_replace('>', '&gt;', $SC_Label);
               $this->Texto_tag .= "<td>" . $SC_Label . "</td>\r\n";
           }
-          $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacity"; 
+          $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacidade"; 
           if ($Cada_col == "capacity" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+          {
+              $SC_Label = NM_charset_to_utf8($SC_Label);
+              $SC_Label = str_replace('<', '&lt;', $SC_Label);
+              $SC_Label = str_replace('>', '&gt;', $SC_Label);
+              $this->Texto_tag .= "<td>" . $SC_Label . "</td>\r\n";
+          }
+          $SC_Label = (isset($this->New_label['idlodgecategory'])) ? $this->New_label['idlodgecategory'] : "Id Lodge Category"; 
+          if ($Cada_col == "idlodgecategory" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
           {
               $SC_Label = NM_charset_to_utf8($SC_Label);
               $SC_Label = str_replace('<', '&lt;', $SC_Label);
@@ -276,15 +276,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['where_pesq'];
@@ -317,11 +317,11 @@ function actionBar_getStateHide($buttonName)
              $this->pb->addSteps(1);
          }
          $this->Texto_tag .= "<tr>\r\n";
-         $this->idlodgecategory = $rs->fields[0] ;  
-         $this->idlodgecategory = (string)$this->idlodgecategory;
-         $this->name = $rs->fields[1] ;  
-         $this->capacity = $rs->fields[2] ;  
+         $this->name = $rs->fields[0] ;  
+         $this->capacity = $rs->fields[1] ;  
          $this->capacity = (string)$this->capacity;
+         $this->idlodgecategory = $rs->fields[2] ;  
+         $this->idlodgecategory = (string)$this->idlodgecategory;
          $this->sc_proc_grid = true; 
          foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'] as $Cada_col)
          { 
@@ -347,15 +347,6 @@ function actionBar_getStateHide($buttonName)
       }
       $rs->Close();
    }
-   //----- idlodgecategory
-   function NM_export_idlodgecategory()
-   {
-             nmgp_Form_Num_Val($this->idlodgecategory, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
-         $this->idlodgecategory = NM_charset_to_utf8($this->idlodgecategory);
-         $this->idlodgecategory = str_replace('<', '&lt;', $this->idlodgecategory);
-         $this->idlodgecategory = str_replace('>', '&gt;', $this->idlodgecategory);
-         $this->Texto_tag .= "<td>" . $this->idlodgecategory . "</td>\r\n";
-   }
    //----- name
    function NM_export_name()
    {
@@ -374,6 +365,15 @@ function actionBar_getStateHide($buttonName)
          $this->capacity = str_replace('<', '&lt;', $this->capacity);
          $this->capacity = str_replace('>', '&gt;', $this->capacity);
          $this->Texto_tag .= "<td>" . $this->capacity . "</td>\r\n";
+   }
+   //----- idlodgecategory
+   function NM_export_idlodgecategory()
+   {
+             nmgp_Form_Num_Val($this->idlodgecategory, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
+         $this->idlodgecategory = NM_charset_to_utf8($this->idlodgecategory);
+         $this->idlodgecategory = str_replace('<', '&lt;', $this->idlodgecategory);
+         $this->idlodgecategory = str_replace('>', '&gt;', $this->idlodgecategory);
+         $this->Texto_tag .= "<td>" . $this->idlodgecategory . "</td>\r\n";
    }
 
    //----- 

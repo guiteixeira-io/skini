@@ -62,6 +62,7 @@ class que_costumers_grid
    var $name;
    var $docnumber;
    var $phonenumber;
+   var $mobilephone;
    var $email;
    var $holdertype;
    var $frequencytype;
@@ -398,6 +399,7 @@ function actionBar_getStateHide($buttonName)
    $this->Cmps_ord_def['name'] = " asc";
    $this->Cmps_ord_def['docNumber'] = " asc";
    $this->Cmps_ord_def['phoneNumber'] = " desc";
+   $this->Cmps_ord_def['mobilePhone'] = " desc";
    $this->Cmps_ord_def['email'] = " desc";
    $this->Cmps_ord_def['holderType'] = " asc";
    $this->Cmps_ord_def['frequencyType'] = " asc";
@@ -813,15 +815,15 @@ function actionBar_getStateHide($buttonName)
 //----- 
    if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
    { 
-       $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
    } 
    elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
    { 
-       $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
    } 
    else 
    { 
-       $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
    } 
    $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq']; 
    $nmgp_order_by = ""; 
@@ -902,11 +904,13 @@ function actionBar_getStateHide($buttonName)
        $this->docnumber = $this->rs_grid->fields[1] ;  
        $this->phonenumber = $this->rs_grid->fields[2] ;  
        $this->phonenumber = (string)$this->phonenumber;
-       $this->email = $this->rs_grid->fields[3] ;  
+       $this->mobilephone = $this->rs_grid->fields[3] ;  
+       $this->mobilephone = (string)$this->mobilephone;
+       $this->email = $this->rs_grid->fields[4] ;  
        $this->email = (string)$this->email;
-       $this->holdertype = $this->rs_grid->fields[4] ;  
-       $this->frequencytype = $this->rs_grid->fields[5] ;  
-       $this->idcostumer = $this->rs_grid->fields[6] ;  
+       $this->holdertype = $this->rs_grid->fields[5] ;  
+       $this->frequencytype = $this->rs_grid->fields[6] ;  
+       $this->idcostumer = $this->rs_grid->fields[7] ;  
        $this->idcostumer = (string)$this->idcostumer;
        $this->look_holdertype = $this->holdertype; 
        $this->Lookup->lookup_holdertype($this->look_holdertype); 
@@ -923,10 +927,11 @@ function actionBar_getStateHide($buttonName)
            $this->name = $this->rs_grid->fields[0] ;  
            $this->docnumber = $this->rs_grid->fields[1] ;  
            $this->phonenumber = $this->rs_grid->fields[2] ;  
-           $this->email = $this->rs_grid->fields[3] ;  
-           $this->holdertype = $this->rs_grid->fields[4] ;  
-           $this->frequencytype = $this->rs_grid->fields[5] ;  
-           $this->idcostumer = $this->rs_grid->fields[6] ;  
+           $this->mobilephone = $this->rs_grid->fields[3] ;  
+           $this->email = $this->rs_grid->fields[4] ;  
+           $this->holdertype = $this->rs_grid->fields[5] ;  
+           $this->frequencytype = $this->rs_grid->fields[6] ;  
+           $this->idcostumer = $this->rs_grid->fields[7] ;  
        } 
    } 
    $this->NM_hidden_filters = ($this->Ini->Embutida_iframe && !empty($this->nm_grid_sem_reg) && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['initialize']) ? true : false;
@@ -1165,7 +1170,7 @@ $nm_saida->saida("                        <link rel=\"shortcut icon\" href=\"\">
            $nm_saida->saida("     var scSweetAlertConfirmButtonFAPos = \"" . $confirmButtonFAPos . "\";\r\n");
            $nm_saida->saida("     var scSweetAlertCancelButtonFAPos = \"" . $cancelButtonFAPos . "\";\r\n");
            $nm_saida->saida("   </script>\r\n");
-           $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_costumers_jquery_2050.js\"></script>\r\n");
+           $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_costumers_jquery_5016.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_costumers_ajax.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_costumers_message.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\">\r\n");
@@ -2643,6 +2648,8 @@ $nm_saida->saida("}\r\n");
    $this->css_docnumber_grid_line = $compl_css_emb . "css_docnumber_grid_line";
    $this->css_phonenumber_label = $compl_css_emb . "css_phonenumber_label";
    $this->css_phonenumber_grid_line = $compl_css_emb . "css_phonenumber_grid_line";
+   $this->css_mobilephone_label = $compl_css_emb . "css_mobilephone_label";
+   $this->css_mobilephone_grid_line = $compl_css_emb . "css_mobilephone_grid_line";
    $this->css_email_label = $compl_css_emb . "css_email_label";
    $this->css_email_grid_line = $compl_css_emb . "css_email_grid_line";
    $this->css_holdertype_label = $compl_css_emb . "css_holdertype_label";
@@ -3300,6 +3307,55 @@ $nm_saida->saida("}\r\n");
    $nm_saida->saida("</TD>\r\n");
    } 
  }
+ function NM_label_mobilephone()
+ {
+   global $nm_saida;
+   $SC_Label = (isset($this->New_label['mobilephone'])) ? $this->New_label['mobilephone'] : "Celular";
+   $classColFld = "";
+   $classColTitle = "";
+   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+     $classColTitle = " sc-col-title";
+   }
+   if (!isset($this->NM_cmp_hidden['mobilephone']) || $this->NM_cmp_hidden['mobilephone'] != "off") { 
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_mobilephone_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_mobilephone_label'] . "\" >\r\n");
+    $label_fieldName = nl2br($SC_Label);
+    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+        // label & order
+        $divLabelStyle = '; justify-content: right';
+        $fieldSortRule = $this->scGetColumnOrderRule('mobilePhone');
+        $fieldSortIcon = $this->scGetColumnOrderIcon('mobilePhone', $fieldSortRule);
+        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
+            $this->Ini->Label_sort_pos = 'right_field';
+        }
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_mobilephone_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_mobilephone_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('mobilePhone')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+        // controls
+        $label_chart = '';
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+    } else {
+        $label_final = $label_fieldName;
+    }
+   $nm_saida->saida("" . $label_final . "\r\n");
+   $nm_saida->saida("</TD>\r\n");
+   } 
+ }
  function NM_label_email()
  {
    global $nm_saida;
@@ -3482,6 +3538,8 @@ function SC_label_rightActionBar()
         switch ($fieldName) {
             case "phonenumber":
                 return true;
+            case "mobilephone":
+                return true;
             case "idcostumer":
                 return true;
             case "zipcode":
@@ -3496,6 +3554,8 @@ function SC_label_rightActionBar()
     {
         switch ($fieldName) {
             case "phonenumber":
+                return 'desc';
+            case "mobilephone":
                 return 'desc';
             case "email":
                 return 'desc';
@@ -3545,6 +3605,8 @@ function SC_label_rightActionBar()
    $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['docnumber'] = $SC_Label; 
    $SC_Label = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : "Telefone";
    $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['phonenumber'] = $SC_Label; 
+   $SC_Label = (isset($this->New_label['mobilephone'])) ? $this->New_label['mobilephone'] : "Celular";
+   $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['mobilephone'] = $SC_Label; 
    $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email";
    $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['labels']['email'] = $SC_Label; 
    $SC_Label = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : "Titular";
@@ -3826,11 +3888,13 @@ if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf']) {
           $this->docnumber = $this->rs_grid->fields[1] ;  
           $this->phonenumber = $this->rs_grid->fields[2] ;  
           $this->phonenumber = (string)$this->phonenumber;
-          $this->email = $this->rs_grid->fields[3] ;  
+          $this->mobilephone = $this->rs_grid->fields[3] ;  
+          $this->mobilephone = (string)$this->mobilephone;
+          $this->email = $this->rs_grid->fields[4] ;  
           $this->email = (string)$this->email;
-          $this->holdertype = $this->rs_grid->fields[4] ;  
-          $this->frequencytype = $this->rs_grid->fields[5] ;  
-          $this->idcostumer = $this->rs_grid->fields[6] ;  
+          $this->holdertype = $this->rs_grid->fields[5] ;  
+          $this->frequencytype = $this->rs_grid->fields[6] ;  
+          $this->idcostumer = $this->rs_grid->fields[7] ;  
           $this->idcostumer = (string)$this->idcostumer;
           $this->look_holdertype = $this->holdertype; 
           $this->Lookup->lookup_holdertype($this->look_holdertype); 
@@ -4155,7 +4219,7 @@ function SC_grid_rightActionBar()
           else    
           { 
               $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
-              $this->nm_gera_mask($conteudo, "(xx) xxxxx-xxxx"); 
+              $this->nm_gera_mask($conteudo, "(xx) xxxx-xxxx"); 
           } 
           $str_tem_display = $conteudo;
           if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && !empty($conteudo)) 
@@ -4176,6 +4240,43 @@ function SC_grid_rightActionBar()
               $this->SC_nowrap = "NOWRAP";
           }
    $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_phonenumber_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_phonenumber_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_phonenumber_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
+      }
+ }
+ function NM_grid_mobilephone()
+ {
+      global $nm_saida;
+      if (!isset($this->NM_cmp_hidden['mobilephone']) || $this->NM_cmp_hidden['mobilephone'] != "off") { 
+          $conteudo = NM_encode_input(sc_strip_script($this->mobilephone)); 
+          $conteudo_original = NM_encode_input(sc_strip_script($this->mobilephone)); 
+          if ($conteudo === "") 
+          { 
+              $conteudo = "&nbsp;" ;  
+              $graf = "" ;  
+          } 
+          else    
+          { 
+              $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+              $this->nm_gera_mask($conteudo, "(xx) x xxxx-xxxx"); 
+          } 
+          $str_tem_display = $conteudo;
+          if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && !empty($conteudo)) 
+          { 
+              $str_tem_display = $this->getFieldHighlight('quicksearch', 'mobilephone', $str_tem_display, $conteudo_original); 
+          } 
+              $conteudo = $str_tem_display; 
+          $classColFld = "";
+          if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opcao'] != 'pdf') {
+              $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+          }
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['proc_pdf'])
+          {
+              $this->SC_nowrap = "NOWRAP";
+          }
+          else
+          {
+              $this->SC_nowrap = "NOWRAP";
+          }
+   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_mobilephone_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_mobilephone_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_mobilephone_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
       }
  }
  function NM_grid_email()
@@ -4296,7 +4397,7 @@ function SC_grid_rightActionBar()
  }
  function NM_calc_span()
  {
-   $this->NM_colspan  = 9;
+   $this->NM_colspan  = 10;
    if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['opc_psq'])
    {
        $this->NM_colspan++;
@@ -4524,6 +4625,7 @@ $nm_saida->saida("    </style>\r\n");
           $SC_Label_atu['name'] = (isset($this->New_label['name'])) ? $this->New_label['name'] : 'Nome'; 
           $SC_Label_atu['docnumber'] = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : 'CPF'; 
           $SC_Label_atu['phonenumber'] = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : 'Telefone'; 
+          $SC_Label_atu['mobilephone'] = (isset($this->New_label['mobilephone'])) ? $this->New_label['mobilephone'] : 'Celular'; 
           $SC_Label_atu['email'] = (isset($this->New_label['email'])) ? $this->New_label['email'] : 'Email'; 
           $SC_Label_atu['holdertype'] = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : 'Titular'; 
           $SC_Label_atu['frequencytype'] = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : 'Mensalista'; 
@@ -5198,6 +5300,7 @@ $nm_saida->saida("    </style>\r\n");
           $SC_Label_atu['name'] = (isset($this->New_label['name'])) ? $this->New_label['name'] : 'Nome'; 
           $SC_Label_atu['docnumber'] = (isset($this->New_label['docnumber'])) ? $this->New_label['docnumber'] : 'CPF'; 
           $SC_Label_atu['phonenumber'] = (isset($this->New_label['phonenumber'])) ? $this->New_label['phonenumber'] : 'Telefone'; 
+          $SC_Label_atu['mobilephone'] = (isset($this->New_label['mobilephone'])) ? $this->New_label['mobilephone'] : 'Celular'; 
           $SC_Label_atu['email'] = (isset($this->New_label['email'])) ? $this->New_label['email'] : 'Email'; 
           $SC_Label_atu['holdertype'] = (isset($this->New_label['holdertype'])) ? $this->New_label['holdertype'] : 'Titular'; 
           $SC_Label_atu['frequencytype'] = (isset($this->New_label['frequencytype'])) ? $this->New_label['frequencytype'] : 'Mensalista'; 
@@ -5888,7 +5991,7 @@ $nm_saida->saida("    </style>\r\n");
                 (
                     (
                     $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['fast_search'][0] == 'SC_all_Cmp' &&
-                    in_array($field, array('name', 'docnumber', 'phonenumber', 'email', 'holdertype', 'frequencytype'))
+                    in_array($field, array('name', 'docnumber', 'phonenumber', 'mobilephone', 'email', 'holdertype', 'frequencytype'))
                     ) ||
                     $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['fast_search'][0] == $field ||
                     strpos($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['fast_search'][0], $field . '_VLS_') !== false ||

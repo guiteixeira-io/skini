@@ -57,6 +57,7 @@ class cad_lodge_category_mob_apl
    var $capacity;
    var $color;
    var $price;
+   var $lodge;
    var $nm_data;
    var $nmgp_opcao;
    var $nmgp_opc_ant;
@@ -118,6 +119,10 @@ class cad_lodge_category_mob_apl
           if (isset($this->NM_ajax_info['param']['idlodgecategory']))
           {
               $this->idlodgecategory = $this->NM_ajax_info['param']['idlodgecategory'];
+          }
+          if (isset($this->NM_ajax_info['param']['lodge']))
+          {
+              $this->lodge = $this->NM_ajax_info['param']['lodge'];
           }
           if (isset($this->NM_ajax_info['param']['name']))
           {
@@ -335,6 +340,8 @@ class cad_lodge_category_mob_apl
           {
               $_SESSION['sc_session'][ $_SESSION['sc_session'][$script_case_init]['cad_lodge_category_mob']['sub_lodgePrice_mob_script_case_init'] ]['sub_lodgePrice_mob']['reg_start'] = "";
               unset($_SESSION['sc_session'][ $_SESSION['sc_session'][$script_case_init]['cad_lodge_category_mob']['sub_lodgePrice_mob_script_case_init'] ]['sub_lodgePrice_mob']['total']);
+              $_SESSION['sc_session'][ $_SESSION['sc_session'][$script_case_init]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['reg_start'] = "";
+              unset($_SESSION['sc_session'][ $_SESSION['sc_session'][$script_case_init]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['total']);
           }
           if (isset($this->sc_redir_atualiz))
           {
@@ -831,6 +838,7 @@ class cad_lodge_category_mob_apl
       if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['dados_form']))
       {
           $this->nmgp_dados_form = $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['dados_form'];
+          if (!isset($this->idlodgecategory)){$this->idlodgecategory = $this->nmgp_dados_form['idlodgecategory'];} 
       }
       $glo_senha_protect = (isset($_SESSION['scriptcase']['glo_senha_protect'])) ? $_SESSION['scriptcase']['glo_senha_protect'] : "S";
       $this->aba_iframe = false;
@@ -1030,6 +1038,13 @@ class cad_lodge_category_mob_apl
           require_once($this->Ini->root . $this->Ini->path_link  . SC_dir_app_name('sub_lodgePrice_mob') . "/index.php");
           require_once($this->Ini->root . $this->Ini->path_link  . SC_dir_app_name('sub_lodgePrice_mob') . "/sub_lodgePrice_mob_apl.php");
           $this->sub_lodgePrice_mob = new sub_lodgePrice_mob_apl;
+          $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['embutida_form'] = false;
+          $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['embutida_proc'] = true;
+          $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['reg_start'] = "";
+          unset($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['total']);
+          require_once($this->Ini->root . $this->Ini->path_link  . SC_dir_app_name('cad_lodge_mob') . "/index.php");
+          require_once($this->Ini->root . $this->Ini->path_link  . SC_dir_app_name('cad_lodge_mob') . "/cad_lodge_mob_apl.php");
+          $this->cad_lodge_mob = new cad_lodge_mob_apl;
       }
       $this->NM_case_insensitive = false;
       $this->sc_evento = $this->nmgp_opcao;
@@ -1052,15 +1067,17 @@ class cad_lodge_category_mob_apl
             if(!empty($img_width) && !empty($img_height)){
                 $sc_obj_img->setWidth($img_width);
                 $sc_obj_img->setHeight($img_height);
-            }            $sc_obj_img->createImg($_SERVER['DOCUMENT_ROOT'].$out1_img_cache);
+            }
+                $sc_obj_img->setManterAspecto(true);
+            $sc_obj_img->createImg($_SERVER['DOCUMENT_ROOT'].$out1_img_cache);
             echo $out1_img_cache;
                exit;
             }
-      if (isset($this->idlodgecategory)) { $this->nm_limpa_alfa($this->idlodgecategory); }
       if (isset($this->name)) { $this->nm_limpa_alfa($this->name); }
       if (isset($this->capacity)) { $this->nm_limpa_alfa($this->capacity); }
       if (isset($this->color)) { $this->nm_limpa_alfa($this->color); }
       if (isset($this->price)) { $this->nm_limpa_alfa($this->price); }
+      if (isset($this->lodge)) { $this->nm_limpa_alfa($this->lodge); }
       $Campos_Crit       = "";
       $Campos_erro       = "";
       $Campos_Falta      = array();
@@ -1079,13 +1096,6 @@ class cad_lodge_category_mob_apl
    function loadFieldConfig()
    {
       $this->field_config = array();
-      //-- idlodgecategory
-      $this->field_config['idlodgecategory']               = array();
-      $this->field_config['idlodgecategory']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
-      $this->field_config['idlodgecategory']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
-      $this->field_config['idlodgecategory']['symbol_dec'] = '';
-      $this->field_config['idlodgecategory']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
-      $this->field_config['idlodgecategory']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
       //-- capacity
       $this->field_config['capacity']               = array();
       $this->field_config['capacity']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
@@ -1093,6 +1103,13 @@ class cad_lodge_category_mob_apl
       $this->field_config['capacity']['symbol_dec'] = '';
       $this->field_config['capacity']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
       $this->field_config['capacity']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
+      //-- idlodgecategory
+      $this->field_config['idlodgecategory']               = array();
+      $this->field_config['idlodgecategory']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
+      $this->field_config['idlodgecategory']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
+      $this->field_config['idlodgecategory']['symbol_dec'] = '';
+      $this->field_config['idlodgecategory']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
+      $this->field_config['idlodgecategory']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
    }
 
    function controle()
@@ -1133,10 +1150,6 @@ class cad_lodge_category_mob_apl
 //
       if ($this->NM_ajax_flag && 'validate_' == substr($this->NM_ajax_opcao, 0, 9))
       {
-          if ('validate_idlodgecategory' == $this->NM_ajax_opcao)
-          {
-              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'idlodgecategory');
-          }
           if ('validate_name' == $this->NM_ajax_opcao)
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'name');
@@ -1152,6 +1165,10 @@ class cad_lodge_category_mob_apl
           if ('validate_price' == $this->NM_ajax_opcao)
           {
               $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'price');
+          }
+          if ('validate_lodge' == $this->NM_ajax_opcao)
+          {
+              $this->Valida_campos($Campos_Crit, $Campos_Falta, $Campos_Erros, 'lodge');
           }
           cad_lodge_category_mob_pack_ajax_response();
           exit;
@@ -1657,20 +1674,23 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
    {
        switch($campo)
        {
-           case 'idlodgecategory':
-               return "ID";
-               break;
            case 'name':
-               return "Name";
+               return "Nome";
                break;
            case 'capacity':
-               return "Capacity";
+               return "Capacidade";
                break;
            case 'color':
-               return "Color";
+               return "Cor";
                break;
            case 'price':
                return "Preço";
+               break;
+           case 'lodge':
+               return "Acomodação";
+               break;
+           case 'idlodgecategory':
+               return "ID";
                break;
        }
 
@@ -1720,8 +1740,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $this->NM_ajax_info['errList']['geral_cad_lodge_category_mob'][] = "CSRF: " . $this->Ini->Nm_lang['lang_errm_ajax_csrf'];
           }
      }
-      if ((!is_array($filtro) && ('' == $filtro || 'idlodgecategory' == $filtro)) || (is_array($filtro) && in_array('idlodgecategory', $filtro)))
-        $this->ValidateField_idlodgecategory($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!is_array($filtro) && ('' == $filtro || 'name' == $filtro)) || (is_array($filtro) && in_array('name', $filtro)))
         $this->ValidateField_name($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!is_array($filtro) && ('' == $filtro || 'capacity' == $filtro)) || (is_array($filtro) && in_array('capacity', $filtro)))
@@ -1730,6 +1748,8 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
         $this->ValidateField_color($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if ((!is_array($filtro) && ('' == $filtro || 'price' == $filtro)) || (is_array($filtro) && in_array('price', $filtro)))
         $this->ValidateField_price($Campos_Crit, $Campos_Falta, $Campos_Erros);
+      if ((!is_array($filtro) && ('' == $filtro || 'lodge' == $filtro)) || (is_array($filtro) && in_array('lodge', $filtro)))
+        $this->ValidateField_lodge($Campos_Crit, $Campos_Falta, $Campos_Erros);
       if (!empty($Campos_Crit) || !empty($Campos_Falta) || !empty($this->Campos_Mens_erro))
       {
           if (!empty($this->sc_force_zero))
@@ -1743,66 +1763,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       }
    }
 
-    function ValidateField_idlodgecategory(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
-    {
-        global $teste_validade;
-        $hasError = false;
-      if (isset($this->Field_no_validate['idlodgecategory'])) {
-          nm_limpa_numero($this->idlodgecategory, $this->field_config['idlodgecategory']['symbol_grp']) ; 
-          return;
-      }
-      if ($this->idlodgecategory === "" || is_null($this->idlodgecategory))  
-      { 
-          $this->idlodgecategory = 0;
-      } 
-      nm_limpa_numero($this->idlodgecategory, $this->field_config['idlodgecategory']['symbol_grp']) ; 
-      if ($this->nmgp_opcao == "incluir")
-      { 
-          if ($this->idlodgecategory != '')  
-          { 
-              $iTestSize = 11;
-              if (strlen($this->idlodgecategory) > $iTestSize)  
-              { 
-                  $hasError = true;
-                  $Campos_Crit .= "ID: " . $this->Ini->Nm_lang['lang_errm_size']; 
-                  if (!isset($Campos_Erros['idlodgecategory']))
-                  {
-                      $Campos_Erros['idlodgecategory'] = array();
-                  }
-                  $Campos_Erros['idlodgecategory'][] = $this->Ini->Nm_lang['lang_errm_size'];
-                  if (!isset($this->NM_ajax_info['errList']['idlodgecategory']) || !is_array($this->NM_ajax_info['errList']['idlodgecategory']))
-                  {
-                      $this->NM_ajax_info['errList']['idlodgecategory'] = array();
-                  }
-                  $this->NM_ajax_info['errList']['idlodgecategory'][] = $this->Ini->Nm_lang['lang_errm_size'];
-              } 
-              if ($teste_validade->Valor($this->idlodgecategory, 11, 0, 0, 0, "N") == false)  
-              { 
-                  $hasError = true;
-                  $Campos_Crit .= "ID; " ; 
-                  if (!isset($Campos_Erros['idlodgecategory']))
-                  {
-                      $Campos_Erros['idlodgecategory'] = array();
-                  }
-                  $Campos_Erros['idlodgecategory'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-                  if (!isset($this->NM_ajax_info['errList']['idlodgecategory']) || !is_array($this->NM_ajax_info['errList']['idlodgecategory']))
-                  {
-                      $this->NM_ajax_info['errList']['idlodgecategory'] = array();
-                  }
-                  $this->NM_ajax_info['errList']['idlodgecategory'][] = "" . $this->Ini->Nm_lang['lang_errm_ajax_data'] . "";
-              } 
-          } 
-      } 
-        if ($hasError) {
-            global $sc_seq_vert;
-            $fieldName = 'idlodgecategory';
-            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
-                $fieldName .= $sc_seq_vert;
-            }
-            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
-        }
-    } // ValidateField_idlodgecategory
-
     function ValidateField_name(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
     {
         global $teste_validade;
@@ -1815,7 +1775,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
           if (NM_utf8_strlen($this->name) > 50) 
           { 
               $hasError = true;
-              $Campos_Crit .= "Name " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "Nome " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['name']))
               {
                   $Campos_Erros['name'] = array();
@@ -1860,7 +1820,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               if (strlen($this->capacity) > $iTestSize)  
               { 
                   $hasError = true;
-                  $Campos_Crit .= "Capacity: " . $this->Ini->Nm_lang['lang_errm_size']; 
+                  $Campos_Crit .= "Capacidade: " . $this->Ini->Nm_lang['lang_errm_size']; 
                   if (!isset($Campos_Erros['capacity']))
                   {
                       $Campos_Erros['capacity'] = array();
@@ -1875,7 +1835,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               if ($teste_validade->Valor($this->capacity, 11, 0, -0, 99999999999, "N") == false)  
               { 
                   $hasError = true;
-                  $Campos_Crit .= "Capacity; " ; 
+                  $Campos_Crit .= "Capacidade; " ; 
                   if (!isset($Campos_Erros['capacity']))
                   {
                       $Campos_Erros['capacity'] = array();
@@ -1945,6 +1905,29 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
         }
     } // ValidateField_price
 
+    function ValidateField_lodge(&$Campos_Crit, &$Campos_Falta, &$Campos_Erros)
+    {
+        global $teste_validade;
+        $hasError = false;
+      if (isset($this->Field_no_validate['lodge'])) {
+          return;
+      }
+      if ($this->nmgp_opcao != "excluir") 
+      { 
+          if (trim($this->lodge) != "")  
+          { 
+          } 
+      } 
+        if ($hasError) {
+            global $sc_seq_vert;
+            $fieldName = 'lodge';
+            if (isset($sc_seq_vert) && '' != $sc_seq_vert) {
+                $fieldName .= $sc_seq_vert;
+            }
+            $this->NM_ajax_info['fieldsWithErrors'][] = $fieldName;
+        }
+    } // ValidateField_lodge
+
     function removeDuplicateDttmError($aErrDate, &$aErrTime)
     {
         if (empty($aErrDate) || empty($aErrTime))
@@ -1968,11 +1951,12 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
    {
     global
            $sc_seq_vert;
-    $this->nmgp_dados_form['idlodgecategory'] = $this->idlodgecategory;
     $this->nmgp_dados_form['name'] = $this->name;
     $this->nmgp_dados_form['capacity'] = $this->capacity;
     $this->nmgp_dados_form['color'] = $this->color;
     $this->nmgp_dados_form['price'] = $this->price;
+    $this->nmgp_dados_form['lodge'] = $this->lodge;
+    $this->nmgp_dados_form['idlodgecategory'] = $this->idlodgecategory;
     $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['dados_form'] = $this->nmgp_dados_form;
    }
    function nm_tira_formatacao()
@@ -1980,10 +1964,10 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       global $nm_form_submit;
          $this->Before_unformat = array();
          $this->formatado = false;
-      $this->Before_unformat['idlodgecategory'] = $this->idlodgecategory;
-      nm_limpa_numero($this->idlodgecategory, $this->field_config['idlodgecategory']['symbol_grp']) ; 
       $this->Before_unformat['capacity'] = $this->capacity;
       nm_limpa_numero($this->capacity, $this->field_config['capacity']['symbol_grp']) ; 
+      $this->Before_unformat['idlodgecategory'] = $this->idlodgecategory;
+      nm_limpa_numero($this->idlodgecategory, $this->field_config['idlodgecategory']['symbol_grp']) ; 
    }
    function sc_add_currency(&$value, $symbol, $pos)
    {
@@ -2027,13 +2011,13 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
    }
    function nm_clear_val($Nome_Campo)
    {
-      if ($Nome_Campo == "idlodgecategory")
-      {
-          nm_limpa_numero($this->idlodgecategory, $this->field_config['idlodgecategory']['symbol_grp']) ; 
-      }
       if ($Nome_Campo == "capacity")
       {
           nm_limpa_numero($this->capacity, $this->field_config['capacity']['symbol_grp']) ; 
+      }
+      if ($Nome_Campo == "idlodgecategory")
+      {
+          nm_limpa_numero($this->idlodgecategory, $this->field_config['idlodgecategory']['symbol_grp']) ; 
       }
    }
    function nm_formatar_campos($format_fields = array())
@@ -2044,10 +2028,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
          return;
      }
      $this->formatado = true;
-      if ('' !== $this->idlodgecategory || (!empty($format_fields) && isset($format_fields['idlodgecategory'])))
-      {
-          nmgp_Form_Num_Val($this->idlodgecategory, $this->field_config['idlodgecategory']['symbol_grp'], $this->field_config['idlodgecategory']['symbol_dec'], "0", "S", $this->field_config['idlodgecategory']['format_neg'], "", "", "-", $this->field_config['idlodgecategory']['symbol_fmt']) ; 
-      }
       if ('' !== $this->capacity || (!empty($format_fields) && isset($format_fields['capacity'])))
       {
           nmgp_Form_Num_Val($this->capacity, $this->field_config['capacity']['symbol_grp'], $this->field_config['capacity']['symbol_dec'], "0", "S", $this->field_config['capacity']['format_neg'], "", "", "-", $this->field_config['capacity']['symbol_fmt']) ; 
@@ -2437,11 +2417,12 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
 
    function ajax_return_values()
    {
-          $this->ajax_return_values_idlodgecategory();
           $this->ajax_return_values_name();
           $this->ajax_return_values_capacity();
           $this->ajax_return_values_color();
           $this->ajax_return_values_price();
+          $this->ajax_return_values_lodge();
+          $this->ajax_return_values_idlodgecategory();
           if ('navigate_form' == $this->NM_ajax_opcao)
           {
               $this->NM_ajax_info['clearUpload']      = 'S';
@@ -2465,25 +2446,25 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               {
                   unset($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['sub_lodgePrice_mob_script_case_init'] ]['sub_lodgePrice_mob']['total']);
               }
+              $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['foreign_key']['idlodgecategory'] = $this->nmgp_dados_form['idlodgecategory'];
+              $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['where_filter'] = "idLodgeCategory = " . $this->nmgp_dados_form['idlodgecategory'] . "";
+              $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['where_detal']  = "idLodgeCategory = " . $this->nmgp_dados_form['idlodgecategory'] . "";
+              if ($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['total'] < 0)
+              {
+                  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['where_filter'] = "1 <> 1";
+              }
+              $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['reg_start'] = "";
+              unset($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['total']);
+              foreach ($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob'] as $i => $v)
+              {
+                  $_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge'][$i] = $v;
+              }
+              if (isset($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['total']))
+              {
+                  unset($_SESSION['sc_session'][ $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['cad_lodge_mob_script_case_init'] ]['cad_lodge_mob']['total']);
+              }
           }
    } // ajax_return_values
-
-          //----- idlodgecategory
-   function ajax_return_values_idlodgecategory($bForce = false)
-   {
-          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("idlodgecategory", $this->nmgp_refresh_fields)) || $bForce)
-          {
-              $sTmpValue = NM_charset_to_utf8($this->idlodgecategory);
-              $aLookup = array();
-          $aLookupOrig = $aLookup;
-          $this->NM_ajax_info['fldList']['idlodgecategory'] = array(
-                       'row'    => '',
-               'type'    => 'label',
-               'valList' => array($sTmpValue),
-               'labList' => array($this->form_format_readonly("idlodgecategory", $this->form_encode_input($sTmpValue))),
-              );
-          }
-   }
 
           //----- name
    function ajax_return_values_name($bForce = false)
@@ -2545,6 +2526,39 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
                        'row'    => '',
                'type'    => 'text',
                'valList' => array($sTmpValue),
+              );
+          }
+   }
+
+          //----- lodge
+   function ajax_return_values_lodge($bForce = false)
+   {
+          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("lodge", $this->nmgp_refresh_fields)) || $bForce)
+          {
+              $sTmpValue = NM_charset_to_utf8($this->lodge);
+              $aLookup = array();
+          $aLookupOrig = $aLookup;
+          $this->NM_ajax_info['fldList']['lodge'] = array(
+                       'row'    => '',
+               'type'    => 'text',
+               'valList' => array($sTmpValue),
+              );
+          }
+   }
+
+          //----- idlodgecategory
+   function ajax_return_values_idlodgecategory($bForce = false)
+   {
+          if ('navigate_form' == $this->NM_ajax_opcao || 'backup_line' == $this->NM_ajax_opcao || (isset($this->nmgp_refresh_fields) && in_array("idlodgecategory", $this->nmgp_refresh_fields)) || $bForce)
+          {
+              $sTmpValue = NM_charset_to_utf8($this->idlodgecategory);
+              $aLookup = array();
+          $aLookupOrig = $aLookup;
+          $this->NM_ajax_info['fldList']['idlodgecategory'] = array(
+                       'row'    => '',
+               'type'    => 'label',
+               'valList' => array($sTmpValue),
+               'labList' => array($this->form_format_readonly("idlodgecategory", $this->form_encode_input($sTmpValue))),
               );
           }
    }
@@ -2699,11 +2713,12 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       { 
           $this->Ini->sc_tem_trans_banco = $this->Db->BeginTrans(); 
       } 
-      $NM_val_form['idlodgecategory'] = $this->idlodgecategory;
       $NM_val_form['name'] = $this->name;
       $NM_val_form['capacity'] = $this->capacity;
       $NM_val_form['color'] = $this->color;
       $NM_val_form['price'] = $this->price;
+      $NM_val_form['lodge'] = $this->lodge;
+      $NM_val_form['idlodgecategory'] = $this->idlodgecategory;
       if ($this->idlodgecategory === "" || is_null($this->idlodgecategory))  
       { 
           $this->idlodgecategory = 0;
@@ -2748,6 +2763,17 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
           { 
               $this->price = "null"; 
               $NM_val_null[] = "price";
+          } 
+          $this->lodge_before_qstr = $this->lodge;
+          $this->lodge = substr($this->Db->qstr($this->lodge), 1, -1); 
+          if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
+          {
+              $this->lodge = str_replace(array("\\r\\n", "\\n", "\r\n"), array("\r\n", "\n", "\n"), $this->lodge);
+          }
+          if ($this->lodge == "" && in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))  
+          { 
+              $this->lodge = "null"; 
+              $NM_val_null[] = "lodge";
           } 
       }
       if ($this->nmgp_opcao == "alterar") 
@@ -2860,6 +2886,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $this->name = $this->name_before_qstr;
               $this->color = $this->color_before_qstr;
               $this->price = $this->price_before_qstr;
+              $this->lodge = $this->lodge_before_qstr;
               if (in_array(strtolower($this->Ini->nm_tpbanco), $nm_bases_lob_geral))
               { 
               }   
@@ -2887,11 +2914,13 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               elseif (isset($this->color)) { $this->nm_limpa_alfa($this->color); }
               if     (isset($NM_val_form) && isset($NM_val_form['price'])) { $this->price = $NM_val_form['price']; }
               elseif (isset($this->price)) { $this->nm_limpa_alfa($this->price); }
+              if     (isset($NM_val_form) && isset($NM_val_form['lodge'])) { $this->lodge = $NM_val_form['lodge']; }
+              elseif (isset($this->lodge)) { $this->nm_limpa_alfa($this->lodge); }
 
               $this->nm_formatar_campos();
 
               $aOldRefresh               = $this->nmgp_refresh_fields;
-              $this->nmgp_refresh_fields = array_diff(array('idlodgecategory', 'name', 'capacity', 'color', 'price'), $aDoNotUpdate);
+              $this->nmgp_refresh_fields = array_diff(array('name', 'capacity', 'color', 'price', 'lodge'), $aDoNotUpdate);
               $this->ajax_return_values();
               $this->nmgp_refresh_fields = $aOldRefresh;
 
@@ -3054,6 +3083,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $this->name = $this->name_before_qstr;
               $this->color = $this->color_before_qstr;
               $this->price = $this->price_before_qstr;
+              $this->lodge = $this->lodge_before_qstr;
               }
 
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['db_changed'] = true;
@@ -3067,6 +3097,7 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $this->name = $this->name_before_qstr;
               $this->color = $this->color_before_qstr;
               $this->price = $this->price_before_qstr;
+              $this->lodge = $this->lodge_before_qstr;
               $this->sc_insert_on = true; 
               if (empty($this->sc_erro_insert)) {
                   $this->record_insert_ok = true;
@@ -3094,6 +3125,16 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $sDetailWhere = "idLodgeCategory = " . $this->idlodgecategory . "";
               $this->sub_lodgePrice_mob->ini_controle();
               if ($this->sub_lodgePrice_mob->temRegistros($sDetailWhere))
+              {
+                  $bDelecaoOk = false;
+                  $sMsgErro   = $this->Ini->Nm_lang['lang_errm_fkvi'];
+              }
+          }
+          if ($bDelecaoOk)
+          {
+              $sDetailWhere = "idLodgeCategory = " . $this->idlodgecategory . "";
+              $this->cad_lodge_mob->ini_controle();
+              if ($this->cad_lodge_mob->temRegistros($sDetailWhere))
               {
                   $bDelecaoOk = false;
                   $sMsgErro   = $this->Ini->Nm_lang['lang_errm_fkvi'];
@@ -3547,6 +3588,8 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
               $this->nmgp_dados_form["color"] = $this->color;
               $this->price = "";  
               $this->nmgp_dados_form["price"] = $this->price;
+              $this->lodge = "";  
+              $this->nmgp_dados_form["lodge"] = $this->lodge;
               $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_category_mob']['dados_form'] = $this->nmgp_dados_form;
               $this->formatado = false;
           }
@@ -3572,7 +3615,8 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
       { 
           $this->nm_proc_onload();
       }
-      $_SESSION['sc_session'][$this->Ini->sc_page]['sub_lodgePrice_mob']['embutida_parms'] = "NM_btn_insert*scinS*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinS*scoutNM_btn_navega*scinN*scout";
+      $_SESSION['sc_session'][$this->Ini->sc_page]['sub_lodgePrice_mob']['embutida_parms'] = "NM_btn_insert*scinS*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinS*scoutNM_btn_navega*scinS*scoutlink_remove_margin*scinok*scoutlink_remove_border*scinok*scout";
+      $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge_mob']['embutida_parms'] = "NM_btn_insert*scinS*scoutNM_btn_update*scinS*scoutNM_btn_delete*scinS*scoutNM_btn_navega*scinS*scoutlink_remove_margin*scinok*scoutlink_remove_border*scinok*scout";
   }
 // 
 //-- 
@@ -3897,10 +3941,10 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     function form_highlight_search_quicksearch(&$result, $field, $value)
     {
         $searchOk = false;
-        if ('SC_all_Cmp' == $this->nmgp_fast_search && in_array($field, array("idlodgecategory", "name", "capacity", "color", "price"))) {
+        if ('SC_all_Cmp' == $this->nmgp_fast_search && in_array($field, array("name", "capacity", "color", "price", "lodge"))) {
             $searchOk = true;
         }
-        elseif ($field == $this->nmgp_fast_search && in_array($field, array("idlodgecategory", "name", "capacity", "color", "price"))) {
+        elseif ($field == $this->nmgp_fast_search && in_array($field, array("name", "capacity", "color", "price", "lodge"))) {
             $searchOk = true;
         }
 
@@ -4262,10 +4306,6 @@ function sc_file_size($file, $format = false)
       }
       $sv_data = $data_search;
       foreach ($fields as $field) {
-          if ($field == "SC_all_Cmp" || $field == "idlodgecategory") 
-          {
-              $this->SC_monta_condicao($comando, "idLodgeCategory", $arg_search, str_replace(",", ".", $data_search), "INT", false);
-          }
           if ($field == "SC_all_Cmp" || $field == "name") 
           {
               $this->SC_monta_condicao($comando, "name", $arg_search, $data_search, "VARCHAR", false);
@@ -4764,9 +4804,9 @@ if (parent && parent.scAjaxDetailValue)
     function scIsFieldNumeric($fieldName)
     {
         switch ($fieldName) {
-            case "idLodgeCategory":
-                return true;
             case "capacity":
+                return true;
+            case "idLodgeCategory":
                 return true;
             default:
                 return false;
@@ -4777,9 +4817,9 @@ if (parent && parent.scAjaxDetailValue)
     function scGetDefaultFieldOrder($fieldName)
     {
         switch ($fieldName) {
-            case "idLodgeCategory":
-                return 'desc';
             case "capacity":
+                return 'desc';
+            case "idLodgeCategory":
                 return 'desc';
             default:
                 return 'asc';

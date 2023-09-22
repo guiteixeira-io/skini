@@ -12,9 +12,9 @@ class que_lodge_category_det
    var $nm_btn_label    = array(); 
    var $nm_btn_disabled = array(); 
    var $nm_location;
-   var $idlodgecategory;
    var $name;
    var $capacity;
+   var $idlodgecategory;
     function getFieldHighlight($filter_type, $field, $str_value, $str_value_original='')
     {
         $str_html_ini = '<div class="highlight">';
@@ -128,7 +128,7 @@ class que_lodge_category_det
                 (
                     (
                     $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['fast_search'][0] == 'SC_all_Cmp' &&
-                    in_array($field, array('idlodgecategory', 'name', 'capacity'))
+                    in_array($field, array('name', 'capacity', 'idlodgecategory'))
                     ) ||
                     $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['fast_search'][0] == $field ||
                     strpos($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['fast_search'][0], $field . '_VLS_') !== false ||
@@ -309,7 +309,7 @@ class que_lodge_category_det
        $nm_saida->saida(" <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" />\r\n");
    }
 
-           $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_lodge_category_jquery_1941.js\"></script>\r\n");
+           $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_lodge_category_jquery_8314.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_lodge_category_ajax.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_lodge_category_message.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\">\r\n");
@@ -628,7 +628,7 @@ $nm_saida->saida("</script>\r\n");
    {
        $this->SC_nowrap = "";
    }
-   $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Name"; 
+   $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Acomodação"; 
    if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] == "pdf" && isset($_SESSION['nm_session']['sys_wkhtmltopdf_show_html_content']) && $_SESSION['nm_session']['sys_wkhtmltopdf_show_html_content'] == 'Y') {
        $conteudo = trim(NM_encode_input(sc_strip_script($this->name)));
        $conteudo_original =  NM_encode_input(sc_strip_script($conteudo)); 
@@ -661,7 +661,7 @@ $nm_saida->saida("</script>\r\n");
    {
        $this->SC_nowrap = "NOWRAP";
    }
-   $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacity"; 
+   $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacidade"; 
    $conteudo = trim(NM_encode_input(sc_strip_script($this->capacity))); 
    $conteudo_original = $conteudo; 
           if ($conteudo === "") 

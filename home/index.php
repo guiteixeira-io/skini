@@ -572,7 +572,520 @@ else
 {
     $_SESSION['scriptcase']['sc_saida_home'] = (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : "javascript:window.close()";
 }
-$this->sc_Include($path_libs . "/nm_ini_lib.php", "F", "nm_dir_normaliza") ; 
+$this->str_schema_all = $STR_schema_all = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['home'] = "on";
+} 
+if (!isset($_SESSION['scriptcase']['home']['session_timeout']['redir']) && (!isset($_SESSION['scriptcase']['sc_apl_seg']['home']) || $_SESSION['scriptcase']['sc_apl_seg']['home'] != "on"))
+{ 
+    $NM_Mens_Erro = $this->Nm_lang['lang_errm_unth_user'];
+       header("X-XSS-Protection: 1; mode=block");
+       header("X-Frame-Options: SAMEORIGIN");
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+    <HTML>
+     <HEAD>
+      <TITLE></TITLE>
+     <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
+      <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>      <META http-equiv="Pragma" content="no-cache"/>
+ <META http <META http <META http <META http <META http      <link rel="shortcut icon" href="../_lib/img/grp__NM__ico__NM__barraca-de-acampamento.ico">
+      <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_all ?>_menuH.css" /> 
+      <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_all ?>_menuH<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" /> 
+      <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_grid.css" /> 
+      <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $this->str_schema_all ?>_grid<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" /> 
+     </HEAD>
+     <body>
+       <table align="center" class="scGridBorder"><tr><td style="padding: 0">
+       <table style="width: 100%" class="scGridTabela"><tr class="scGridFieldOdd"><td class="scGridFieldOddFont" style="padding: 15px 30px; text-align: center">
+        <?php echo $NM_Mens_Erro; ?>
+        <br />
+        <form name="Fseg" method="post" target="_self">
+         <input type="hidden" name="script_case_init" value="<?php echo NM_encode_input($script_case_init) ?>"/> 
+         <input type="button" name="sc_sai_seg" value="OK" onclick="nm_saida()"> 
+        </form> 
+       </td></tr></table>
+       </td></tr></table>
+<?php
+              if (isset($_SESSION['scriptcase']['nm_sc_retorno']) && !empty($_SESSION['scriptcase']['nm_sc_retorno']))
+              {
+?>
+<br /><br /><br />
+<table align="center" class="scGridBorder" style="width: 450px"><tr><td style="padding: 0">
+ <table style="width: 100%" class="scGridTabela">
+  <tr class="scGridFieldOdd">
+   <td class="scGridFieldOddFont" style="padding: 15px 30px">
+    <?php echo $this->Nm_lang['lang_errm_unth_hwto']; ?>
+   </td>
+  </tr>
+ </table>
+</td></tr></table>
+<?php
+              }
+?>
+     </body>
+     <?php
+     if ((isset($nmgp_outra_jan) && $nmgp_outra_jan == 'true') || (isset($_SESSION['scriptcase']['sc_outra_jan']) && ($_SESSION['scriptcase']['sc_outra_jan'] == 'menutree' || $_SESSION['scriptcase']['sc_outra_jan'] == 'menu')))
+     {
+       $saida_final = 'window.close();';
+     }
+     else
+     {
+       $saida_final = 'history.back();';
+     }
+     ?>
+    <script type="text/javascript">
+      function nm_saida()
+      {
+<?php 
+             echo $saida_final;
+?> 
+      }
+     </script> 
+<?php
+    exit;
+} 
+$this->sc_Include($path_libs . "/nm_sec_prod.php", "F", "nm_reg_prod") ; 
+include_once($path_adodb . "/adodb.inc.php"); 
+$this->sc_Include($path_libs . "/nm_ini_perfil.php", "F", "perfil_lib") ; 
+ if(function_exists('set_php_timezone')) set_php_timezone('home'); 
+perfil_lib($path_libs);
+if (!isset($_SESSION['sc_session'][1]['SC_Check_Perfil']))
+{
+    if(function_exists("nm_check_perfil_exists")) nm_check_perfil_exists($path_libs, $_SESSION['scriptcase']['home']['glo_nm_path_prod']);
+    $_SESSION['sc_session'][1]['SC_Check_Perfil'] = true;
+}
+$nm_falta_var    = ""; 
+$nm_falta_var_db = ""; 
+if (isset($_SESSION['scriptcase']['home']['glo_nm_conexao']) && !empty($_SESSION['scriptcase']['home']['glo_nm_conexao']))
+{
+    db_conect_devel($_SESSION['scriptcase']['home']['glo_nm_conexao'], $str_root . $_SESSION['scriptcase']['home']['glo_nm_path_prod'], 'skini', 2); 
+}
+if (isset($_SESSION['scriptcase']['home']['glo_nm_perfil']) && !empty($_SESSION['scriptcase']['home']['glo_nm_perfil']))
+{
+   $_SESSION['scriptcase']['glo_perfil'] = $_SESSION['scriptcase']['home']['glo_nm_perfil'];
+}
+if (isset($_SESSION['scriptcase']['glo_perfil']) && !empty($_SESSION['scriptcase']['glo_perfil']))
+{
+    $_SESSION['scriptcase']['glo_senha_protect'] = "";
+    carrega_perfil($_SESSION['scriptcase']['glo_perfil'], $path_libs, "");
+    if (empty($_SESSION['scriptcase']['glo_senha_protect']))
+    {
+        $nm_falta_var .= "Perfil=" . $_SESSION['scriptcase']['glo_perfil'] . "; ";
+    }
+}
+if (isset($_SESSION['scriptcase']['glo_date_separator']) && !empty($_SESSION['scriptcase']['glo_date_separator']))
+{
+    $SC_temp = trim($_SESSION['scriptcase']['glo_date_separator']);
+    if (strlen($SC_temp) == 2)
+    {
+       $_SESSION['scriptcase']['home']['SC_sep_date']  = substr($SC_temp, 0, 1); 
+       $_SESSION['scriptcase']['home']['SC_sep_date1'] = substr($SC_temp, 1, 1); 
+   }
+   else
+    {
+       $_SESSION['scriptcase']['home']['SC_sep_date']  = $SC_temp; 
+       $_SESSION['scriptcase']['home']['SC_sep_date1'] = $SC_temp; 
+   }
+}
+if (!isset($_SESSION['scriptcase']['glo_tpbanco']))
+{
+    $nm_falta_var_db .= "glo_tpbanco; ";
+}
+else
+{
+    $nm_tpbanco = $_SESSION['scriptcase']['glo_tpbanco']; 
+}
+if (!isset($_SESSION['scriptcase']['glo_servidor']))
+{
+    $nm_falta_var_db .= "glo_servidor; ";
+}
+else
+{
+    $nm_servidor = $_SESSION['scriptcase']['glo_servidor']; 
+}
+if (!isset($_SESSION['scriptcase']['glo_banco']))
+{
+    $nm_falta_var_db .= "glo_banco; ";
+}
+else
+{
+    $nm_banco = $_SESSION['scriptcase']['glo_banco']; 
+}
+if (!isset($_SESSION['scriptcase']['glo_usuario']))
+{
+    $nm_falta_var_db .= "glo_usuario; ";
+}
+else
+{
+    $nm_usuario = $_SESSION['scriptcase']['glo_usuario']; 
+}
+if (!isset($_SESSION['scriptcase']['glo_senha']))
+{
+    $nm_falta_var_db .= "glo_senha; ";
+}
+else
+{
+    $nm_senha = $_SESSION['scriptcase']['glo_senha']; 
+}
+$nm_con_db2 = array();
+$nm_database_encoding = "";
+if (isset($_SESSION['scriptcase']['glo_database_encoding']))
+{
+    $nm_database_encoding = $_SESSION['scriptcase']['glo_database_encoding']; 
+}
+$nm_arr_db_extra_args = array();
+if (isset($_SESSION['scriptcase']['glo_use_ssl']))
+{
+    $nm_arr_db_extra_args['use_ssl'] = $_SESSION['scriptcase']['glo_use_ssl']; 
+}
+if (isset($_SESSION['scriptcase']['glo_mysql_ssl_key']))
+{
+    $nm_arr_db_extra_args['mysql_ssl_key'] = $_SESSION['scriptcase']['glo_mysql_ssl_key']; 
+}
+if (isset($_SESSION['scriptcase']['glo_mysql_ssl_cert']))
+{
+    $nm_arr_db_extra_args['mysql_ssl_cert'] = $_SESSION['scriptcase']['glo_mysql_ssl_cert']; 
+}
+if (isset($_SESSION['scriptcase']['glo_mysql_ssl_capath']))
+{
+    $nm_arr_db_extra_args['mysql_ssl_capath'] = $_SESSION['scriptcase']['glo_mysql_ssl_capath']; 
+}
+if (isset($_SESSION['scriptcase']['glo_mysql_ssl_ca']))
+{
+    $nm_arr_db_extra_args['mysql_ssl_ca'] = $_SESSION['scriptcase']['glo_mysql_ssl_ca']; 
+}
+if (isset($_SESSION['scriptcase']['glo_mysql_ssl_cipher']))
+{
+    $nm_arr_db_extra_args['mysql_ssl_cipher'] = $_SESSION['scriptcase']['glo_mysql_ssl_cipher']; 
+}
+$nm_con_persistente = "";
+$nm_con_use_schema  = "";
+if (isset($_SESSION['scriptcase']['glo_use_persistent']))
+{
+    $nm_con_persistente = $_SESSION['scriptcase']['glo_use_persistent']; 
+}
+if (isset($_SESSION['scriptcase']['glo_use_schema']))
+{
+    $nm_con_use_schema = $_SESSION['scriptcase']['glo_use_schema']; 
+}
+$str_message = "<html>
+
+<head>
+    <title>{var_str_title}</title>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            overflow-x: hidden;
+            min-width: 320px;
+            background: #FFFFFF;
+            font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            line-height: 1.4285em;
+            color: rgba(0, 0, 0, 0.87);
+            font-smoothing: antialiased;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        user agent stylesheet body {
+            display: block;
+            margin: 8px;
+        }
+
+        html {
+            font-size: 14px;
+        }
+
+        html {
+            line-height: 1.15;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        ::selection {
+            background-color: #CCE2FF;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .ui.container {
+            width: 933px;
+            min-width: 992px;
+            max-width: 1199px;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        .ui.container {
+            display: block;
+            max-width: 100% !important;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        .ui.message:last-child {
+            margin-bottom: 0em;
+        }
+
+        .ui.message:first-child {
+            margin-top: 0em;
+        }
+
+        .ui.message {
+            font-size: 1em;
+        }
+
+        .ui.message {
+            position: relative;
+            min-height: 1em;
+            margin: 1em 0em;
+            background: #F8F8F9;
+            padding: 1em 1.5em;
+            line-height: 1.4285em;
+            color: rgba(0, 0, 0, 0.87);
+            transition: opacity 0.1s ease, color 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
+            border-radius: 0.28571429rem;
+            box-shadow: 0px 0px 0px 1px rgba(34, 36, 38, 0.22) inset, 0px 0px 0px 0px rgba(0, 0, 0, 0);
+        }
+
+        article,
+        aside,
+        footer,
+        header,
+        nav,
+        section {
+            display: block;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        .ui.message> :last-child {
+            margin-bottom: 0em;
+        }
+
+        .ui.message> :first-child {
+            margin-top: 0em;
+        }
+
+        .ui.message .header+p {
+            margin-top: 0.25em;
+        }
+
+        .ui.message p {
+            opacity: 0.85;
+            margin: 0.75em 0em;
+        }
+
+        p {
+            margin: 0em 0em 1em;
+            line-height: 1.4285em;
+        }
+
+        .ui.message .header:not(.ui) {
+            font-size: 1.14285714em;
+        }
+
+        .ui.message .header {
+            display: block;
+            font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            margin: -0.14285714em 0em 1.2rem 0em;
+        }
+
+        .ui.button {
+            cursor: pointer;
+            display: inline-block;
+            min-height: 1em;
+            outline: 0;
+            border: none;
+            vertical-align: baseline;
+            background: #e0e1e2 none;
+            color: rgba(0, 0, 0, .6);
+            font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            margin: 0 .25em 0 0;
+            padding: .78571429em 1.5em .78571429em;
+            text-transform: none;
+            text-shadow: none;
+            font-weight: 700;
+            line-height: 1em;
+            font-style: normal;
+            text-align: center;
+            text-decoration: none;
+            border-radius: .28571429rem;
+            box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 rgba(34, 36, 38, .15) inset;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transition: opacity .1s ease, background-color .1s ease, color .1s ease, box-shadow .1s ease, background .1s ease;
+            will-change: '';
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .ui.button,
+        .ui.buttons .button,
+        .ui.buttons .or {
+            font-size: 1rem;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
+            column-gap: .5rem;
+            display: flex;
+        }
+        
+        .ui.primary.button,
+        .ui.primary.buttons .button {
+            background-color: #2185d0;
+            color: #fff;
+            text-shadow: none;
+            background-image: none;
+        }
+        
+        .ui.primary.button {
+            box-shadow: 0 0 0 0 rgba(34, 36, 38, .15) inset;
+        }
+
+        [type=reset], [type=submit], button, html [type=button] {
+            -webkit-appearance: button;
+        }
+
+        .icon{
+            position: relative;
+            width: 1.2rem;
+            height: 1.2rem;
+            display: block;
+            color: inherit;
+            background-repeat: no-repeat;
+        }
+
+        .icon.database{
+            background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\" fill=\"%23FFFFFF\"><path d=\"M448 80v48c0 44.2-100.3 80-224 80S0 172.2 0 128V80C0 35.8 100.3 0 224 0S448 35.8 448 80zM393.2 214.7c20.8-7.4 39.9-16.9 54.8-28.6V288c0 44.2-100.3 80-224 80S0 332.2 0 288V186.1c14.9 11.8 34 21.2 54.8 28.6C99.7 230.7 159.5 240 224 240s124.3-9.3 169.2-25.3zM0 346.1c14.9 11.8 34 21.2 54.8 28.6C99.7 390.7 159.5 400 224 400s124.3-9.3 169.2-25.3c20.8-7.4 39.9-16.9 54.8-28.6V432c0 44.2-100.3 80-224 80S0 476.2 0 432V346.1z\"/></svg>');
+        }
+    </style>
+</head>
+
+<body>
+    <div class='ui container' style='padding-top:2rem'>
+        <section class='ui message'>
+            <div class='content'>
+                <div class='header'>
+                    <h1 class='ui header'>{var_str_title}</h1>
+                </div>
+                <p>{var_str_message}</p>
+                <p>{var_str_message_conn}</p>
+                {v_str_btn_inside}
+            </div>
+        </section>
+    </div>";
+$str_message_end = "</body>
+</html>";
+$str_message = str_replace('{var_str_title}', $this->Nm_lang['lang_errm_cmlb_nfndtitle'], $str_message);
+$str_message = str_replace('{var_str_message_conn}','', $str_message);
+$str_message = str_replace('{v_str_btn_inside}', '', $str_message);
+if (!empty($nm_falta_var) || !empty($nm_falta_var_db))
+{
+    if (empty($nm_falta_var_db))
+    {
+         $str_message = str_replace('{var_str_message}', $this->Nm_lang['lang_errm_glob'], $str_message);
+    }
+    else
+    {
+         $str_message = str_replace('{var_str_message}', $this->Nm_lang['lang_errm_dbcn_data'], $str_message);
+    }
+    echo $str_message;
+    if (isset($_SESSION['scriptcase']['nm_ret_exec']) && '' != $_SESSION['scriptcase']['nm_ret_exec'])
+    { 
+        if (isset($_SESSION['sc_session'][1]['home']['sc_outra_jan']) && $_SESSION['sc_session'][1]['home']['sc_outra_jan'])
+        {
+            echo "<a href='javascript:window.close()'><img border='0' src='" . $path_imag_cab . "/scriptcase__NM__exit.gif' title='" . $this->Nm_lang['lang_btns_menu_rtrn_hint'] . "' align=absmiddle></a> \n" ; 
+        } 
+        else 
+        { 
+            echo "<a href='" . $_SESSION['scriptcase']['nm_ret_exec'] . "><img border='0' src='" . $path_imag_cab . "/scriptcase__NM__exit.gif' title='" . $this->Nm_lang['lang_btns_menu_rtrn_hint'] . "' align=absmiddle></a> \n" ; 
+        } 
+    } 
+    echo $str_message_end;
+    exit ;
+} 
+if (isset($_SESSION['scriptcase']['glo_db_master_usr']) && !empty($_SESSION['scriptcase']['glo_db_master_usr']))
+{
+    $nm_usuario = $_SESSION['scriptcase']['glo_db_master_usr']; 
+}
+if (isset($_SESSION['scriptcase']['glo_db_master_pass']) && !empty($_SESSION['scriptcase']['glo_db_master_pass']))
+{
+    $nm_senha = $_SESSION['scriptcase']['glo_db_master_pass']; 
+}
+if (isset($_SESSION['scriptcase']['glo_db_master_cript']) && !empty($_SESSION['scriptcase']['glo_db_master_cript']))
+{
+    $_SESSION['scriptcase']['glo_senha_protect'] = $_SESSION['scriptcase']['glo_db_master_cript']; 
+}
+$sc_tem_trans_banco = false;
+$this->nm_bases_access    = array("access", "ado_access", "ace_access");
+$this->nm_bases_ibase     = array("ibase", "firebird", "pdo_firebird", "borland_ibase");
+$this->nm_bases_mysql     = array("mysql", "mysqlt", "mysqli", "maxsql", "pdo_mysql", "azure_mysql", "azure_mysqlt", "azure_mysqli", "azure_maxsql", "azure_pdo_mysql", "googlecloud_mysql", "googlecloud_mysqlt", "googlecloud_mysqli", "googlecloud_maxsql", "googlecloud_pdo_mysql", "amazonrds_mysql", "amazonrds_mysqlt", "amazonrds_mysqli", "amazonrds_maxsql", "amazonrds_pdo_mysql");
+$this->nm_bases_postgres  = array("postgres", "postgres64", "postgres7", "pdo_pgsql", "azure_postgres", "azure_postgres64", "azure_postgres7", "azure_pdo_pgsql", "googlecloud_postgres", "googlecloud_postgres64", "googlecloud_postgres7", "googlecloud_pdo_pgsql", "amazonrds_postgres", "amazonrds_postgres64", "amazonrds_postgres7", "amazonrds_pdo_pgsql");
+$this->nm_bases_sqlite    = array("sqlite", "sqlite3", "pdosqlite");
+$this->nm_bases_sybase    = array("sybase", "pdo_sybase_odbc", "pdo_sybase_dblib");
+$this->nm_bases_vfp       = array("vfp");
+$this->nm_bases_odbc      = array("odbc");
+$this->nm_bases_progress  = array("pdo_progress_odbc", "progress");
+$_SESSION['scriptcase']['sc_num_page'] = 1;
+$_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1D9JKDQFUHIrKVWJeHuBYVcBUDuX7HMX7D9XGZ1X7HAvCZMXGHgNOHEFiDWFqVoBOD9JKH9FUHArYV5JwHuNOV9FeDWXCDoJsDcBwH9B/Z1rYHQJwHgveVkJqH5FGDoBqHQBiDuBqHArYHuJwDMvOV9BUDWXKVoF7HQBiZ1BiHAzGD5BOHgNKVkJ3HEXCHIrqHQJeDuFaHIrwHuFaHuNOZSrCH5FqDoXGHQJmZ1F7D1NaD5XGHgrKVkXeDWFqVoX7HQNwDuFaHIBeHuJwDMvsV9BUDuX7HMBiD9BsVIraD1rwV5X7HgBeHEBUDWF/VoB/DcXOZSX7HANOV5BOHuNODkBOV5F/VEBiDcJUZkFGHArKV5FUDMrYZSXeV5FqHIJsHQXGZSX7HIrKV5JwHuNOVcBOH5XKDoJsD9XOZ1F7HIveD5BqHgBeHEFiV5B3DoF7D9XsDuFaHAveD5B/DMzGZSJqHEFYHIFUD9BiVINUD1rKD5rqDErKDkFeV5B7DoXGHQBiDQFGDSBYV5BqDMvmVcFKV5BmVoBqD9BsZkFGHArKHuBOHgBYVkJ3V5FqHIrqDcBiH9BiZ1BYHuJwDMrwV9FeH5XCVoBiHQBsZkFGZ1vmZMXGHgvCHArCDuFYHIJeHQJeDQB/DSN7HuXGDMrwV9FeH5XKVErqDcNmZkBiHArYD5JwDMrYZSXeDuFYVoXGDcJeZ9rqD1BeHuX7DMvsVIB/HEF/HMB/HQJmZSBOD1rwHQBiHgvCHArsH5FYHIrqHQJKH9BiZ1N7V5FaDMrwVcB/HEFYHIXGHQNmZSBOD1rKHuBOHgvCHArCV5FqHMX7HQNmH9BiHIBeHuFUHgNKDkBODuFqDoFGDcBqVIJwD1rwHQrqHgBYVkJqDuJeHIBOHQNmDuFaHIrwHQJeDMrwVcB/DWXCHIFUHQXGH9BOHIveHQF7HgvCHEJqH5X/ZuXGHQBiZSFUDSBYHurqDMrwV9BUH5XCHIF7HQXGZ1FGZ1rYHQJeDMrYZSXeDuFYVoXGDcJeZ9rqD1BeV5BqHgvsDkB/V5X7VorqDcBqZ1FaD1rKV5XGDMNKZSJ3H5X/ZuJsHQXGZSFUHAveV5BOHuNODkBODuX7VoX7DcBqZ1B/Z1vOD5raHgBOVkXeHEFqVoX7DcBwDQFGD1BOV5JwDMBYVIBODWFYVENUHQBiZ1B/HABYV5JsDMzGHAFKV5FaZuBOHQJeDuBOZ1BYV5JeHuvmVcrsDWB3VEX7HQNmZkFUZ1BeZMBODEvsZSJGDuFaDoJeD9XsZSX7Z1rwVWJsDMrwDkFCH5FqVoBqD9XOZSB/DSrYD5BqDEvsHEFiH5FYDoraD9NwZSX7D1vOV5JwHgNKDkBODuFqDoFGDcBqVIJwD1rwD5JeDMBYZSJqV5FaVoJeD9XsZSFGD1BeVWJsHgrYDkBsDuFqHMFUHQXGZ1X7D1rKHuJeHgNOHEFKV5FqHIraDcXGDuFaDSBYHuFaHuNOZSrCH5FqDoXGHQJmZ1BiHAvCD5BqHgveDkXKH5X/DoBOHQJeDuBqHAvmV5BODMvmVcFKV5BmVoBqD9BsZkFGHArKV5JeDEBeHArsDuXKZuBqDcXGZSFUZ1rwV5JwHuBOVcB/H5FqHMJeD9XOZSBqHAN7HQJwDEBODkFeH5FYVoFGHQJKDQFaHAN7HuB/DMBYVIBsH5FqHMBOHQXOZkFGZ1NOHQrqDMrYHENiH5F/HIF7HQJKDQJsZ1vCV5FGHuNOV9FeDWB3VEFGHQFYVINUHAvsZMNU";
+ $glo_senha_protect = (isset($_SESSION['scriptcase']['glo_senha_protect'])) ? $_SESSION['scriptcase']['glo_senha_protect'] : "S";
+if (isset($_SESSION['scriptcase']['nm_sc_retorno']) && !empty($_SESSION['scriptcase']['nm_sc_retorno']) && isset($_SESSION['scriptcase']['home']['glo_nm_conexao']) && !empty($_SESSION['scriptcase']['home']['glo_nm_conexao']))
+{ 
+   $this->Db = db_conect_devel($_SESSION['scriptcase']['home']['glo_nm_conexao'], $str_root . $_SESSION['scriptcase']['home']['glo_nm_path_prod'], 'skini'); 
+} 
+else 
+{ 
+   $this->Db = db_conect($nm_tpbanco, $nm_servidor, $nm_usuario, $nm_senha, $nm_banco, $glo_senha_protect, "S", $nm_con_persistente, $nm_con_db2, $nm_database_encoding, $nm_arr_db_extra_args); 
+} 
+$this->nm_tpbanco = $nm_tpbanco; 
+if (in_array(strtolower($nm_tpbanco), $this->nm_bases_ibase) && function_exists('ibase_timefmt'))
+{
+    ibase_timefmt('%Y-%m-%d %H:%M:%S');
+} 
+if (in_array(strtolower($nm_tpbanco), $this->nm_bases_sybase))
+{
+   $this->Db->fetchMode = ADODB_FETCH_BOTH;
+   $this->Db->Execute("set dateformat ymd");
+} 
+//
 /* Dados do menu em sessao */
 $_SESSION['nm_menu'] = array('prod' => $str_root . $_SESSION['scriptcase']['home']['glo_nm_path_prod'] . '/third/COOLjsMenu/',
                               'url' => $_SESSION['scriptcase']['home']['glo_nm_path_prod'] . '/third/COOLjsMenu/');
@@ -590,6 +1103,40 @@ if (!isset($_SESSION['scriptcase']['sc_apl_seg']))
 {
     $_SESSION['scriptcase']['sc_apl_seg'] = array();
 }
+if(is_file($path_apls . $this->tab_grupo[0] . '_lib/_app_data/img_menu_ini.php'))
+{
+    require($path_apls . $this->tab_grupo[0] . '_lib/_app_data/img_menu_ini.php');
+    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
+    {
+      if (!isset($_SESSION['scriptcase']['sc_apl_seg']['img_menu']))
+      {
+        $_SESSION['scriptcase']['sc_apl_seg']['img_menu'] = "on";
+      }
+    }
+}
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['img_menu'] = "on";
+} 
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/accommodation_ini.php'))
+{
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/accommodation_ini.php');
+    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
+    {
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['accommodation']))
+        {
+            $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
+        }
+    }
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
+    } 
+}
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
+} 
 if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/admin_ini.php'))
 {
     require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/admin_ini.php');
@@ -628,6 +1175,25 @@ if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_sessi
 { 
     $_SESSION['scriptcase']['sc_apl_seg']['home'] = "on";
 } 
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/rpt_costumerCheck_ini.php'))
+{
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/rpt_costumerCheck_ini.php');
+    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
+    {
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['rpt_costumerCheck']))
+        {
+            $_SESSION['scriptcase']['sc_apl_seg']['rpt_costumerCheck'] = "on";
+        }
+    }
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['rpt_costumerCheck'] = "on";
+    } 
+}
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['rpt_costumerCheck'] = "on";
+} 
 if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/que_lodge_category_ini.php'))
 {
     require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/que_lodge_category_ini.php');
@@ -665,6 +1231,44 @@ if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/que_costumers_ini.
 if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
 { 
     $_SESSION['scriptcase']['sc_apl_seg']['que_costumers'] = "on";
+} 
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/admin_ini.php'))
+{
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/admin_ini.php');
+    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
+    {
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['admin']))
+        {
+            $_SESSION['scriptcase']['sc_apl_seg']['admin'] = "on";
+        }
+    }
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['admin'] = "on";
+    } 
+}
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['admin'] = "on";
+} 
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/accommodation_ini.php'))
+{
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/accommodation_ini.php');
+    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
+    {
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['accommodation']))
+        {
+            $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
+        }
+    }
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
+    } 
+}
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
 } 
 if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/sec_change_pswd_ini.php'))
 {
@@ -719,25 +1323,32 @@ if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($nm_var_lab[1]))
 {
     $nm_var_lab[1] = sc_convert_encoding($nm_var_lab[1], $_SESSION['scriptcase']['charset'], "UTF-8");
 }
- $nm_var_hint[0] = "Check";
+ $nm_var_hint[0] = "Hospedagem";
 if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($nm_var_hint[0]))
 {
     $nm_var_hint[0] = sc_convert_encoding($nm_var_hint[0], $_SESSION['scriptcase']['charset'], "UTF-8");
 }
- $nm_var_hint[1] = "Ajustes";
+ $nm_var_hint[1] = "Administração";
 if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($nm_var_hint[1]))
 {
     $nm_var_hint[1] = sc_convert_encoding($nm_var_hint[1], $_SESSION['scriptcase']['charset'], "UTF-8");
 }
 $saida_apl = $_SESSION['scriptcase']['sc_saida_home'];
-$home_menuData['data'] .= "item_3|.|" . $nm_var_lab[0] . "||" . $nm_var_hint[0] . "||_self|\n";
-if (isset($_SESSION['scriptcase']['sc_apl_seg']['admin']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['admin']) == "on")
+if (isset($_SESSION['scriptcase']['sc_apl_seg']['accommodation']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['accommodation']) == "on")
 {
-    $home_menuData['data'] .= "item_4|.|" . $nm_var_lab[1] . "|home_form_php.php?sc_item_menu=item_4&sc_apl_menu=admin&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[1] . "||" . $this->home_target('_self') . "|" . "\n";
+    $home_menuData['data'] .= "item_3|.|" . $nm_var_lab[0] . "|home_form_php.php?sc_item_menu=item_3&sc_apl_menu=accommodation&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[0] . "||" . $this->home_target('_blank') . "|" . "\n";
 }
 else
 {
-    $home_menuData['data'] .= "item_4|.|" . $nm_var_lab[1] . "||||_self|disabled\n";
+    $home_menuData['data'] .= "item_3|.|" . $nm_var_lab[0] . "||||_blank|disabled\n";
+}
+if (isset($_SESSION['scriptcase']['sc_apl_seg']['admin']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['admin']) == "on")
+{
+    $home_menuData['data'] .= "item_4|.|" . $nm_var_lab[1] . "|home_form_php.php?sc_item_menu=item_4&sc_apl_menu=admin&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[1] . "||" . $this->home_target('_blank') . "|" . "\n";
+}
+else
+{
+    $home_menuData['data'] .= "item_4|.|" . $nm_var_lab[1] . "||||_blank|disabled\n";
 }
 if(isset($_SESSION['scriptcase']['force_menu_orientacao']) && !empty($_SESSION['scriptcase']['force_menu_orientacao']))
 {
@@ -751,37 +1362,42 @@ elseif($this->force_mobile || ($_SESSION['scriptcase']['device_mobile'] && $_SES
 
 $home_menuData['data'] = array();
 $str_disabled = "N";
-$str_link = "#";
-$str_icon = "";
-$icon_aba = "";
-$icon_aba_inactive = "";
-if(empty($icon_aba) && isset($arr_menuicons['others']['active']))
+$str_link = "home_form_php.php?sc_item_menu=item_3&sc_apl_menu=accommodation&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "";
+if (!isset($_SESSION['scriptcase']['sc_apl_seg']['accommodation']) || strtolower($_SESSION['scriptcase']['sc_apl_seg']['accommodation']) != "on")
 {
-    $icon_aba = $arr_menuicons['others']['active'];
+    $str_link = "#";
+    $str_disabled = "Y";
 }
-if(empty($icon_aba_inactive) && isset($arr_menuicons['others']['inactive']))
-{
-    $icon_aba_inactive = $arr_menuicons['others']['inactive'];
-}
-$home_menuData['data'][] = array(
-    'label'    => "" . $nm_var_lab[0] . "",
-    'level'    => "0",
-    'link'     => $str_link,
-    'hint'     => "" . $nm_var_hint[0] . "",
-    'id'       => "item_3",
-    'icon'     => $str_icon,
-    'icon_aba' => $icon_aba,
-    'icon_aba_inactive' => $icon_aba_inactive,
-    'target'   => "",
-    'sc_id'    => "item_3",
-    'disabled' => $str_disabled,
-    'display'     => "text_fontawesomeicon",
-    'display_position'=> "text_right",
-    'icon_fa'     => "fas fa-suitcase",
-    'icon_color'     => "",
-    'icon_color_hover'     => "",
-    'icon_color_disabled'     => "",
-);
+    $str_icon = "";
+    $icon_aba = "";
+    $icon_aba_inactive = "";
+    if(empty($icon_aba) && isset($arr_menuicons['menu']['active']))
+    {
+        $icon_aba = $arr_menuicons['menu']['active'];
+    }
+    if(empty($icon_aba_inactive) && isset($arr_menuicons['menu']['inactive']))
+    {
+        $icon_aba_inactive = $arr_menuicons['menu']['inactive'];
+    }
+    $home_menuData['data'][] = array(
+        'label'    => "" . $nm_var_lab[0] . "",
+        'level'    => "0",
+        'link'     => $str_link,
+        'hint'     => "" . $nm_var_hint[0] . "",
+        'id'       => "item_3",
+        'icon'     => $str_icon,
+        'icon_aba' => $icon_aba,
+        'icon_aba_inactive' => $icon_aba_inactive,
+        'target'   => " item-target=\"" . $this->home_target('_blank') . "\"",
+        'sc_id'    => "item_3",
+        'disabled' => $str_disabled,
+        'display'     => "text_fontawesomeicon",
+        'display_position'=> "text_right",
+        'icon_fa'     => "fas fa-suitcase",
+        'icon_color'     => "",
+        'icon_color_hover'     => "",
+        'icon_color_disabled'     => "",
+    );
 $str_disabled = "N";
 $str_link = "home_form_php.php?sc_item_menu=item_4&sc_apl_menu=admin&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "";
 if (!isset($_SESSION['scriptcase']['sc_apl_seg']['admin']) || strtolower($_SESSION['scriptcase']['sc_apl_seg']['admin']) != "on")
@@ -809,7 +1425,7 @@ if (!isset($_SESSION['scriptcase']['sc_apl_seg']['admin']) || strtolower($_SESSI
         'icon'     => $str_icon,
         'icon_aba' => $icon_aba,
         'icon_aba_inactive' => $icon_aba_inactive,
-        'target'   => " item-target=\"" . $this->home_target('_self') . "\"",
+        'target'   => " item-target=\"" . $this->home_target('_blank') . "\"",
         'sc_id'    => "item_4",
         'disabled' => $str_disabled,
         'display'     => "text_fontawesomeicon",
@@ -1189,7 +1805,9 @@ if (isset($this->nm_mens_alert) && count($this->nm_mens_alert)) {
 <script>
 $(document).ready(function() {
     $(".scBtnGrpText").mouseover(function() { $(this).addClass("scBtnGrpTextOver"); }).mouseout(function() { $(this).removeClass("scBtnGrpTextOver"); });
+    $("#btn_11").on('click', function() { scBtnGrpShow('btn_11') });
     $("#btn_5").on('click', function() { scBtnGrpShow('btn_5') });
+    $("#btn_8").on('click', function() { scBtnGrpShow('btn_8') });
     $("#btn_2").on('click', function() { scBtnGrpShow('btn_2') });
 });
     var scBtnGrpStatus = {};
@@ -1490,7 +2108,9 @@ echo $str_bmenu;
 <script>
 $(document).ready(function() {
     $(".scBtnGrpText").mouseover(function() { $(this).addClass("scBtnGrpTextOver"); }).mouseout(function() { $(this).removeClass("scBtnGrpTextOver"); });
+    $("#btn_11").on('click', function() { scBtnGrpShow('btn_11') });
     $("#btn_5").on('click', function() { scBtnGrpShow('btn_5') });
+    $("#btn_8").on('click', function() { scBtnGrpShow('btn_8') });
     $("#btn_2").on('click', function() { scBtnGrpShow('btn_2') });
     var scBtnGrpStatus = {};
     function scBtnGrpShow(sGroup) {
@@ -1594,6 +2214,7 @@ function clearFastMenu(arr_link)
   str_link   = $('#' + str_id).attr('item-href');
   str_target = $('#' + str_id).attr('item-target');
   if (typeof str_link !== typeof undefined && str_link !== false) {
+    str_id = str_id.replace('iframe_home', 'home');
     //test link type
     if (str_link != '' && str_link != '#' && str_link != 'javascript:')
     {
@@ -1711,7 +2332,19 @@ else
 }
 ?>
     <div id="Iframe_control" style='width:100%; height:100%; margin:0px; padding:0px;'>
-      <iframe id="iframe_home" name="home_iframe" frameborder="0" class="scMenuIframe" style="width: 100%; height: 100%;"  src="<?php echo ($NM_scr_iframe != "" ? $NM_scr_iframe : "home_pag_ini.php"); ?>"></iframe>
+<?php
+$link_default = "";
+if (isset($_SESSION['scriptcase']['sc_apl_seg']['img_menu']) && $_SESSION['scriptcase']['sc_apl_seg']['img_menu'] == "on") 
+{ 
+    $SCR  = "";
+    $link_default = " onclick=\"openMenuItem('iframe_home');\" item-href=\"home_form_php.php?sc_item_menu=home&sc_apl_menu=img_menu&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "\"  item-target=\"home_iframe\"";
+} 
+else
+{ 
+    $SCR  = ($NM_scr_iframe != "" ? $NM_scr_iframe : "home_pag_ini.php");
+} 
+?>
+      <iframe id="iframe_home" name="home_iframe" frameborder="0" class="scMenuIframe" style="width: 100%; height: 100%;"  src="<?php echo $SCR; ?>" <?php echo $link_default ?>></iframe>
 <?php
 }
 ?></div></td>
@@ -1731,6 +2364,12 @@ else
 </html>
 <?php
 
+if (isset($link_default) && !empty($link_default))
+{
+    echo "<script>";
+    echo "   document.getElementById('iframe_home').click()";
+    echo "</script>";
+}
 
 }
 
@@ -1766,7 +2405,7 @@ function home_escreveMenu($arr_menu, $path_imag_cab = '', $strAlign = '')
 							'icon_color_hover' => '',
 							'icon_color_disabled' => '',
 			];		$arr_toolbar[] = [
-							'label' => 'Skini',
+							'label' => 'Inicio',
 							'level'=>'1',
 							'link' => 'home',
 							'hint' => '',
@@ -1780,6 +2419,42 @@ function home_escreveMenu($arr_menu, $path_imag_cab = '', $strAlign = '')
 							'display' => 'text_fontawesomeicon',
 							'display_position' => 'text_right',
 							'icon_fa' => 'fas fa-campground',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Relatórios',
+							'level'=>'1',
+							'link' => '',
+							'hint' => 'Relatórios',
+							'id' => 'btn_11',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_11',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-search',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Movimentação de Hóspedes',
+							'level'=>'2',
+							'link' => 'rpt_costumerCheck',
+							'hint' => 'Movimentação de Hóspedes',
+							'id' => 'btn_12',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_12',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-business-time',
 							'icon_color' => '',
 							'icon_color_hover' => '',
 							'icon_color_disabled' => '',
@@ -1838,6 +2513,60 @@ function home_escreveMenu($arr_menu, $path_imag_cab = '', $strAlign = '')
 							'icon_color_hover' => '',
 							'icon_color_disabled' => '',
 			];		$arr_toolbar[] = [
+							'label' => 'Módulos',
+							'level'=>'1',
+							'link' => '',
+							'hint' => 'Módulos',
+							'id' => 'btn_8',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_8',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-th',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Admin',
+							'level'=>'2',
+							'link' => 'admin',
+							'hint' => 'Admin',
+							'id' => 'btn_10',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_blank',
+							'sc_id' => 'btn_10',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-users-cog',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Hospedagem',
+							'level'=>'2',
+							'link' => 'accommodation',
+							'hint' => 'Hospedagem',
+							'id' => 'btn_9',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_blank',
+							'sc_id' => 'btn_9',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-suitcase',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
 							'label' => 'Usuário',
 							'level'=>'1',
 							'link' => '',
@@ -1849,7 +2578,7 @@ function home_escreveMenu($arr_menu, $path_imag_cab = '', $strAlign = '')
 							'target' => '_self',
 							'sc_id' => 'btn_2',
 							'disabled' => '',
-							'display' => 'only_fontawesomeicon',
+							'display' => 'text_fontawesomeicon',
 							'display_position' => 'text_right',
 							'icon_fa' => 'fas fa-user-circle',
 							'icon_color' => '',
@@ -1859,7 +2588,7 @@ function home_escreveMenu($arr_menu, $path_imag_cab = '', $strAlign = '')
 							'label' => 'Alterar Senha',
 							'level'=>'2',
 							'link' => 'sec_change_pswd',
-							'hint' => '',
+							'hint' => 'Alterar Senha',
 							'id' => 'btn_3',
 							'icon' => '',
 							'icon_aba' => '----------------',
@@ -1877,7 +2606,7 @@ function home_escreveMenu($arr_menu, $path_imag_cab = '', $strAlign = '')
 							'label' => '{lang_exit}',
 							'level'=>'2',
 							'link' => 'sec_login',
-							'hint' => '',
+							'hint' => '{lang_exit}',
 							'id' => 'btn_4',
 							'icon' => '',
 							'icon_aba' => '----------------',
@@ -2089,7 +2818,37 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $home_menuData, $path_imag_c
             <?php
                 if ($this->nmgp_botoes['btn_1'] == "on")
                 {
-                    echo nmButtonOutput($this->arr_buttons, "btn_1", "home_form_php.php?sc_item_menu=btn_1&sc_apl_menu=home&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "", "home_form_php.php?sc_item_menu=btn_1&sc_apl_menu=home&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "", "btn_1", "", "Skini", "", "absmiddle", "", "0px", $this->path_botoes, "", "", "", "", "", "text_fontawesomeicon", "text_right", "1", "" . $this->home_target('_blank') . "", "", "", "", "home", "");
+                    echo nmButtonOutput($this->arr_buttons, "btn_1", "home_form_php.php?sc_item_menu=btn_1&sc_apl_menu=home&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "", "home_form_php.php?sc_item_menu=btn_1&sc_apl_menu=home&sc_apl_link=" . urlencode($home_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] . "", "btn_1", "", "Inicio", "", "absmiddle", "", "0px", $this->path_botoes, "", "", "", "", "", "text_fontawesomeicon", "text_right", "1", "" . $this->home_target('_blank') . "", "", "", "", "home", "");
+                }
+
+                if ($this->nmgp_botoes['btn_11'] == "on")
+                {
+                    echo nmButtonOutput($this->arr_buttons, "btn_11", "javascript:", "javascript:", "btn_11", "", "Relatórios", "", "absmiddle", "", "0px", $this->path_botoes, "", "Relatórios", "", "", "__sc_grp__", "text_fontawesomeicon", "text_right", "1", "" . $this->home_target('_self') . "", "", "", "", "home", "");
+                    ?>
+                    <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_11">
+                        <tr>
+                            <td class="scBtnGrpBackground">
+                              <?php
+                              if($this->nmgp_botoes['btn_12'] == 'on')
+                              {
+                              ?>
+                                  <div class="scBtnGrpText">
+                                    <?php
+                                    $str_href = "home_form_php.php?sc_item_menu=btn_12&sc_apl_menu=rpt_costumerCheck&sc_apl_link=". urlencode($home_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_12']['disabled']) && strtolower($this->arr_buttons['btn_12']['disabled']) == 'off')
+                                    {
+                                      $str_href = "javascript:";
+                                    }
+                                    ?>
+                                      <a id="btn_12" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Movimentação de Hóspedes" target="<?php echo $this->home_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-business-time'></i> Movimentação de Hóspedes</a>
+                                  </div>
+                              <?php
+                              }
+                              ?>
+                            </td>
+                        </tr>
+                    </table>
+                    <?php
                 }
 
                 if ($this->nmgp_botoes['btn_5'] == "on")
@@ -2139,9 +2898,56 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $home_menuData, $path_imag_c
                     <?php
                 }
 
+                if ($this->nmgp_botoes['btn_8'] == "on")
+                {
+                    echo nmButtonOutput($this->arr_buttons, "btn_8", "javascript:", "javascript:", "btn_8", "", "Módulos", "", "absmiddle", "", "0px", $this->path_botoes, "", "Módulos", "", "", "__sc_grp__", "text_fontawesomeicon", "text_right", "1", "" . $this->home_target('_self') . "", "", "", "", "home", "");
+                    ?>
+                    <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_8">
+                        <tr>
+                            <td class="scBtnGrpBackground">
+                              <?php
+                              if($this->nmgp_botoes['btn_10'] == 'on')
+                              {
+                              ?>
+                                  <div class="scBtnGrpText">
+                                    <?php
+                                    $str_href = "home_form_php.php?sc_item_menu=btn_10&sc_apl_menu=admin&sc_apl_link=". urlencode($home_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_10']['disabled']) && strtolower($this->arr_buttons['btn_10']['disabled']) == 'off')
+                                    {
+                                      $str_href = "javascript:";
+                                    }
+                                    ?>
+                                      <a id="btn_10" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Admin" target="<?php echo $this->home_target('_blank'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-users-cog'></i> Admin</a>
+                                  </div>
+                              <?php
+                              }
+                              ?>
+                              <?php
+                              if($this->nmgp_botoes['btn_9'] == 'on')
+                              {
+                              ?>
+                                  <div class="scBtnGrpText">
+                                    <?php
+                                    $str_href = "home_form_php.php?sc_item_menu=btn_9&sc_apl_menu=accommodation&sc_apl_link=". urlencode($home_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['home']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_9']['disabled']) && strtolower($this->arr_buttons['btn_9']['disabled']) == 'off')
+                                    {
+                                      $str_href = "javascript:";
+                                    }
+                                    ?>
+                                      <a id="btn_9" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Hospedagem" target="<?php echo $this->home_target('_blank'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-suitcase'></i> Hospedagem</a>
+                                  </div>
+                              <?php
+                              }
+                              ?>
+                            </td>
+                        </tr>
+                    </table>
+                    <?php
+                }
+
                 if ($this->nmgp_botoes['btn_2'] == "on")
                 {
-                    echo nmButtonOutput($this->arr_buttons, "btn_2", "javascript:", "javascript:", "btn_2", "", "Usuário", "", "absmiddle", "", "0px", $this->path_botoes, "", "Usuário", "", "", "__sc_grp__", "only_fontawesomeicon", "text_right", "1", "" . $this->home_target('_self') . "", "", "", "", "home", "");
+                    echo nmButtonOutput($this->arr_buttons, "btn_2", "javascript:", "javascript:", "btn_2", "", "Usuário", "", "absmiddle", "", "0px", $this->path_botoes, "", "Usuário", "", "", "__sc_grp__", "text_fontawesomeicon", "text_right", "1", "" . $this->home_target('_self') . "", "", "", "", "home", "");
                     ?>
                     <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_2">
                         <tr>
@@ -2158,7 +2964,7 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $home_menuData, $path_imag_c
                                       $str_href = "javascript:";
                                     }
                                     ?>
-                                      <a id="btn_3" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="" target="<?php echo $this->home_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-key'></i> Alterar Senha</a>
+                                      <a id="btn_3" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Alterar Senha" target="<?php echo $this->home_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-key'></i> Alterar Senha</a>
                                   </div>
                               <?php
                               }
@@ -2175,7 +2981,7 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $home_menuData, $path_imag_c
                                       $str_href = "javascript:";
                                     }
                                     ?>
-                                      <a id="btn_4" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="" target="<?php echo $this->home_target('_parent'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-sign-out-alt'></i> <?php echo $this->Nm_lang['lang_exit']; ?></a>
+                                      <a id="btn_4" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="<?php echo $this->Nm_lang['lang_exit']; ?>" target="<?php echo $this->home_target('_parent'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-sign-out-alt'></i> <?php echo $this->Nm_lang['lang_exit']; ?></a>
                                   </div>
                               <?php
                               }
@@ -2323,6 +3129,512 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $home_menuData, $path_imag_c
    {
         $_SESSION['scriptcase']['home']['sc_init'][$apl_menu] = 1;
         return  1;
+   }
+function sc_logged($user, $ip = '')
+	{
+$_SESSION['scriptcase']['home']['contr_erro'] = 'on';
+  
+		$str_sql = "SELECT date_login, ip FROM sec_logged WHERE login = ". $this->Db->qstr($user) ." AND sc_session <> ".$this->Db->qstr('_SC_FAIL_SC_');
+
+		 
+      $nm_select = $str_sql; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      if ($this->data = $this->Db->Execute($nm_select)) 
+      { }
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->data = false;
+          $this->data_erro = $this->Db->ErrorMsg();
+      } 
+
+
+    if($this->data  === FALSE || !isset($this->data->fields[0]))
+		{
+            $ip = ($ip == '') ? $_SERVER['REMOTE_ADDR'] : $ip;
+            $this->sc_logged_in($user, $ip);
+            return true;
+        }
+		else
+		{
+            if (isset($_SESSION['scriptcase']['sc_apl_conf']['sec_logged']))
+{
+unset($_SESSION['scriptcase']['sc_apl_conf']['sec_logged']);
+}
+;
+            $_SESSION['scriptcase']['sc_apl_seg']['sec_logged'] = "on";;
+			 if (!isset($this->Campos_Mens_erro) || empty($this->Campos_Mens_erro))
+ {
+$this->nmgp_redireciona_form($_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . "" . SC_dir_app_name('sec_logged') . "/", "home_form_php.php", "user?#?" . NM_encode_input($user) . "?@?","_self", 440, 630);
+ };
+            return false;
+        }
+$_SESSION['scriptcase']['home']['contr_erro'] = 'off';
+}
+function sc_verify_logged()
+{
+$_SESSION['scriptcase']['home']['contr_erro'] = 'on';
+if (!isset($_SESSION['logged_date_login'])) {$_SESSION['logged_date_login'] = "";}
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
+if (!isset($_SESSION['logged_user'])) {$_SESSION['logged_user'] = "";}
+if (!isset($this->sc_temp_logged_user)) {$this->sc_temp_logged_user = (isset($_SESSION['logged_user'])) ? $_SESSION['logged_user'] : "";}
+  
+		$str_sql = "SELECT count(*) FROM sec_logged WHERE login = ". $this->Db->qstr($this->sc_temp_logged_user) . " AND date_login = ". $this->Db->qstr($this->sc_temp_logged_date_login) ." AND sc_session <> ".$this->Db->qstr('_SC_FAIL_SC_');
+     
+      $nm_select = $str_sql; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $this->rs_logged = array();
+      if ($SCrx = $this->Db->Execute($nm_select)) 
+      { 
+          $SCy = 0; 
+          $nm_count = $SCrx->FieldCount();
+          while (!$SCrx->EOF)
+          { 
+                 for ($SCx = 0; $SCx < $nm_count; $SCx++)
+                 { 
+                        $this->rs_logged[$SCy] [$SCx] = $SCrx->fields[$SCx];
+                 }
+                 $SCy++; 
+                 $SCrx->MoveNext();
+          } 
+          $SCrx->Close();
+      } 
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->rs_logged = false;
+          $this->rs_logged_erro = $this->Db->ErrorMsg();
+      } 
+
+    if($this->rs_logged[0][0] != 1)
+		{
+			 if (isset($this->sc_temp_logged_user)) {$_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+ if (isset($this->sc_temp_logged_date_login)) {$_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+ if (!isset($this->Campos_Mens_erro) || empty($this->Campos_Mens_erro))
+ {
+$this->nmgp_redireciona_form($_SESSION['scriptcase']['sc_apl_menu_link'] . $this->tab_grupo[0] . "" . SC_dir_app_name('sec_Login') . "/", "home_form_php.php", "","_parent", 440, 630);
+ };
+        }
+if (isset($this->sc_temp_logged_user)) {$_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+if (isset($this->sc_temp_logged_date_login)) {$_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+$_SESSION['scriptcase']['home']['contr_erro'] = 'off';
+}
+function sc_logged_in($user, $ip = '')
+{
+$_SESSION['scriptcase']['home']['contr_erro'] = 'on';
+if (!isset($_SESSION['logged_date_login'])) {$_SESSION['logged_date_login'] = "";}
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
+if (!isset($_SESSION['logged_user'])) {$_SESSION['logged_user'] = "";}
+if (!isset($this->sc_temp_logged_user)) {$this->sc_temp_logged_user = (isset($_SESSION['logged_user'])) ? $_SESSION['logged_user'] : "";}
+  
+    $ip = ($ip == '') ? $_SERVER['REMOTE_ADDR'] : $ip;
+    $this->sc_temp_logged_user = $user;
+    $this->sc_temp_logged_date_login = microtime(true);
+
+        $str_sql = "DELETE FROM sec_logged WHERE login = ". $this->Db->qstr($user) . " AND sc_session = ".$this->Db->qstr('_SC_FAIL_SC_')." AND ip = ".$this->Db->qstr($ip);
+    
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             echo $this->Nm_lang['lang_errm_dber'] . ": " . $this->Db->ErrorMsg();
+             echo "<br>APL: home";
+             echo "<br>Line: " . __LINE__;
+             if ($sc_tem_trans_banco)
+             {
+                 $this->Db->RollbackTrans(); 
+                 $sc_tem_trans_banco = false;
+             }
+             exit;
+         }
+         $rf->Close();
+      
+
+    	$str_sql = "INSERT INTO sec_logged(login, date_login, sc_session, ip) VALUES (". $this->Db->qstr($user) .", ". $this->Db->qstr($this->sc_temp_logged_date_login) .", ". $this->Db->qstr(session_id()) .", ". $this->Db->qstr($ip) .")";
+    
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             echo $this->Nm_lang['lang_errm_dber'] . ": " . $this->Db->ErrorMsg();
+             echo "<br>APL: home";
+             echo "<br>Line: " . __LINE__;
+             if ($sc_tem_trans_banco)
+             {
+                 $this->Db->RollbackTrans(); 
+                 $sc_tem_trans_banco = false;
+             }
+             exit;
+         }
+         $rf->Close();
+      
+if (isset($this->sc_temp_logged_user)) {$_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+if (isset($this->sc_temp_logged_date_login)) {$_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+$_SESSION['scriptcase']['home']['contr_erro'] = 'off';
+}
+function sc_logged_in_fail($user, $ip = '')
+{
+$_SESSION['scriptcase']['home']['contr_erro'] = 'on';
+  
+    $ip = ($ip == '') ? $_SERVER['REMOTE_ADDR'] : $ip;
+    $user = $this->Db->qstr($user);
+        $str_sql = "INSERT INTO sec_logged(login, date_login, sc_session, ip) VALUES (" . $this->Db->qstr($user) . ", " . $this->Db->qstr(microtime(true)) . ", ". $this->Db->qstr('_SC_FAIL_SC_').", " . $this->Db->qstr($ip) . ")";
+    
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             echo $this->Nm_lang['lang_errm_dber'] . ": " . $this->Db->ErrorMsg();
+             echo "<br>APL: home";
+             echo "<br>Line: " . __LINE__;
+             if ($sc_tem_trans_banco)
+             {
+                 $this->Db->RollbackTrans(); 
+                 $sc_tem_trans_banco = false;
+             }
+             exit;
+         }
+         $rf->Close();
+      
+    return true;
+$_SESSION['scriptcase']['home']['contr_erro'] = 'off';
+}
+function sc_logged_is_blocked($ip = '')
+{
+$_SESSION['scriptcase']['home']['contr_erro'] = 'on';
+if (!isset($_SESSION['sett_brute_force_attempts'])) {$_SESSION['sett_brute_force_attempts'] = "";}
+if (!isset($this->sc_temp_sett_brute_force_attempts)) {$this->sc_temp_sett_brute_force_attempts = (isset($_SESSION['sett_brute_force_attempts'])) ? $_SESSION['sett_brute_force_attempts'] : "";}
+if (!isset($_SESSION['sett_brute_force_time_block'])) {$_SESSION['sett_brute_force_time_block'] = "";}
+if (!isset($this->sc_temp_sett_brute_force_time_block)) {$this->sc_temp_sett_brute_force_time_block = (isset($_SESSION['sett_brute_force_time_block'])) ? $_SESSION['sett_brute_force_time_block'] : "";}
+  
+    $ip = ($ip == '') ? $_SERVER['REMOTE_ADDR'] : $ip;
+    $minutes_ago = strtotime("-". $this->sc_temp_sett_brute_force_time_block ." minutes");
+    $str_select = "SELECT count(*) FROM sec_logged WHERE sc_session = ".$this->Db->qstr('_SC_BLOCKED_SC_')." AND ip = ".$this->Db->qstr($ip)." AND date_login > ". $this->Db->qstr($minutes_ago);
+     
+      $nm_select = $str_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $this->rs_logged = array();
+      if ($SCrx = $this->Db->Execute($nm_select)) 
+      { 
+          $SCy = 0; 
+          $nm_count = $SCrx->FieldCount();
+          while (!$SCrx->EOF)
+          { 
+                 for ($SCx = 0; $SCx < $nm_count; $SCx++)
+                 { 
+                        $this->rs_logged[$SCy] [$SCx] = $SCrx->fields[$SCx];
+                 }
+                 $SCy++; 
+                 $SCrx->MoveNext();
+          } 
+          $SCrx->Close();
+      } 
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->rs_logged = false;
+          $this->rs_logged_erro = $this->Db->ErrorMsg();
+      } 
+
+    if($this->rs_logged  !== FALSE && $this->rs_logged[0][0] == 1)
+        {
+            $message = $this->Nm_lang['lang_user_blocked'];
+                $message = sprintf($message, 10);
+                
+ if (!isset($this->Campos_Mens_erro)){$this->Campos_Mens_erro = "";}
+ if (!empty($this->Campos_Mens_erro)){$this->Campos_Mens_erro .= "<br>";}$this->Campos_Mens_erro .= $message;
+;
+                return true;
+        }
+
+        $str_select = "SELECT count(*) FROM sec_logged WHERE sc_session = ".$this->Db->qstr('_SC_FAIL_SC_')." AND ip = ".$this->Db->qstr($ip)." AND date_login > ". $this->Db->qstr($minutes_ago);
+         
+      $nm_select = $str_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $this->rs_logged = array();
+      if ($SCrx = $this->Db->Execute($nm_select)) 
+      { 
+          $SCy = 0; 
+          $nm_count = $SCrx->FieldCount();
+          while (!$SCrx->EOF)
+          { 
+                 for ($SCx = 0; $SCx < $nm_count; $SCx++)
+                 { 
+                        $this->rs_logged[$SCy] [$SCx] = $SCrx->fields[$SCx];
+                 }
+                 $SCy++; 
+                 $SCrx->MoveNext();
+          } 
+          $SCrx->Close();
+      } 
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->rs_logged = false;
+          $this->rs_logged_erro = $this->Db->ErrorMsg();
+      } 
+
+
+        if($this->rs_logged  !== FALSE && $this->rs_logged[0][0] == $this->sc_temp_sett_brute_force_attempts )
+        {
+            $str_sql = "INSERT INTO sec_logged(login, date_login, sc_session, ip) VALUES (".$this->Db->qstr('blocked').", ". $this->Db->qstr(microtime(true)) .", ".$this->Db->qstr('_SC_BLOCKED_SC_'). ", ". $this->Db->qstr($ip) .")";
+            
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             echo $this->Nm_lang['lang_errm_dber'] . ": " . $this->Db->ErrorMsg();
+             echo "<br>APL: home";
+             echo "<br>Line: " . __LINE__;
+             if ($sc_tem_trans_banco)
+             {
+                 $this->Db->RollbackTrans(); 
+                 $sc_tem_trans_banco = false;
+             }
+             exit;
+         }
+         $rf->Close();
+      
+            $message = $this->Nm_lang['lang_user_blocked'];
+                $message = sprintf($message, $this->sc_temp_sett_brute_force_time_block);
+                
+ if (!isset($this->Campos_Mens_erro)){$this->Campos_Mens_erro = "";}
+ if (!empty($this->Campos_Mens_erro)){$this->Campos_Mens_erro .= "<br>";}$this->Campos_Mens_erro .= $message;
+;
+                return true;
+        }
+        return false;
+if (isset($this->sc_temp_sett_brute_force_time_block)) {$_SESSION['sett_brute_force_time_block'] = $this->sc_temp_sett_brute_force_time_block;}
+if (isset($this->sc_temp_sett_brute_force_attempts)) {$_SESSION['sett_brute_force_attempts'] = $this->sc_temp_sett_brute_force_attempts;}
+$_SESSION['scriptcase']['home']['contr_erro'] = 'off';
+}
+function sc_logged_out($user, $date_login = '')
+{
+$_SESSION['scriptcase']['home']['contr_erro'] = 'on';
+if (!isset($_SESSION['logged_user'])) {$_SESSION['logged_user'] = "";}
+if (!isset($this->sc_temp_logged_user)) {$this->sc_temp_logged_user = (isset($_SESSION['logged_user'])) ? $_SESSION['logged_user'] : "";}
+if (!isset($_SESSION['logged_date_login'])) {$_SESSION['logged_date_login'] = "";}
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
+  
+		$date_login = ($date_login == '' ? "" : " AND date_login = ". $this->Db->qstr($date_login) ."");
+
+		$str_sql = "SELECT sc_session FROM sec_logged WHERE login = ". $this->Db->qstr($user) ." ". $date_login . " AND sc_session <> ".$this->Db->qstr('_SC_FAIL_SC_');
+     
+      $nm_select = $str_sql; 
+      $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select; 
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+      $this->data = array();
+      if ($SCrx = $this->Db->Execute($nm_select)) 
+      { 
+          $SCy = 0; 
+          $nm_count = $SCrx->FieldCount();
+          while (!$SCrx->EOF)
+          { 
+                 for ($SCx = 0; $SCx < $nm_count; $SCx++)
+                 { 
+                        $this->data[$SCy] [$SCx] = $SCrx->fields[$SCx];
+                 }
+                 $SCy++; 
+                 $SCrx->MoveNext();
+          } 
+          $SCrx->Close();
+      } 
+      elseif (isset($GLOBALS["NM_ERRO_IBASE"]) && $GLOBALS["NM_ERRO_IBASE"] != 1)  
+      { 
+          $this->data = false;
+          $this->data_erro = $this->Db->ErrorMsg();
+      } 
+
+    if(isset($this->data[0][0]) && !empty($this->data[0][0]))
+        {
+            $session_bkp = $_SESSION;
+            $sessionid = session_id();
+            session_write_close();
+
+            session_id($this->data[0][0]);
+			session_start();
+			$_SESSION['logged_user'] = 'logout';
+			session_write_close();
+
+			session_id($sessionid);
+			session_start();
+			$_SESSION = $session_bkp;
+		}
+
+
+		$str_sql = "DELETE FROM sec_logged WHERE login = ". $this->Db->qstr($user) . " " . $date_login;
+		
+     $nm_select = $str_sql; 
+         $_SESSION['scriptcase']['sc_sql_ult_comando'] = $nm_select;
+      $_SESSION['scriptcase']['sc_sql_ult_conexao'] = ''; 
+         $rf = $this->Db->Execute($nm_select);
+         if ($rf === false)
+         {
+             echo $this->Nm_lang['lang_errm_dber'] . ": " . $this->Db->ErrorMsg();
+             echo "<br>APL: home";
+             echo "<br>Line: " . __LINE__;
+             if ($sc_tem_trans_banco)
+             {
+                 $this->Db->RollbackTrans(); 
+                 $sc_tem_trans_banco = false;
+             }
+             exit;
+         }
+         $rf->Close();
+      
+		 unset($_SESSION['logged_date_login']);
+ unset($this->sc_temp_logged_date_login);
+ unset($_SESSION['logged_user']);
+ unset($this->sc_temp_logged_user);
+;
+if (isset($this->sc_temp_logged_date_login)) {$_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+if (isset($this->sc_temp_logged_user)) {$_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+$_SESSION['scriptcase']['home']['contr_erro'] = 'off';
+}
+function sc_looged_check_logout()
+    {
+$_SESSION['scriptcase']['home']['contr_erro'] = 'on';
+if (!isset($_SESSION['usr_email'])) {$_SESSION['usr_email'] = "";}
+if (!isset($this->sc_temp_usr_email)) {$this->sc_temp_usr_email = (isset($_SESSION['usr_email'])) ? $_SESSION['usr_email'] : "";}
+if (!isset($_SESSION['logged_date_login'])) {$_SESSION['logged_date_login'] = "";}
+if (!isset($this->sc_temp_logged_date_login)) {$this->sc_temp_logged_date_login = (isset($_SESSION['logged_date_login'])) ? $_SESSION['logged_date_login'] : "";}
+if (!isset($_SESSION['logged_user'])) {$_SESSION['logged_user'] = "";}
+if (!isset($this->sc_temp_logged_user)) {$this->sc_temp_logged_user = (isset($_SESSION['logged_user'])) ? $_SESSION['logged_user'] : "";}
+if (!isset($_SESSION['usr_login'])) {$_SESSION['usr_login'] = "";}
+if (!isset($this->sc_temp_usr_login)) {$this->sc_temp_usr_login = (isset($_SESSION['usr_login'])) ? $_SESSION['usr_login'] : "";}
+  
+        if(isset($this->sc_temp_logged_user) && ($this->sc_temp_logged_user == 'logout' || empty($this->sc_temp_logged_user)))
+        {
+             unset($_SESSION['usr_login']);
+ unset($this->sc_temp_usr_login);
+ unset($_SESSION['logged_user']);
+ unset($this->sc_temp_logged_user);
+ unset($_SESSION['logged_date_login']);
+ unset($this->sc_temp_logged_date_login);
+ unset($_SESSION['usr_email']);
+ unset($this->sc_temp_usr_email);
+;
+        }
+if (isset($this->sc_temp_usr_login)) {$_SESSION['usr_login'] = $this->sc_temp_usr_login;}
+if (isset($this->sc_temp_logged_user)) {$_SESSION['logged_user'] = $this->sc_temp_logged_user;}
+if (isset($this->sc_temp_logged_date_login)) {$_SESSION['logged_date_login'] = $this->sc_temp_logged_date_login;}
+if (isset($this->sc_temp_usr_email)) {$_SESSION['usr_email'] = $this->sc_temp_usr_email;}
+$_SESSION['scriptcase']['home']['contr_erro'] = 'off';
+}
+   function nmgp_redireciona_form($nm_apl_dest, $nm_apl_retorno, $nm_apl_parms, $nm_target="", $alt_modal=0, $larg_modal=0)
+   {
+      global  $home_menuData;
+      if (is_array($nm_apl_parms))
+      {
+          $tmp_parms = "";
+          foreach ($nm_apl_parms as $par => $val)
+          {
+              $par = trim($par);
+              $val = trim($val);
+              $tmp_parms .= str_replace(".", "_", $par) . "?#?";
+              if (substr($val, 0, 1) == "$")
+              {
+                  $tmp_parms .= $$val;
+              }
+              elseif (substr($val, 0, 1) == "{")
+              {
+                  $val        = substr($val, 1, -1);
+                  $tmp_parms .= $this->$val;
+              }
+              elseif (substr($val, 0, 1) == "[")
+              {
+                  $tmp_parms .= $_SESSION['sc_session'][1]['home'][substr($val, 1, -1)];
+              }
+              else
+              {
+                  $tmp_parms .= $val;
+              }
+              $tmp_parms .= "?@?";
+          }
+          $nm_apl_parms = $tmp_parms;
+      }
+      $nm_apl_retorno = $_SERVER['PHP_SELF'];
+      $nm_apl_retorno = str_replace("\\", '/', $nm_apl_retorno);
+      $nm_apl_retorno = str_replace('//', '/', $nm_apl_retorno);
+      $nm_target_form = (empty($nm_target)) ? "_self" : $nm_target;
+      if (strtolower(substr($nm_apl_dest, 0, 7)) == "http://" || strtolower(substr($nm_apl_dest, 0, 8)) == "https://" || strtolower(substr($nm_apl_dest, 0, 3)) == "../" || strtolower(substr($nm_apl_dest, 0, 1)) == "/")
+      {
+          echo "<SCRIPT type=\"text/javascript\">";
+          if (strtolower($nm_target) == "_blank")
+          {
+              echo "window.open ('" . $nm_apl_dest . "');";
+          }
+          else
+          {
+              echo "window.location='" . $nm_apl_dest . "';";
+          }
+          echo "</SCRIPT>";
+          exit;
+      }
+      $dir = explode("/", $nm_apl_dest);
+      if (count($dir) == 1)
+      {
+          $nm_apl_dest = str_replace(".php", "", $nm_apl_dest);
+          $nm_apl_dest = $home_menuData['url']['link'] . $this->tab_grupo[0] .$nm_apl_dest . "/" . $nm_apl_dest . ".php";
+      }
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+      <HTML>
+      <HEAD>
+       <META http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+       <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>
+       <META http-equiv="Last-Modified" content="<?php echo gmdate("D, d M Y H:i:s"); ?> GMT"/>
+       <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate"/>
+       <META http-equiv="Cache-Control" content="post-check=0, pre-check=0"/>
+       <META http-equiv="Pragma" content="no-cache"/>
+      </HEAD>
+      <BODY>
+      <form name="Fredir" method="post" 
+                            target="_self"> 
+        <input type="hidden" name="nmgp_parms" value="<?php echo NM_encode_input($nm_apl_parms) ?>"/>
+<?php
+   if ($nm_target == "_blank")
+   {
+?>
+         <input type="hidden" name="nmgp_outra_jan" value="true"/> 
+<?php
+   }
+   else
+   {
+?>
+        <input type="hidden" name="nmgp_url_saida" value="<?php echo NM_encode_input($nm_apl_retorno) ?>">
+        <input type="hidden" name="script_case_init" value="1"/> 
+<?php
+   }
+?>
+      </form> 
+      <SCRIPT type="text/javascript">
+          window.onload = function(){
+             submit_Fredir();
+          };
+          function submit_Fredir()
+          {
+              document.Fredir.target = "<?php echo $nm_target_form ?>"; 
+              document.Fredir.action = "<?php echo $nm_apl_dest ?>";
+              document.Fredir.submit();
+          }
+      </SCRIPT>
+      </BODY>
+      </HTML>
+<?php
+     if ($nm_target != "_blank")
+     {
+         exit;
+     }
    }
    function regionalDefault()
    {

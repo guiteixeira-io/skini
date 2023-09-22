@@ -348,7 +348,7 @@ function actionBar_getStateHide($buttonName)
    }
    $this->nmgp_botoes['group_1'] = "on";
    $this->nmgp_botoes['group_1'] = "on";
-   $this->nmgp_botoes['exit'] = "on";
+   $this->nmgp_botoes['exit'] = "off";
    $this->nmgp_botoes['first'] = "on";
    $this->nmgp_botoes['back'] = "on";
    $this->nmgp_botoes['forward'] = "on";
@@ -1098,7 +1098,7 @@ $nm_saida->saida("                        <link rel=\"shortcut icon\" href=\"\">
            $nm_saida->saida("     var scSweetAlertConfirmButtonFAPos = \"" . $confirmButtonFAPos . "\";\r\n");
            $nm_saida->saida("     var scSweetAlertCancelButtonFAPos = \"" . $cancelButtonFAPos . "\";\r\n");
            $nm_saida->saida("   </script>\r\n");
-           $nm_saida->saida("   <script type=\"text/javascript\" src=\"sec_grid_sec_groups_jquery_1449.js\"></script>\r\n");
+           $nm_saida->saida("   <script type=\"text/javascript\" src=\"sec_grid_sec_groups_jquery_3135.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"sec_grid_sec_groups_ajax.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"sec_grid_sec_groups_message.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\">\r\n");
@@ -2233,19 +2233,11 @@ $nm_saida->saida("}\r\n");
      }
    } 
    $nm_saida->saida("<style>\r\n");
-   $nm_saida->saida("#lin1_col1 { padding-left:9px; padding-top:7px;  height:27px; overflow:hidden; text-align:left;}			 \r\n");
-   $nm_saida->saida("#lin1_col2 { padding-right:9px; padding-top:7px; height:27px; text-align:right; overflow:hidden;   font-size:12px; font-weight:normal;}\r\n");
+   $nm_saida->saida("    .scMenuTHeaderFont img, .scGridHeaderFont img , .scFormHeaderFont img , .scTabHeaderFont img , .scContainerHeaderFont img , .scFilterHeaderFont img { height:23px;}\r\n");
    $nm_saida->saida("</style>\r\n");
-   $nm_saida->saida("<div style=\"width: 100%\">\r\n");
-   $nm_saida->saida(" <div class=\"" . $this->css_scGridHeader . "\" style=\"height:11px; display: block; border-width:0px; \"></div>\r\n");
-   $nm_saida->saida(" <div style=\"height:37px; border-width:0px 0px 1px 0px;  border-style: dashed; border-color:#ddd; display: block\">\r\n");
-   $nm_saida->saida(" 	<table style=\"width:100%; border-collapse:collapse; padding:0;\">\r\n");
-   $nm_saida->saida("    	<tr>\r\n");
-   $nm_saida->saida("        	<td id=\"lin1_col1\" class=\"" . $this->css_scGridHeaderFont . "\"><span></span></td>\r\n");
-   $nm_saida->saida("            <td id=\"lin1_col2\" class=\"" . $this->css_scGridHeaderFont . "\"><span></span></td>\r\n");
-   $nm_saida->saida("        </tr>\r\n");
-   $nm_saida->saida("    </table>		 \r\n");
-   $nm_saida->saida(" </div>\r\n");
+   $nm_saida->saida("<div class=\"" . $this->css_scGridHeader . "\" style=\"height: 54px; padding: 17px 15px; box-sizing: border-box;margin: -1px 0px 0px 0px;width: 100%;\">\r\n");
+   $nm_saida->saida("    <div class=\"" . $this->css_scGridHeaderFont . "\" style=\"float: left; text-transform: uppercase;\">" . $this->Ini->Nm_lang['lang_list_groups'] . "</div>\r\n");
+   $nm_saida->saida("    <div class=\"" . $this->css_scGridHeaderFont . "\" style=\"float: right;\">" . $nm_data_fixa . "</div>\r\n");
    $nm_saida->saida("</div>\r\n");
    $nm_saida->saida("  </TD>\r\n");
    if ($_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['ajax_nav'] && $nm_refresch_cab_rod)
@@ -2408,19 +2400,11 @@ $nm_saida->saida("}\r\n");
      }
    } 
    $nm_saida->saida("<style>\r\n");
-   $nm_saida->saida("#lin1_col1 { padding-left:9px; padding-top:7px;  height:27px; overflow:hidden; text-align:left;}			 \r\n");
-   $nm_saida->saida("#lin1_col2 { padding-right:9px; padding-top:7px; height:27px; text-align:right; overflow:hidden;   font-size:12px; font-weight:normal;}\r\n");
+   $nm_saida->saida("    .scMenuTHeaderFont img, .scGridHeaderFont img , .scFormHeaderFont img , .scTabHeaderFont img , .scContainerHeaderFont img , .scFilterHeaderFont img { height:23px;}\r\n");
    $nm_saida->saida("</style>\r\n");
-   $nm_saida->saida("<div style=\"width: 100%\">\r\n");
-   $nm_saida->saida(" <div class=\"" . $this->css_scGridHeader . "\" style=\"height:11px; display: block; border-width:0px; \"></div>\r\n");
-   $nm_saida->saida(" <div style=\"height:37px; border-width:0px 0px 1px 0px;  border-style: dashed; border-color:#ddd; display: block\">\r\n");
-   $nm_saida->saida(" 	<table style=\"width:100%; border-collapse:collapse; padding:0;\">\r\n");
-   $nm_saida->saida("    	<tr>\r\n");
-   $nm_saida->saida("        	<td id=\"lin1_col1\" class=\"" . $this->css_scGridHeaderFont . "\"><span></span></td>\r\n");
-   $nm_saida->saida("            <td id=\"lin1_col2\" class=\"" . $this->css_scGridHeaderFont . "\"><span></span></td>\r\n");
-   $nm_saida->saida("        </tr>\r\n");
-   $nm_saida->saida("    </table>		 \r\n");
-   $nm_saida->saida(" </div>\r\n");
+   $nm_saida->saida("<div class=\"" . $this->css_scGridHeader . "\" style=\"height: 54px; padding: 17px 15px; box-sizing: border-box;margin: -1px 0px 0px 0px;width: 100%;\">\r\n");
+   $nm_saida->saida("    <div class=\"" . $this->css_scGridHeaderFont . "\" style=\"float: left; text-transform: uppercase;\">" . $this->Ini->Nm_lang['lang_list_groups'] . "</div>\r\n");
+   $nm_saida->saida("    <div class=\"" . $this->css_scGridHeaderFont . "\" style=\"float: right;\">" . $nm_data_fixa . "</div>\r\n");
    $nm_saida->saida("</div>\r\n");
    $nm_saida->saida("  </TD>\r\n");
    if ($_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['ajax_nav'] && $nm_refresch_cab_rod)
@@ -3756,6 +3740,12 @@ $nm_saida->saida("    </style>\r\n");
           $nm_saida->saida("                 document.getElementById('sc_btgp_btn_group_1_top').style.display='none'; }\r\n");
           $nm_saida->saida("           </script>\r\n");
       }
+      if (!$this->Ini->SC_Link_View && isset($_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['sc_modal']) && $_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['sc_modal'])
+      {
+            $Cod_Btn = nmButtonOutput($this->arr_buttons, "bsair", "document.F5.action='$nm_url_saida'; document.F5.submit();", "document.F5.action='$nm_url_saida'; document.F5.submit();", "sai_top", "", "", "", "absmiddle", "", "0px", $this->Ini->path_botoes, "", "", "", "", "", "only_text", "text_right", "", "", "", "", "", "", "");
+            $nm_saida->saida("           $Cod_Btn \r\n");
+            $NM_btn = true;
+      }
           if (is_file("sec_grid_sec_groups_help.txt") && !$this->grid_emb_form)
           {
              $Arq_WebHelp = file("sec_grid_sec_groups_help.txt"); 
@@ -4263,39 +4253,6 @@ $nm_saida->saida("    </style>\r\n");
                  }
              }
           }
-      if (!$_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['b_sair'] || $this->grid_emb_form || $this->grid_emb_form_full || (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['dashboard_info']['under_dashboard']) && $_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['dashboard_info']['under_dashboard']))
-      {
-         $this->nmgp_botoes['exit'] = "off"; 
-      }
-      if (!$_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['opc_psq'])
-      {
-          $this->nm_btn_exist['exit'][] = "sai_top";
-         if ($nm_apl_dependente == 1 && $this->nmgp_botoes['exit'] == "on") 
-         { 
-            $Cod_Btn = nmButtonOutput($this->arr_buttons, "bvoltar", "document.F5.action='$nm_url_saida'; document.F5.submit();", "document.F5.action='$nm_url_saida'; document.F5.submit();", "sai_top", "", "", "", "absmiddle", "", "0px", $this->Ini->path_botoes, "", "", "", "", "", "only_text", "text_right", "", "", "", "", "", "", "");
-            $nm_saida->saida("           $Cod_Btn \r\n");
-            $NM_btn = true;
-         } 
-         elseif (!$this->Ini->Embutida_iframe && !$this->Ini->SC_Link_View && !$this->aba_iframe && $this->nmgp_botoes['exit'] == "on") 
-         { 
-            $Cod_Btn = nmButtonOutput($this->arr_buttons, "bsair", "document.F5.action='$nm_url_saida'; document.F5.submit();", "document.F5.action='$nm_url_saida'; document.F5.submit();", "sai_top", "", "", "", "absmiddle", "", "0px", $this->Ini->path_botoes, "", "", "", "", "", "only_text", "text_right", "", "", "", "", "", "", "");
-            $nm_saida->saida("           $Cod_Btn \r\n");
-            $NM_btn = true;
-         } 
-      }
-      elseif ($this->nmgp_botoes['exit'] == "on")
-      {
-        if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['sc_modal']) && $_SESSION['sc_session'][$this->Ini->sc_page]['sec_grid_sec_groups']['sc_modal'])
-        {
-           $Cod_Btn = nmButtonOutput($this->arr_buttons, "bvoltar", "self.parent.tb_remove()", "self.parent.tb_remove()", "sai_top", "", "", "", "absmiddle", "", "0px", $this->Ini->path_botoes, "", "", "", "", "", "only_text", "text_right", "", "", "", "", "", "", "");
-        }
-        else
-        {
-           $Cod_Btn = nmButtonOutput($this->arr_buttons, "bvoltar", "window.close();", "window.close();", "sai_top", "", "", "", "absmiddle", "", "0px", $this->Ini->path_botoes, "", "", "", "", "", "only_text", "text_right", "", "", "", "", "", "", "");
-        }
-         $nm_saida->saida("           $Cod_Btn \r\n");
-         $NM_btn = true;
-      }
       }
       $nm_saida->saida("         </td> \r\n");
       $nm_saida->saida("        </tr> \r\n");

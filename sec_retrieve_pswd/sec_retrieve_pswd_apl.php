@@ -465,8 +465,7 @@ class sec_retrieve_pswd_apl
           include_once($this->Ini->path_lib_php . "nm_gp_config_btn.php");
       }
       include("../_lib/css/" . $this->Ini->str_schema_all . "_form.php");
-      $this->Ini->Str_btn_form = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
-      $_SESSION['scriptcase']['str_button_all'] = $this->Ini->Str_btn_form;
+      $this->Ini->Str_btn_form    = trim($str_button);
       include($this->Ini->path_btn . $this->Ini->Str_btn_form . '/' . $this->Ini->Str_btn_form . $_SESSION['scriptcase']['reg_conf']['css_dir'] . '.php');
       $_SESSION['scriptcase']['css_form_help'] = '../_lib/css/' . $this->Ini->str_schema_all . "_form.css";
       $_SESSION['scriptcase']['css_form_help_dir'] = '../_lib/css/' . $this->Ini->str_schema_all . "_form" . $_SESSION['scriptcase']['reg_conf']['css_dir'] . ".css";
@@ -1068,7 +1067,7 @@ $this->nmgp_redireciona_form($this->Ini->path_link . "" . SC_dir_app_name('sec_c
 
 if(isset($this->sc_temp_usr_login) && !empty($this->sc_temp_usr_login))
 {
-	$this->send_new_pswd();
+	$this->send_act();
 }
 if (isset($this->sc_temp_usr_login)) { $_SESSION['usr_login'] = $this->sc_temp_usr_login;}
 $_SESSION['scriptcase']['sec_retrieve_pswd']['contr_erro'] = 'off'; 
@@ -1793,7 +1792,7 @@ $usr_email = $this->search_email($usr_login);
 ;
 
 ;
-$this->send_new_pswd();
+$this->send_act();
  unset($_SESSION['usr_login']);
  unset($this->sc_temp_usr_login);
  unset($_SESSION['usr_email']);
@@ -1851,20 +1850,20 @@ $_SESSION['scriptcase']['sec_retrieve_pswd']['contr_erro'] = 'off';
       } 
       if ($this->nmgp_opcao != "excluir") 
       { 
-          if (NM_utf8_strlen($this->login) > 50) 
+          if (NM_utf8_strlen($this->login) > 255) 
           { 
               $hasError = true;
-              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_login'] . " " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
+              $Campos_Crit .= "" . $this->Ini->Nm_lang['lang_sec_users_fild_login'] . " " . $this->Ini->Nm_lang['lang_errm_mxch'] . " 255 " . $this->Ini->Nm_lang['lang_errm_nchr']; 
               if (!isset($Campos_Erros['login']))
               {
                   $Campos_Erros['login'] = array();
               }
-              $Campos_Erros['login'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $Campos_Erros['login'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 255 " . $this->Ini->Nm_lang['lang_errm_nchr'];
               if (!isset($this->NM_ajax_info['errList']['login']) || !is_array($this->NM_ajax_info['errList']['login']))
               {
                   $this->NM_ajax_info['errList']['login'] = array();
               }
-              $this->NM_ajax_info['errList']['login'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 50 " . $this->Ini->Nm_lang['lang_errm_nchr'];
+              $this->NM_ajax_info['errList']['login'][] = $this->Ini->Nm_lang['lang_errm_mxch'] . " 255 " . $this->Ini->Nm_lang['lang_errm_nchr'];
           } 
           if (NM_utf8_strlen($this->login) < 5) 
           { 
@@ -2432,10 +2431,10 @@ $_SESSION['scriptcase']['sec_retrieve_pswd']['contr_erro'] = 'on';
   
 $chars  = 'abcdefghijklmnopqrstuvxywz';
 $chars .= 'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
-$chars .= '0123456789!@$*.,;:';
+$chars .= '0123456789';
 $max = strlen($chars)-1;
 $act_code = "";
-for($i=0; $i < 50; $i++)
+for($i=0; $i < 32; $i++)
 {
 	$act_code .= $chars[mt_rand(0, $max)];
 }
@@ -2557,10 +2556,10 @@ $rs = sc_send_mail_api(array(
 				'gateway'       => 'smtp',
 				'smtp_server'   => 'email-ssl.com.br',
 				'smtp_port'     => '465',
-				'smtp_user'     => 'noreply@tsadobrasil.com.br',
-				'smtp_password' => 'tsa110noreply',
-				'from_email'    => 'tsadobrasil.com.br',
-				'from_name'    => 'noreply@tsadobrasil.com.br',
+				'smtp_user'     => 'noreply@fanchini.com.br',
+				'smtp_password' => 'rjfq7324NEW@$',
+				'from_email'    => 'noreply@fanchini.com.br',
+				'from_name'    => 'noreply@fanchini.com.br',
 		],
     'message' => [
 			'html'          => $param_message,
@@ -3787,22 +3786,12 @@ setTimeout(function() { document.Fredir.submit(); }, 250);
 ?>
     <tr><td class="sc-app-header">
 <style>
-#lin1_col1 { padding-left:9px; padding-top:7px;  height:27px; overflow:hidden; text-align:left;}			 
-#lin1_col2 { padding-right:9px; padding-top:7px; height:27px; text-align:right; overflow:hidden;   font-size:12px; font-weight:normal;}
+    .scMenuTHeaderFont img, .scGridHeaderFont img , .scFormHeaderFont img , .scTabHeaderFont img , .scContainerHeaderFont img , .scFilterHeaderFont img { height:23px;}
 </style>
-
-<div style="width: 100%">
- <div class="scFormHeader" style="height:11px; display: block; border-width:0px; "></div>
- <div style="height:37px; border-width:0px 0px 1px 0px;  border-style: dashed; border-color:#ddd; display: block">
- 	<table style="width:100%; border-collapse:collapse; padding:0;">
-    	<tr>
-        	<td id="lin1_col1" class="scFormHeaderFont"><span></span></td>
-            <td id="lin1_col2" class="scFormHeaderFont"><span></span></td>
-        </tr>
-    </table>		 
- </div>
+<div class="scFormHeader" style="height: 54px; padding: 17px 15px; box-sizing: border-box;margin: -1px 0px 0px 0px;width: 100%;">
+    <div class="scFormHeaderFont" style="float: left; text-transform: uppercase;"><?php if ($this->nmgp_opcao == "novo") { echo ""; } else { echo "" . $this->Ini->Nm_lang['lang_ret_pass'] . ""; } ?></div>
+    <div class="scFormHeaderFont" style="float: right;"><?php echo date($this->dateDefaultFormat()); ?></div>
 </div>
-
     </td></tr>
 <?php
     }

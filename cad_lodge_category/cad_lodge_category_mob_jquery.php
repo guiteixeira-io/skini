@@ -51,20 +51,14 @@ function scSetFocusOnField($oField) {
 } // scSetFocusOnField
 
 function scEventControl_init(iSeqRow) {
-  scEventControl_data["idlodgecategory" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["name" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["capacity" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["color" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
   scEventControl_data["price" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
+  scEventControl_data["lodge" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
 }
 
 function scEventControl_active(iSeqRow) {
-  if (scEventControl_data["idlodgecategory" + iSeqRow] && scEventControl_data["idlodgecategory" + iSeqRow]["blur"]) {
-    return true;
-  }
-  if (scEventControl_data["idlodgecategory" + iSeqRow] && scEventControl_data["idlodgecategory" + iSeqRow]["change"]) {
-    return true;
-  }
   if (scEventControl_data["name" + iSeqRow] && scEventControl_data["name" + iSeqRow]["blur"]) {
     return true;
   }
@@ -87,6 +81,12 @@ function scEventControl_active(iSeqRow) {
     return true;
   }
   if (scEventControl_data["price" + iSeqRow] && scEventControl_data["price" + iSeqRow]["change"]) {
+    return true;
+  }
+  if (scEventControl_data["lodge" + iSeqRow] && scEventControl_data["lodge" + iSeqRow]["blur"]) {
+    return true;
+  }
+  if (scEventControl_data["lodge" + iSeqRow] && scEventControl_data["lodge" + iSeqRow]["change"]) {
     return true;
   }
   return false;
@@ -120,8 +120,6 @@ function scEventControl_onAutocomp(sFieldName) {
 var scEventControl_data = {};
 
 function scJQEventsAdd(iSeqRow) {
-  $('#id_sc_field_idlodgecategory' + iSeqRow).bind('blur', function() { sc_cad_lodge_category_idlodgecategory_onblur(this, iSeqRow) })
-                                             .bind('focus', function() { sc_cad_lodge_category_idlodgecategory_onfocus(this, iSeqRow) });
   $('#id_sc_field_name' + iSeqRow).bind('blur', function() { sc_cad_lodge_category_name_onblur(this, iSeqRow) })
                                   .bind('focus', function() { sc_cad_lodge_category_name_onfocus(this, iSeqRow) });
   $('#id_sc_field_capacity' + iSeqRow).bind('blur', function() { sc_cad_lodge_category_capacity_onblur(this, iSeqRow) })
@@ -130,17 +128,9 @@ function scJQEventsAdd(iSeqRow) {
                                    .bind('focus', function() { sc_cad_lodge_category_color_onfocus(this, iSeqRow) });
   $('#id_sc_field_price' + iSeqRow).bind('blur', function() { sc_cad_lodge_category_price_onblur(this, iSeqRow) })
                                    .bind('focus', function() { sc_cad_lodge_category_price_onfocus(this, iSeqRow) });
+  $('#id_sc_field_lodge' + iSeqRow).bind('blur', function() { sc_cad_lodge_category_lodge_onblur(this, iSeqRow) })
+                                   .bind('focus', function() { sc_cad_lodge_category_lodge_onfocus(this, iSeqRow) });
 } // scJQEventsAdd
-
-function sc_cad_lodge_category_idlodgecategory_onblur(oThis, iSeqRow) {
-  do_ajax_cad_lodge_category_mob_validate_idlodgecategory();
-  scCssBlur(oThis);
-}
-
-function sc_cad_lodge_category_idlodgecategory_onfocus(oThis, iSeqRow) {
-  scEventControl_onFocus(oThis, iSeqRow);
-  scCssFocus(oThis);
-}
 
 function sc_cad_lodge_category_name_onblur(oThis, iSeqRow) {
   do_ajax_cad_lodge_category_mob_validate_name();
@@ -182,6 +172,16 @@ function sc_cad_lodge_category_price_onfocus(oThis, iSeqRow) {
   scCssFocus(oThis);
 }
 
+function sc_cad_lodge_category_lodge_onblur(oThis, iSeqRow) {
+  do_ajax_cad_lodge_category_mob_validate_lodge();
+  scCssBlur(oThis);
+}
+
+function sc_cad_lodge_category_lodge_onfocus(oThis, iSeqRow) {
+  scEventControl_onFocus(oThis, iSeqRow);
+  scCssFocus(oThis);
+}
+
 function displayChange_block(block, status) {
 	if ("0" == block) {
 		displayChange_block_0(status);
@@ -189,10 +189,12 @@ function displayChange_block(block, status) {
 	if ("1" == block) {
 		displayChange_block_1(status);
 	}
+	if ("2" == block) {
+		displayChange_block_2(status);
+	}
 }
 
 function displayChange_block_0(status) {
-	displayChange_field("idlodgecategory", "", status);
 	displayChange_field("name", "", status);
 	displayChange_field("capacity", "", status);
 	displayChange_field("color", "", status);
@@ -202,18 +204,19 @@ function displayChange_block_1(status) {
 	displayChange_field("price", "", status);
 }
 
+function displayChange_block_2(status) {
+	displayChange_field("lodge", "", status);
+}
+
 function displayChange_row(row, status) {
-	displayChange_field_idlodgecategory(row, status);
 	displayChange_field_name(row, status);
 	displayChange_field_capacity(row, status);
 	displayChange_field_color(row, status);
 	displayChange_field_price(row, status);
+	displayChange_field_lodge(row, status);
 }
 
 function displayChange_field(field, row, status) {
-	if ("idlodgecategory" == field) {
-		displayChange_field_idlodgecategory(row, status);
-	}
 	if ("name" == field) {
 		displayChange_field_name(row, status);
 	}
@@ -226,10 +229,9 @@ function displayChange_field(field, row, status) {
 	if ("price" == field) {
 		displayChange_field_price(row, status);
 	}
-}
-
-function displayChange_field_idlodgecategory(row, status) {
-    var fieldId;
+	if ("lodge" == field) {
+		displayChange_field_lodge(row, status);
+	}
 }
 
 function displayChange_field_name(row, status) {
@@ -248,6 +250,13 @@ function displayChange_field_price(row, status) {
     var fieldId;
 	if ("on" == status && typeof $("#nmsc_iframe_liga_sub_lodgePrice_mob")[0].contentWindow.scRecreateSelect2 === "function") {
 		$("#nmsc_iframe_liga_sub_lodgePrice_mob")[0].contentWindow.scRecreateSelect2();
+	}
+}
+
+function displayChange_field_lodge(row, status) {
+    var fieldId;
+	if ("on" == status && typeof $("#nmsc_iframe_liga_cad_lodge_mob")[0].contentWindow.scRecreateSelect2 === "function") {
+		$("#nmsc_iframe_liga_cad_lodge_mob")[0].contentWindow.scRecreateSelect2();
 	}
 }
 

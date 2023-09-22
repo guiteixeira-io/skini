@@ -8,7 +8,7 @@
     $arr_data['initial'] = "index.php";
     $arr_data['group'] = "skini";
     $arr_data['apl'] = "men_costumer";
-    $arr_data['status'] = "NAO";
+    $arr_data['status'] = "SIM";
     $arr_data['type'] = "Menu";
     $arr_data['friendly_url'] = "men_costumer";
     $arr_data['md5'] = "LigMd5";

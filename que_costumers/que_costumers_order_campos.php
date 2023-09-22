@@ -103,6 +103,9 @@ function Ord_cmp_init()
    $tab_ger_campos['phonenumber'] = "on";
    $tab_def_campos['phonenumber'] = "phoneNumber";
    $tab_labels["phonenumber"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["phonenumber"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["phonenumber"] : "Telefone";
+   $tab_ger_campos['mobilephone'] = "on";
+   $tab_def_campos['mobilephone'] = "mobilePhone";
+   $tab_labels["mobilephone"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["mobilephone"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["mobilephone"] : "Celular";
    $tab_ger_campos['email'] = "on";
    $tab_def_campos['email'] = "email";
    $tab_labels["email"]   = (isset($_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["email"])) ? $_SESSION['sc_session'][$sc_init]['que_costumers']['labels']["email"] : "Email";

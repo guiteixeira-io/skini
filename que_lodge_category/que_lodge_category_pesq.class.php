@@ -2332,7 +2332,7 @@ function nm_open_popup(parms)
 
 
 
-      <TD id='SC_name_label' class="scFilterLabelEven"><?php echo (isset($this->New_label['name'])) ? $this->New_label['name'] : "Name"; ?></TD>
+      <TD id='SC_name_label' class="scFilterLabelEven"><?php echo (isset($this->New_label['name'])) ? $this->New_label['name'] : "Acomodação"; ?></TD>
      <TD class="scFilterFieldEven"> 
       <SELECT class="scFilterObjectEven" id="SC_name_cond" name="name_cond" onChange="nm_campos_between(document.getElementById('id_vis_name'), this, 'name')">
        <OPTION value="qp" <?php if ("qp" == $name_cond) { echo "selected"; } ?>><?php echo $this->Ini->Nm_lang['lang_srch_like'] ?></OPTION>
@@ -2346,7 +2346,7 @@ function nm_open_popup(parms)
        <TR id="id_hide_name" <?php echo $str_hide_name?> valign="top">
         <TD class="scFilterFieldFontEven">
            <?php
- $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Name";
+ $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Acomodação";
  $nmgp_tab_label .= "name?#?" . $SC_Label . "?@?";
  $date_sep_bw = " " . $this->Ini->Nm_lang['lang_srch_between_values'] . " ";
  if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($date_sep_bw))
@@ -2403,7 +2403,7 @@ function nm_open_popup(parms)
 
 
 
-      <TD id='SC_capacity_label' class="scFilterLabelOdd"><?php echo (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacity"; ?></TD>
+      <TD id='SC_capacity_label' class="scFilterLabelOdd"><?php echo (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacidade"; ?></TD>
      <TD class="scFilterFieldOdd"> 
       <SELECT class="scFilterObjectOdd" id="SC_capacity_cond" name="capacity_cond" onChange="nm_campos_between(document.getElementById('id_vis_capacity'), this, 'capacity')">
        <OPTION value="gt" <?php if ("gt" == $capacity_cond) { echo "selected"; } ?>><?php echo $this->Ini->Nm_lang['lang_srch_grtr'] ?></OPTION>
@@ -2416,7 +2416,7 @@ function nm_open_popup(parms)
        <TR id="id_hide_capacity" <?php echo $str_hide_capacity?> valign="top">
         <TD class="scFilterFieldFontOdd">
            <?php
- $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacity";
+ $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacidade";
  $nmgp_tab_label .= "capacity?#?" . $SC_Label . "?@?";
  $date_sep_bw = " " . $this->Ini->Nm_lang['lang_srch_between_values'] . " ";
  if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($date_sep_bw))

@@ -51,43 +51,31 @@ function scSetFocusOnField($oField) {
 } // scSetFocusOnField
 
 function scEventControl_init(iSeqRow) {
-  scEventControl_data["idlodge" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["idlodgecategory" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["number" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["name" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
-  scEventControl_data["status" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
+  scEventControl_data["number_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
+  scEventControl_data["status_" + iSeqRow] = {"blur": false, "change": false, "autocomp": false, "original": "", "calculated": ""};
 }
 
 function scEventControl_active(iSeqRow) {
-  if (scEventControl_data["idlodge" + iSeqRow] && scEventControl_data["idlodge" + iSeqRow]["blur"]) {
+  if (scEventControl_data["number_" + iSeqRow] && scEventControl_data["number_" + iSeqRow]["blur"]) {
     return true;
   }
-  if (scEventControl_data["idlodge" + iSeqRow] && scEventControl_data["idlodge" + iSeqRow]["change"]) {
+  if (scEventControl_data["number_" + iSeqRow] && scEventControl_data["number_" + iSeqRow]["change"]) {
     return true;
   }
-  if (scEventControl_data["idlodgecategory" + iSeqRow] && scEventControl_data["idlodgecategory" + iSeqRow]["blur"]) {
+  if (scEventControl_data["status_" + iSeqRow] && scEventControl_data["status_" + iSeqRow]["blur"]) {
     return true;
   }
-  if (scEventControl_data["idlodgecategory" + iSeqRow] && scEventControl_data["idlodgecategory" + iSeqRow]["change"]) {
+  if (scEventControl_data["status_" + iSeqRow] && scEventControl_data["status_" + iSeqRow]["change"]) {
     return true;
   }
-  if (scEventControl_data["number" + iSeqRow] && scEventControl_data["number" + iSeqRow]["blur"]) {
-    return true;
-  }
-  if (scEventControl_data["number" + iSeqRow] && scEventControl_data["number" + iSeqRow]["change"]) {
-    return true;
-  }
-  if (scEventControl_data["name" + iSeqRow] && scEventControl_data["name" + iSeqRow]["blur"]) {
-    return true;
-  }
-  if (scEventControl_data["name" + iSeqRow] && scEventControl_data["name" + iSeqRow]["change"]) {
-    return true;
-  }
-  if (scEventControl_data["status" + iSeqRow] && scEventControl_data["status" + iSeqRow]["blur"]) {
-    return true;
-  }
-  if (scEventControl_data["status" + iSeqRow] && scEventControl_data["status" + iSeqRow]["change"]) {
-    return true;
+  return false;
+} // scEventControl_active
+
+function scEventControl_active_all() {
+  for (var i = 1; i < iAjaxNewLine; i++) {
+    if (scEventControl_active(i)) {
+      return true;
+    }
   }
   return false;
 } // scEventControl_active
@@ -97,10 +85,10 @@ function scEventControl_onFocus(oField, iSeq) {
   fieldId = $(oField).attr("id");
   fieldName = fieldId.substr(12);
   scEventControl_data[fieldName]["blur"] = true;
-  if ("idlodgecategory" + iSeq == fieldName) {
+  if ("status_" + iSeq == fieldName) {
     scEventControl_data[fieldName]["blur"] = false;
   }
-  if ("status" + iSeq == fieldName) {
+  if ("idlodgecategory_" + iSeq == fieldName) {
     scEventControl_data[fieldName]["blur"] = false;
   }
   scEventControl_data[fieldName]["change"] = false;
@@ -126,91 +114,52 @@ function scEventControl_onAutocomp(sFieldName) {
 var scEventControl_data = {};
 
 function scJQEventsAdd(iSeqRow) {
-  $('#id_sc_field_idlodge' + iSeqRow).bind('blur', function() { sc_cad_lodge_idlodge_onblur(this, iSeqRow) })
-                                     .bind('change', function() { sc_cad_lodge_idlodge_onchange(this, iSeqRow) })
-                                     .bind('focus', function() { sc_cad_lodge_idlodge_onfocus(this, iSeqRow) });
-  $('#id_sc_field_idlodgecategory' + iSeqRow).bind('blur', function() { sc_cad_lodge_idlodgecategory_onblur(this, iSeqRow) })
-                                             .bind('change', function() { sc_cad_lodge_idlodgecategory_onchange(this, iSeqRow) })
-                                             .bind('focus', function() { sc_cad_lodge_idlodgecategory_onfocus(this, iSeqRow) });
-  $('#id_sc_field_number' + iSeqRow).bind('blur', function() { sc_cad_lodge_number_onblur(this, iSeqRow) })
-                                    .bind('change', function() { sc_cad_lodge_number_onchange(this, iSeqRow) })
-                                    .bind('focus', function() { sc_cad_lodge_number_onfocus(this, iSeqRow) });
-  $('#id_sc_field_name' + iSeqRow).bind('blur', function() { sc_cad_lodge_name_onblur(this, iSeqRow) })
-                                  .bind('change', function() { sc_cad_lodge_name_onchange(this, iSeqRow) })
-                                  .bind('focus', function() { sc_cad_lodge_name_onfocus(this, iSeqRow) });
-  $('#id_sc_field_status' + iSeqRow).bind('blur', function() { sc_cad_lodge_status_onblur(this, iSeqRow) })
-                                    .bind('change', function() { sc_cad_lodge_status_onchange(this, iSeqRow) })
-                                    .bind('focus', function() { sc_cad_lodge_status_onfocus(this, iSeqRow) });
+  $('#id_sc_field_idlodge_' + iSeqRow).bind('change', function() { sc_cad_lodge_idlodge__onchange(this, iSeqRow) });
+  $('#id_sc_field_idlodgecategory_' + iSeqRow).bind('change', function() { sc_cad_lodge_idlodgecategory__onchange(this, iSeqRow) });
+  $('#id_sc_field_number_' + iSeqRow).bind('blur', function() { sc_cad_lodge_number__onblur(this, iSeqRow) })
+                                     .bind('change', function() { sc_cad_lodge_number__onchange(this, iSeqRow) })
+                                     .bind('focus', function() { sc_cad_lodge_number__onfocus(this, iSeqRow) });
+  $('#id_sc_field_status_' + iSeqRow).bind('blur', function() { sc_cad_lodge_status__onblur(this, iSeqRow) })
+                                     .bind('change', function() { sc_cad_lodge_status__onchange(this, iSeqRow) })
+                                     .bind('focus', function() { sc_cad_lodge_status__onfocus(this, iSeqRow) });
 } // scJQEventsAdd
 
-function sc_cad_lodge_idlodge_onblur(oThis, iSeqRow) {
-  do_ajax_cad_lodge_validate_idlodge();
-  scCssBlur(oThis);
-}
-
-function sc_cad_lodge_idlodge_onchange(oThis, iSeqRow) {
+function sc_cad_lodge_idlodge__onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
 }
 
-function sc_cad_lodge_idlodge_onfocus(oThis, iSeqRow) {
-  scEventControl_onFocus(oThis, iSeqRow);
-  scCssFocus(oThis);
-}
-
-function sc_cad_lodge_idlodgecategory_onblur(oThis, iSeqRow) {
-  do_ajax_cad_lodge_validate_idlodgecategory();
-  scCssBlur(oThis);
-}
-
-function sc_cad_lodge_idlodgecategory_onchange(oThis, iSeqRow) {
+function sc_cad_lodge_idlodgecategory__onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
 }
 
-function sc_cad_lodge_idlodgecategory_onfocus(oThis, iSeqRow) {
-  scEventControl_onFocus(oThis, iSeqRow);
-  scCssFocus(oThis);
+function sc_cad_lodge_number__onblur(oThis, iSeqRow) {
+  do_ajax_cad_lodge_validate_number_(iSeqRow);
+  scCssBlur(oThis, iSeqRow);
 }
 
-function sc_cad_lodge_number_onblur(oThis, iSeqRow) {
-  do_ajax_cad_lodge_validate_number();
-  scCssBlur(oThis);
-}
-
-function sc_cad_lodge_number_onchange(oThis, iSeqRow) {
+function sc_cad_lodge_number__onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
+  nm_check_insert(iSeqRow);
 }
 
-function sc_cad_lodge_number_onfocus(oThis, iSeqRow) {
+function sc_cad_lodge_number__onfocus(oThis, iSeqRow) {
   scEventControl_onFocus(oThis, iSeqRow);
-  scCssFocus(oThis);
+  scCssFocus(oThis, iSeqRow);
 }
 
-function sc_cad_lodge_name_onblur(oThis, iSeqRow) {
-  do_ajax_cad_lodge_validate_name();
-  scCssBlur(oThis);
+function sc_cad_lodge_status__onblur(oThis, iSeqRow) {
+  do_ajax_cad_lodge_validate_status_(iSeqRow);
+  scCssBlur(oThis, iSeqRow);
 }
 
-function sc_cad_lodge_name_onchange(oThis, iSeqRow) {
+function sc_cad_lodge_status__onchange(oThis, iSeqRow) {
   scMarkFormAsChanged();
+  nm_check_insert(iSeqRow);
 }
 
-function sc_cad_lodge_name_onfocus(oThis, iSeqRow) {
+function sc_cad_lodge_status__onfocus(oThis, iSeqRow) {
   scEventControl_onFocus(oThis, iSeqRow);
-  scCssFocus(oThis);
-}
-
-function sc_cad_lodge_status_onblur(oThis, iSeqRow) {
-  do_ajax_cad_lodge_validate_status();
-  scCssBlur(oThis);
-}
-
-function sc_cad_lodge_status_onchange(oThis, iSeqRow) {
-  scMarkFormAsChanged();
-}
-
-function sc_cad_lodge_status_onfocus(oThis, iSeqRow) {
-  scEventControl_onFocus(oThis, iSeqRow);
-  scCssFocus(oThis);
+  scCssFocus(oThis, iSeqRow);
 }
 
 function displayChange_block(block, status) {
@@ -220,56 +169,29 @@ function displayChange_block(block, status) {
 }
 
 function displayChange_block_0(status) {
-	displayChange_field("idlodge", "", status);
-	displayChange_field("idlodgecategory", "", status);
-	displayChange_field("number", "", status);
-	displayChange_field("name", "", status);
-	displayChange_field("status", "", status);
+	displayChange_field("number_", "", status);
+	displayChange_field("status_", "", status);
 }
 
 function displayChange_row(row, status) {
-	displayChange_field_idlodge(row, status);
-	displayChange_field_idlodgecategory(row, status);
-	displayChange_field_number(row, status);
-	displayChange_field_name(row, status);
-	displayChange_field_status(row, status);
+	displayChange_field_number_(row, status);
+	displayChange_field_status_(row, status);
 }
 
 function displayChange_field(field, row, status) {
-	if ("idlodge" == field) {
-		displayChange_field_idlodge(row, status);
+	if ("number_" == field) {
+		displayChange_field_number_(row, status);
 	}
-	if ("idlodgecategory" == field) {
-		displayChange_field_idlodgecategory(row, status);
-	}
-	if ("number" == field) {
-		displayChange_field_number(row, status);
-	}
-	if ("name" == field) {
-		displayChange_field_name(row, status);
-	}
-	if ("status" == field) {
-		displayChange_field_status(row, status);
+	if ("status_" == field) {
+		displayChange_field_status_(row, status);
 	}
 }
 
-function displayChange_field_idlodge(row, status) {
+function displayChange_field_number_(row, status) {
     var fieldId;
 }
 
-function displayChange_field_idlodgecategory(row, status) {
-    var fieldId;
-}
-
-function displayChange_field_number(row, status) {
-    var fieldId;
-}
-
-function displayChange_field_name(row, status) {
-    var fieldId;
-}
-
-function displayChange_field_status(row, status) {
+function displayChange_field_status_(row, status) {
     var fieldId;
 }
 
@@ -288,6 +210,351 @@ function scCheckNoPageSelected() {
 		var inactiveTabs = $(".sc-form-page").filter(".scTabInactive").filter(":visible");
 		if (inactiveTabs.length) {
 			var tabNo = $(inactiveTabs[0]).attr("id").substr(17);
+		}
+	}
+}
+<?php
+if (!$this->Embutida_form) {
+    $selectedFieldsDefault = '"0", "1"';
+    $setControlStateLoop = '2';
+} else {
+    $selectedFieldsDefault = '"0"';
+    $setControlStateLoop = '1';
+}
+?>
+var scFixCol_left = 0, scFixCol_list = [], scFixCol_selectedFields = [];
+
+function scFixCol()
+{
+    var i;
+
+    scFixCol_left = 0;
+    scFixCol_list = [];
+
+    scFixCol_addFieldColumns();
+
+    for (i = 0; i < scFixCol_list.length; i++) {
+        scFixCol_fix(scFixCol_list[i].type, scFixCol_list[i].name);
+    }
+}
+
+function scFixCol_clear()
+{
+    let colList;
+
+    scFixCol_selectedFields = [<?php echo $selectedFieldsDefault ?>];
+
+    colList = $(".sc-col-op,.sc-col-fld");
+
+    colList.css({
+        "position": "static",
+        "left": "auto"
+    }).removeClass("sc-col-is-fixed");
+
+    colList.filter(".sc-header-fixed").css({
+        "position": "sticky"
+    });
+}
+
+function scFixCol_addFieldColumns()
+{
+    var i;
+
+    for (i = 0; i < scFixCol_selectedFields.length; i++) {
+        scFixCol_list.push({"type": "fld", "name": scFixCol_selectedFields[i]});
+    }
+}
+
+function scFixCol_fix(type, columnName)
+{
+    var columnCells = $(".sc-col-" + type + "-" + columnName), thisWidth = 0;
+
+    if (columnCells.length) {
+        thisWidth = columnCells[0].offsetWidth;
+
+        columnCells.css({
+            'position': 'sticky',
+            'left': scFixCol_left,
+            'z-index': 3
+        }).addClass("sc-col-is-fixed");
+    }
+
+    scFixCol_left += thisWidth;
+}
+
+function scFixCol_fixTop()
+{
+    var columnCells = $(".sc-col-title");
+
+    columnCells.css({
+        'position': 'sticky',
+        'top': 0,
+        'z-index': 4
+    });
+
+    columnCells.filter(".sc-col-is-fixed").css("z-index", 5);
+    columnCells.filter(".sc-col-is-fixed").filter(".sc-col-actions").css("z-index", 6);
+}
+
+function scFixCol_clickColumn(columnId)
+{
+    var action;
+
+    action = scFixCol_fixColumns(columnId, "click");
+
+    scFixCol_saveConfig(columnId, action);
+}
+
+function scFixCol_fixColumns(columnId, fixAction)
+{
+    var action = "";
+
+    if ("click" == fixAction) {
+        action = scFixCol_setControlState(columnId);
+    } else {
+        scFixCol_resetControlState(columnId);
+    }
+
+    scFixCol_clear();
+    scFixCol_addFixedCells();
+    scFixCol();
+    scFixCol_fixTop();
+
+    return action;
+}
+
+function scFixCol_setControlState(columnId)
+{
+    let i, fixColLength, action;
+
+    if ($("#sc-fld-fix-col-" + columnId).hasClass("sc-op-fix-col-notfixed")) {
+        action = "on";
+
+        for (i = <?php echo $setControlStateLoop ?>; i <= columnId; i++) {
+            $(".sc-op-fix-col-" + i).removeClass("sc-op-fix-col-notfixed").addClass("sc-op-fix-col-fixed");
+        }
+    } else {
+        action = "off";
+
+        fixColLength = $(".sc-op-fix-col").length;
+
+        for (i = columnId; i < fixColLength; i++) {
+            $(".sc-op-fix-col-" + i).removeClass("sc-op-fix-col-fixed").addClass("sc-op-fix-col-notfixed");
+        }
+    }
+
+    return action;
+}
+
+function scFixCol_resetControlState(columnId)
+{
+    let i;
+
+    $(".sc-op-fix-col").addClass("sc-op-fix-col-notfixed").removeClass("sc-op-fix-col-fixed");
+
+    if ("" == columnId) {
+        return;
+    }
+
+    for (i = <?php echo $setControlStateLoop ?>; i <= columnId; i++) {
+        $(".sc-op-fix-col-" + i).removeClass("sc-op-fix-col-notfixed").addClass("sc-op-fix-col-fixed");
+    }
+}
+
+function scFixCol_addFixedCells()
+{
+    selectedFields = $(".sc-ui-header-row .sc-op-fix-col.sc-op-fix-col-fixed");
+
+    for (i = 0; i < selectedFields.length; i++) {
+        scFixCol_selectedFields.push($(selectedFields[i]).attr("id").substr(15));
+    }
+}
+
+function scFixCol_saveConfig(index, action)
+{
+    $.ajax({
+        url: "cad_lodge.php",
+        dataType: "json",
+        method: "POST",
+        data: {
+            script_case_init: "<?php echo $this->Ini->sc_page ?>",
+            nmgp_opcao: "ajax_fixed_columns_form_save",
+            fixed_index: index,
+            fixed_action: action
+        }
+    }).done(function(data, textStatus, jqXHR) {
+    });
+}
+
+function scFixCol_loadState()
+{
+    $.ajax({
+        url: "cad_lodge.php",
+        dataType: "json",
+        method: "POST",
+        data: {
+            script_case_init: "<?php echo $this->Ini->sc_page ?>",
+            nmgp_opcao: "ajax_fixed_columns_form_load"
+        }
+    }).done(function(data, textStatus, jqXHR) {
+        if (typeof data.status !== undefined && "ok" == data.status) {
+            scFixCol_fixColumns(data.last_index, "load");
+        }
+    });
+}
+
+function scFixCol_addClickControl()
+{
+    $(".sc-op-fix-col").on("click", function() {
+        scFixCol_clickColumn($(this).attr("data-fixcolid"));
+    });
+}
+
+$(function()
+{
+    scFixCol();
+    scFixCol_addClickControl();
+    scFixCol_loadState();
+    $(window).on('resize', function() {
+        scFixCol_loadState();
+    });
+});
+
+<?php
+
+$formWidthCorrection = '';
+if (false !== strpos($this->Ini->form_table_width, 'calc')) {
+	$formWidthCalc = substr($this->Ini->form_table_width, strpos($this->Ini->form_table_width, '(') + 1);
+	$formWidthCalc = substr($formWidthCalc, 0, strpos($formWidthCalc, ')'));
+	$formWidthParts = explode(' ', $formWidthCalc);
+	if (3 == count($formWidthParts) && 'px' == substr($formWidthParts[2], -2)) {
+		$formWidthParts[2] = substr($formWidthParts[2], 0, -2) / 2;
+		$formWidthCorrection = $formWidthParts[1] . ' ' . $formWidthParts[2];
+	}
+}
+
+?>
+
+function scSetFixedHeadersCss(baseTop)
+{
+    let rows, cols, i, j, thisTop;
+
+    rows = $(".sc-ui-header-row");
+    thisTop = baseTop;
+
+    for (i = 0; i < rows.length; i++) {
+        cols = $(rows[i]).find("td").filter(".sc-col-title");
+        for (j = 0; j < cols.length; j++) {
+            $(cols[j]).css({
+                "position": "sticky",
+                "top": thisTop + "px",
+                "z-index": 4
+            }).addClass("sc-header-fixed");
+        }
+        thisTop += $(rows[i]).height();
+    }
+
+    rows = $(".sc-ui-header-row");
+
+    rows.filter(".sc-col-is-fixed").css("z-index", 5);
+    rows.filter(".sc-col-is-fixed").filter(".sc-col-actions").css("z-index", 6);
+}
+
+$(function() {
+    scSetFixedHeadersCss(0);
+});
+
+$(window).scroll(function() {
+	scSetFixedHeaders();
+});
+
+var rerunHeaderDisplay = 1;
+
+function scSetFixedHeaders(forceDisplay) {
+    return;
+	if (null == forceDisplay) {
+		forceDisplay = false;
+	}
+	var divScroll, formHeaders, headerPlaceholder;
+	formHeaders = scGetHeaderRow();
+	headerPlaceholder = $("#sc-id-fixedheaders-placeholder");
+	if (!formHeaders) {
+		headerPlaceholder.hide();
+	}
+	else {
+		if (scIsHeaderVisible(formHeaders)) {
+			headerPlaceholder.hide();
+		}
+		else {
+			if (!headerPlaceholder.filter(":visible").length || forceDisplay) {
+				scSetFixedHeadersContents(formHeaders, headerPlaceholder);
+				scSetFixedHeadersSize(formHeaders);
+				headerPlaceholder.show();
+			}
+			scSetFixedHeadersPosition(formHeaders, headerPlaceholder);
+			if (0 < rerunHeaderDisplay) {
+				rerunHeaderDisplay--;
+				setTimeout(function() {
+					scSetFixedHeadersContents(formHeaders, headerPlaceholder);
+					scSetFixedHeadersSize(formHeaders);
+					headerPlaceholder.show();
+					scSetFixedHeadersPosition(formHeaders, headerPlaceholder);
+				}, 5);
+			}
+		}
+	}
+}
+
+function scSetFixedHeadersPosition(formHeaders, headerPlaceholder) {
+	if (formHeaders) {
+		headerPlaceholder.css({"top": 0<?php echo $formWidthCorrection ?>, "left": (Math.floor(formHeaders.offset().left) - $(document).scrollLeft()<?php echo $formWidthCorrection ?>) + "px"});
+	}
+}
+
+function scIsHeaderVisible(formHeaders) {
+	if (typeof(scIsHeaderVisibleMobile) === typeof(function(){})) { return scIsHeaderVisibleMobile(formHeaders); }
+	return formHeaders.offset().top > $(document).scrollTop();
+}
+
+function scGetHeaderRow() {
+	var formHeaders = $(".sc-ui-header-row").filter(":visible");
+	if (!formHeaders.length) {
+		formHeaders = false;
+	}
+	return formHeaders;
+}
+
+function scSetFixedHeadersContents(formHeaders, headerPlaceholder) {
+	var i, htmlContent;
+	htmlContent = "<table id=\"sc-id-fixed-headers\" class=\"scFormTable\">";
+	for (i = 0; i < formHeaders.length; i++) {
+		htmlContent += "<tr class=\"scFormLabelOddMult\" id=\"sc-id-headers-row-" + i + "\">" + $(formHeaders[i]).html() + "</tr>";
+	}
+	htmlContent += "</table>";
+	headerPlaceholder.html(htmlContent);
+}
+
+function scSetFixedHeadersSize(formHeaders) {
+	var i, j, headerColumns, formColumns, cellHeight, cellWidth, tableOriginal, tableHeaders;
+	tableOriginal = $("#hidden_bloco_0");
+	tableHeaders = document.getElementById("sc-id-fixed-headers");
+	$(tableHeaders).css("width", $(tableOriginal).outerWidth());
+	for (i = 0; i < formHeaders.length; i++) {
+		headerColumns = $("#sc-id-fixed-headers-row-" + i).find("td");
+		formColumns = $(formHeaders[i]).find("td");
+		for (j = 0; j < formColumns.length; j++) {
+			if (window.getComputedStyle(formColumns[j])) {
+				cellWidth = window.getComputedStyle(formColumns[j]).width;
+				cellHeight = window.getComputedStyle(formColumns[j]).height;
+			}
+			else {
+				cellWidth = $(formColumns[j]).width() + "px";
+				cellHeight = $(formColumns[j]).height() + "px";
+			}
+			$(headerColumns[j]).css({
+				"width": cellWidth,
+				"height": cellHeight
+			});
 		}
 	}
 }

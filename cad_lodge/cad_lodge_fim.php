@@ -72,6 +72,7 @@
    {
       unset($_SESSION['sc_session'][$script_case_init]['cad_lodge']['sc_redir_atualiz']);
       unset($_SESSION['sc_session'][$script_case_init]['cad_lodge']['sc_redir_insert']);
+      unset($_SESSION['sc_session'][$script_case_init]['cad_lodge']['sc_max_reg']);
    }
    $fecha_janela = false;
    if (isset($script_case_init) && !is_array($script_case_init) && isset($_SESSION['sc_session'][$script_case_init]['cad_lodge']['sc_outra_jan']) && $_SESSION['sc_session'][$script_case_init]['cad_lodge']['sc_outra_jan'])
@@ -140,16 +141,6 @@
 <HEAD>
  <TITLE>cad_lodge</TITLE>
  <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
-<?php
-
-if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['device_mobile'] && isset($_SESSION['scriptcase']['display_mobile']) && $_SESSION['scriptcase']['display_mobile'])
-{
-?>
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-<?php
-}
-
-?>
 </HEAD>
 <BODY>
 <SCRIPT LANGUAGE="Javascript">
@@ -202,16 +193,6 @@ else
 <HEAD>
  <TITLE>cad_lodge</TITLE>
  <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
-<?php
-
-if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])
-{
-?>
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-<?php
-}
-
-?>
 </HEAD>
 <BODY>
 <SCRIPT LANGUAGE="Javascript">
@@ -232,16 +213,6 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
 <HEAD>
  <TITLE>cad_lodge</TITLE>
  <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
-<?php
-
-if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])
-{
-?>
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-<?php
-}
-
-?>
 </HEAD>
 <BODY>
 <form name="fsai" method="post" action="<?php echo $_SESSION['scriptcase']['sc_url_saida'][$script_case_init]; ?>">

@@ -313,6 +313,14 @@ function actionBar_getStateHide($buttonName)
                   $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
                   $this->NM_prim_col++;
               }
+              $SC_Label = (isset($this->New_label['mobilephone'])) ? $this->New_label['mobilephone'] : "Celular"; 
+              if ($Cada_col == "mobilephone" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
+              {
+                  $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+                  $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $SC_Label);
+                  $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+                  $this->NM_prim_col++;
+              }
               $SC_Label = (isset($this->New_label['email'])) ? $this->New_label['email'] : "Email"; 
               if ($Cada_col == "email" && (!isset($this->NM_cmp_hidden[$Cada_col]) || $this->NM_cmp_hidden[$Cada_col] != "off"))
               {
@@ -346,15 +354,15 @@ function actionBar_getStateHide($buttonName)
       $nmgp_select_count = "SELECT count(*) AS countTest from " . $this->Ini->nm_tabela; 
       if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       else 
       { 
-          $nmgp_select = "SELECT name, docNumber, phoneNumber, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
+          $nmgp_select = "SELECT name, docNumber, phoneNumber, mobilePhone, email, holderType, frequencyType, idCostumer from " . $this->Ini->nm_tabela; 
       } 
       $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
       $nmgp_select_count .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['where_pesq'];
@@ -392,11 +400,13 @@ function actionBar_getStateHide($buttonName)
          $this->docnumber = $rs->fields[1] ;  
          $this->phonenumber = $rs->fields[2] ;  
          $this->phonenumber = (string)$this->phonenumber;
-         $this->email = $rs->fields[3] ;  
+         $this->mobilephone = $rs->fields[3] ;  
+         $this->mobilephone = (string)$this->mobilephone;
+         $this->email = $rs->fields[4] ;  
          $this->email = (string)$this->email;
-         $this->holdertype = $rs->fields[4] ;  
-         $this->frequencytype = $rs->fields[5] ;  
-         $this->idcostumer = $rs->fields[6] ;  
+         $this->holdertype = $rs->fields[5] ;  
+         $this->frequencytype = $rs->fields[6] ;  
+         $this->idcostumer = $rs->fields[7] ;  
          $this->idcostumer = (string)$this->idcostumer;
          //----- lookup - holdertype
          $this->look_holdertype = $this->holdertype; 
@@ -557,9 +567,19 @@ function actionBar_getStateHide($buttonName)
    function NM_export_phonenumber()
    {
              $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
-             $this->nm_gera_mask($this->phonenumber, "(xx) xxxxx-xxxx"); 
+             $this->nm_gera_mask($this->phonenumber, "(xx) xxxx-xxxx"); 
       $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
       $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->phonenumber);
+      $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
+      $this->NM_prim_col++;
+   }
+   //----- mobilephone
+   function NM_export_mobilephone()
+   {
+             $conteudo = str_replace($_SESSION['sc_session'][$this->Ini->sc_page]['que_costumers']['decimal_db'], "", $conteudo); 
+             $this->nm_gera_mask($this->mobilephone, "(xx) x xxxx-xxxx"); 
+      $col_sep = ($this->NM_prim_col > 0) ? $this->Delim_col : "";
+      $conteudo = str_replace($this->Delim_dados, $this->Delim_dados . $this->Delim_dados, $this->mobilephone);
       $this->csv_registro .= $col_sep . $this->Delim_dados . $conteudo . $this->Delim_dados;
       $this->NM_prim_col++;
    }

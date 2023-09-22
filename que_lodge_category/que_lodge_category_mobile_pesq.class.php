@@ -2324,7 +2324,7 @@ function nm_open_popup(parms)
 
    
     <TD nowrap class="scFilterLabelEven" style="vertical-align: top" > <?php
- $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Name";
+ $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Acomodação";
  $nmgp_tab_label .= "name?#?" . $SC_Label . "?@?";
  $date_sep_bw = " " . $this->Ini->Nm_lang['lang_srch_between_values'] . " ";
  if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($date_sep_bw))
@@ -2387,7 +2387,7 @@ function nm_open_popup(parms)
 
    
     <TD nowrap class="scFilterLabelOdd" style="vertical-align: top" > <?php
- $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacity";
+ $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacidade";
  $nmgp_tab_label .= "capacity?#?" . $SC_Label . "?@?";
  $date_sep_bw = " " . $this->Ini->Nm_lang['lang_srch_between_values'] . " ";
  if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($date_sep_bw))

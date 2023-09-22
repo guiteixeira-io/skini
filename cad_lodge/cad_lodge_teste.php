@@ -79,7 +79,6 @@
   }
 ?> 
 <br> 
-<B><FONT SIZE="4">cad_lodge</FONT></B> 
 <br> 
 <br> 
 <form name="Fedit" method="post" 
@@ -87,9 +86,9 @@
                target="_self"> 
 <input type="hidden" name="nmgp_outra_jan" value="true"/>
 <input type="hidden" name="NM_contr_var_session" value="Yes"> 
-<input type="submit" value="cad_lodge"> 
 </form> 
 <script language=javascript> 
+ document.Fedit.submit(); 
 </script> 
 <br> 
 </body> 

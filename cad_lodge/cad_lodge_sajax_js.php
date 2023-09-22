@@ -2980,20 +2980,28 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
 
   }
 
-  // ---------- Validate idlodge
-  function do_ajax_cad_lodge_validate_idlodge()
+  // ---------- Validate number_
+  function do_ajax_cad_lodge_validate_number_(iNumLinha)
   {
-    var nomeCampo_idlodge = "idlodge";
-    var var_idlodge = scAjaxGetFieldHidden(nomeCampo_idlodge);
+    var nomeCampo_number_ = "number_" + iNumLinha;
+    var var_number_ = scAjaxGetFieldText(nomeCampo_number_);
     var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_cad_lodge_validate_idlodge(var_idlodge, var_script_case_init, do_ajax_cad_lodge_validate_idlodge_cb);
-  } // do_ajax_cad_lodge_validate_idlodge
+    x_ajax_cad_lodge_validate_number_(var_number_, iNumLinha, var_script_case_init, do_ajax_cad_lodge_validate_number__cb);
+  } // do_ajax_cad_lodge_validate_number_
 
-  function do_ajax_cad_lodge_validate_idlodge_cb(sResp)
+  function do_ajax_cad_lodge_validate_number__cb(sResp)
   {
     oResp = scAjaxResponse(sResp);
     scAjaxRedir();
-    sFieldValid = "idlodge";
+    iLineNumber = scAjaxGetLineNumber();
+    if ("" != iLineNumber)
+    {
+      sFieldValid = "number_" + iLineNumber;
+    }
+    else
+    {
+      sFieldValid = "number_";
+    }
     scEventControl_onBlur(sFieldValid);
     scAjaxUpdateFieldErrors(sFieldValid, "valid");
     sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
@@ -3001,11 +3009,13 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     {
       var sImgStatus = sc_img_status_ok;
       scAjaxHideErrorDisplay(sFieldValid);
+      scErrorLineOff(iLineNumber, "number_");
     }
     else
     {
       var sImgStatus = sc_img_status_err;
       scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+      scErrorLineOn(iLineNumber, "number_");
     }
     var $oImg = $('#id_sc_status_' + sFieldValid);
     if (0 < $oImg.length)
@@ -3015,22 +3025,30 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxShowDebug();
     scAjaxSetMaster();
     scAjaxSetFocus();
-  } // do_ajax_cad_lodge_validate_idlodge_cb
+  } // do_ajax_cad_lodge_validate_number__cb
 
-  // ---------- Validate idlodgecategory
-  function do_ajax_cad_lodge_validate_idlodgecategory()
+  // ---------- Validate status_
+  function do_ajax_cad_lodge_validate_status_(iNumLinha)
   {
-    var nomeCampo_idlodgecategory = "idlodgecategory";
-    var var_idlodgecategory = scAjaxGetFieldSelect(nomeCampo_idlodgecategory);
+    var nomeCampo_status_ = "status_" + iNumLinha;
+    var var_status_ = scAjaxGetFieldSelect(nomeCampo_status_);
     var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_cad_lodge_validate_idlodgecategory(var_idlodgecategory, var_script_case_init, do_ajax_cad_lodge_validate_idlodgecategory_cb);
-  } // do_ajax_cad_lodge_validate_idlodgecategory
+    x_ajax_cad_lodge_validate_status_(var_status_, iNumLinha, var_script_case_init, do_ajax_cad_lodge_validate_status__cb);
+  } // do_ajax_cad_lodge_validate_status_
 
-  function do_ajax_cad_lodge_validate_idlodgecategory_cb(sResp)
+  function do_ajax_cad_lodge_validate_status__cb(sResp)
   {
     oResp = scAjaxResponse(sResp);
     scAjaxRedir();
-    sFieldValid = "idlodgecategory";
+    iLineNumber = scAjaxGetLineNumber();
+    if ("" != iLineNumber)
+    {
+      sFieldValid = "status_" + iLineNumber;
+    }
+    else
+    {
+      sFieldValid = "status_";
+    }
     scEventControl_onBlur(sFieldValid);
     scAjaxUpdateFieldErrors(sFieldValid, "valid");
     sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
@@ -3038,11 +3056,13 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     {
       var sImgStatus = sc_img_status_ok;
       scAjaxHideErrorDisplay(sFieldValid);
+      scErrorLineOff(iLineNumber, "status_");
     }
     else
     {
       var sImgStatus = sc_img_status_err;
       scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+      scErrorLineOn(iLineNumber, "status_");
     }
     var $oImg = $('#id_sc_status_' + sFieldValid);
     if (0 < $oImg.length)
@@ -3052,118 +3072,251 @@ if (isset($_SESSION['scriptcase']['device_mobile']) && $_SESSION['scriptcase']['
     scAjaxShowDebug();
     scAjaxSetMaster();
     scAjaxSetFocus();
-  } // do_ajax_cad_lodge_validate_idlodgecategory_cb
+  } // do_ajax_cad_lodge_validate_status__cb
 
-  // ---------- Validate number
-  function do_ajax_cad_lodge_validate_number()
-  {
-    var nomeCampo_number = "number";
-    var var_number = scAjaxGetFieldText(nomeCampo_number);
-    var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_cad_lodge_validate_number(var_number, var_script_case_init, do_ajax_cad_lodge_validate_number_cb);
-  } // do_ajax_cad_lodge_validate_number
+  var sc_num_ult_line = "";
+  var sc_insert_open  = false;
 
-  function do_ajax_cad_lodge_validate_number_cb(sResp)
+  // ---------- add_new_line
+  function do_ajax_cad_lodge_add_new_line(sc_clone, sc_seq_clone)
   {
-    oResp = scAjaxResponse(sResp);
-    scAjaxRedir();
-    sFieldValid = "number";
-    scEventControl_onBlur(sFieldValid);
-    scAjaxUpdateFieldErrors(sFieldValid, "valid");
-    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
-    if ("" == sFieldErrors)
+    if (sc_insert_open)
     {
-      var sImgStatus = sc_img_status_ok;
-      scAjaxHideErrorDisplay(sFieldValid);
+        if (sc_clone == 'S' && sc_seq_clone != iAjaxNewLine)
+        {
+          do_ajax_cad_lodge_cancel_insert(iAjaxNewLine);
+        }
+        else
+        {
+          return;
+        }
+    }
+    sc_insert_open = true;
+    scDisableNavigation();
+    sc_num_ult_line = parseInt(iAjaxNewLine) + 1;
+    if (sc_clone == 'S')
+    {
+      var var_sc_clone     = sc_clone;
+      var var_sc_seq_clone = sc_seq_clone;
     }
     else
     {
-      var sImgStatus = sc_img_status_err;
-      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+      var var_sc_clone     = 'N';
+      var var_sc_seq_clone = '';
     }
-    var $oImg = $('#id_sc_status_' + sFieldValid);
-    if (0 < $oImg.length)
-    {
-      $oImg.attr('src', sImgStatus).css('display', '');
-    }
-    scAjaxShowDebug();
-    scAjaxSetMaster();
-    scAjaxSetFocus();
-  } // do_ajax_cad_lodge_validate_number_cb
-
-  // ---------- Validate name
-  function do_ajax_cad_lodge_validate_name()
-  {
-    var nomeCampo_name = "name";
-    var var_name = scAjaxGetFieldText(nomeCampo_name);
+    var var_sc_seq_vert = document.F1.sc_contr_vert.value;
     var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_cad_lodge_validate_name(var_name, var_script_case_init, do_ajax_cad_lodge_validate_name_cb);
-  } // do_ajax_cad_lodge_validate_name
+    scAjaxProcOn(true);
+    x_ajax_cad_lodge_add_new_line(var_sc_clone, var_sc_seq_clone, var_sc_seq_vert, var_script_case_init, do_ajax_cad_lodge_add_new_line_cb);
+  } // do_ajax_cad_lodge_add_new_line
 
-  function do_ajax_cad_lodge_validate_name_cb(sResp)
+  function do_ajax_cad_lodge_add_new_line_cb(sResp)
+  {
+    scAjaxProcOff(true);
+    if ("{" == sResp.substr(0, 1)) {
+        oResp = scAjaxResponse(sResp);
+        scAjaxRedir();
+    }
+    var sv_quot = sResp.replace(/&quot;/g, "_nm__asp_");
+    sv_quot = scAjaxSpecCharParser(sv_quot);
+    document.getElementById("new_line_dummy").innerHTML = "<table id=\"new_line_table\">" + sv_quot.replace(/_nm__asp_/g, "&quot;") + "</table>";
+    var oTBodyOld = document.getElementById("hidden_bloco_0").tBodies[0];
+    var oTBodyNew = document.getElementById("new_line_table").tBodies[0];
+    var oTRNewLine = oTBodyNew.rows[0];
+    oTBodyOld.appendChild(oTRNewLine);
+    ajax_create_tables(document.F1.sc_contr_vert.value);
+    iAjaxNewLine = document.F1.sc_contr_vert.value;
+    document.F1.sc_contr_vert.value++;
+    scJQElementsAdd(iAjaxNewLine);
+    if (document.getElementById("sc_clone_line_" + iAjaxNewLine))
+        document.getElementById("sc_clone_line_" + iAjaxNewLine).style.display = "none";
+    scLoadScInput('#idVertRow' + iAjaxNewLine + ' input:text.sc-js-input');
+    scLoadScInput('#idVertRow' + iAjaxNewLine + ' input:password.sc-js-input');
+    scLoadScInput('#idVertRow' + iAjaxNewLine + ' input:checkbox.sc-js-input');
+    scLoadScInput('#idVertRow' + iAjaxNewLine + ' input:radio.sc-js-input');
+    scLoadScInput('#idVertRow' + iAjaxNewLine + ' select.sc-js-input');
+    scLoadScInput('#idVertRow' + iAjaxNewLine + ' textarea.sc-js-input');
+    scFixCol_loadState();
+  } // do_ajax_cad_lodge_add_new_line_cb
+
+  // ---------- backup_line
+  function do_ajax_cad_lodge_backup_line(iNumLinha)
+  {
+    var var_idlodge_ = scAjaxGetFieldText("idlodge_" + iNumLinha);
+    var var_nmgp_refresh_row = iNumLinha;
+    var var_nm_form_submit = document.F1.nm_form_submit.value;
+    var var_script_case_init = document.F1.script_case_init.value;
+    x_ajax_cad_lodge_backup_line(var_idlodge_, var_nmgp_refresh_row, var_nm_form_submit, var_script_case_init, do_ajax_cad_lodge_backup_line_cb);
+  } // do_ajax_cad_lodge_backup_line
+
+  function do_ajax_cad_lodge_backup_line_cb(sResp)
   {
     oResp = scAjaxResponse(sResp);
     scAjaxRedir();
-    sFieldValid = "name";
-    scEventControl_onBlur(sFieldValid);
-    scAjaxUpdateFieldErrors(sFieldValid, "valid");
-    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
-    if ("" == sFieldErrors)
+    if (!scAjaxHasError())
     {
-      var sImgStatus = sc_img_status_ok;
-      scAjaxHideErrorDisplay(sFieldValid);
+      scAjaxSetFields(false);
+      scAjaxSetVariables();
     }
-    else
-    {
-      var sImgStatus = sc_img_status_err;
-      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
-    }
-    var $oImg = $('#id_sc_status_' + sFieldValid);
-    if (0 < $oImg.length)
-    {
-      $oImg.attr('src', sImgStatus).css('display', '');
-    }
-    scAjaxShowDebug();
-    scAjaxSetMaster();
-    scAjaxSetFocus();
-  } // do_ajax_cad_lodge_validate_name_cb
+  } // do_ajax_cad_lodge_backup_line_cb
 
-  // ---------- Validate status
-  function do_ajax_cad_lodge_validate_status()
+  function do_ajax_cad_lodge_cancel_insert(iSeqVert)
   {
-    var nomeCampo_status = "status";
-    var var_status = scAjaxGetFieldSelect(nomeCampo_status);
-    var var_script_case_init = document.F1.script_case_init.value;
-    x_ajax_cad_lodge_validate_status(var_status, var_script_case_init, do_ajax_cad_lodge_validate_status_cb);
-  } // do_ajax_cad_lodge_validate_status
+    var oTBodyOld = document.getElementById("hidden_bloco_0").tBodies[0];
+    var oTROldLine = oTBodyOld.rows[oTBodyOld.rows.length - 1];
+    oTBodyOld.removeChild(oTROldLine);
+    ajax_destroy_tables(iSeqVert);
+    scEnableNavigation();
+    sc_insert_open = false;
+    scAjaxHideErrorDisplay("table");
+  } // do_ajax_cad_lodge_cancel_insert
 
-  function do_ajax_cad_lodge_validate_status_cb(sResp)
+  function do_ajax_cad_lodge_cancel_update(iSeqVert)
   {
+    do_ajax_cad_lodge_backup_line(iSeqVert);
+    scErrorLineOff(iSeqVert, "__sc_all__");
+    scAjaxHideErrorDisplay("table");
+<?php
+    if ($this->Embutida_ronly)
+    {
+?>
+    mdCloseObjects(iSeqVert);
+<?php
+    if ($this->nmgp_botoes['delete'] == 'on')
+    {
+?>
+    if (document.getElementById("sc_exc_line_" + iSeqVert))
+      document.getElementById("sc_exc_line_" + iSeqVert).style.display = "";
+<?php
+    }
+?>
+    if (document.getElementById("sc_open_line_" + iSeqVert))
+      document.getElementById("sc_open_line_" + iSeqVert).style.display = "";
+    if (document.getElementById("sc_upd_line_" + iSeqVert))
+      document.getElementById("sc_upd_line_" + iSeqVert).style.display = "none";
+    if (document.getElementById("sc_cancelu_line_" + iSeqVert))
+      document.getElementById("sc_cancelu_line_" + iSeqVert).style.display = "none";
+<?php
+    }
+?>
+  } // do_ajax_cad_lodge_cancel_update
+
+  function do_ajax_cad_lodge_restore_buttons()
+  {
+<?php
+    if (isset($this->Embutida_ronly) && $this->Embutida_ronly)
+    {
+?>
+    for (iSeqVert = 1; iSeqVert <= <?php echo $this->sc_max_reg; ?>; iSeqVert++)
+    {
+<?php
+    if ($this->nmgp_botoes['delete'] == 'on')
+    {
+?>
+<?php
+    }
+?>
+      if (document.getElementById("sc_ins_line_" + iSeqVert))
+        document.getElementById("sc_ins_line_" + iSeqVert).style.display = "none";
+      if (document.getElementById("sc_upd_line_" + iSeqVert))
+        document.getElementById("sc_upd_line_" + iSeqVert).style.display = "none";
+      if (document.getElementById("sc_new_line_" + iSeqVert))
+        document.getElementById("sc_new_line_" + iSeqVert).style.display = "none";
+      if (document.getElementById("sc_canceli_line_" + iSeqVert))
+        document.getElementById("sc_canceli_line_" + iSeqVert).style.display = "none";
+      if (document.getElementById("sc_cancelu_line_" + iSeqVert))
+        document.getElementById("sc_cancelu_line_" + iSeqVert).style.display = "none";
+    }
+<?php
+    }
+?>
+  } // do_ajax_cad_lodge_restore_buttons
+
+  // ---------- table_refresh
+  function do_ajax_cad_lodge_table_refresh()
+  {
+    var var_idlodge_ = document.F2.idlodge_.value;
+    var var_nm_form_submit = document.F2.nm_form_submit.value;
+    var var_nmgp_opcao = document.F2.nmgp_opcao.value;
+    var var_nmgp_ordem = document.F2.nmgp_ordem.value;
+    var var_nmgp_fast_search = document.F2.nmgp_fast_search.value;
+    var var_nmgp_cond_fast_search = document.F2.nmgp_cond_fast_search.value;
+    var var_nmgp_arg_fast_search = document.F2.nmgp_arg_fast_search.value;
+    var var_nmgp_arg_dyn_search = document.F2.nmgp_arg_dyn_search.value;
+    var var_script_case_init = document.F2.script_case_init.value;
+    scAjaxProcOn();
+    x_ajax_cad_lodge_table_refresh(var_idlodge_, var_nm_form_submit, var_nmgp_opcao, var_nmgp_ordem, var_nmgp_fast_search, var_nmgp_cond_fast_search, var_nmgp_arg_fast_search, var_nmgp_arg_dyn_search, var_script_case_init, do_ajax_cad_lodge_table_refresh_cb);
+  } //  do_ajax_cad_lodge_table_refresh
+
+  function do_ajax_cad_lodge_table_refresh_cb(sResp)
+  {
+    scAjaxProcOff();
     oResp = scAjaxResponse(sResp);
     scAjaxRedir();
-    sFieldValid = "status";
-    scEventControl_onBlur(sFieldValid);
-    scAjaxUpdateFieldErrors(sFieldValid, "valid");
-    sFieldErrors = scAjaxListFieldErrors(sFieldValid, false);
-    if ("" == sFieldErrors)
+    if (oResp['empty_filter'] && oResp['empty_filter'] == "ok")
     {
-      var sImgStatus = sc_img_status_ok;
-      scAjaxHideErrorDisplay(sFieldValid);
+        document.F5.nmgp_opcao.value = "inicio";
+        document.F5.nmgp_parms.value = "";
+        document.F5.submit();
+    }
+    if ("ERROR" == oResp.result)
+    {
+        scAjaxShowErrorDisplay("table", oResp.errList[0].msgText);
+        scAjaxProcOff();
+        return;
+    }
+    if (oResp["rsSize"] < <?php echo $this->sc_max_reg; ?>)
+    {
+       bRefreshTable = true;
+    }
+    if (oResp["navSummary"].reg_tot == 0)
+    {
+       $("#sc-ui-empty-form").show();
+       $(".sc-ui-page-tab-line").hide();
+       $("#sc-id-required-row").hide();
     }
     else
     {
-      var sImgStatus = sc_img_status_err;
-      scAjaxShowErrorDisplay(sFieldValid, sFieldErrors);
+       $("#sc-ui-empty-form").hide();
+       $(".sc-ui-page-tab-line").show();
+       $("#sc-id-required-row").show();
     }
-    var $oImg = $('#id_sc_status_' + sFieldValid);
-    if (0 < $oImg.length)
+    document.F2.idlodge_.value = scAjaxGetKeyValue("idlodge_");
+    for (i = 1; i < <?php echo $this->sc_max_reg + 1; ?> ; i++)
     {
-      $oImg.attr('src', sImgStatus).css('display', '');
     }
-    scAjaxShowDebug();
-    scAjaxSetMaster();
+    var sv_quot = oResp["tableRefresh"].replace(/&quot;/g, "_nm__asp_");
+    sv_quot = scAjaxSpecCharParser(sv_quot);
+    document.getElementById("SC_tab_mult_reg").innerHTML = sv_quot.replace(/_nm__asp_/g, "&quot;");
+    for (i = 1; i < <?php echo $this->sc_max_reg + 1; ?> ; i++)
+    {
+    }
+    document.F1.sc_contr_vert.value = parseInt(oResp["rsSize"]) + 1;
+    iAjaxNewLine = oResp["rsSize"];
+    scAjaxSetVariables();
+    var iAjaxNewLine = <?php echo $this->sc_max_reg + 1; ?>;
+    for (var iLine = 1; iLine <= iAjaxNewLine; iLine++) {
+         scJQElementsAdd(iLine);
+    }
+    scJQGeneralAdd();
+    scAjaxSetSummary();
+    scAjaxSetNavpage();
+    scQuickSearchKeyUp('t', null);
+    $('#SC_fast_search_t').blur();
+    if (hasJsFormOnload)
+    {
+      sc_form_onload();
+    }
+    scAjaxAlert(do_ajax_cad_lodge_table_refresh_cb_after_alert);
+  } // do_ajax_cad_lodge_table_refresh_cb
+  function do_ajax_cad_lodge_table_refresh_cb_after_alert() {
+    scAjaxMessage();
+    scAjaxJavascript();
     scAjaxSetFocus();
-  } // do_ajax_cad_lodge_validate_status_cb
+    scAjaxSetNavStatus("t");
+    scAjaxSetNavStatus("b");
+    sc_insert_open = false;
+  } // do_ajax_cad_lodge_table_refresh_cb_after_alert
 function scAjaxShowErrorDisplay(sErrorId, sErrorMsg) {
 	if ("table" != sErrorId && !$("id_error_display_" + sErrorId + "_frame").hasClass('scFormToastDivFixed')) {
 		scAjaxShowErrorDisplay_default(sErrorId, sErrorMsg);
@@ -3451,87 +3604,197 @@ function scJs_sweetalert_params(params) {
 	return sweetAlertConfig;
 } // scJs_sweetalert_params
 
+
   // ---------- Form
-  function do_ajax_cad_lodge_submit_form()
+  var sc_num_ult_line = "";
+  var sc_num_ult_opc  = "";
+  var sc_num_ult_tr   = "";
+  function do_ajax_cad_lodge_submit_form(iNumLinha, indexTR)
   {
-    if (scEventControl_active("")) {
-      setTimeout(function() { do_ajax_cad_lodge_submit_form(); }, 500);
+    if (scEventControl_active(iNumLinha)) {
+      setTimeout(function() { do_ajax_cad_lodge_submit_form(iNumLinha, indexTR); }, 500);
       return;
     }
+    sc_num_ult_line = iNumLinha;
+    sc_num_ult_tr   = indexTR;
     scAjaxHideMessage();
-    var var_idlodge = scAjaxGetFieldHidden("idlodge");
-    var var_idlodgecategory = scAjaxGetFieldSelect("idlodgecategory");
-    var var_number = scAjaxGetFieldText("number");
-    var var_name = scAjaxGetFieldText("name");
-    var var_status = scAjaxGetFieldSelect("status");
+    var var_number_ = scAjaxGetFieldText("number_" + iNumLinha);
+    var var_status_ = scAjaxGetFieldSelect("status_" + iNumLinha);
     var var_nm_form_submit = document.F1.nm_form_submit.value;
     var var_nmgp_url_saida = document.F1.nmgp_url_saida.value;
     var var_nmgp_opcao = document.F1.nmgp_opcao.value;
     var var_nmgp_ancora = document.F1.nmgp_ancora.value;
     var var_nmgp_num_form = document.F1.nmgp_num_form.value;
-    var var_nmgp_parms = document.F1.nmgp_parms.value;
+    var var_nmgp_parms = "Sc_num_lin_alt?#?" + iNumLinha + "?@?" +  document.F1.nmgp_parms.value;
     var var_script_case_init = document.F1.script_case_init.value;
+<?php
+    if (isset($this->Embutida_form) && $this->Embutida_form)
+    {
+?>
+    var var_nmgp_refresh_row = iNumLinha;
+<?php
+    }
+    else
+    {
+?>
+    var var_nmgp_refresh_row = "";
+<?php
+    }
+?>
     var var_csrf_token = scAjaxGetFieldText("csrf_token");
+    sc_num_ult_opc = var_nmgp_opcao;
     scAjaxProcOn();
-    x_ajax_cad_lodge_submit_form(var_idlodge, var_idlodgecategory, var_number, var_name, var_status, var_nm_form_submit, var_nmgp_url_saida, var_nmgp_opcao, var_nmgp_ancora, var_nmgp_num_form, var_nmgp_parms, var_script_case_init, var_csrf_token, do_ajax_cad_lodge_submit_form_cb);
+<?php
+    if (isset($this->Embutida_form) && $this->Embutida_form)
+    {
+?>
+    scRemoveErrors();
+<?php
+    }
+?>
+    x_ajax_cad_lodge_submit_form(var_number_, var_status_, var_nmgp_refresh_row, var_nm_form_submit, var_nmgp_url_saida, var_nmgp_opcao, var_nmgp_ancora, var_nmgp_num_form, var_nmgp_parms, var_script_case_init, var_csrf_token, do_ajax_cad_lodge_submit_form_cb);
   } // do_ajax_cad_lodge_submit_form
 
   function do_ajax_cad_lodge_submit_form_cb(sResp)
   {
     scAjaxProcOff();
     oResp = scAjaxResponse(sResp);
+    scAjaxCalendarReload();
     scAjaxUpdateErrors("valid");
     sAppErrors = scAjaxListErrors(true);
-    if ("" == sAppErrors || "menu_link" == document.F1.nmgp_opcao.value)
+    if ("" == sAppErrors)
     {
       $('.sc-js-ui-statusimg').css('display', 'none');
       scAjaxHideErrorDisplay("table");
+      scErrorLineOff(sc_num_ult_line, "__sc_all__");
     }
     else
     {
       scAjaxError_markList();
       scAjaxShowErrorDisplay("table", sAppErrors);
+      scErrorLineOn(sc_num_ult_line, "__sc_all__");
     }
-    if (scAjaxIsOk())
+    if (!scAjaxHasError())
     {
+      if (sc_num_ult_opc == 'incluir')
+      {
+         bRefreshTable = true;
+         if (document.getElementById("sc_ins_line_" + sc_num_ult_line))
+           document.getElementById("sc_ins_line_" + sc_num_ult_line).style.display = "none";
+         if (document.getElementById("sc_upd_line_" + sc_num_ult_line))
+           document.getElementById("sc_upd_line_" + sc_num_ult_line).style.display = "";
+         if (document.getElementById("sc_clone_line_" + sc_num_ult_line))
+           document.getElementById("sc_clone_line_" + sc_num_ult_line).style.display = "";
+<?php
+    if ($this->nmgp_botoes['delete'] == 'on')
+    {
+?>
+         if (document.getElementById("sc_exc_line_" + sc_num_ult_line))
+           document.getElementById("sc_exc_line_" + sc_num_ult_line).style.display = "";
+<?php
+    }
+?>
+         if (document.getElementById("sc_new_line_" + sc_num_ult_line))
+           document.getElementById("sc_new_line_" + sc_num_ult_line).style.display = "none";
+<?php
+    if (isset($this->Embutida_form) && $this->Embutida_form)
+    {
+?>
+         if (document.getElementById("sc_canceli_line_" + sc_num_ult_line))
+           document.getElementById("sc_canceli_line_" + sc_num_ult_line).style.display = "none";
+<?php
+    }
+?>
+         sc_insert_open = false;
+         scEnableNavigation();
+         do_ajax_cad_lodge_add_new_line();
+         $("#sc-ui-empty-form").hide();
+         $(".sc-ui-page-tab-line").show();
+         $("#sc-id-required-row").show();
+      }
+      if (sc_num_ult_opc == 'alterar')
+      {
+<?php
+    if (isset($this->Embutida_ronly) && $this->Embutida_ronly)
+    {
+       if ($this->nmgp_botoes['delete'] == 'on')
+       {
+?>
+         if (document.getElementById("sc_exc_line_" + sc_num_ult_line))
+           document.getElementById("sc_exc_line_" + sc_num_ult_line).style.display = "";
+<?php
+       }
+?>
+         if (document.getElementById("sc_cancelu_line_" + sc_num_ult_line))
+           document.getElementById("sc_cancelu_line_" + sc_num_ult_line).style.display = "none";
+<?php
+    }
+?>
+      }
+      if (sc_num_ult_opc == 'excluir')
+      {
+         bRefreshTable = true;
+         sc_name_table = document.getElementById("hidden_bloco_0");
+         sc_name_table.deleteRow(sc_num_ult_tr);
+         sc_num_ult_line = sc_name_table.rows.length - 1;
+         if (0 == sc_num_ult_line || (1 == sc_num_ult_line && sc_insert_open))
+         {
+            $("#sc-ui-empty-form").show();
+            $(".sc-ui-page-tab-line").hide();
+            $("#sc-id-required-row").hide();
+         }
+      }
       scResetFormChanges();
       scAjaxShowMessage("success");
       scAjaxHideErrorDisplay("table");
-      scAjaxHideErrorDisplay("idlodge");
-      scAjaxHideErrorDisplay("idlodgecategory");
-      scAjaxHideErrorDisplay("number");
-      scAjaxHideErrorDisplay("name");
-      scAjaxHideErrorDisplay("status");
-      scLigEditLookupCall();
+      scAjaxHideErrorDisplay("number_" + sc_num_ult_line);
+      scAjaxHideErrorDisplay("status_" + sc_num_ult_line);
 <?php
-if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_info']['under_dashboard']) && $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_info']['under_dashboard']) {
+if (isset($this->Embutida_form) && $this->Embutida_form) {
 ?>
-      var dbParentFrame = $(parent.document).find("[name='<?php echo $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_info']['parent_widget']; ?>']");
-      if (dbParentFrame && dbParentFrame[0] && dbParentFrame[0].contentWindow.nm_gp_move) {
-        dbParentFrame[0].contentWindow.nm_gp_move("igual");
-      }
+      scAjaxSetReadonly();
+<?php
+    if (isset($this->Embutida_ronly) && $this->Embutida_ronly) {
+?>
+      mdCloseLine();
+<?php
+    }
+} else {
+?>
+      scAjaxSetReadonly(true);
 <?php
 }
 ?>
+      scLigEditLookupCall();
     }
     Nm_Proc_Atualiz = false;
     if (!scAjaxHasError())
     {
-      scAjaxSetFields(false);
-      scAjaxSetVariables();
-      scAjaxSetMaster();
-      if (scInlineFormSend())
+      if (sc_closeChange && self.parent && self.parent.tb_remove)
       {
         self.parent.tb_remove();
-        return;
+      }
+      scAjaxSetFields(false);
+      scAjaxSetVariables();
+      if (sc_num_ult_opc == 'alterar' || sc_num_ult_opc == 'incluir')
+      {
+<?php
+        if (isset($this->Embutida_form) && $this->Embutida_form)
+        {
+?>
+<?php
+        }
+?>
       }
     }
+    scAjaxSetSummary();
+    scAjaxSetNavpage();
     scAjaxShowDebug();
-    scAjaxSetDisplay();
+    scAjaxSetDisplay(true);
     scBtnDisabled();
     scBtnLabel();
-    scAjaxSetLabel();
-    scAjaxSetReadonly();
+    scAjaxSetLabel(true);
+    scAjaxSetMaster();
     scAjaxAlert(do_ajax_cad_lodge_submit_form_cb_after_alert);
   } // do_ajax_cad_lodge_submit_form_cb
   function do_ajax_cad_lodge_submit_form_cb_after_alert() {
@@ -3562,24 +3825,26 @@ if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_i
     {
       return;
     }
+    if (sc_insert_open)
+    {
+        do_ajax_cad_lodge_cancel_insert(sc_cad_lodge_get_last_line_number());
+    }
+    nm_uncheck_delete();
     scAjaxHideMessage();
     scAjaxHideErrorDisplay("table");
-    scAjaxHideErrorDisplay("idlodge");
-    scAjaxHideErrorDisplay("idlodgecategory");
-    scAjaxHideErrorDisplay("number");
-    scAjaxHideErrorDisplay("name");
-    scAjaxHideErrorDisplay("status");
-    var var_idlodge = document.F2.idlodge.value;
+    for (iNavForm = 1; iNavForm < <?php echo $this->sc_max_reg; ?> + 1; iNavForm++)
+    {
+      scAjaxHideErrorDisplay("number_" + iNavForm);
+      scAjaxHideErrorDisplay("status_" + iNavForm);
+    }
+    var var_idlodge_ = document.F2.idlodge_.value;
     var var_nm_form_submit = document.F2.nm_form_submit.value;
     var var_nmgp_opcao = document.F2.nmgp_opcao.value;
     var var_nmgp_ordem = document.F2.nmgp_ordem.value;
-    var var_nmgp_fast_search = document.F2.nmgp_fast_search.value;
-    var var_nmgp_cond_fast_search = document.F2.nmgp_cond_fast_search.value;
-    var var_nmgp_arg_fast_search = document.F2.nmgp_arg_fast_search.value;
     var var_nmgp_arg_dyn_search = document.F2.nmgp_arg_dyn_search.value;
     var var_script_case_init = document.F2.script_case_init.value;
     scAjaxProcOn();
-    x_ajax_cad_lodge_navigate_form(var_idlodge, var_nm_form_submit, var_nmgp_opcao, var_nmgp_ordem, var_nmgp_fast_search,  var_nmgp_cond_fast_search,  var_nmgp_arg_fast_search, var_nmgp_arg_dyn_search, var_script_case_init, do_ajax_cad_lodge_navigate_form_cb);
+    x_ajax_cad_lodge_navigate_form(var_idlodge_, var_nm_form_submit, var_nmgp_opcao, var_nmgp_ordem, var_nmgp_arg_dyn_search, var_script_case_init, do_ajax_cad_lodge_navigate_form_cb);
   } // do_ajax_cad_lodge_navigate_form
 
   var scMasterDetailParentIframe = "<?php echo $_SESSION['sc_session'][$this->Ini->sc_page]['cad_lodge']['dashboard_info']['parent_widget'] ?>";
@@ -3603,22 +3868,28 @@ foreach ($this->Ini->sc_lig_iframe as $tmp_i => $tmp_v)
         document.F5.nmgp_parms.value = "";
         document.F5.submit();
     }
-    if ("ERROR" == oResp.result)
-    {
-        scAjaxShowErrorDisplay("table", oResp.errList[0].msgText);
-        scAjaxProcOff();
-        return;
-    }
-    else if (oResp["navSummary"].reg_tot == 0)
-    {
-       scAjax_displayEmptyForm();
-    }
+    var var_last_index = oResp["rsSize"];
     scAjaxClearErrors()
     scResetFormChanges()
     sc_mupload_ok = true;
     scAjaxSetFields(false);
     scAjaxSetVariables();
-    document.F2.idlodge.value = scAjaxGetKeyValue("idlodge");
+    document.F2.idlodge_.value = scAjaxGetKeyValue("idlodge_" + var_last_index);
+    var_last_index = parseInt(var_last_index) + 1;
+    for (iNavigateForm = 1; iNavigateForm < var_last_index; iNavigateForm++)
+    {
+      if (document.getElementById("idVertRow" + iNavigateForm))
+      {
+        document.getElementById("idVertRow" + iNavigateForm).style.display = "";
+      }
+    }
+    var oTBodyOld = document.getElementById("hidden_bloco_0").tBodies[0];
+    for (iNavigatedel = <?php echo $this->sc_max_reg; ?>; iNavigatedel >= iNavigateForm; iNavigatedel--)
+    {
+        oTBodyOld.deleteRow(iNavigatedel);
+        bRefreshTable = true;
+    }
+    document.F1.sc_contr_vert.value = var_last_index;
     scAjaxSetSummary();
     scAjaxSetNavpage();
     scAjaxShowDebug();
@@ -3628,15 +3899,17 @@ foreach ($this->Ini->sc_lig_iframe as $tmp_i => $tmp_v)
     scAjaxSetNavStatus("t");
     scAjaxSetNavStatus("b");
     scAjaxSetDisplay(true);
+    for (var iImg = 0; iImg < var_last_index; iImg++)
+    {
+    }
     scAjaxSetBtnVars();
+    scErrorLineReset();
     $('.sc-js-ui-statusimg').css('display', 'none');
     scAjaxAlert(do_ajax_cad_lodge_navigate_form_cb_after_alert);
   } // do_ajax_cad_lodge_navigate_form_cb
   function do_ajax_cad_lodge_navigate_form_cb_after_alert() {
     scAjaxMessage();
     scAjaxJavascript();
-    scQuickSearchKeyUp('t', null);
-    $('#SC_fast_search_t').blur();
     scAjaxSetFocus();
 <?php
 if ($this->Embutida_form)
@@ -3652,6 +3925,16 @@ if ($this->Embutida_form)
     }
   } // do_ajax_cad_lodge_navigate_form_cb_after_alert
 
+    function sc_cad_lodge_get_last_line_number()
+    {
+        var lastLine = $(".sc-row").last();
+        if (lastLine.length) {
+            return lastLine.data("scRowNumber");
+        } else {
+            return sc_num_ult_line;
+        }
+    } //sc_cad_lodge_get_last_line_number
+
   function sc_hide_cad_lodge_form()
   {
     for (var block_id in ajax_block_id) {
@@ -3665,6 +3948,45 @@ if ($this->Embutida_form)
     return true;
   } // scAjaxDetailProc
 
+<?php
+$sLineInfo = $this->Embutida_form ? '' : ' (linha " + iNumLinha + ")';
+?>
+  function ajax_create_tables(iNumLinha)
+  {
+    ajax_field_list[iTotCampos] = "number_" + iNumLinha;
+    iTotCampos++;
+    ajax_field_list[iTotCampos] = "status_" + iNumLinha;
+    iTotCampos++;
+    ajax_error_list["number_" + iNumLinha] = {"label": "Número<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
+    ajax_error_list["status_" + iNumLinha] = {"label": "Status<?php echo $sLineInfo; ?>", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0};
+    ajax_field_mult["number_"][iNumLinha] = "number_" + iNumLinha;
+    ajax_field_mult["status_"][iNumLinha] = "status_" + iNumLinha;
+    ajax_field_id["number_" + iNumLinha] = new Array("hidden_field_label_number_", "hidden_field_data_number_" + iNumLinha);
+    ajax_field_id["status_" + iNumLinha] = new Array("hidden_field_label_status_", "hidden_field_data_status_" + iNumLinha);
+    ajax_error_count["number_" + iNumLinha] = "off";
+    ajax_error_count["status_" + iNumLinha] = "off";
+<?php
+if (!$this->Grid_editavel)
+{
+?>
+    ajax_read_only["number_" + iNumLinha] = "off";
+    ajax_read_only["status_" + iNumLinha] = "off";
+<?php
+}
+else
+{
+?>
+    ajax_read_only["number_" + iNumLinha] = "on";
+    ajax_read_only["status_" + iNumLinha] = "on";
+<?php
+}
+?>
+  }
+  function ajax_destroy_tables(iNumLinha)
+  {
+    ajax_error_list["number_" + iNumLinha] = null;
+    ajax_error_list["status_" + iNumLinha] = null;
+  }
 
   var ajax_error_geral = "";
 
@@ -3672,22 +3994,13 @@ if ($this->Embutida_form)
 
   var ajax_field_list = new Array();
   var ajax_field_Dt_Hr = new Array();
-  ajax_field_list[0] = "idlodge";
-  ajax_field_list[1] = "idlodgecategory";
-  ajax_field_list[2] = "number";
-  ajax_field_list[3] = "name";
-  ajax_field_list[4] = "status";
+  iTotCampos = 0;
+  iTotDt_Hr  = 0;
 
   var ajax_block_list = new Array();
   ajax_block_list[0] = "0";
 
-  var ajax_error_list = {
-    "idlodge": {"label": "ID", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "idlodgecategory": {"label": "Category", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "number": {"label": "Number", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "name": {"label": "Name", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0},
-    "status": {"label": "Status", "valid": new Array(), "onblur": new Array(), "onchange": new Array(), "onclick": new Array(), "onfocus": new Array(), "timeout": 0}
-  };
+  var ajax_error_list = {};
   var ajax_error_timeout = 0;
 
   var ajax_block_id = {
@@ -3699,36 +4012,211 @@ if ($this->Embutida_form)
   };
 
   var ajax_field_mult = {
-    "idlodge": new Array(),
-    "idlodgecategory": new Array(),
-    "number": new Array(),
-    "name": new Array(),
-    "status": new Array()
-  };
-  ajax_field_mult["idlodge"][1] = "idlodge";
-  ajax_field_mult["idlodgecategory"][1] = "idlodgecategory";
-  ajax_field_mult["number"][1] = "number";
-  ajax_field_mult["name"][1] = "name";
-  ajax_field_mult["status"][1] = "status";
-
-  var ajax_field_id = {
-    "idlodge": new Array("hidden_field_label_idlodge", "hidden_field_data_idlodge"),
-    "idlodgecategory": new Array("hidden_field_label_idlodgecategory", "hidden_field_data_idlodgecategory"),
-    "number": new Array("hidden_field_label_number", "hidden_field_data_number"),
-    "name": new Array("hidden_field_label_name", "hidden_field_data_name"),
-    "status": new Array("hidden_field_label_status", "hidden_field_data_status")
+    "number_": new Array(),
+    "status_": new Array()
   };
 
-  var ajax_read_only = {
-    "idlodge": "on",
-    "idlodgecategory": "off",
-    "number": "off",
-    "name": "off",
-    "status": "off"
-  };
+  var ajax_field_id = {};
+
+  var ajax_read_only = {};
+
+  var ajax_error_count = {};
+
+  var Lim_linhas = <?php echo $sc_seq_vert ?>;
+  for (iNumLinha = 1; iNumLinha < Lim_linhas; iNumLinha++)
+  {
+     ajax_create_tables(iNumLinha);
+  }
+
+  function scRemoveErrors()
+  {
+    for (iNumLinha = 1; iNumLinha < Lim_linhas; iNumLinha++)
+    {
+      ajax_error_list["number_" + iNumLinha]["valid"] = new Array();
+      ajax_error_list["number_" + iNumLinha]["onblur"] = new Array();
+      ajax_error_list["number_" + iNumLinha]["onchange"] = new Array();
+      ajax_error_list["number_" + iNumLinha]["onclick"] = new Array();
+      ajax_error_list["number_" + iNumLinha]["onfocus"] = new Array();
+      ajax_error_list["status_" + iNumLinha]["valid"] = new Array();
+      ajax_error_list["status_" + iNumLinha]["onblur"] = new Array();
+      ajax_error_list["status_" + iNumLinha]["onchange"] = new Array();
+      ajax_error_list["status_" + iNumLinha]["onclick"] = new Array();
+      ajax_error_list["status_" + iNumLinha]["onfocus"] = new Array();
+    }
+  }
+
+  function mdOpenLine(iSeq)
+  {
+    if (document.getElementById("sc_open_line_" + iSeq))
+    {
+      document.getElementById("sc_open_line_" + iSeq).style.display = "none";
+    }
+<?php
+    if ($this->nmgp_botoes['delete'] == 'on')
+    {
+?>
+    if (document.getElementById("sc_exc_line_" + iSeq))
+    {
+      document.getElementById("sc_exc_line_" + iSeq).style.display = "none";
+    }
+<?php
+    }
+?>
+    if (document.getElementById("sc_upd_line_" + iSeq))
+    {
+      document.getElementById("sc_upd_line_" + iSeq).style.display = "";
+    }
+    if (document.getElementById("sc_cancelu_line_" + iSeq))
+    {
+      document.getElementById("sc_cancelu_line_" + iSeq).style.display = "";
+    }
+    mdOpenObjects(iSeq);
+    displayChange_row(iSeq, "on");
+    rerunHeaderDisplay = 1;
+    scSetFixedHeaders(true);
+  }
+
+  function mdOpenObjects(iSeq)
+  {
+<?php
+  $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['number_'])) ? $this->nmgp_cmp_readonly['number_'] : 'off';
+?>
+    scAjaxFieldRead("number_" + iSeq, "<?php echo $NM_contr_readonly ?>");
+<?php
+  $NM_contr_readonly = (isset($this->nmgp_cmp_readonly['status_'])) ? $this->nmgp_cmp_readonly['status_'] : 'off';
+?>
+    scAjaxFieldRead("status_" + iSeq, "<?php echo $NM_contr_readonly ?>");
+  }
+
+  function mdCloseObjects(iSeq)
+  {
+    scAjaxFieldRead("number_" + iSeq, "on");
+    scAjaxFieldRead("status_" + iSeq, "on");
+    rerunHeaderDisplay = 1;
+    scSetFixedHeaders(true);
+  }
+
+  function mdCloseLine()
+  {
+    if (!oResp["closeLine"] || "" == oResp["closeLine"])
+    {
+      return;
+    }
+<?php
+    if ($this->nmgp_botoes['update'] == 'on')
+    {
+?>
+    if (document.getElementById("sc_open_line_" + oResp["closeLine"]))
+    {
+      document.getElementById("sc_open_line_" + oResp["closeLine"]).style.display = "";
+    }
+<?php
+    }
+?>
+    if (document.getElementById("sc_upd_line_" + oResp["closeLine"]))
+    {
+      document.getElementById("sc_upd_line_" + oResp["closeLine"]).style.display = "none";
+    }
+    rerunHeaderDisplay = 2;
+    scSetFixedHeaders(true);
+  }
+
+  var sc_open_lines = 0;
+  var orig_Nav_permite_ret = "";
+  var orig_Nav_permite_ava = "";
+  function scDisableNavigation()
+  {
+    if (0 == sc_open_lines)
+    {
+      orig_Nav_permite_ret = Nav_permite_ret;
+      orig_Nav_permite_ava = Nav_permite_ava;
+      Nav_permite_ret = "N";
+      Nav_permite_ava = "N";
+      nav_atualiza(Nav_permite_ret, Nav_permite_ava, 't');
+      nav_atualiza(Nav_permite_ret, Nav_permite_ava, 'b');
+    }
+    sc_open_lines++;
+  }
+
+  function scEnableNavigation()
+  {
+    sc_open_lines--;
+    if (0 == sc_open_lines)
+    {
+      Nav_permite_ret = orig_Nav_permite_ret;
+      Nav_permite_ava = orig_Nav_permite_ava;
+      nav_atualiza(Nav_permite_ret, Nav_permite_ava, 't');
+      nav_atualiza(Nav_permite_ret, Nav_permite_ava, 'b');
+    }
+  }
+
+  function scErrorLineOn(iRow, sIdError)
+  {
+    var bErrorRow = false;
+    if ("__sc_all__" == sIdError)
+    {
+      bErrorRow = true;
+    }
+    else if (ajax_error_count[sIdError + iRow])
+    {
+      ajax_error_count[sIdError + iRow] = "on";
+    }
+    if (bErrorRow || ("on" == ajax_error_count["number_" + iRow] || "on" == ajax_error_count["status_" + iRow]))
+    {
+      $("#hidden_field_data_sc_seq" + iRow).addClass("scFormErrorLine");
+      $("#hidden_field_data_sc_actions" + iRow).addClass("scFormErrorLine");
+      $("#hidden_field_data_number_" + iRow).addClass("scFormErrorLine");
+      $("#hidden_field_data_status_" + iRow).addClass("scFormErrorLine");
+    }
+  }
+
+  function scErrorLineOff(iRow, sIdError)
+  {
+    var bErrorRow = false;
+    if ("__sc_all__" == sIdError)
+    {
+      bErrorRow = true;
+    }
+    else if (ajax_error_count[sIdError + iRow])
+    {
+      ajax_error_count[sIdError + iRow] = "off";
+    }
+    if (bErrorRow || ("off" == ajax_error_count["number_" + iRow] && "off" == ajax_error_count["status_" + iRow]))
+    {
+      if (bErrorRow)
+      {
+        ajax_error_count["number_" + iRow] = "off";
+        ajax_error_count["status_" + iRow] = "off";
+      }
+      var sCssLine = scErrorLineCss(iRow);
+      $("#hidden_field_data_sc_seq" + iRow).removeClass("scFormErrorLine");
+      $("#hidden_field_data_sc_actions" + iRow).removeClass("scFormErrorLine");
+      $("#hidden_field_data_number_" + iRow).removeClass("scFormErrorLine");
+      $("#hidden_field_data_status_" + iRow).removeClass("scFormErrorLine");
+    }
+  }
+
+  function scErrorLineReset()
+  {
+    for (iLineReset = 0; iLineReset < iAjaxNewLine; iLineReset++)
+    {
+      scErrorLineOff(iLineReset, "__sc_all__");
+    }
+  }
+
+  function scErrorLineCss(iRow)
+  {
+    return "scFormDataOddMult";
+  }
   var bRefreshTable = false;
   function scRefreshTable()
   {
+    if (bRefreshTable || document.F2.nmgp_opcao.value == "fast_search")
+    {
+      do_ajax_cad_lodge_table_refresh();
+      bRefreshTable = false;
+      return true;
+    }
     return false;
   }
 
@@ -3736,41 +4224,7 @@ if ($this->Embutida_form)
   {
     var aValue = new Array();
     aValue[0] = {"value" : sValue};
-    if ("idlodge" == sIndex)
-    {
-      scAjaxSetFieldLabel(sIndex, aValue);
-      updateHeaderFooter(sIndex, aValue);
-
-      if ($("#id_sc_field_" + sIndex).length) {
-          $("#id_sc_field_" + sIndex).change();
-      }
-      else if (document.F1.elements[sIndex]) {
-          $(document.F1.elements[sIndex]).change();
-      }
-      else if (document.F1.elements[sFieldName + "[]"]) {
-          $(document.F1.elements[sFieldName + "[]"]).change();
-      }
-
-      return;
-    }
-    if ("idlodgecategory" == sIndex)
-    {
-      scAjaxSetFieldSelect(sIndex, aValue, null);
-      updateHeaderFooter(sIndex, aValue);
-
-      if ($("#id_sc_field_" + sIndex).length) {
-          $("#id_sc_field_" + sIndex).change();
-      }
-      else if (document.F1.elements[sIndex]) {
-          $(document.F1.elements[sIndex]).change();
-      }
-      else if (document.F1.elements[sFieldName + "[]"]) {
-          $(document.F1.elements[sFieldName + "[]"]).change();
-      }
-
-      return;
-    }
-    if ("number" == sIndex)
+    if ("number_" == sIndex)
     {
       scAjaxSetFieldText(sIndex, aValue, "", "", true);
       updateHeaderFooter(sIndex, aValue);
@@ -3787,24 +4241,7 @@ if ($this->Embutida_form)
 
       return;
     }
-    if ("name" == sIndex)
-    {
-      scAjaxSetFieldText(sIndex, aValue, "", "", true);
-      updateHeaderFooter(sIndex, aValue);
-
-      if ($("#id_sc_field_" + sIndex).length) {
-          $("#id_sc_field_" + sIndex).change();
-      }
-      else if (document.F1.elements[sIndex]) {
-          $(document.F1.elements[sIndex]).change();
-      }
-      else if (document.F1.elements[sFieldName + "[]"]) {
-          $(document.F1.elements[sFieldName + "[]"]).change();
-      }
-
-      return;
-    }
-    if ("status" == sIndex)
+    if ("status_" == sIndex)
     {
       scAjaxSetFieldSelect(sIndex, aValue, null);
       updateHeaderFooter(sIndex, aValue);

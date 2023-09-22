@@ -1112,11 +1112,12 @@ class sub_lodgePrice_apl
       $this->field_config['idlodgeprice_']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
       //-- price_
       $this->field_config['price_']               = array();
-      $this->field_config['price_']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
-      $this->field_config['price_']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['num_group_digit'];
-      $this->field_config['price_']['symbol_dec'] = '';
-      $this->field_config['price_']['symbol_neg'] = $_SESSION['scriptcase']['reg_conf']['simb_neg'];
-      $this->field_config['price_']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['neg_num'];
+      $this->field_config['price_']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_val'];
+      $this->field_config['price_']['symbol_fmt'] = $_SESSION['scriptcase']['reg_conf']['unid_mont_group_digit'];
+      $this->field_config['price_']['symbol_dec'] = $_SESSION['scriptcase']['reg_conf']['dec_val'];
+      $this->field_config['price_']['symbol_mon'] = $_SESSION['scriptcase']['reg_conf']['monet_simb'];
+      $this->field_config['price_']['format_pos'] = $_SESSION['scriptcase']['reg_conf']['monet_f_pos'];
+      $this->field_config['price_']['format_neg'] = $_SESSION['scriptcase']['reg_conf']['monet_f_neg'];
       //-- quantitypersons_
       $this->field_config['quantitypersons_']               = array();
       $this->field_config['quantitypersons_']['symbol_grp'] = $_SESSION['scriptcase']['reg_conf']['grup_num'];
@@ -1946,10 +1947,10 @@ class sub_lodgePrice_apl
                return "Lodge Category";
                break;
            case 'price_':
-               return "Price";
+               return "Preço";
                break;
            case 'quantitypersons_':
-               return "Quantity Persons";
+               return "Pessoas";
                break;
        }
 
@@ -2117,7 +2118,10 @@ class sub_lodgePrice_apl
         global $teste_validade;
         $hasError = false;
       if (isset($this->Field_no_validate['price_'])) {
-          nm_limpa_numero($this->price_, $this->field_config['price_']['symbol_grp']) ; 
+          if (!empty($this->field_config['price_']['symbol_dec'])) {
+              $this->sc_remove_currency($this->price_, $this->field_config['price_']['symbol_dec'], $this->field_config['price_']['symbol_grp'], $this->field_config['price_']['symbol_mon']); 
+              nm_limpa_valor($this->price_, $this->field_config['price_']['symbol_dec'], $this->field_config['price_']['symbol_grp']) ; 
+          }
           return;
       }
       if ($this->price_ === "" || is_null($this->price_))  
@@ -2125,16 +2129,31 @@ class sub_lodgePrice_apl
           $this->price_ = 0;
           $this->sc_force_zero[] = 'price_';
       } 
-      nm_limpa_numero($this->price_, $this->field_config['price_']['symbol_grp']) ; 
+      if (!empty($this->field_config['price_']['symbol_dec']))
+      {
+          $this->sc_remove_currency($this->price_, $this->field_config['price_']['symbol_dec'], $this->field_config['price_']['symbol_grp'], $this->field_config['price_']['symbol_mon']); 
+          nm_limpa_valor($this->price_, $this->field_config['price_']['symbol_dec'], $this->field_config['price_']['symbol_grp']) ; 
+          if ('.' == substr($this->price_, 0, 1))
+          {
+              if ('' == str_replace('0', '', substr($this->price_, 1)))
+              {
+                  $this->price_ = '';
+              }
+              else
+              {
+                  $this->price_ = '0' . $this->price_;
+              }
+          }
+      }
       if ($this->nmgp_opcao != "excluir") 
       { 
           if ($this->price_ != '')  
           { 
-              $iTestSize = 10;
+              $iTestSize = 11;
               if (strlen($this->price_) > $iTestSize)  
               { 
                   $hasError = true;
-                  $Campos_Crit .= "Price: " . $this->Ini->Nm_lang['lang_errm_size']; 
+                  $Campos_Crit .= "Preço: " . $this->Ini->Nm_lang['lang_errm_size']; 
                   if (!isset($Campos_Erros['price_']))
                   {
                       $Campos_Erros['price_'] = array();
@@ -2146,10 +2165,10 @@ class sub_lodgePrice_apl
                   }
                   $this->NM_ajax_info['errList']['price_'][] = $this->Ini->Nm_lang['lang_errm_size'];
               } 
-              if ($teste_validade->Valor($this->price_, 10, 0, 0, 0, "N") == false)  
+              if ($teste_validade->Valor($this->price_, 8, 2, 0, 0, "N") == false)  
               { 
                   $hasError = true;
-                  $Campos_Crit .= "Price; " ; 
+                  $Campos_Crit .= "Preço; " ; 
                   if (!isset($Campos_Erros['price_']))
                   {
                       $Campos_Erros['price_'] = array();
@@ -2195,7 +2214,7 @@ class sub_lodgePrice_apl
               if (strlen($this->quantitypersons_) > $iTestSize)  
               { 
                   $hasError = true;
-                  $Campos_Crit .= "Quantity Persons: " . $this->Ini->Nm_lang['lang_errm_size']; 
+                  $Campos_Crit .= "Pessoas: " . $this->Ini->Nm_lang['lang_errm_size']; 
                   if (!isset($Campos_Erros['quantitypersons_']))
                   {
                       $Campos_Erros['quantitypersons_'] = array();
@@ -2210,7 +2229,7 @@ class sub_lodgePrice_apl
               if ($teste_validade->Valor($this->quantitypersons_, 10, 0, 0, 0, "N") == false)  
               { 
                   $hasError = true;
-                  $Campos_Crit .= "Quantity Persons; " ; 
+                  $Campos_Crit .= "Pessoas; " ; 
                   if (!isset($Campos_Erros['quantitypersons_']))
                   {
                       $Campos_Erros['quantitypersons_'] = array();
@@ -2271,7 +2290,11 @@ class sub_lodgePrice_apl
       $this->Before_unformat['idlodgeprice_'] = $this->idlodgeprice_;
       nm_limpa_numero($this->idlodgeprice_, $this->field_config['idlodgeprice_']['symbol_grp']) ; 
       $this->Before_unformat['price_'] = $this->price_;
-      nm_limpa_numero($this->price_, $this->field_config['price_']['symbol_grp']) ; 
+      if (!empty($this->field_config['price_']['symbol_dec']))
+      {
+         $this->sc_remove_currency($this->price_, $this->field_config['price_']['symbol_dec'], $this->field_config['price_']['symbol_grp'], $this->field_config['price_']['symbol_mon']);
+         nm_limpa_valor($this->price_, $this->field_config['price_']['symbol_dec'], $this->field_config['price_']['symbol_grp']);
+      }
       $this->Before_unformat['quantitypersons_'] = $this->quantitypersons_;
       nm_limpa_numero($this->quantitypersons_, $this->field_config['quantitypersons_']['symbol_grp']) ; 
    }
@@ -2323,7 +2346,11 @@ class sub_lodgePrice_apl
       }
       if ($Nome_Campo == "price_")
       {
-          nm_limpa_numero($this->price_, $this->field_config['price_']['symbol_grp']) ; 
+          if (!empty($this->field_config['price_']['symbol_dec']))
+          {
+             $this->sc_remove_currency($this->price_, $this->field_config['price_']['symbol_dec'], $this->field_config['price_']['symbol_grp'], $this->field_config['price_']['symbol_mon']);
+             nm_limpa_valor($this->price_, $this->field_config['price_']['symbol_dec'], $this->field_config['price_']['symbol_grp']);
+          }
       }
       if ($Nome_Campo == "quantitypersons_")
       {
@@ -2339,7 +2366,9 @@ class sub_lodgePrice_apl
       }
       if ('' !== $this->price_ || (!empty($format_fields) && isset($format_fields['price_'])))
       {
-          nmgp_Form_Num_Val($this->price_, $this->field_config['price_']['symbol_grp'], $this->field_config['price_']['symbol_dec'], "0", "S", $this->field_config['price_']['format_neg'], "", "", "-", $this->field_config['price_']['symbol_fmt']) ; 
+          nmgp_Form_Num_Val($this->price_, $this->field_config['price_']['symbol_grp'], $this->field_config['price_']['symbol_dec'], "2", "S", $this->field_config['price_']['format_neg'], "", "", "-", $this->field_config['price_']['symbol_fmt']) ; 
+          $sMonSymb = $this->field_config['price_']['symbol_mon'];
+          $this->sc_add_currency($this->price_, $sMonSymb, $this->field_config['price_']['format_pos']); 
       }
       if ('' !== $this->quantitypersons_ || (!empty($format_fields) && isset($format_fields['quantitypersons_'])))
       {
@@ -3000,6 +3029,19 @@ else
 //----------------------------------------------------
 //-----> 
 //----------------------------------------------------
+//
+   function nm_troca_decimal($sc_parm1, $sc_parm2) 
+   { 
+      $this->price_ = str_replace($sc_parm1, $sc_parm2, $this->price_); 
+   } 
+   function nm_poe_aspas_decimal() 
+   { 
+      $this->price_ = "'" . $this->price_ . "'";
+   } 
+   function nm_tira_aspas_decimal() 
+   { 
+      $this->price_ = str_replace("'", "", $this->price_); 
+   } 
 //----------- 
 
 
@@ -3110,6 +3152,10 @@ else
           $this->sc_force_zero[] = 'quantitypersons_';
       } 
       $nm_bases_lob_geral = array_merge($this->Ini->nm_bases_ibase, $this->Ini->nm_bases_mysql, $this->Ini->nm_bases_access, $this->Ini->nm_bases_sqlite);
+      if ($_SESSION['sc_session'][$this->Ini->sc_page]['sub_lodgePrice']['decimal_db'] == ",") 
+      {
+          $this->nm_troca_decimal(".", ",");
+      }
       if ($this->nmgp_opcao == "alterar" || $this->nmgp_opcao == "incluir") 
       {
       }
@@ -3126,6 +3172,10 @@ else
                    }
                   eval("\$this->" . $sFKName . " = \"" . $sFKValue . "\";");
               }
+          }
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['sub_lodgePrice']['decimal_db'] == ",") 
+          {
+              $this->nm_poe_aspas_decimal();
           }
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_access))
           {
@@ -3288,6 +3338,10 @@ else
                    }
                   eval("\$this->" . $sFKName . " = \"" . $sFKValue . "\";");
               }
+          }
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['sub_lodgePrice']['decimal_db'] == ",") 
+          {
+              $this->nm_poe_aspas_decimal();
           }
           if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sqlite))
           { 
@@ -3619,6 +3673,10 @@ else
               $this->lig_edit_lookup_call = true;
           }
       } 
+      if ($_SESSION['sc_session'][$this->Ini->sc_page]['sub_lodgePrice']['decimal_db'] == ",") 
+      {
+          $this->nm_tira_aspas_decimal();
+      }
       if ($this->nmgp_opcao == "excluir") 
       { 
           $this->idlodgeprice_ = substr($this->Db->qstr($this->idlodgeprice_), 1, -1); 
@@ -4094,6 +4152,7 @@ else
               $this->quantitypersons_ = $rs->fields[3] ; 
               $this->nmgp_dados_select['quantitypersons_'] = $this->quantitypersons_;
               $GLOBALS["NM_ERRO_IBASE"] = 0; 
+              $this->nm_troca_decimal(",", ".");
               $this->idlodgeprice_ = (string)$this->idlodgeprice_; 
               $this->idlodgecategory_ = (string)$this->idlodgecategory_; 
               $this->price_ = (string)$this->price_; 
@@ -4475,6 +4534,102 @@ else
             return NM_encode_input($string);
         }
     } // form_encode_input
+
+   function jqueryIconFile($sModule)
+   {
+       $sImage = '';
+       if ('calendar' == $sModule)
+       {
+           if (isset($this->arr_buttons['bcalendario']) && isset($this->arr_buttons['bcalendario']['type']) && 'image' == $this->arr_buttons['bcalendario']['type'] && 'only_fontawesomeicon' != $this->arr_buttons['bcalendario']['display'])
+           {
+               $sImage = $this->arr_buttons['bcalendario']['image'];
+           }
+       }
+       elseif ('calculator' == $sModule)
+       {
+           if (isset($this->arr_buttons['bcalculadora']) && isset($this->arr_buttons['bcalculadora']['type']) && 'image' == $this->arr_buttons['bcalculadora']['type'] && 'only_fontawesomeicon' != $this->arr_buttons['bcalculadora']['display'])
+           {
+               $sImage = $this->arr_buttons['bcalculadora']['image'];
+           }
+       }
+
+       return '' == $sImage ? '' : $this->Ini->path_icones . '/' . $sImage;
+   } // jqueryIconFile
+
+   function jqueryFAFile($sModule)
+   {
+       $sFA = '';
+       if ('calendar' == $sModule)
+       {
+           if (isset($this->arr_buttons['bcalendario']) && isset($this->arr_buttons['bcalendario']['type']) && ('image' == $this->arr_buttons['bcalendario']['type'] || 'button' == $this->arr_buttons['bcalendario']['type']) && 'only_fontawesomeicon' == $this->arr_buttons['bcalendario']['display'])
+           {
+               $sFA = $this->arr_buttons['bcalendario']['fontawesomeicon'];
+           }
+       }
+       elseif ('calculator' == $sModule)
+       {
+           if (isset($this->arr_buttons['bcalculadora']) && isset($this->arr_buttons['bcalculadora']['type']) && ('image' == $this->arr_buttons['bcalculadora']['type'] || 'button' == $this->arr_buttons['bcalculadora']['type']) && 'only_fontawesomeicon' == $this->arr_buttons['bcalculadora']['display'])
+           {
+               $sFA = $this->arr_buttons['bcalculadora']['fontawesomeicon'];
+           }
+       }
+
+       return '' == $sFA ? '' : "<span class='scButton_fontawesome " . $sFA . "'></span>";
+   } // jqueryFAFile
+
+   function jqueryButtonText($sModule)
+   {
+       $sClass = '';
+       $sText  = '';
+       if ('calendar' == $sModule)
+       {
+           if (isset($this->arr_buttons['bcalendario']) && isset($this->arr_buttons['bcalendario']['type']) && ('image' == $this->arr_buttons['bcalendario']['type'] || 'button' == $this->arr_buttons['bcalendario']['type']))
+           {
+               if ('only_text' == $this->arr_buttons['bcalendario']['display'])
+               {
+                   $sClass = 'scButton_' . $this->arr_buttons['bcalendario']['style'];
+                   $sText  = $this->arr_buttons['bcalendario']['value'];
+               }
+               elseif ('text_fontawesomeicon' == $this->arr_buttons['bcalendario']['display'])
+               {
+                   $sClass = 'scButton_' . $this->arr_buttons['bcalendario']['style'];
+                   if ('text_right' == $this->arr_buttons['bcalendario']['display_position'])
+                   {
+                       $sText = "<i class='icon_fa " . $this->arr_buttons['bcalendario']['fontawesomeicon'] . "'></i> " . $this->arr_buttons['bcalendario']['value'];
+                   }
+                   else
+                   {
+                       $sText = $this->arr_buttons['bcalendario']['value'] . " <i class='icon_fa " . $this->arr_buttons['bcalendario']['fontawesomeicon'] . "'></i>";
+                   }
+               }
+           }
+       }
+       elseif ('calculator' == $sModule)
+       {
+           if (isset($this->arr_buttons['bcalculadora']) && isset($this->arr_buttons['bcalculadora']['type']) && ('image' == $this->arr_buttons['bcalculadora']['type'] || 'button' == $this->arr_buttons['bcalculadora']['type']))
+           {
+               if ('only_text' == $this->arr_buttons['bcalculadora']['display'])
+               {
+                   $sClass = 'scButton_' . $this->arr_buttons['bcalendario']['style'];
+                   $sText  = $this->arr_buttons['bcalculadora']['value'];
+               }
+               elseif ('text_fontawesomeicon' == $this->arr_buttons['bcalculadora']['display'])
+               {
+                   $sClass = 'scButton_' . $this->arr_buttons['bcalendario']['style'];
+                   if ('text_right' == $this->arr_buttons['bcalendario']['display_position'])
+                   {
+                       $sText = "<i class='icon_fa " . $this->arr_buttons['bcalculadora']['fontawesomeicon'] . "'></i> " . $this->arr_buttons['bcalculadora']['value'];
+                   }
+                   else
+                   {
+                       $sText = $this->arr_buttons['bcalculadora']['value'] . " <i class='icon_fa " . $this->arr_buttons['bcalculadora']['fontawesomeicon'] . "'></i> ";
+                   }
+               }
+           }
+       }
+
+       return '' == $sText ? array('', '') : array($sText, $sClass);
+   } // jqueryButtonText
 
 
     function scCsrfGetToken()

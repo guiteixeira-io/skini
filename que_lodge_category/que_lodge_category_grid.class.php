@@ -59,9 +59,9 @@ class que_lodge_category_grid
    var $progress_res;
    var $progress_graf;
    var $count_ger;
-   var $idlodgecategory;
    var $name;
    var $capacity;
+   var $idlodgecategory;
 
 function actionBar_isValidState($buttonName, $buttonState)
 {
@@ -350,8 +350,8 @@ function actionBar_getStateHide($buttonName)
    {
        $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['pesq_tab_label'] = "";
        $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['pesq_tab_label'] .= "idlodgecategory?#?" . "Id Lodge Category" . "?@?";
-       $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['pesq_tab_label'] .= "name?#?" . "Name" . "?@?";
-       $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['pesq_tab_label'] .= "capacity?#?" . "Capacity" . "?@?";
+       $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['pesq_tab_label'] .= "name?#?" . "Acomodação" . "?@?";
+       $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['pesq_tab_label'] .= "capacity?#?" . "Capacidade" . "?@?";
    }
    if (isset($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['grid_search_add']))
    {
@@ -528,9 +528,9 @@ function actionBar_getStateHide($buttonName)
    $this->nmgp_botoes['gridsave'] = "on";
    $this->nmgp_botoes['gridsavesession'] = "on";
    $this->nmgp_botoes['reload'] = "on";
-   $this->Cmps_ord_def['idLodgeCategory'] = " desc";
    $this->Cmps_ord_def['name'] = " asc";
    $this->Cmps_ord_def['capacity'] = " desc";
+   $this->Cmps_ord_def['idLodgeCategory'] = " desc";
    if (isset($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['btn_display']) && !empty($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['btn_display']))
    {
        foreach ($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['btn_display'] as $NM_cada_btn => $NM_cada_opc)
@@ -970,15 +970,15 @@ function actionBar_getStateHide($buttonName)
 //----- 
    if (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_sybase))
    { 
-       $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
    } 
    elseif (in_array(strtolower($this->Ini->nm_tpbanco), $this->Ini->nm_bases_mysql))
    { 
-       $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
    } 
    else 
    { 
-       $nmgp_select = "SELECT idLodgeCategory, name, capacity from " . $this->Ini->nm_tabela; 
+       $nmgp_select = "SELECT name, capacity, idLodgeCategory from " . $this->Ini->nm_tabela; 
    } 
    $nmgp_select .= " " . $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['where_pesq']; 
    $nmgp_order_by = ""; 
@@ -1055,11 +1055,11 @@ function actionBar_getStateHide($buttonName)
    }  
    else 
    { 
-       $this->idlodgecategory = $this->rs_grid->fields[0] ;  
-       $this->idlodgecategory = (string)$this->idlodgecategory;
-       $this->name = $this->rs_grid->fields[1] ;  
-       $this->capacity = $this->rs_grid->fields[2] ;  
+       $this->name = $this->rs_grid->fields[0] ;  
+       $this->capacity = $this->rs_grid->fields[1] ;  
        $this->capacity = (string)$this->capacity;
+       $this->idlodgecategory = $this->rs_grid->fields[2] ;  
+       $this->idlodgecategory = (string)$this->idlodgecategory;
        $this->SC_seq_register = $this->nmgp_reg_start ; 
        $this->SC_seq_page = 0;
        $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['final'] = $this->nmgp_reg_start ; 
@@ -1068,9 +1068,9 @@ function actionBar_getStateHide($buttonName)
            $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['final']++ ; 
            $this->SC_seq_register = $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['final']; 
            $this->rs_grid->MoveNext(); 
-           $this->idlodgecategory = $this->rs_grid->fields[0] ;  
-           $this->name = $this->rs_grid->fields[1] ;  
-           $this->capacity = $this->rs_grid->fields[2] ;  
+           $this->name = $this->rs_grid->fields[0] ;  
+           $this->capacity = $this->rs_grid->fields[1] ;  
+           $this->idlodgecategory = $this->rs_grid->fields[2] ;  
        } 
    } 
    $this->NM_hidden_filters = ($this->Ini->Embutida_iframe && !empty($this->nm_grid_sem_reg) && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['initialize']) ? true : false;
@@ -1309,7 +1309,7 @@ $nm_saida->saida("                        <link rel=\"shortcut icon\" href=\"\">
            $nm_saida->saida("     var scSweetAlertConfirmButtonFAPos = \"" . $confirmButtonFAPos . "\";\r\n");
            $nm_saida->saida("     var scSweetAlertCancelButtonFAPos = \"" . $cancelButtonFAPos . "\";\r\n");
            $nm_saida->saida("   </script>\r\n");
-           $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_lodge_category_jquery_1941.js\"></script>\r\n");
+           $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_lodge_category_jquery_8314.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_lodge_category_ajax.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\" src=\"que_lodge_category_message.js\"></script>\r\n");
            $nm_saida->saida("   <script type=\"text/javascript\">\r\n");
@@ -2816,12 +2816,12 @@ $nm_saida->saida("}\r\n");
 
    $compl_css_emb = ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida']) ? "que_lodge_category_" : "";
    $this->css_sep = " ";
-   $this->css_idlodgecategory_label = $compl_css_emb . "css_idlodgecategory_label";
-   $this->css_idlodgecategory_grid_line = $compl_css_emb . "css_idlodgecategory_grid_line";
    $this->css_name_label = $compl_css_emb . "css_name_label";
    $this->css_name_grid_line = $compl_css_emb . "css_name_grid_line";
    $this->css_capacity_label = $compl_css_emb . "css_capacity_label";
    $this->css_capacity_grid_line = $compl_css_emb . "css_capacity_grid_line";
+   $this->css_idlodgecategory_label = $compl_css_emb . "css_idlodgecategory_label";
+   $this->css_idlodgecategory_grid_line = $compl_css_emb . "css_idlodgecategory_grid_line";
  }  
  function cabecalho()
  {
@@ -3220,10 +3220,10 @@ $nm_saida->saida("}\r\n");
       } 
    $nm_saida->saida("    <TR id=\"tit_que_lodge_category__SCCS__" . $nm_seq_titulos . "\" align=\"center\" class=\"" . $this->css_scGridLabel . " sc-ui-grid-header-row sc-ui-grid-header-row-que_lodge_category-" . $tmp_header_row . "\">\r\n");
    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida_label']) { 
-   $nm_saida->saida("     <TD class=\"" . $this->css_scGridBlockBg . "\" style=\"width: " . $this->width_tabula_quebra . "; display:" . $this->width_tabula_display . ";\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_capacity_label'] . "\" >&nbsp;</TD>\r\n");
+   $nm_saida->saida("     <TD class=\"" . $this->css_scGridBlockBg . "\" style=\"width: " . $this->width_tabula_quebra . "; display:" . $this->width_tabula_display . ";\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_idlodgecategory_label'] . "\" >&nbsp;</TD>\r\n");
    } 
    if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opc_psq']) { 
-   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_capacity_label'] . "\" >&nbsp;</TD>\r\n");
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_idlodgecategory_label'] . "\" >&nbsp;</TD>\r\n");
    } 
    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != "print" && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != "pdf") {
        $classColFld = "";
@@ -3234,7 +3234,7 @@ $nm_saida->saida("}\r\n");
            $classColTitle = " sc-col-title";
            $classColActions = " sc-col-actions";
        }
-   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . " sc-col-actionbar-left  " . $classColFld . $classColTitle . $classColActions . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_capacity_label'] . "\" >\r\n");
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . " sc-col-actionbar-left  " . $classColFld . $classColTitle . $classColActions . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_idlodgecategory_label'] . "\" >\r\n");
    $nm_saida->saida("<style>\r\n");
    $nm_saida->saida("    .sc-col-actionbar-left {  }\r\n");
    $nm_saida->saida("    .sc-col-actionbar-left:hover {  }\r\n");
@@ -3326,6 +3326,104 @@ $nm_saida->saida("}\r\n");
      } 
    } 
  }
+ function NM_label_name()
+ {
+   global $nm_saida;
+   $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Acomodação";
+   $classColFld = "";
+   $classColTitle = "";
+   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
+     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+     $classColTitle = " sc-col-title";
+   }
+   if (!isset($this->NM_cmp_hidden['name']) || $this->NM_cmp_hidden['name'] != "off") { 
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_name_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_name_label'] . "\" >\r\n");
+    $label_fieldName = nl2br($SC_Label);
+    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
+        // label & order
+        $divLabelStyle = '';
+        $fieldSortRule = $this->scGetColumnOrderRule('name');
+        $fieldSortIcon = $this->scGetColumnOrderIcon('name', $fieldSortRule);
+        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
+            $this->Ini->Label_sort_pos = 'right_field';
+        }
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_name_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_name_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('name')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+        // controls
+        $label_chart = '';
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+    } else {
+        $label_final = $label_fieldName;
+    }
+   $nm_saida->saida("" . $label_final . "\r\n");
+   $nm_saida->saida("</TD>\r\n");
+   } 
+ }
+ function NM_label_capacity()
+ {
+   global $nm_saida;
+   $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacidade";
+   $classColFld = "";
+   $classColTitle = "";
+   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
+     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+     $classColTitle = " sc-col-title";
+   }
+   if (!isset($this->NM_cmp_hidden['capacity']) || $this->NM_cmp_hidden['capacity'] != "off") { 
+   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_capacity_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_capacity_label'] . "\" >\r\n");
+    $label_fieldName = nl2br($SC_Label);
+    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
+        // label & order
+        $divLabelStyle = '; justify-content: right';
+        $fieldSortRule = $this->scGetColumnOrderRule('capacity');
+        $fieldSortIcon = $this->scGetColumnOrderIcon('capacity', $fieldSortRule);
+        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
+            $this->Ini->Label_sort_pos = 'right_field';
+        }
+        if (empty($fieldSortIcon)) {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_capacity_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
+            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
+        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_capacity_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
+        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
+            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
+        } else {
+            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
+        }
+        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('capacity')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
+        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
+        // controls
+        $label_chart = '';
+        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
+        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
+        // final label
+        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
+    } else {
+        $label_final = $label_fieldName;
+    }
+   $nm_saida->saida("" . $label_final . "\r\n");
+   $nm_saida->saida("</TD>\r\n");
+   } 
+ }
  function NM_label_idlodgecategory()
  {
    global $nm_saida;
@@ -3375,104 +3473,6 @@ $nm_saida->saida("}\r\n");
    $nm_saida->saida("</TD>\r\n");
    } 
  }
- function NM_label_name()
- {
-   global $nm_saida;
-   $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Name";
-   $classColFld = "";
-   $classColTitle = "";
-   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
-     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
-     $classColTitle = " sc-col-title";
-   }
-   if (!isset($this->NM_cmp_hidden['name']) || $this->NM_cmp_hidden['name'] != "off") { 
-   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_name_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_name_label'] . "\" >\r\n");
-    $label_fieldName = nl2br($SC_Label);
-    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
-        // label & order
-        $divLabelStyle = '';
-        $fieldSortRule = $this->scGetColumnOrderRule('name');
-        $fieldSortIcon = $this->scGetColumnOrderIcon('name', $fieldSortRule);
-        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
-            $this->Ini->Label_sort_pos = 'right_field';
-        }
-        if (empty($fieldSortIcon)) {
-            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_name_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
-        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_name_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
-        } else {
-            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
-        }
-        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('name')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
-        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
-        // controls
-        $label_chart = '';
-        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
-        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
-        // final label
-        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
-    } else {
-        $label_final = $label_fieldName;
-    }
-   $nm_saida->saida("" . $label_final . "\r\n");
-   $nm_saida->saida("</TD>\r\n");
-   } 
- }
- function NM_label_capacity()
- {
-   global $nm_saida;
-   $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacity";
-   $classColFld = "";
-   $classColTitle = "";
-   if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
-     $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
-     $classColTitle = " sc-col-title";
-   }
-   if (!isset($this->NM_cmp_hidden['capacity']) || $this->NM_cmp_hidden['capacity'] != "off") { 
-   $nm_saida->saida("     <TD class=\"" . $this->css_inherit_bg . ' ' . $this->css_scGridLabelFont . $this->css_sep . $this->css_capacity_label . " " . $classColFld . $classColTitle . "\"  style=\"" . $this->css_scGridLabelNowrap . "" . $this->Css_Cmp['css_capacity_label'] . "\" >\r\n");
-    $label_fieldName = nl2br($SC_Label);
-    if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
-        // label & order
-        $divLabelStyle = '; justify-content: right';
-        $fieldSortRule = $this->scGetColumnOrderRule('capacity');
-        $fieldSortIcon = $this->scGetColumnOrderIcon('capacity', $fieldSortRule);
-        if (empty($this->Ini->Label_sort_pos) || $this->Ini->Label_sort_pos == 'right') {
-            $this->Ini->Label_sort_pos = 'right_field';
-        }
-        if (empty($fieldSortIcon)) {
-            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'right_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\"><div class=\"" . $this->css_capacity_label . "\" style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'left_field') {
-            $label_labelContent = "<div style=\"display: flex" . $divLabelStyle . "\">" . $fieldSortIcon . "<div style=\"display: flex; white-space: nowrap\">" . $label_fieldName . "</div></div>";
-        } elseif ($this->Ini->Label_sort_pos == 'right_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\"><div class=\"" . $this->css_capacity_label . "\" style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>" . $fieldSortIcon . "</div>";
-        } elseif ($this->Ini->Label_sort_pos == 'left_cell') {
-            $label_labelContent = "<div style=\"display: flex; justify-content: space-between\">" . $fieldSortIcon . "<div style=\"display: flex; flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div></div>";
-        } else {
-            $label_labelContent = "<div style=\"flex-grow: 1; white-space: nowrap" . $divLabelStyle . "\">" . $label_fieldName . "</div>";
-        }
-        $label_labelContent = "<a href=\"javascript:nm_gp_submit2('capacity')\" class=\"" . $this->css_scGridLabelLink . "\">". $label_labelContent . "</a>";
-        $label_divLabel = "<div style=\"flex-grow: 1\">". $label_labelContent . "</div>";
-        // controls
-        $label_chart = '';
-        $label_fixedColumn = "<span class=\"sc-op-fix-col sc-op-fix-col-" . $this->grid_fixed_column_no . " sc-op-fix-col-notfixed\" data-fixcolid=\"" . $this->grid_fixed_column_no . "\" id=\"sc-fld-fix-col-" . $this->grid_fixed_column_no . "\"><i class=\"fas fa-thumbtack\"></i></span>";
-        $label_divControl = '<div style="display: flex; flex-wrap: nowrap; align-items: baseline">' . $label_chart . $label_fixedColumn . '</div>';
-        // final label
-        $label_final = '<div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: baseline">' . $label_divLabel . $label_divControl . '</div>';
-    } else {
-        $label_final = $label_fieldName;
-    }
-   $nm_saida->saida("" . $label_final . "\r\n");
-   $nm_saida->saida("</TD>\r\n");
-   } 
- }
 function SC_label_rightActionBar()
 {
 	global $nm_saida;
@@ -3506,9 +3506,9 @@ function SC_label_rightActionBar()
     function scIsFieldNumeric($fieldName)
     {
         switch ($fieldName) {
-            case "idlodgecategory":
-                return true;
             case "capacity":
+                return true;
+            case "idlodgecategory":
                 return true;
         }
         return false;
@@ -3517,9 +3517,9 @@ function SC_label_rightActionBar()
     function scGetDefaultFieldOrder($fieldName)
     {
         switch ($fieldName) {
-            case "idlodgecategory":
-                return 'desc';
             case "capacity":
+                return 'desc';
+            case "idlodgecategory":
                 return 'desc';
         }
         return 'asc';
@@ -3555,12 +3555,12 @@ function SC_label_rightActionBar()
    $this->sc_where_atual   = $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['where_pesq'];
    $this->sc_where_filtro  = $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['where_pesq_filtro'];
 // 
+   $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Acomodação";
+   $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['labels']['name'] = $SC_Label; 
+   $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacidade";
+   $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['labels']['capacity'] = $SC_Label; 
    $SC_Label = (isset($this->New_label['idlodgecategory'])) ? $this->New_label['idlodgecategory'] : "Id Lodge Category";
    $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['labels']['idlodgecategory'] = $SC_Label; 
-   $SC_Label = (isset($this->New_label['name'])) ? $this->New_label['name'] : "Name";
-   $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['labels']['name'] = $SC_Label; 
-   $SC_Label = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : "Capacity";
-   $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['labels']['capacity'] = $SC_Label; 
    if (!$this->grid_emb_form && isset($_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['lig_edit']) && $_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['lig_edit'] != '')
    {
        $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['mostra_edit'] = $_SESSION['scriptcase']['sc_apl_conf']['que_lodge_category']['lig_edit'];
@@ -3832,11 +3832,11 @@ if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['proc_pdf
               }
           }
           $this->Lin_impressas++;
-          $this->idlodgecategory = $this->rs_grid->fields[0] ;  
-          $this->idlodgecategory = (string)$this->idlodgecategory;
-          $this->name = $this->rs_grid->fields[1] ;  
-          $this->capacity = $this->rs_grid->fields[2] ;  
+          $this->name = $this->rs_grid->fields[0] ;  
+          $this->capacity = $this->rs_grid->fields[1] ;  
           $this->capacity = (string)$this->capacity;
+          $this->idlodgecategory = $this->rs_grid->fields[2] ;  
+          $this->idlodgecategory = (string)$this->idlodgecategory;
           $this->SC_seq_page++; 
           $this->SC_seq_register = $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['final'] + 1; 
           $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['rows_emb']++;
@@ -3884,10 +3884,10 @@ if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['proc_pdf
           $this->SC_ancora = $this->SC_seq_page;
           $nm_saida->saida("    <TR  class=\"" . $this->css_line_back . "\"  style=\"page-break-inside: avoid;\"" . $NM_destaque . " id=\"SC_ancor" . $this->SC_ancora . "\">\r\n");
  if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida_grid']){ 
-          $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_scGridBlockBg . "\" style=\"width: " . $this->width_tabula_quebra . "; display:" . $this->width_tabula_display . ";\"  style=\"" . $this->Css_Cmp['css_capacity_grid_line'] . "\" NOWRAP align=\"\" valign=\"\"   HEIGHT=\"0px\">&nbsp;</TD>\r\n");
+          $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_scGridBlockBg . "\" style=\"width: " . $this->width_tabula_quebra . "; display:" . $this->width_tabula_display . ";\"  style=\"" . $this->Css_Cmp['css_idlodgecategory_grid_line'] . "\" NOWRAP align=\"\" valign=\"\"   HEIGHT=\"0px\">&nbsp;</TD>\r\n");
  }
  if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opc_psq']){ 
-          $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_line_fonf . "\"  style=\"" . $this->Css_Cmp['css_capacity_grid_line'] . "\" NOWRAP align=\"left\" valign=\"top\" WIDTH=\"1px\"  HEIGHT=\"0px\">\r\n");
+          $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_line_fonf . "\"  style=\"" . $this->Css_Cmp['css_idlodgecategory_grid_line'] . "\" NOWRAP align=\"left\" valign=\"top\" WIDTH=\"1px\"  HEIGHT=\"0px\">\r\n");
  $Cod_Btn = nmButtonOutput($this->arr_buttons, "bcapture", "document.Fpesq.nm_ret_psq.value='" . str_replace(array("'", '"'), array("\'", '\"'), $teste) . "'; nm_escreve_window();", "document.Fpesq.nm_ret_psq.value='" . str_replace(array("'", '"'), array("\'", '\"'), $teste) . "'; nm_escreve_window();", "", "Rad_psq", "", "", "absmiddle", "", "0px", $this->Ini->path_botoes, "", "", "", "", "", "only_text", "text_right", "", "", "", "", "", "", "");
           $nm_saida->saida(" $Cod_Btn</TD>\r\n");
  } 
@@ -4078,43 +4078,6 @@ function SC_grid_rightActionBar()
 	global $nm_saida;
     $dataActionbarPos = 'right';
 }
- function NM_grid_idlodgecategory()
- {
-      global $nm_saida;
-      if (!isset($this->NM_cmp_hidden['idlodgecategory']) || $this->NM_cmp_hidden['idlodgecategory'] != "off") { 
-          $conteudo = NM_encode_input(sc_strip_script($this->idlodgecategory)); 
-          $conteudo_original = NM_encode_input(sc_strip_script($this->idlodgecategory)); 
-          if ($conteudo === "") 
-          { 
-              $conteudo = "&nbsp;" ;  
-              $graf = "" ;  
-          } 
-          else    
-          { 
-              nmgp_Form_Num_Val($conteudo, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
-          } 
-          $str_tem_display = $conteudo;
-          if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && !empty($conteudo)) 
-          { 
-              $str_tem_display = $this->getFieldHighlight('quicksearch', 'idlodgecategory', $str_tem_display, $conteudo_original); 
-              $str_tem_display = $this->getFieldHighlight('advanced_search', 'idlodgecategory', $str_tem_display, $conteudo_original); 
-          } 
-              $conteudo = $str_tem_display; 
-          $classColFld = "";
-          if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
-              $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
-          }
-          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['proc_pdf'])
-          {
-              $this->SC_nowrap = "NOWRAP";
-          }
-          else
-          {
-              $this->SC_nowrap = "NOWRAP";
-          }
-   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_idlodgecategory_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_idlodgecategory_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_idlodgecategory_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
-      }
- }
  function NM_grid_name()
  {
       global $nm_saida;
@@ -4189,6 +4152,43 @@ function SC_grid_rightActionBar()
               $this->SC_nowrap = "NOWRAP";
           }
    $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_capacity_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_capacity_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_capacity_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
+      }
+ }
+ function NM_grid_idlodgecategory()
+ {
+      global $nm_saida;
+      if (!isset($this->NM_cmp_hidden['idlodgecategory']) || $this->NM_cmp_hidden['idlodgecategory'] != "off") { 
+          $conteudo = NM_encode_input(sc_strip_script($this->idlodgecategory)); 
+          $conteudo_original = NM_encode_input(sc_strip_script($this->idlodgecategory)); 
+          if ($conteudo === "") 
+          { 
+              $conteudo = "&nbsp;" ;  
+              $graf = "" ;  
+          } 
+          else    
+          { 
+              nmgp_Form_Num_Val($conteudo, $_SESSION['scriptcase']['reg_conf']['grup_num'], $_SESSION['scriptcase']['reg_conf']['dec_num'], "0", "S", "2", "", "N:" . $_SESSION['scriptcase']['reg_conf']['neg_num'] , $_SESSION['scriptcase']['reg_conf']['simb_neg'], $_SESSION['scriptcase']['reg_conf']['num_group_digit']) ; 
+          } 
+          $str_tem_display = $conteudo;
+          if(!empty($str_tem_display) && $str_tem_display != '&nbsp;' && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['proc_pdf'] && !$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && !empty($conteudo)) 
+          { 
+              $str_tem_display = $this->getFieldHighlight('quicksearch', 'idlodgecategory', $str_tem_display, $conteudo_original); 
+              $str_tem_display = $this->getFieldHighlight('advanced_search', 'idlodgecategory', $str_tem_display, $conteudo_original); 
+          } 
+              $conteudo = $str_tem_display; 
+          $classColFld = "";
+          if (!$_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['embutida'] && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao_print'] != 'print' && $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['opcao'] != 'pdf') {
+              $classColFld = " sc-col-fld sc-col-fld-" . $this->grid_fixed_column_no;
+          }
+          if ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['proc_pdf'])
+          {
+              $this->SC_nowrap = "NOWRAP";
+          }
+          else
+          {
+              $this->SC_nowrap = "NOWRAP";
+          }
+   $nm_saida->saida("     <TD rowspan=\"" . $this->Rows_span . "\" class=\"" . $this->css_inherit_bg . ' ' . $this->css_line_fonf . $this->css_sep . $this->css_idlodgecategory_grid_line . " " . $classColFld . "\"  style=\"" . $this->Css_Cmp['css_idlodgecategory_grid_line'] . "\" " . $this->SC_nowrap . " align=\"\" valign=\"top\"   HEIGHT=\"0px\"><span id=\"id_sc_field_idlodgecategory_" . $this->SC_seq_page . "\">" . $conteudo . "</span></TD>\r\n");
       }
  }
  function NM_calc_span()
@@ -4418,9 +4418,9 @@ $nm_saida->saida("    </style>\r\n");
           $OPC_cmp_sel = explode("_VLS_", $OPC_cmp);
           $nm_saida->saida("          <select multiple=multiple  id=\"fast_search_f0_top\" class=\"\" style=\"vertical-align: middle;\" name=\"nmgp_fast_search\" onChange=\"change_fast_top = 'CH';\">\r\n");
           $SC_Label_atu['SC_all_Cmp'] = $this->Ini->Nm_lang['lang_srch_all_fields']; 
+          $SC_Label_atu['name'] = (isset($this->New_label['name'])) ? $this->New_label['name'] : 'Acomodação'; 
+          $SC_Label_atu['capacity'] = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : 'Capacidade'; 
           $SC_Label_atu['idlodgecategory'] = (isset($this->New_label['idlodgecategory'])) ? $this->New_label['idlodgecategory'] : 'Id Lodge Category'; 
-          $SC_Label_atu['name'] = (isset($this->New_label['name'])) ? $this->New_label['name'] : 'Name'; 
-          $SC_Label_atu['capacity'] = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : 'Capacity'; 
           foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'] as $cada_field)
           { 
                   if($cada_field == 'SC_all_Cmp')
@@ -5133,9 +5133,9 @@ $nm_saida->saida("    </style>\r\n");
           $OPC_cmp_sel = explode("_VLS_", $OPC_cmp);
           $nm_saida->saida("          <select multiple=multiple  id=\"fast_search_f0_top\" class=\"\" style=\"vertical-align: middle;\" name=\"nmgp_fast_search\" onChange=\"change_fast_top = 'CH';\">\r\n");
           $SC_Label_atu['SC_all_Cmp'] = $this->Ini->Nm_lang['lang_srch_all_fields']; 
+          $SC_Label_atu['name'] = (isset($this->New_label['name'])) ? $this->New_label['name'] : 'Acomodação'; 
+          $SC_Label_atu['capacity'] = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : 'Capacidade'; 
           $SC_Label_atu['idlodgecategory'] = (isset($this->New_label['idlodgecategory'])) ? $this->New_label['idlodgecategory'] : 'Id Lodge Category'; 
-          $SC_Label_atu['name'] = (isset($this->New_label['name'])) ? $this->New_label['name'] : 'Name'; 
-          $SC_Label_atu['capacity'] = (isset($this->New_label['capacity'])) ? $this->New_label['capacity'] : 'Capacity'; 
           foreach ($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['field_order'] as $cada_field)
           { 
                   if($cada_field == 'SC_all_Cmp')
@@ -6898,7 +6898,7 @@ $nm_saida->saida("    </style>\r\n");
                 (
                     (
                     $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['fast_search'][0] == 'SC_all_Cmp' &&
-                    in_array($field, array('idlodgecategory', 'name', 'capacity'))
+                    in_array($field, array('name', 'capacity', 'idlodgecategory'))
                     ) ||
                     $_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['fast_search'][0] == $field ||
                     strpos($_SESSION['sc_session'][$this->Ini->sc_page]['que_lodge_category']['fast_search'][0], $field . '_VLS_') !== false ||

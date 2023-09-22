@@ -664,62 +664,96 @@ if (!isset($_SESSION['scriptcase']['sc_apl_seg']))
 {
     $_SESSION['scriptcase']['sc_apl_seg'] = array();
 }
-if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/fil_costumer_checkin_ini.php'))
+if(is_file($path_apls . $this->tab_grupo[0] . '_lib/_app_data/img_menu_ini.php'))
 {
-    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/fil_costumer_checkin_ini.php');
+    require($path_apls . $this->tab_grupo[0] . '_lib/_app_data/img_menu_ini.php');
     if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
     {
-        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin']))
-        {
-            $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin'] = "on";
-        }
+      if (!isset($_SESSION['scriptcase']['sc_apl_seg']['img_menu']))
+      {
+        $_SESSION['scriptcase']['sc_apl_seg']['img_menu'] = "on";
+      }
     }
-    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
-    { 
-        $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin'] = "on";
-    } 
 }
 if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
 { 
-    $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin'] = "on";
+    $_SESSION['scriptcase']['sc_apl_seg']['img_menu'] = "on";
 } 
-if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/fil_costumer_checkout_ini.php'))
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/men_checkin_ini.php'))
 {
-    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/fil_costumer_checkout_ini.php');
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/men_checkin_ini.php');
     if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
     {
-        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']))
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['men_checkin']))
         {
-            $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout'] = "on";
+            $_SESSION['scriptcase']['sc_apl_seg']['men_checkin'] = "on";
         }
     }
     if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
     { 
-        $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout'] = "on";
+        $_SESSION['scriptcase']['sc_apl_seg']['men_checkin'] = "on";
     } 
 }
 if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
 { 
-    $_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout'] = "on";
+    $_SESSION['scriptcase']['sc_apl_seg']['men_checkin'] = "on";
 } 
-if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/accommodation_ini.php'))
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/men_checkout_ini.php'))
 {
-    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/accommodation_ini.php');
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/men_checkout_ini.php');
     if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
     {
-        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['accommodation']))
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['men_checkout']))
         {
-            $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
+            $_SESSION['scriptcase']['sc_apl_seg']['men_checkout'] = "on";
         }
     }
     if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
     { 
-        $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
+        $_SESSION['scriptcase']['sc_apl_seg']['men_checkout'] = "on";
     } 
 }
 if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
 { 
-    $_SESSION['scriptcase']['sc_apl_seg']['accommodation'] = "on";
+    $_SESSION['scriptcase']['sc_apl_seg']['men_checkout'] = "on";
+} 
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/home_ini.php'))
+{
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/home_ini.php');
+    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
+    {
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['home']))
+        {
+            $_SESSION['scriptcase']['sc_apl_seg']['home'] = "on";
+        }
+    }
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['home'] = "on";
+    } 
+}
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['home'] = "on";
+} 
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/rpt_costumerCheck_ini.php'))
+{
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/rpt_costumerCheck_ini.php');
+    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
+    {
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['rpt_costumerCheck']))
+        {
+            $_SESSION['scriptcase']['sc_apl_seg']['rpt_costumerCheck'] = "on";
+        }
+    }
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['rpt_costumerCheck'] = "on";
+    } 
+}
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['rpt_costumerCheck'] = "on";
 } 
 if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/que_lodge_category_ini.php'))
 {
@@ -759,25 +793,6 @@ if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_sessi
 { 
     $_SESSION['scriptcase']['sc_apl_seg']['que_costumers'] = "on";
 } 
-if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/men_home_ini.php'))
-{
-    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/men_home_ini.php');
-    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
-    {
-        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['men_home']))
-        {
-            $_SESSION['scriptcase']['sc_apl_seg']['men_home'] = "on";
-        }
-    }
-    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
-    { 
-        $_SESSION['scriptcase']['sc_apl_seg']['men_home'] = "on";
-    } 
-}
-if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
-{ 
-    $_SESSION['scriptcase']['sc_apl_seg']['men_home'] = "on";
-} 
 if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/admin_ini.php'))
 {
     require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/admin_ini.php');
@@ -796,6 +811,25 @@ if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/admin_ini.php'))
 if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
 { 
     $_SESSION['scriptcase']['sc_apl_seg']['admin'] = "on";
+} 
+if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/home_ini.php'))
+{
+    require($path_apls . $this->tab_grupo[0] .'_lib/_app_data/home_ini.php');
+    if ((!isset($arr_data['status']) || trim($arr_data['status']) == "NAO") || (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N")) 
+    {
+        if (!isset($_SESSION['scriptcase']['sc_apl_seg']['home']))
+        {
+            $_SESSION['scriptcase']['sc_apl_seg']['home'] = "on";
+        }
+    }
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['home'] = "on";
+    } 
+}
+if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+{ 
+    $_SESSION['scriptcase']['sc_apl_seg']['home'] = "on";
 } 
 if (is_file($path_apls . $this->tab_grupo[0] .'_lib/_app_data/sec_change_pswd_ini.php'))
 {
@@ -836,12 +870,6 @@ if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_sessi
     $_SESSION['scriptcase']['sc_apl_seg']['sec_login'] = "on";
 } 
 /* Itens do Menu */
-$_SESSION['scriptcase']['accommodation']['contr_erro'] = 'on';
-if (!isset($_SESSION['tela'])) {$_SESSION['tela'] = "";}
-if (!isset($this->sc_temp_tela)) {$this->sc_temp_tela = (isset($_SESSION['tela'])) ? $_SESSION['tela'] : "";}
- $this->sc_temp_tela = 'welcome';
-if (isset($this->sc_temp_tela)) {$_SESSION['tela'] = $this->sc_temp_tela;}
-$_SESSION['scriptcase']['accommodation']['contr_erro'] = 'off';
 
 $sOutputBuffer = ob_get_contents();
 ob_end_clean();
@@ -867,21 +895,21 @@ if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($nm_var_hint[1])
     $nm_var_hint[1] = sc_convert_encoding($nm_var_hint[1], $_SESSION['scriptcase']['charset'], "UTF-8");
 }
 $saida_apl = $_SESSION['scriptcase']['sc_saida_accommodation'];
-if (isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin']) == "on")
+if (isset($_SESSION['scriptcase']['sc_apl_seg']['men_checkin']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['men_checkin']) == "on")
 {
-    $accommodation_menuData['data'] .= "item_4|.|" . $nm_var_lab[0] . "|accommodation_form_php.php?sc_item_menu=item_4&sc_apl_menu=fil_costumer_checkin&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[0] . "||" . $this->accommodation_target('_self') . "|" . "\n";
+    $accommodation_menuData['data'] .= "item_3|.|" . $nm_var_lab[0] . "|accommodation_form_php.php?sc_item_menu=item_3&sc_apl_menu=men_checkin&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[0] . "||" . $this->accommodation_target('_self') . "|" . "\n";
 }
 else
 {
-    $accommodation_menuData['data'] .= "item_4|.|" . $nm_var_lab[0] . "||||_self|disabled\n";
+    $accommodation_menuData['data'] .= "item_3|.|" . $nm_var_lab[0] . "||||_self|disabled\n";
 }
-if (isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) == "on")
+if (isset($_SESSION['scriptcase']['sc_apl_seg']['men_checkout']) && strtolower($_SESSION['scriptcase']['sc_apl_seg']['men_checkout']) == "on")
 {
-    $accommodation_menuData['data'] .= "item_3|.|" . $nm_var_lab[1] . "|accommodation_form_php.php?sc_item_menu=item_3&sc_apl_menu=fil_costumer_checkout&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[1] . "||" . $this->accommodation_target('_self') . "|" . "\n";
+    $accommodation_menuData['data'] .= "item_5|.|" . $nm_var_lab[1] . "|accommodation_form_php.php?sc_item_menu=item_5&sc_apl_menu=men_checkout&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "|" . $nm_var_hint[1] . "||" . $this->accommodation_target('_self') . "|" . "\n";
 }
 else
 {
-    $accommodation_menuData['data'] .= "item_3|.|" . $nm_var_lab[1] . "||||_self|disabled\n";
+    $accommodation_menuData['data'] .= "item_5|.|" . $nm_var_lab[1] . "||||_self|disabled\n";
 }
 if(isset($_SESSION['scriptcase']['force_menu_orientacao']) && !empty($_SESSION['scriptcase']['force_menu_orientacao']))
 {
@@ -890,13 +918,13 @@ if(isset($_SESSION['scriptcase']['force_menu_orientacao']) && !empty($_SESSION['
 elseif($this->force_mobile || ($_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile']))
 {
     $this->menu_orientacao = 'vertical';
-    $this->mobile_menu_toolbar = '';
+    $this->mobile_menu_toolbar = 'menu_item';
 }
 
 $accommodation_menuData['data'] = array();
 $str_disabled = "N";
-$str_link = "accommodation_form_php.php?sc_item_menu=item_4&sc_apl_menu=fil_costumer_checkin&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "";
-if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin']) || strtolower($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin']) != "on")
+$str_link = "accommodation_form_php.php?sc_item_menu=item_3&sc_apl_menu=men_checkin&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "";
+if (!isset($_SESSION['scriptcase']['sc_apl_seg']['men_checkin']) || strtolower($_SESSION['scriptcase']['sc_apl_seg']['men_checkin']) != "on")
 {
     $str_link = "#";
     $str_disabled = "Y";
@@ -904,25 +932,25 @@ if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin']) || str
     $str_icon = "";
     $icon_aba = "";
     $icon_aba_inactive = "";
-    if(empty($icon_aba) && isset($arr_menuicons['filter']['active']))
+    if(empty($icon_aba) && isset($arr_menuicons['menu']['active']))
     {
-        $icon_aba = $arr_menuicons['filter']['active'];
+        $icon_aba = $arr_menuicons['menu']['active'];
     }
-    if(empty($icon_aba_inactive) && isset($arr_menuicons['filter']['inactive']))
+    if(empty($icon_aba_inactive) && isset($arr_menuicons['menu']['inactive']))
     {
-        $icon_aba_inactive = $arr_menuicons['filter']['inactive'];
+        $icon_aba_inactive = $arr_menuicons['menu']['inactive'];
     }
     $accommodation_menuData['data'][] = array(
         'label'    => "" . $nm_var_lab[0] . "",
         'level'    => "0",
         'link'     => $str_link,
         'hint'     => "" . $nm_var_hint[0] . "",
-        'id'       => "item_4",
+        'id'       => "item_3",
         'icon'     => $str_icon,
         'icon_aba' => $icon_aba,
         'icon_aba_inactive' => $icon_aba_inactive,
         'target'   => " item-target=\"" . $this->accommodation_target('_self') . "\"",
-        'sc_id'    => "item_4",
+        'sc_id'    => "item_3",
         'disabled' => $str_disabled,
         'display'     => "text_fontawesomeicon",
         'display_position'=> "text_right",
@@ -932,8 +960,8 @@ if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkin']) || str
         'icon_color_disabled'     => "",
     );
 $str_disabled = "N";
-$str_link = "accommodation_form_php.php?sc_item_menu=item_3&sc_apl_menu=fil_costumer_checkout&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "";
-if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) || strtolower($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) != "on")
+$str_link = "accommodation_form_php.php?sc_item_menu=item_5&sc_apl_menu=men_checkout&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "";
+if (!isset($_SESSION['scriptcase']['sc_apl_seg']['men_checkout']) || strtolower($_SESSION['scriptcase']['sc_apl_seg']['men_checkout']) != "on")
 {
     $str_link = "#";
     $str_disabled = "Y";
@@ -941,25 +969,25 @@ if (!isset($_SESSION['scriptcase']['sc_apl_seg']['fil_costumer_checkout']) || st
     $str_icon = "";
     $icon_aba = "";
     $icon_aba_inactive = "";
-    if(empty($icon_aba) && isset($arr_menuicons['filter']['active']))
+    if(empty($icon_aba) && isset($arr_menuicons['menu']['active']))
     {
-        $icon_aba = $arr_menuicons['filter']['active'];
+        $icon_aba = $arr_menuicons['menu']['active'];
     }
-    if(empty($icon_aba_inactive) && isset($arr_menuicons['filter']['inactive']))
+    if(empty($icon_aba_inactive) && isset($arr_menuicons['menu']['inactive']))
     {
-        $icon_aba_inactive = $arr_menuicons['filter']['inactive'];
+        $icon_aba_inactive = $arr_menuicons['menu']['inactive'];
     }
     $accommodation_menuData['data'][] = array(
         'label'    => "" . $nm_var_lab[1] . "",
         'level'    => "0",
         'link'     => $str_link,
         'hint'     => "" . $nm_var_hint[1] . "",
-        'id'       => "item_3",
+        'id'       => "item_5",
         'icon'     => $str_icon,
         'icon_aba' => $icon_aba,
         'icon_aba_inactive' => $icon_aba_inactive,
         'target'   => " item-target=\"" . $this->accommodation_target('_self') . "\"",
-        'sc_id'    => "item_3",
+        'sc_id'    => "item_5",
         'disabled' => $str_disabled,
         'display'     => "text_fontawesomeicon",
         'display_position'=> "text_right",
@@ -1086,7 +1114,7 @@ if ($accommodation_menuData['iframe'])
 
 <html<?php echo $_SESSION['scriptcase']['reg_conf']['html_dir'] ?> style="height: 100%">
 <head>
- <title>Skini | Inicio</title>
+ <title>Hospedagem</title>
  <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
  <?php
  if ($_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])
@@ -1338,8 +1366,9 @@ if (isset($this->nm_mens_alert) && count($this->nm_mens_alert)) {
 <script>
 $(document).ready(function() {
     $(".scBtnGrpText").mouseover(function() { $(this).addClass("scBtnGrpTextOver"); }).mouseout(function() { $(this).removeClass("scBtnGrpTextOver"); });
-    $("#btn_4").on('click', function() { scBtnGrpShow('btn_4') });
     $("#btn_11").on('click', function() { scBtnGrpShow('btn_11') });
+    $("#btn_5").on('click', function() { scBtnGrpShow('btn_5') });
+    $("#btn_8").on('click', function() { scBtnGrpShow('btn_8') });
     $("#btn_2").on('click', function() { scBtnGrpShow('btn_2') });
 });
     var scBtnGrpStatus = {};
@@ -1640,8 +1669,9 @@ echo $str_bmenu;
 <script>
 $(document).ready(function() {
     $(".scBtnGrpText").mouseover(function() { $(this).addClass("scBtnGrpTextOver"); }).mouseout(function() { $(this).removeClass("scBtnGrpTextOver"); });
-    $("#btn_4").on('click', function() { scBtnGrpShow('btn_4') });
     $("#btn_11").on('click', function() { scBtnGrpShow('btn_11') });
+    $("#btn_5").on('click', function() { scBtnGrpShow('btn_5') });
+    $("#btn_8").on('click', function() { scBtnGrpShow('btn_8') });
     $("#btn_2").on('click', function() { scBtnGrpShow('btn_2') });
     var scBtnGrpStatus = {};
     function scBtnGrpShow(sGroup) {
@@ -1745,6 +1775,7 @@ function clearFastMenu(arr_link)
   str_link   = $('#' + str_id).attr('item-href');
   str_target = $('#' + str_id).attr('item-target');
   if (typeof str_link !== typeof undefined && str_link !== false) {
+    str_id = str_id.replace('iframe_accommodation', 'accommodation');
     //test link type
     if (str_link != '' && str_link != '#' && str_link != 'javascript:')
     {
@@ -1862,7 +1893,19 @@ else
 }
 ?>
     <div id="Iframe_control" style='width:100%; height:100%; margin:0px; padding:0px;'>
-      <iframe id="iframe_accommodation" name="accommodation_iframe" frameborder="0" class="scMenuIframe" style="width: 100%; height: 100%;"  src="<?php echo ($NM_scr_iframe != "" ? $NM_scr_iframe : "accommodation_pag_ini.php"); ?>"></iframe>
+<?php
+$link_default = "";
+if (isset($_SESSION['scriptcase']['sc_apl_seg']['img_menu']) && $_SESSION['scriptcase']['sc_apl_seg']['img_menu'] == "on") 
+{ 
+    $SCR  = "";
+    $link_default = " onclick=\"openMenuItem('iframe_accommodation');\" item-href=\"accommodation_form_php.php?sc_item_menu=accommodation&sc_apl_menu=img_menu&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "\"  item-target=\"accommodation_iframe\"";
+} 
+else
+{ 
+    $SCR  = ($NM_scr_iframe != "" ? $NM_scr_iframe : "accommodation_pag_ini.php");
+} 
+?>
+      <iframe id="iframe_accommodation" name="accommodation_iframe" frameborder="0" class="scMenuIframe" style="width: 100%; height: 100%;"  src="<?php echo $SCR; ?>" <?php echo $link_default ?>></iframe>
 <?php
 }
 ?></div></td>
@@ -1877,30 +1920,17 @@ else
   <?php
   }
 ?>
-  <tr>
-    <td style="padding: 0px" <?php if($this->menu_orientacao == 'vertical'){ echo $col_span; } ?>>
-<style>
-#rod_col1 { margin:0px; padding: 3px 0 0 5px; float:left; overflow:hidden;}
-#rod_col2 { margin:0px; padding: 3px 5px 0 0; float:right; overflow:hidden; text-align:right;}
-
-</style>
-
-<table style="width: 100%; height:20px;" cellpadding="0px" cellspacing="0px" class="scMenuHFooter">
-    <tr>
-        <td>
-            <span class="scMenuHFooterFont" id="rod_col1"></span>
-        </td>
-        <td>
-            <span class="scMenuHFooterFont" id="rod_col2"><?php echo "" . $_SESSION['usr_name'] . "" ?></span>
-        </td>
-    </tr>
-</table>    </td>
-  </tr>
 </table>
 </body>
 </html>
 <?php
 
+if (isset($link_default) && !empty($link_default))
+{
+    echo "<script>";
+    echo "   document.getElementById('iframe_accommodation').click()";
+    echo "</script>";
+}
 
 }
 
@@ -1914,6 +1944,245 @@ function accommodation_escreveMenu($arr_menu, $path_imag_cab = '', $strAlign = '
     $subCount  = array();
     $tabSpace  = 1;
     $intMult   = 2;
+	if(!empty($this->mobile_menu_toolbar) && ($this->force_mobile || ($_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])))
+	{
+		$arr_toolbar = [];
+		$arr_toolbar[] = [
+							'label' => $this->Nm_lang['lang_toolbar'],
+							'level'=>'0',
+							'link' => '#',
+							'hint' => '',
+							'id' => 'id_menu_toolbar',
+							'icon' => '',
+							'icon_aba' => '',
+							'icon_aba_inactive' => '',
+							'target' => '',
+							'sc_id' => 'id_toolbar',
+							'disabled' => '',
+							'display' => '',
+							'display_position' => '',
+							'icon_fa' => '',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Skini',
+							'level'=>'1',
+							'link' => 'home',
+							'hint' => '',
+							'id' => 'btn_1',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_blank',
+							'sc_id' => 'btn_1',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-campground',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Relatórios',
+							'level'=>'1',
+							'link' => '',
+							'hint' => 'Relatórios',
+							'id' => 'btn_11',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_11',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-search',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Movimentação de Hóspedes',
+							'level'=>'2',
+							'link' => 'rpt_costumerCheck',
+							'hint' => 'Movimentação de Hóspedes',
+							'id' => 'btn_12',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_12',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-business-time',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Cadastros',
+							'level'=>'1',
+							'link' => '',
+							'hint' => 'Cadastros',
+							'id' => 'btn_5',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_5',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-database',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Acomodações',
+							'level'=>'2',
+							'link' => 'que_lodge_category',
+							'hint' => 'Acomodações',
+							'id' => 'btn_6',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_6',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-bed',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Hóspedes',
+							'level'=>'2',
+							'link' => 'que_costumers',
+							'hint' => 'Hóspedes',
+							'id' => 'btn_7',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_7',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-user-alt',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Módulos',
+							'level'=>'1',
+							'link' => '',
+							'hint' => 'Módulos',
+							'id' => 'btn_8',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_8',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-th',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Admin',
+							'level'=>'2',
+							'link' => 'admin',
+							'hint' => 'Admin',
+							'id' => 'btn_10',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_parent',
+							'sc_id' => 'btn_10',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-users-cog',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Inicio',
+							'level'=>'2',
+							'link' => 'home',
+							'hint' => 'Inicio',
+							'id' => 'btn_9',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_9',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-campground',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Usuário',
+							'level'=>'1',
+							'link' => '',
+							'hint' => 'Usuário',
+							'id' => 'btn_2',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_2',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-user-circle',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => 'Alterar Senha',
+							'level'=>'2',
+							'link' => 'sec_change_pswd',
+							'hint' => '',
+							'id' => 'btn_3',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_self',
+							'sc_id' => 'btn_3',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-key',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_toolbar[] = [
+							'label' => '{lang_exit}',
+							'level'=>'2',
+							'link' => 'sec_login',
+							'hint' => '',
+							'id' => 'btn_4',
+							'icon' => '',
+							'icon_aba' => '----------------',
+							'icon_aba_inactive' => '----------------',
+							'target' => '_parent',
+							'sc_id' => 'btn_4',
+							'disabled' => '',
+							'display' => 'text_fontawesomeicon',
+							'display_position' => 'text_right',
+							'icon_fa' => 'fas fa-sign-out-alt',
+							'icon_color' => '',
+							'icon_color_hover' => '',
+							'icon_color_disabled' => '',
+			];		$arr_menu = array_merge($arr_toolbar, $arr_menu);
+	}
     $aMenuItemList = array();
     foreach ($arr_menu as $ind => $resto)
     {
@@ -2108,48 +2377,31 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $accommodation_menuData, $pa
         <td class="scMenuHTableCss" align="center" style="margin:0px; padding:0px;" <?php echo $col_span; ?>>
             <div id="idMenuToolbar" class="scMenuToolbar">
             <?php
-                if ($this->nmgp_botoes['btn_12'] == "on")
+                if ($this->nmgp_botoes['btn_1'] == "on")
                 {
-                    echo nmButtonOutput($this->arr_buttons, "btn_12", "accommodation_form_php.php?sc_item_menu=btn_12&sc_apl_menu=accommodation&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "", "accommodation_form_php.php?sc_item_menu=btn_12&sc_apl_menu=accommodation&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "", "btn_12", "", "Hospedagem", "", "absmiddle", "", "0px", $this->path_botoes, "", "Hospedagem", "", "", "", "text_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_blank') . "", "", "", "", "accommodation", "");
+                    echo nmButtonOutput($this->arr_buttons, "btn_1", "accommodation_form_php.php?sc_item_menu=btn_1&sc_apl_menu=home&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "", "accommodation_form_php.php?sc_item_menu=btn_1&sc_apl_menu=home&sc_apl_link=" . urlencode($accommodation_menuData['url']['link']) . "&sc_usa_grupo=" . $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] . "", "btn_1", "", "Skini", "", "absmiddle", "", "0px", $this->path_botoes, "", "", "", "", "", "text_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_blank') . "", "", "", "", "accommodation", "");
                 }
 
-                if ($this->nmgp_botoes['btn_4'] == "on")
+                if ($this->nmgp_botoes['btn_11'] == "on")
                 {
-                    echo nmButtonOutput($this->arr_buttons, "btn_4", "javascript:", "javascript:", "btn_4", "", "Cadastros", "", "absmiddle", "", "0px", $this->path_botoes, "", "Cadastros", "", "", "__sc_grp__", "text_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_self') . "", "", "", "", "accommodation", "");
+                    echo nmButtonOutput($this->arr_buttons, "btn_11", "javascript:", "javascript:", "btn_11", "", "Relatórios", "", "absmiddle", "", "0px", $this->path_botoes, "", "Relatórios", "", "", "__sc_grp__", "text_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_self') . "", "", "", "", "accommodation", "");
                     ?>
-                    <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_4">
+                    <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_11">
                         <tr>
                             <td class="scBtnGrpBackground">
                               <?php
-                              if($this->nmgp_botoes['btn_10'] == 'on')
+                              if($this->nmgp_botoes['btn_12'] == 'on')
                               {
                               ?>
                                   <div class="scBtnGrpText">
                                     <?php
-                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_10&sc_apl_menu=que_lodge_category&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
-                                    if(isset($this->arr_buttons['btn_10']['disabled']) && strtolower($this->arr_buttons['btn_10']['disabled']) == 'off')
+                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_12&sc_apl_menu=rpt_costumerCheck&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_12']['disabled']) && strtolower($this->arr_buttons['btn_12']['disabled']) == 'off')
                                     {
                                       $str_href = "javascript:";
                                     }
                                     ?>
-                                      <a id="btn_10" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Acomodação" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-bed'></i> Acomodação</a>
-                                  </div>
-                              <?php
-                              }
-                              ?>
-                              <?php
-                              if($this->nmgp_botoes['btn_9'] == 'on')
-                              {
-                              ?>
-                                  <div class="scBtnGrpText">
-                                    <?php
-                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_9&sc_apl_menu=que_costumers&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
-                                    if(isset($this->arr_buttons['btn_9']['disabled']) && strtolower($this->arr_buttons['btn_9']['disabled']) == 'off')
-                                    {
-                                      $str_href = "javascript:";
-                                    }
-                                    ?>
-                                      <a id="btn_9" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Cadastros" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-user-alt'></i> Hospedes</a>
+                                      <a id="btn_12" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Movimentação de Hóspedes" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-business-time'></i> Movimentação de Hóspedes</a>
                                   </div>
                               <?php
                               }
@@ -2160,43 +2412,90 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $accommodation_menuData, $pa
                     <?php
                 }
 
-                if ($this->nmgp_botoes['btn_11'] == "on")
+                if ($this->nmgp_botoes['btn_5'] == "on")
                 {
-                    echo nmButtonOutput($this->arr_buttons, "btn_11", "javascript:", "javascript:", "btn_11", "", "Apps", "", "absmiddle", "", "0px", $this->path_botoes, "", "Aplicações", "", "", "__sc_grp__", "only_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_self') . "", "", "", "", "accommodation", "");
+                    echo nmButtonOutput($this->arr_buttons, "btn_5", "javascript:", "javascript:", "btn_5", "", "Cadastros", "", "absmiddle", "", "0px", $this->path_botoes, "", "Cadastros", "", "", "__sc_grp__", "text_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_self') . "", "", "", "", "accommodation", "");
                     ?>
-                    <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_11">
+                    <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_5">
                         <tr>
                             <td class="scBtnGrpBackground">
                               <?php
-                              if($this->nmgp_botoes['btn_1'] == 'on')
+                              if($this->nmgp_botoes['btn_6'] == 'on')
                               {
                               ?>
                                   <div class="scBtnGrpText">
                                     <?php
-                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_1&sc_apl_menu=men_home&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
-                                    if(isset($this->arr_buttons['btn_1']['disabled']) && strtolower($this->arr_buttons['btn_1']['disabled']) == 'off')
+                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_6&sc_apl_menu=que_lodge_category&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_6']['disabled']) && strtolower($this->arr_buttons['btn_6']['disabled']) == 'off')
                                     {
                                       $str_href = "javascript:";
                                     }
                                     ?>
-                                      <a id="btn_1" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-home'></i> Inicio</a>
+                                      <a id="btn_6" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Acomodações" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-bed'></i> Acomodações</a>
                                   </div>
                               <?php
                               }
                               ?>
                               <?php
-                              if($this->nmgp_botoes['btn_13'] == 'on')
+                              if($this->nmgp_botoes['btn_7'] == 'on')
                               {
                               ?>
                                   <div class="scBtnGrpText">
                                     <?php
-                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_13&sc_apl_menu=admin&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
-                                    if(isset($this->arr_buttons['btn_13']['disabled']) && strtolower($this->arr_buttons['btn_13']['disabled']) == 'off')
+                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_7&sc_apl_menu=que_costumers&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_7']['disabled']) && strtolower($this->arr_buttons['btn_7']['disabled']) == 'off')
                                     {
                                       $str_href = "javascript:";
                                     }
                                     ?>
-                                      <a id="btn_13" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Admin" target="<?php echo $this->accommodation_target('_blank'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-user-lock'></i> Admin</a>
+                                      <a id="btn_7" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Hóspedes" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-user-alt'></i> Hóspedes</a>
+                                  </div>
+                              <?php
+                              }
+                              ?>
+                            </td>
+                        </tr>
+                    </table>
+                    <?php
+                }
+
+                if ($this->nmgp_botoes['btn_8'] == "on")
+                {
+                    echo nmButtonOutput($this->arr_buttons, "btn_8", "javascript:", "javascript:", "btn_8", "", "Módulos", "", "absmiddle", "", "0px", $this->path_botoes, "", "Módulos", "", "", "__sc_grp__", "text_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_self') . "", "", "", "", "accommodation", "");
+                    ?>
+                    <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_8">
+                        <tr>
+                            <td class="scBtnGrpBackground">
+                              <?php
+                              if($this->nmgp_botoes['btn_10'] == 'on')
+                              {
+                              ?>
+                                  <div class="scBtnGrpText">
+                                    <?php
+                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_10&sc_apl_menu=admin&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_10']['disabled']) && strtolower($this->arr_buttons['btn_10']['disabled']) == 'off')
+                                    {
+                                      $str_href = "javascript:";
+                                    }
+                                    ?>
+                                      <a id="btn_10" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Admin" target="<?php echo $this->accommodation_target('_parent'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-users-cog'></i> Admin</a>
+                                  </div>
+                              <?php
+                              }
+                              ?>
+                              <?php
+                              if($this->nmgp_botoes['btn_9'] == 'on')
+                              {
+                              ?>
+                                  <div class="scBtnGrpText">
+                                    <?php
+                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_9&sc_apl_menu=home&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_9']['disabled']) && strtolower($this->arr_buttons['btn_9']['disabled']) == 'off')
+                                    {
+                                      $str_href = "javascript:";
+                                    }
+                                    ?>
+                                      <a id="btn_9" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Inicio" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-campground'></i> Inicio</a>
                                   </div>
                               <?php
                               }
@@ -2209,41 +2508,41 @@ function nm_show_toolbarmenu($col_span, $saida_apl, $accommodation_menuData, $pa
 
                 if ($this->nmgp_botoes['btn_2'] == "on")
                 {
-                    echo nmButtonOutput($this->arr_buttons, "btn_2", "javascript:", "javascript:", "btn_2", "", "Usuário", "", "absmiddle", "", "0px", $this->path_botoes, "", "Usuário", "", "", "__sc_grp__", "only_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_self') . "", "", "", "", "accommodation", "");
+                    echo nmButtonOutput($this->arr_buttons, "btn_2", "javascript:", "javascript:", "btn_2", "", "Usuário", "", "absmiddle", "", "0px", $this->path_botoes, "", "Usuário", "", "", "__sc_grp__", "text_fontawesomeicon", "text_right", "1", "" . $this->accommodation_target('_self') . "", "", "", "", "accommodation", "");
                     ?>
                     <table class='SC_SubMenuApp' style="border-collapse: collapse; border-width: 0; display: none; position: absolute;" id="sc_btgp_btn_2">
                         <tr>
                             <td class="scBtnGrpBackground">
                               <?php
-                              if($this->nmgp_botoes['btn_7'] == 'on')
+                              if($this->nmgp_botoes['btn_3'] == 'on')
                               {
                               ?>
                                   <div class="scBtnGrpText">
                                     <?php
-                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_7&sc_apl_menu=sec_change_pswd&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
-                                    if(isset($this->arr_buttons['btn_7']['disabled']) && strtolower($this->arr_buttons['btn_7']['disabled']) == 'off')
+                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_3&sc_apl_menu=sec_change_pswd&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_3']['disabled']) && strtolower($this->arr_buttons['btn_3']['disabled']) == 'off')
                                     {
                                       $str_href = "javascript:";
                                     }
                                     ?>
-                                      <a id="btn_7" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="Alterar senha" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-key'></i> Alterar senha</a>
+                                      <a id="btn_3" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="" target="<?php echo $this->accommodation_target('_self'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-key'></i> Alterar Senha</a>
                                   </div>
                               <?php
                               }
                               ?>
                               <?php
-                              if($this->nmgp_botoes['btn_8'] == 'on')
+                              if($this->nmgp_botoes['btn_4'] == 'on')
                               {
                               ?>
                                   <div class="scBtnGrpText">
                                     <?php
-                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_8&sc_apl_menu=sec_login&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
-                                    if(isset($this->arr_buttons['btn_8']['disabled']) && strtolower($this->arr_buttons['btn_8']['disabled']) == 'off')
+                                    $str_href = "accommodation_form_php.php?sc_item_menu=btn_4&sc_apl_menu=sec_login&sc_apl_link=". urlencode($accommodation_menuData['url']['link']) ."&sc_usa_grupo=". $_SESSION['scriptcase']['accommodation']['glo_nm_usa_grupo'] ."";
+                                    if(isset($this->arr_buttons['btn_4']['disabled']) && strtolower($this->arr_buttons['btn_4']['disabled']) == 'off')
                                     {
                                       $str_href = "javascript:";
                                     }
                                     ?>
-                                      <a id="btn_8" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="" target="<?php echo $this->accommodation_target('_parent'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-sign-out-alt'></i> <?php echo $this->Nm_lang['lang_exit']; ?></a>
+                                      <a id="btn_4" href="<?php echo $str_href; ?>"   class="scBtnGrpLink" title="" target="<?php echo $this->accommodation_target('_parent'); ?>" style="vertical-align: middle; display:inline-block;"><i class='icon_fa fas fa-sign-out-alt'></i> <?php echo $this->Nm_lang['lang_exit']; ?></a>
                                   </div>
                               <?php
                               }

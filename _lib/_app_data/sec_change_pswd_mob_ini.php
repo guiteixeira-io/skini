@@ -8,7 +8,7 @@
     $arr_data['initial'] = "sec_change_pswd_mob.php";
     $arr_data['group'] = "skini";
     $arr_data['apl'] = "sec_change_pswd_mob";
-    $arr_data['status'] = "SIM";
+    $arr_data['status'] = "NAO";
     $arr_data['type'] = "contr";
     $arr_data['friendly_url'] = "sec_change_pswd";
     $arr_data['md5'] = "LigMd5";

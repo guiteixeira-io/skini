@@ -1,7 +1,5 @@
 <?php
 //
-   if (!session_id())
-   {
    include_once('cad_lodge_session.php');
            include_once("../_lib/lib/php/fix.php");
    @ini_set('session.cookie_httponly', 1);
@@ -38,12 +36,6 @@
             }
             $_SESSION['scriptcase']['display_mobile'] = $_SESSION['scriptcase']['force_mobile'];
         }
-       if ($_SESSION['scriptcase']['device_mobile'] && $_SESSION['scriptcase']['display_mobile'])
-       {
-          include_once('cad_lodge_mob.php');
-          exit;
-       }
-   }
 
    $_SESSION['scriptcase']['cad_lodge']['error_buffer'] = '';
 
@@ -188,7 +180,6 @@ class cad_lodge_ini
    var $path_atual;
    var $Gd_missing;
    var $sc_site_ssl;
-   var $link_cad_lodge_inline;
    var $nm_cont_lin;
    var $nm_limite_lin;
    var $nm_limite_lin_prt;
@@ -300,8 +291,8 @@ class cad_lodge_ini
       $this->nm_dt_criacao   = "20230609"; 
       $this->nm_hr_criacao   = "002032"; 
       $this->nm_autor_alt    = "admin"; 
-      $this->nm_dt_ult_alt   = "20230913"; 
-      $this->nm_hr_ult_alt   = "090240"; 
+      $this->nm_dt_ult_alt   = "20230920"; 
+      $this->nm_hr_ult_alt   = "130920"; 
       list($NM_usec, $NM_sec) = explode(" ", microtime()); 
       $this->nm_timestamp    = (float) $NM_sec; 
       $this->nm_app_version  = "1.0.0"; 
@@ -1015,7 +1006,6 @@ class cad_lodge_ini
       {
           $_SESSION['sc_session'][$this->sc_page]['cad_lodge']['dashboard_info']['maximized'] = 1 == $_GET['maximized'];
       }
-      $this->link_cad_lodge_inline = $this->sc_protocolo . $this->server . $this->path_link . "" . SC_dir_app_name('cad_lodge') . "/cad_lodge_inline.php";
       if ($_SESSION['sc_session'][$this->sc_page]['cad_lodge']['dashboard_info']['under_dashboard'])
       {
           $sTmpDashboardApp = $_SESSION['sc_session'][$this->sc_page]['cad_lodge']['dashboard_info']['dashboard_app'];
@@ -1099,8 +1089,12 @@ class cad_lodge_ini
       $this->nm_bases_odbc       = array("odbc");
       $this->nm_bases_progress   = array("progress", "pdo_progress_odbc");
       $this->nm_bases_all        = array_merge($this->nm_bases_access, $this->nm_bases_ibase, $this->nm_bases_mysql, $this->nm_bases_postgres, $this->nm_bases_sqlite, $this->nm_bases_sybase, $this->nm_bases_vfp, $this->nm_bases_odbc, $this->nm_bases_progress);
-      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1D9JKDQFGHAveHQJwHgvsV9FeDur/HIX7D9BsZSFaD1rKHQJwDEBODkFeH5FYVoFGHQJKDQBqHANOHuFaHuNOZSrCH5FqDoXGHQJmZ1rqHArKHuFUHgveHEJGH5F/HIBqDcXGDQX7HAN7HQrqDMrYZSNiH5B7VoX7D9XOZ1BOHArYHQNUDMvCHEXeH5F/HIJsD9XsZ9JeD1BeD5F7DMvmVcrsDWXCDoraDcNwH9B/HAN7D5XGDEBOZSXeV5XCZuJsDcBwDuFaHAveD5NUHgNKDkBOV5FYHMBiHQFYH9B/D1rwD5NUDMzGHENiV5FaVoX7D9XsZSX7D1veD5XGHgrKV9FiV5F/VorqD9JmZ1rqHArKHQJwDEBODkFeH5FYVoFGHQJKDQB/HAN7HQrqHuNOVcrsHEX/VoFGHQBiVIJsHANOHQF7DEBOZSXeV5FaHMBiD9FYDQJsD1veHuNUHgrwVcFeDWXCDoJsDcBwH9B/Z1rYHQJwHgvsHArsHEXCHMBqHQNwDQB/DSN7HQXGHgrwV9FiV5FYHMJsDcNmZSBqHArYHuXGHgBYHEFKV5FqHMBODcBiDQBqHIrKV5FaHgrwZSJ3V5FYHMJwHQNwZSBODSvOZMFaDMveDkFeH5FYVoX7D9JKDQX7D1BOV5FGDMzGVcBUHEF/VoBiHQBsH9BqHAN7HuX7HgBOHAFKV5B7DoXGHQNwDQFaHANOHQBOHgvOZSrCV5FYHMFGHQXGVIJsHAN7HuFUHgvsHAFKV5FqHMBqHQFYH9BiZ1N7HQJeDMNOZSJ3H5FqDoJeD9JmZ1B/D1NaD5rqHgrKHArsHEXCHIJeDcXGH9BiZ1BYHuFUDMBYVcFiV5FYHIBiHQXGZ1BOD1rwHQXGHgrKHEFKV5FqHMFGHQJeDuBqD1BeHuBqDMvmZSrCV5X/VENUHQBiZ1BOHArKHuBODMveHAFKH5FYVoX7D9JKDQX7D1BOV5FGHuzGDkBOH5FqVoJwD9XOZ1F7HABYZMB/DEBeHENiV5FaHIFGHQJeZ9JeZ1rwHQFaHuzGVIBOV5X7DoF7D9XOZSB/HABYV5X7DMrYHErCDWXCVoXGD9XsDQJsHABYV5BqDMrwDkBsV5F/DoraD9BiZ1FGZ1rYD5NUDEBeZSXeH5FGDoB/D9NmZ9XGDSzGD5F7HuzGVcFKDur/VorqHQBqZ1BiHAzGD5FaDEvsZSJGDuFaZuBqD9NwH9X7Z1rwV5JwHuBYVcFiV5X7VoFGDcBqH9FaHAN7V5JeDErKHEBUH5F/DoF7DcJeDQFGD1BeD5JwDMrwZSJ3H5FqDoJeD9JmZ1B/D1NaD5rqDErKZSXeH5FYDoFUD9JKDQJsZ1rwV5BqHuBYVcXKV5X7HIrqHQJmZ1BOHArKHuFUHgvsZSJqDWBmVoFGHQXsZSFUHABYHuFGDMvmVcFKV5BmVoBqD9BsZkFGHAvsD5XGHgveHErsDWrGDoXGHQBiDQBqDSzGV5XGDMvODkBsDWXCDoJsDcBwH9B/Z1rYHQJwHgrKVkJGDWX7HMJsD9XsDQB/HIrKHuBiDMBOV9BUDWFaDoXGHQXGZ1FGHArKV5FUDMrYZSXeV5FqHIJsHQXsH9BiHArYHQBODMvmDkBsDur/HMBqHQBiZSBqDSvOD5raDMvCHErCHEFqHIJsD9XsZ9JeD1BeD5F7DMvmVcBUHEX/DoJsHQNmZ1XGZ1veZMNU";
+      $_SESSION['scriptcase']['nm_bases_security']  = "enc_nm_enc_v1DcBwZSBiD1veVWJwDMrYVcBOH5XCHIJeHQNwZ1BOD1rKHQBiHgBeDkB/DuJeHIJsD9XsZ9JeD1BeD5F7DMvmVcBUDWFaHIF7HQBqZSBqZ1rYHQF7DMveVkJ3V5FqHIB/HQXGDuFaD1veV5FaDMNOV9FeV5BmVEX7HQFYZkFGHIrwHQXGHgBYHENiHEXCHIBqHQXGDuFaD1vOVWJeHgvOV9BUDWFYVoBiDcBwH9B/HIrwV5JeDMBYDkBsH5FYHIrqHQJeH9FUDSN7HuFUDMvmVIB/H5FqHMJwHQFYZkBiD1rwHQF7HgBeVkJ3V5XCDoJsHQXGDQFUDSBYHQF7DMvOVIB/H5XCHIF7HQFYZkFGZ1rYHuFGHgvsVkJ3DuFYHIraDcJUZSX7HIBeD5BqHgvsZSJ3H5FqHMBqHQBqZSBOHIveHQBqHgvsHArCDuFaHMBOHQXGDQFUHAveHQB/DMBODkB/Dur/HMBOHQFYZ1BOD1NaZMJeHgveZSJqHEFqHIX7HQXGDuBqD1veHQXGDMBOVcFeV5FYHMFGDcBwH9B/HIrwV5JeDMBYDkBsH5FYDoXGDcJeZSFUZ1rwV5JeHgvsVcFCH5XCDoX7DcNwH9BqD1NaZMJwHgvCZSJqDWF/DoJeD9XsZSX7HIrwV5BOHgvsVcBOV5X/VoFaHQBsZSB/DSrYV5FGDMzGHEJGH5X/DoB/HQNmH9X7HABYVWJsDMBYVcBODWFaDoFUDcJUZkFUZ1BeZMBqHgBYHAFKV5FqDoBOD9JKDQJwHANKVWBODMvOV9FiV5X7VEF7D9BiH9FaHIBeD5XGDEBOZSXeV5FaZuFaHQXGZSFGD1BeV5FGHuzGVIBOHEFYVorqD9BiZ1F7D1rwD5NUDErKZSXeH5FGDoB/DcJUZSX7HIBeD5BqHgvsZSJ3H5FqVoFGDcBqH9BOZ1BeV5XGDEBOZSJGH5FYZuFaDcXOZSBiHIBeHuB/DMBOVcXKH5XCHIFGHQXGZ1FUZ1rYHQNUDMvCHArCHEFqHIJsD9XsZ9JeD1BeD5F7DMvmVcrsDWFaVoBOHQNwZSFaHArYHQJeDEvsHErCV5XCZuJeHQNwDQJsHANOV5JeDMzGDkBOHEFYHIXGDcFYZSBqHArKV5FUDMrYZSXeV5FqHIJsHQXGZSX7D1BeV5FUHgrKVcXKV5X7DoJeD9BsH9B/D1rKV5BODMzGHAFKV5XCDoBOD9JKDQJwHAveHuFaHuNOZSrCH5FqDoXGHQJmZ1FGHArKV5FUDMrYZSXeV5FqHIJsHQXsDuBqD1veHuJeHuvmVIBODWF/VENUDcJUH9FaHAvsZMJeDMvCHErCDuFaZuB/HQNmZSBiHAvOV5JeDMvmVcFKV5BmVoBqD9BsZkFGHArKD5BqDMzGHEJqV5FaDorqD9NwH9X7Z1rwD5NUHuBOVIBODWFYHMBiD9BsVIraD1rwV5X7HgBeHErsDWrGDoBOHQBiZ9XGD1BOV5JeDMvsV9BUDWrmVoX7HQJmZ1F7Z1vmD5rqDEBOHArCDWF/HIX7DcBiH9BiHIBeVWJwHgvsDkBsH5FqHIraHQJmVINUHIveHuB/DMzGHEXeDWXCZuFaHQXsDQFGHAN7HQFaDMvmVcFKV5BmVoBqD9BsZkFGHArKHQraHgBeHArCV5XCHIFGHQNwDQFaDSBYHQBODMzGV9FiDWXCHIJsHQXOZkFGHArKV5FUDMrYZSXeV5FqHIJsHQJeDuBOZ1vCV5Je";
       $this->prep_conect();
+      if (!isset($_SESSION['sc_session'][$this->sc_page]['cad_lodge']['ordem_cmp'])) { 
+          $_SESSION['sc_session'][$this->sc_page]['cad_lodge']['ordem_cmp'] = ""; 
+          $_SESSION['sc_session'][$this->sc_page]['cad_lodge']['ordem_ord'] = ""; 
+      }
       $this->conectDB();
       if (!in_array(strtolower($this->nm_tpbanco), $this->nm_bases_all))
       {
@@ -1814,7 +1808,8 @@ class cad_lodge_edit
     {
         global $nm_opc_lookup, $nm_opc_php, $script_case_init;
         require_once("cad_lodge_apl.php");
-        $this->contr_cad_lodge = new cad_lodge_apl();
+        require_once("cad_lodge_form0.php");
+        $this->contr_cad_lodge = new cad_lodge_form();
     }
 }
 if (!function_exists("NM_is_utf8"))
@@ -1836,6 +1831,10 @@ ob_start();
     }
     SC_dir_app_ini('skini');
     $sc_conv_var = array();
+    $sc_conv_var['idlodge'] = "idlodge_";
+    $sc_conv_var['idlodgecategory'] = "idlodgecategory_";
+    $sc_conv_var['number'] = "number_";
+    $sc_conv_var['status'] = "status_";
     if (!empty($_FILES))
     {
         foreach ($_FILES as $nmgp_campo => $nmgp_valores)
@@ -1986,50 +1985,58 @@ ob_start();
 
     if (isset($_POST['rs']) && !is_array($_POST['rs']) && 'ajax_' == substr($_POST['rs'], 0, 5) && isset($_POST['rsargs']) && !empty($_POST['rsargs']) && !isset($_SESSION['scriptcase']['cad_lodge']['session_timeout']['redir']))
     {
-        if ('ajax_cad_lodge_validate_idlodge' == $_POST['rs'])
+        if ('ajax_cad_lodge_validate_number_' == $_POST['rs'])
         {
-            $idlodge = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $number_ = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][2]);
         }
-        if ('ajax_cad_lodge_validate_idlodgecategory' == $_POST['rs'])
+        if ('ajax_cad_lodge_validate_status_' == $_POST['rs'])
         {
-            $idlodgecategory = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][1]);
-        }
-        if ('ajax_cad_lodge_validate_number' == $_POST['rs'])
-        {
-            $number = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][1]);
-        }
-        if ('ajax_cad_lodge_validate_name' == $_POST['rs'])
-        {
-            $name = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][1]);
-        }
-        if ('ajax_cad_lodge_validate_status' == $_POST['rs'])
-        {
-            $status = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $status_ = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][2]);
         }
         if ('ajax_cad_lodge_submit_form' == $_POST['rs'])
         {
-            $idlodge = NM_utf8_urldecode($_POST['rsargs'][0]);
-            $idlodgecategory = NM_utf8_urldecode($_POST['rsargs'][1]);
-            $number = NM_utf8_urldecode($_POST['rsargs'][2]);
-            $name = NM_utf8_urldecode($_POST['rsargs'][3]);
-            $status = NM_utf8_urldecode($_POST['rsargs'][4]);
-            $nm_form_submit = NM_utf8_urldecode($_POST['rsargs'][5]);
-            $nmgp_url_saida = NM_utf8_urldecode($_POST['rsargs'][6]);
-            $nmgp_opcao = NM_utf8_urldecode($_POST['rsargs'][7]);
-            $nmgp_ancora = NM_utf8_urldecode($_POST['rsargs'][8]);
-            $nmgp_num_form = NM_utf8_urldecode($_POST['rsargs'][9]);
-            $nmgp_parms = NM_utf8_urldecode($_POST['rsargs'][10]);
-            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][11]);
-            $csrf_token = NM_utf8_urldecode($_POST['rsargs'][12]);
+            $number_ = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $status_ = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][2]);
+            $nm_form_submit = NM_utf8_urldecode($_POST['rsargs'][3]);
+            $nmgp_url_saida = NM_utf8_urldecode($_POST['rsargs'][4]);
+            $nmgp_opcao = NM_utf8_urldecode($_POST['rsargs'][5]);
+            $nmgp_ancora = NM_utf8_urldecode($_POST['rsargs'][6]);
+            $nmgp_num_form = NM_utf8_urldecode($_POST['rsargs'][7]);
+            $nmgp_parms = NM_utf8_urldecode($_POST['rsargs'][8]);
+            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][9]);
+            $csrf_token = NM_utf8_urldecode($_POST['rsargs'][10]);
         }
         if ('ajax_cad_lodge_navigate_form' == $_POST['rs'])
         {
-            $idlodge = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $idlodge_ = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $nm_form_submit = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $nmgp_opcao = NM_utf8_urldecode($_POST['rsargs'][2]);
+            $nmgp_ordem = NM_utf8_urldecode($_POST['rsargs'][3]);
+            $nmgp_arg_dyn_search = NM_utf8_urldecode($_POST['rsargs'][4]);
+            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][5]);
+        }
+        if ('ajax_cad_lodge_add_new_line' == $_POST['rs'])
+        {
+            $sc_clone = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $sc_seq_clone = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $sc_seq_vert = NM_utf8_urldecode($_POST['rsargs'][2]);
+            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][3]);
+        }
+        if ('ajax_cad_lodge_backup_line' == $_POST['rs'])
+        {
+            $idlodge_ = NM_utf8_urldecode($_POST['rsargs'][0]);
+            $nmgp_refresh_row = NM_utf8_urldecode($_POST['rsargs'][1]);
+            $nm_form_submit = NM_utf8_urldecode($_POST['rsargs'][2]);
+            $script_case_init = NM_utf8_urldecode($_POST['rsargs'][3]);
+        }
+        if ('ajax_cad_lodge_table_refresh' == $_POST['rs'])
+        {
+            $idlodge_ = NM_utf8_urldecode($_POST['rsargs'][0]);
             $nm_form_submit = NM_utf8_urldecode($_POST['rsargs'][1]);
             $nmgp_opcao = NM_utf8_urldecode($_POST['rsargs'][2]);
             $nmgp_ordem = NM_utf8_urldecode($_POST['rsargs'][3]);
@@ -2295,6 +2302,33 @@ ob_start();
     if (!isset($nm_apl_dependente)) {
         $nm_apl_dependente = 0;
     }
+    $STR_lang    = (isset($_SESSION['scriptcase']['str_lang']) && !empty($_SESSION['scriptcase']['str_lang'])) ? $_SESSION['scriptcase']['str_lang'] : "pt_br";
+    if (isset($_SESSION['scriptcase']['cad_lodge']['session_timeout']['lang'])) {
+        $STR_lang = $_SESSION['scriptcase']['cad_lodge']['session_timeout']['lang'];
+    }
+      $STR_schema_all = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
+    $NM_arq_lang = "../_lib/lang/" . $STR_lang . ".lang.php";
+    $Nm_lang = array();
+    if (is_file($NM_arq_lang))
+    {
+        $Lixo = file($NM_arq_lang);
+        foreach ($Lixo as $Cada_lin) 
+        {
+            if (strpos($Cada_lin, "array()") === false && (trim($Cada_lin) != "<?php")  && (trim($Cada_lin) != "?" . ">"))
+            {
+                eval (str_replace("\$this->", "\$", $Cada_lin));
+            }
+        }
+    }
+    $_SESSION['scriptcase']['charset'] = "UTF-8";
+    ini_set('default_charset', $_SESSION['scriptcase']['charset']);
+    foreach ($Nm_lang as $ind => $dados)
+    {
+       if ($_SESSION['scriptcase']['charset'] != "UTF-8" && NM_is_utf8($dados))
+       {
+           $Nm_lang[$ind] = sc_convert_encoding($dados, $_SESSION['scriptcase']['charset'], "UTF-8");
+       }
+    }
 
     if (!isset($_SESSION['sc_session'][$script_case_init]['cad_lodge']['initialize']))
     {
@@ -2484,12 +2518,102 @@ ob_start();
         $nm_apl_dependente = 0;
     }
     $GLOBALS["NM_ERRO_IBASE"] = 0;  
+    if (isset($_SESSION['nm_session']['user']['sec']['flag']) && $_SESSION['nm_session']['user']['sec']['flag'] == "N") 
+    { 
+        $_SESSION['scriptcase']['sc_apl_seg']['cad_lodge'] = "on";
+    } 
+    if (!isset($_SESSION['scriptcase']['cad_lodge']['session_timeout']['redir']) && (!isset($_SESSION['scriptcase']['sc_apl_seg']['cad_lodge']) || $_SESSION['scriptcase']['sc_apl_seg']['cad_lodge'] != "on"))
+    { 
+        $NM_Mens_Erro = $Nm_lang['lang_errm_unth_user'];
+        $nm_botao_ok = ($_SESSION['sc_session'][$script_case_init]['cad_lodge']['iframe_menu']) ? false : true;
+        if (isset($_SESSION['scriptcase']['sc_aba_iframe']))
+        {
+            foreach ($_SESSION['scriptcase']['sc_aba_iframe'] as $aba => $apls_aba)
+            {
+                if (in_array("cad_lodge", $apls_aba))
+                {
+                    $nm_botao_ok = false;
+                     break;
+                }
+            }
+        }
+      $str_schema_app = (isset($_SESSION['scriptcase']['str_schema_all']) && !empty($_SESSION['scriptcase']['str_schema_all'])) ? $_SESSION['scriptcase']['str_schema_all'] : "Sc9_Lemon/Sc9_Lemon";
+       $str_button_app = (isset($_SESSION['scriptcase']['str_button_all'])) ? $_SESSION['scriptcase']['str_button_all'] : "scriptcase9_Lemon";
+       $_SESSION['scriptcase']['str_button_all'] = $str_button_app;
+    header("X-XSS-Protection: 1; mode=block");
+    header("X-Frame-Options: SAMEORIGIN");
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+            "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+
+        <HTML>
+         <HEAD>
+          <TITLE></TITLE>
+          <META http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['scriptcase']['charset_html'] ?>" />
+          <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT" />
+          <META http-equiv="Last-Modified" content="<?php echo gmdate('D, d M Y H:i:s') ?> GMT" />
+          <META http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+          <META http-equiv="Cache-Control" content="post-check=0, pre-check=0" />
+          <META http-equiv="Pragma" content="no-cache" />
+          <META http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT"/>          <META http-equiv="Pragma" content="no-cache"/>
+          <link rel="shortcut icon" href="../_lib/img/grp__NM__ico__NM__barraca-de-acampamento.ico">
+          <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_app ?>_form.css" />
+          <link rel="stylesheet" type="text/css" href="../_lib/css/<?php echo $str_schema_app ?>_form<?php echo $_SESSION['scriptcase']['reg_conf']['css_dir'] ?>.css" />
+          <link rel="stylesheet" type="text/css" href="../_lib/buttons/<?php echo $str_button_app . '/' . $str_button_app ?>.css" />
+         </HEAD>
+         <body class="scFormPage">
+          <div class="scFormBorder">
+          <table align="center" style="width: 100%" class="scFormTable"><tr><td class="scFormDataOdd" style="padding: 15px 30px; text-align: center">
+           <?php echo $NM_Mens_Erro; ?>
+<?php
+        if ($nm_botao_ok)
+        {
+?>
+          <br />
+          <form name="Fseg" method="post" 
+                              action="<?php echo $nm_url_saida; ?>" 
+                              target="_self"> 
+           <input type="hidden" name="script_case_init" value="<?php echo $script_case_init; ?>"/> 
+           <input type="submit" name="sc_sai_seg" value="OK" class="" > 
+          </form> 
+          <script type="text/javascript">
+            function nm_move()
+            { }
+            function nm_atualiza()
+            { }
+          </script> 
+<?php
+        }
+?>
+          </td></tr></table>
+          </div>
+<?php
+       if (isset($_SESSION['scriptcase']['nm_sc_retorno']) && !empty($_SESSION['scriptcase']['nm_sc_retorno']))
+       {
+?>
+<br /><br /><br />
+<div class="scFormBorder">
+ <table align="center" style="width: 450px" class="scFormTable">
+  <tr>
+   <td class="scFormDataOdd" style="padding: 15px 30px">
+    <?php echo $Nm_lang['lang_errm_unth_hwto']; ?>
+   </td>
+  </tr>
+ </table>
+</div>
+<?php
+       }
+?>
+         </body>
+        </HTML>
+<?php
+        exit;
+    } 
     $inicial_cad_lodge = new cad_lodge_edit();
     $inicial_cad_lodge->inicializa();
 
     $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['select_html'] = array();
-    $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['select_html']['idlodgecategory'] = "class=\"sc-js-input scFormObjectOdd css_idlodgecategory_obj{SC_100PERC_CLASS_INPUT}\" style=\"\" id=\"id_sc_field_idlodgecategory\" name=\"idlodgecategory\" size=\"1\" alt=\"{type: 'select', enterTab: false}\"";
-    $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['select_html']['status'] = "class=\"sc-js-input scFormObjectOdd css_status_obj{SC_100PERC_CLASS_INPUT}\" style=\"\" id=\"id_sc_field_status\" name=\"status\" size=\"1\" alt=\"{type: \'select\', enterTab: false}\"";
+    $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['select_html']['status_'] = "class=\\\"sc-js-input scFormObjectOddMult css_status__obj{SC_100PERC_CLASS_INPUT}\\\" style=\\\"\\\" id=\\\"id_sc_field_status_\" . \$sc_seq_vert . \"\\\" name=\\\"status_\" . \$sc_seq_vert . \"\\\" size=\\\"1\\\" alt=\\\"{type: \\'select\\', enterTab: false}\\\"";
 
     if (!defined('SC_SAJAX_LOADED'))
     {
@@ -2503,14 +2627,61 @@ ob_start();
     $sajax_request_type = "POST";
     sajax_init();
     //$sajax_debug_mode = 1;
-    sajax_export("ajax_cad_lodge_validate_idlodge");
-    sajax_export("ajax_cad_lodge_validate_idlodgecategory");
-    sajax_export("ajax_cad_lodge_validate_number");
-    sajax_export("ajax_cad_lodge_validate_name");
-    sajax_export("ajax_cad_lodge_validate_status");
+    sajax_export("ajax_cad_lodge_validate_number_");
+    sajax_export("ajax_cad_lodge_validate_status_");
     sajax_export("ajax_cad_lodge_submit_form");
     sajax_export("ajax_cad_lodge_navigate_form");
+    sajax_export("ajax_cad_lodge_add_new_line");
+    sajax_export("ajax_cad_lodge_backup_line");
+    sajax_export("ajax_cad_lodge_table_refresh");
     sajax_handle_client_request();
+
+    if ('ajax_fixed_columns_form_save' == $nmgp_opcao) {
+        cad_lodge_saveFixedColumnsForm($_POST['fixed_index'], $_POST['fixed_action'], $_POST['script_case_init']);
+    }
+    if ('ajax_fixed_columns_form_load' == $nmgp_opcao) {
+        cad_lodge_loadFixedColumnsForm($_POST['script_case_init']);
+    }
+
+    function cad_lodge_initializeFixedColumnsForm($script_case_init)
+    {
+        if (!isset($_SESSION['sc_session'][$script_case_init]['cad_lodge']['fixed_columns_form'])) {
+            $_SESSION['sc_session'][$script_case_init]['cad_lodge']['fixed_columns_form'] = '';
+        }
+    }
+
+    function cad_lodge_saveFixedColumnsForm($index, $action, $script_case_init)
+    {
+        cad_lodge_initializeFixedColumnsForm($script_case_init);
+
+        if ('on' == $action) {
+            $_SESSION['sc_session'][$script_case_init]['cad_lodge']['fixed_columns_form'] = $index;
+        } elseif (0 < $index) {
+            $_SESSION['sc_session'][$script_case_init]['cad_lodge']['fixed_columns_form'] = $index - 1;
+        } else {
+            $_SESSION['sc_session'][$script_case_init]['cad_lodge']['fixed_columns_form'] = '';
+        }
+
+        echo json_encode(
+            array(
+                'status' => 'ok'
+            )
+        );
+        exit;
+    }
+
+    function cad_lodge_loadFixedColumnsForm($script_case_init)
+    {
+        cad_lodge_initializeFixedColumnsForm($script_case_init);
+
+        echo json_encode(
+            array(
+                'status' => 'ok',
+                'last_index' =>$_SESSION['sc_session'][$script_case_init]['cad_lodge']['fixed_columns_form']
+            )
+        );
+        exit;
+    }
 
     if (isset($_POST['wizard_action']) && 'change_step' == $_POST['wizard_action']) {
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param']['buffer_output'] = true;
@@ -2523,14 +2694,15 @@ ob_start();
     {
     }
 
-    function ajax_cad_lodge_validate_idlodge($idlodge, $script_case_init)
+    function ajax_cad_lodge_validate_number_($number_, $nmgp_refresh_row, $script_case_init)
     {
         global $inicial_cad_lodge;
         //register_shutdown_function("cad_lodge_pack_ajax_response");
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'validate_idlodge';
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'validate_number_';
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
-                  'idlodge' => NM_utf8_urldecode($idlodge),
+                  'number_' => NM_utf8_urldecode($number_),
+                  'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
                   'script_case_init' => NM_utf8_urldecode($script_case_init),
                   'buffer_output' => true,
                  );
@@ -2540,16 +2712,17 @@ ob_start();
         }
         $inicial_cad_lodge->contr_cad_lodge->controle();
         exit;
-    } // ajax_validate_idlodge
+    } // ajax_validate_number_
 
-    function ajax_cad_lodge_validate_idlodgecategory($idlodgecategory, $script_case_init)
+    function ajax_cad_lodge_validate_status_($status_, $nmgp_refresh_row, $script_case_init)
     {
         global $inicial_cad_lodge;
         //register_shutdown_function("cad_lodge_pack_ajax_response");
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'validate_idlodgecategory';
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'validate_status_';
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
-                  'idlodgecategory' => NM_utf8_urldecode($idlodgecategory),
+                  'status_' => NM_utf8_urldecode($status_),
+                  'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
                   'script_case_init' => NM_utf8_urldecode($script_case_init),
                   'buffer_output' => true,
                  );
@@ -2559,77 +2732,18 @@ ob_start();
         }
         $inicial_cad_lodge->contr_cad_lodge->controle();
         exit;
-    } // ajax_validate_idlodgecategory
+    } // ajax_validate_status_
 
-    function ajax_cad_lodge_validate_number($number, $script_case_init)
-    {
-        global $inicial_cad_lodge;
-        //register_shutdown_function("cad_lodge_pack_ajax_response");
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'validate_number';
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
-                  'number' => NM_utf8_urldecode($number),
-                  'script_case_init' => NM_utf8_urldecode($script_case_init),
-                  'buffer_output' => true,
-                 );
-        if ($inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param']['buffer_output'])
-        {
-            ob_start();
-        }
-        $inicial_cad_lodge->contr_cad_lodge->controle();
-        exit;
-    } // ajax_validate_number
-
-    function ajax_cad_lodge_validate_name($name, $script_case_init)
-    {
-        global $inicial_cad_lodge;
-        //register_shutdown_function("cad_lodge_pack_ajax_response");
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'validate_name';
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
-                  'name' => NM_utf8_urldecode($name),
-                  'script_case_init' => NM_utf8_urldecode($script_case_init),
-                  'buffer_output' => true,
-                 );
-        if ($inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param']['buffer_output'])
-        {
-            ob_start();
-        }
-        $inicial_cad_lodge->contr_cad_lodge->controle();
-        exit;
-    } // ajax_validate_name
-
-    function ajax_cad_lodge_validate_status($status, $script_case_init)
-    {
-        global $inicial_cad_lodge;
-        //register_shutdown_function("cad_lodge_pack_ajax_response");
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'validate_status';
-        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
-                  'status' => NM_utf8_urldecode($status),
-                  'script_case_init' => NM_utf8_urldecode($script_case_init),
-                  'buffer_output' => true,
-                 );
-        if ($inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param']['buffer_output'])
-        {
-            ob_start();
-        }
-        $inicial_cad_lodge->contr_cad_lodge->controle();
-        exit;
-    } // ajax_validate_status
-
-    function ajax_cad_lodge_submit_form($idlodge, $idlodgecategory, $number, $name, $status, $nm_form_submit, $nmgp_url_saida, $nmgp_opcao, $nmgp_ancora, $nmgp_num_form, $nmgp_parms, $script_case_init, $csrf_token)
+    function ajax_cad_lodge_submit_form($number_, $status_, $nmgp_refresh_row, $nm_form_submit, $nmgp_url_saida, $nmgp_opcao, $nmgp_ancora, $nmgp_num_form, $nmgp_parms, $script_case_init, $csrf_token)
     {
         global $inicial_cad_lodge;
         //register_shutdown_function("cad_lodge_pack_ajax_response");
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'submit_form';
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
-                  'idlodge' => NM_utf8_urldecode($idlodge),
-                  'idlodgecategory' => NM_utf8_urldecode($idlodgecategory),
-                  'number' => NM_utf8_urldecode($number),
-                  'name' => NM_utf8_urldecode($name),
-                  'status' => NM_utf8_urldecode($status),
+                  'number_' => NM_utf8_urldecode($number_),
+                  'status_' => NM_utf8_urldecode($status_),
+                  'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
                   'nm_form_submit' => NM_utf8_urldecode($nm_form_submit),
                   'nmgp_url_saida' => NM_utf8_urldecode($nmgp_url_saida),
                   'nmgp_opcao' => NM_utf8_urldecode($nmgp_opcao),
@@ -2648,14 +2762,79 @@ ob_start();
         exit;
     } // ajax_submit_form
 
-    function ajax_cad_lodge_navigate_form($idlodge, $nm_form_submit, $nmgp_opcao, $nmgp_ordem, $nmgp_fast_search, $nmgp_cond_fast_search, $nmgp_arg_fast_search, $nmgp_arg_dyn_search, $script_case_init)
+    function ajax_cad_lodge_navigate_form($idlodge_, $nm_form_submit, $nmgp_opcao, $nmgp_ordem, $nmgp_arg_dyn_search, $script_case_init)
     {
         global $inicial_cad_lodge;
         //register_shutdown_function("cad_lodge_pack_ajax_response");
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'navigate_form';
         $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
-                  'idlodge' => NM_utf8_urldecode($idlodge),
+                  'idlodge_' => NM_utf8_urldecode($idlodge_),
+                  'nm_form_submit' => NM_utf8_urldecode($nm_form_submit),
+                  'nmgp_opcao' => NM_utf8_urldecode($nmgp_opcao),
+                  'nmgp_ordem' => NM_utf8_urldecode($nmgp_ordem),
+                  'nmgp_arg_dyn_search' => NM_utf8_urldecode($nmgp_arg_dyn_search),
+                  'script_case_init' => NM_utf8_urldecode($script_case_init),
+                  'buffer_output' => true,
+                 );
+        if ($inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param']['buffer_output'])
+        {
+            ob_start();
+        }
+        $inicial_cad_lodge->contr_cad_lodge->controle();
+        exit;
+    } // ajax_navigate_form
+
+    function ajax_cad_lodge_add_new_line($sc_clone, $sc_seq_clone, $sc_seq_vert, $script_case_init)
+    {
+        global $inicial_cad_lodge;
+        //register_shutdown_function("cad_lodge_pack_ajax_response");
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'add_new_line';
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
+                  'sc_clone' => NM_utf8_urldecode($sc_clone),
+                  'sc_seq_clone' => NM_utf8_urldecode($sc_seq_clone),
+                  'sc_seq_vert' => NM_utf8_urldecode($sc_seq_vert),
+                  'script_case_init' => NM_utf8_urldecode($script_case_init),
+                  'buffer_output' => true,
+                 );
+        if ($inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param']['buffer_output'])
+        {
+            ob_start();
+        }
+        $inicial_cad_lodge->contr_cad_lodge->controle();
+        exit;
+    } // ajax_add_new_line
+
+    function ajax_cad_lodge_backup_line($idlodge_, $nmgp_refresh_row, $nm_form_submit, $script_case_init)
+    {
+        global $inicial_cad_lodge;
+        //register_shutdown_function("cad_lodge_pack_ajax_response");
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'backup_line';
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
+                  'idlodge_' => NM_utf8_urldecode($idlodge_),
+                  'nmgp_refresh_row' => NM_utf8_urldecode($nmgp_refresh_row),
+                  'nm_form_submit' => NM_utf8_urldecode($nm_form_submit),
+                  'script_case_init' => NM_utf8_urldecode($script_case_init),
+                  'buffer_output' => true,
+                 );
+        if ($inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param']['buffer_output'])
+        {
+            ob_start();
+        }
+        $inicial_cad_lodge->contr_cad_lodge->controle();
+        exit;
+    } // ajax_backup_line
+
+    function ajax_cad_lodge_table_refresh($idlodge_, $nm_form_submit, $nmgp_opcao, $nmgp_ordem, $nmgp_fast_search, $nmgp_cond_fast_search, $nmgp_arg_fast_search, $nmgp_arg_dyn_search, $script_case_init)
+    {
+        global $inicial_cad_lodge;
+        //register_shutdown_function("cad_lodge_pack_ajax_response");
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_flag          = true;
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_opcao         = 'table_refresh';
+        $inicial_cad_lodge->contr_cad_lodge->NM_ajax_info['param'] = array(
+                  'idlodge_' => NM_utf8_urldecode($idlodge_),
                   'nm_form_submit' => NM_utf8_urldecode($nm_form_submit),
                   'nmgp_opcao' => NM_utf8_urldecode($nmgp_opcao),
                   'nmgp_ordem' => NM_utf8_urldecode($nmgp_ordem),
@@ -2672,7 +2851,7 @@ ob_start();
         }
         $inicial_cad_lodge->contr_cad_lodge->controle();
         exit;
-    } // ajax_navigate_form
+    } // ajax_table_refresh
 
 
    function cad_lodge_pack_ajax_response()
